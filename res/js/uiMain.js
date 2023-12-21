@@ -25,7 +25,7 @@ Vue.createApp({
 				isCardEnabled: [true, true, true, true, true],
 
 				isAdvanceMode: true,
-				turns: 13,
+				turns: 14,
 				isShowTurns: true,
 				maxCounterAttack: 0,
 				isAllowHpCond: Condition.IS_HP_FULFILL,

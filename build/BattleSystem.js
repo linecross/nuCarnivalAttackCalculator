@@ -685,11 +685,11 @@ export class Battle {
                             for (var postTargetName of postTargetNames) {
                                 if (postRule.type == RuleType.appendRule) {
                                     var newRule = postRule.value;
-                                    this.battleTurns[postTargetName].addRule(newRule.cloneSimple());
+                                    this.battleTurns[postTargetName].addRule(newRule.cloneSimpleChild());
                                 }
                                 else if (postRule.type == RuleType.enemyAppendRule) {
                                     var newRule = postRule.value;
-                                    this.enemyBattleTurn.addRule(newRule.cloneSimple());
+                                    this.enemyBattleTurn.addRule(newRule.cloneSimpleChild());
                                 }
                             }
                         }
@@ -700,14 +700,14 @@ export class Battle {
                             var postTargetNames = postRule.getRuleApplyTarget(this.team, card);
                             for (var postTargetName of postTargetNames) {
                                 if (Battle.TEAM_BUFF_TYPES.includes(postRule.type)) {
-                                    var newRule = postRule.cloneSimple();
+                                    var newRule = postRule.cloneSimpleChild();
                                     newRule.target = null;
                                     newRule.condition = null;
                                     var isRuleAdded = this.battleTurns[postTargetName].addRule(newRule);
                                     buff[postRule.type] += isRuleAdded ? Battle.getNumber(postRule.value) : 0;
                                 }
                                 else if (Battle.ENEMY_BUFF_TYPES.includes(postRule.type)) {
-                                    var newRule = postRule.cloneSimple();
+                                    var newRule = postRule.cloneSimpleChild();
                                     newRule.target = null;
                                     newRule.condition = null;
                                     var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
@@ -723,7 +723,7 @@ export class Battle {
                             // 敵方獲得技能
                             if (postRule.type == RuleType.enemyAppendRule) {
                                 var newRule = postRule.value;
-                                this.enemyBattleTurn.addRule(newRule.cloneSimple());
+                                this.enemyBattleTurn.addRule(newRule.cloneSimpleChild());
                             }
                         }
                         for (var postRule of this.getPostAttackRules(this.enemyBattleTurn.rules)) {
