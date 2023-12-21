@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>新世界狂歡傷害計算機</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<script src='https://cdn.jsdelivr.net/npm/vue@3.2.33/dist/vue.global.min.js'></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" >
+
+	<script type="module" src="./build/Constants.js"></script>
+	<script type="module" src="./build/BattleSystem.js"></script>
+	<script type="module" src="./build/SampleData.js"></script>
+	<link rel='stylesheet' href='./res/css/main.css' />
+
+</head>
+
+<body>
+	<div id='NuCarnivalAttackCalApp'>
+		<div class="container">
+			<div class="row justify-content-center text-center">
+				<div class="col-xs-18 col-md-17 col-lg-9">
+					<h4>新世界狂歡：傷害計算機</h4>
+					<hr>
+				</div>
+			</div>
+			<div v-if="userInput.isAdvanceMode" class="row justify-content-center mb-2">
+				<div class="col-xs-12 col-md-12 col-lg-9">
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<a :class="'nav-link ' + (tab == 'CAL' ? 'active' : '')" href="#" @click="switchTab('CAL')">計算機</a>
+						</li>
+						<li class="nav-item">
+							<a :class="'nav-link ' + (tab == 'JSON' ? 'active' : '')" href="#" @click="switchTab('JSON')">匯入Json</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div v-if="tab == 'CAL'" class="row justify-content-center mb-2">
+				<div class="col-xs-12 col-md-12 col-lg-9">
+					<div class="row">
+						<h5>基本設定</h5>
+						
+						<div class="form-group col-xs-12 col-md-12 col-lg-9">
+							<span class="form-check-inline">
+								<label for="inputIsAdvanceMode">進階顯示</label><br/>
+								<input class="form-check-input" type="checkbox" id="inputIsAdvanceMode" :checked="userInput.isAdvanceMode" v-model="userInput.isAdvanceMode">
+							</span>
+
+							<span class="verticalLine"></span>
+
+							<span class="form-check-inline">
+								<label for="inputTurn">回合數</label>
+								<input class="form-control" type="text" inputmode="numeric" id="inputTurn" v-model="userInput.turns">
+							</span>
+							<span class="form-check-inline">
+								<label for="inputIsShowTurns">顯示回合</label><br/>
+								<input class="form-check-input" type="checkbox" id="inputIsShowTurns" :checked="userInput.isShowTurns" v-model="userInput.isShowTurns">
+							</span>
+							
+							<span class="verticalLine"></span>
+							
+							<div v-if="userInput.isAdvanceMode" class="form-check-inline">
+								<label for="inputIsModifyCardVal">手動輸入數值</label><br/>
+								<input class="form-check-input" type="checkbox" id="inputIsModifyCardVal" :checked="userInput.isModifyCardVal" v-model="userInput.isModifyCardVal">
+							</div>
+							
+							<span class="verticalLine"></span>
+							
+							<span class="form-check-inline">
+								<label for="inputDefaultStar">預設星數</label>
+								<select id="inputDefaultStar" class="form-select" v-model="userInput.defaultStar">
+									<option v-for="(name, value) in DEFAULT_STAR" :value="value">{{ name }}</option>
+								</select>
+							</span>
+						</div>
+					</div>
+
+					<div class="row mt-2 mb-2">
+						<h5>隊伍設定</h5>
+						<div class="col" v-for="(name, idx) in userInput.char" style="vertical-align: top;">
+							<div class="row form-group">
+								<div class="form-check">
+									<label :for="'inputIsCardEnabled-' + idx">第 {{ idx+1 }} 位</label>
+								</div>
+								
+								<!-- <label :for="'inputChar'+(idx+1)">第 {{ idx+1 }} 位</label> -->
+
+								
+
+								<select :id="'inputChar'+(idx+1)" class="form-select" v-model="userInput.char[idx]">
+									<option v-for="name in CHARACTERS" :value="name">{{ name }}</option>
+								</select>
+								<!-- <select :id="'inputCardName'+(idx+1)" class="form-select" v-model="userInput.cardname[idx]">
+									<option v-for="(char, charId) in charData[userInput.char[idx]]" :value="charId">{{ charId }}</option>
+								</select> -->
+								<select :id="'inputCardName'+(idx+1)" class="form-select" v-model="userInput.cardname[idx]">
+									<option v-for="(cardname) in getCardnameByChar(userInput.char[idx])" :value="cardname">{{ cardname }}</option>
+								</select>
+							</div>
+
+							<div class="row mt-2 mb-2" v-if="cards[idx] != null">
+								<!-- <div class="row">
+									<label class="col-auto" :for="'inputCard-level-'+(idx+1)">等級</label>
+									<select :id="'inputCard-level-'+(idx+1)" class="col-auto form-control"  v-model="cards[idx].level">
+										<option v-for="level in LEVEL_SELECT" :value="level">{{ level }}</option>
+									</select>
+								</div> -->
+								<div class="row">
+									<!-- <div class="charStar">
+										<template v-for="star in STARS" :key="star">
+											
+											<input type="radio" name="charStar" :value="5-star" :id="'inputCard-star'+star+'-'+(idx+1)" v-model="cards[idx].star">
+											<label :for="'inputCard-star'+star+'-'+(idx+1)">☆</label>
+										</template>
+									</div> -->
+									<label class="col-auto" :for="'inputCard-star-'+(idx+1)">星數</label>
+									<select :id="'inputCard-star-'+(idx+1)" class="col-auto form-control"  v-model="cards[idx].star">
+										<option v-for="star in STARS" :value="star">{{ star }}</option>
+									</select>
+								</div>
+								<div v-if="userInput.isAdvanceMode" class="row">
+									<label class="col-auto" :for="'inputCard-pot-'+(idx+1)">潛力</label>
+									<select :id="'inputCard-pot-'+(idx+1)" class="col-auto form-control"  v-model="cards[idx].potential">
+										<option v-for="pot in POT_SELECT" :value="pot">{{ pot }}</option>
+									</select>
+								</div>
+
+								<div v-if="userInput.isAdvanceMode" class="row">
+									<label class="col-auto">HP</label>
+									<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].hp" ></input>
+									<input v-else type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getHp()" disabled="true"></input>
+									
+								</div>
+								<div v-if="userInput.isAdvanceMode" class="row">
+									<label class="col-auto">ATK</label>
+									<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].atk"></input>
+									<input v-else type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getAtk()" disabled="true"></input>
+								</div>
+
+								<div v-if="userInput.isAdvanceMode" class="row">
+									<label class="col-auto" :for="'inputCard-order-'+(idx+1)">行動順序</label>
+									<select :id="'inputCard-order-'+(idx+1)" class="col-auto form-control"  v-model="userInput.cardActionOrder[idx]">
+										<option v-for="order in 5" :value="order">{{ order }}</option>
+									</select>
+								</div>
+
+								<div class="row">
+									<label class="col-auto" :for="'inputCard-actionPatten-'+(idx+1)">行動模式</label>
+									<select :id="'inputCard-actionPatten-'+(idx+1)" class="col-auto form-control wide-input form-select"  v-model="userInput.cardActionPattern[idx]">
+										<option v-for="action in ACTION_PATTERN" :value="action">{{ action }}</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<hr>
+					<div class="row mt-2 mb-2">
+						<div class="form-group  mb-3 col-lg-9">
+							<span class="form-check-inline">
+								<label for="inputIsCalcEnemyDebuff">計算敵方易傷</label><br/>
+								<input class="form-check-input" type="checkbox" id="inputIsCalcEnemyDebuff" :checked="userInput.isCalcEnemyDebuff" v-model="userInput.isCalcEnemyDebuff">
+							</span>
+							<span class="form-check-inline">
+								<label for="inputEnemyEle">敵人屬性</label>
+								<!-- <input class="form-control" type="text" inputmode="text" id="inputEnemyEle" v-model="userInput.enemyElement"> -->
+								<select id="inputEnemyEle" class="form-select" v-model="userInput.enemyElement" :disabled="!userInput.isCalcEnemyDebuff">
+									<option v-for="element in ELEMENTS" :value="element">{{ element }}</option>
+								</select>
+							</span>
+
+							<span class="verticalLine"></span>
+
+							<span v-if="userInput.isAdvanceMode" class="form-check-inline">
+								<label for="inputIsAllowHpCond">允許血量條件</label><br/>
+								<input class="form-check-input" type="checkbox" id="inputIsAllowHpCond" :checked="userInput.isAllowHpCond" v-model="userInput.isAllowHpCond">
+							</span>
+
+							<span class="verticalLine"></span>
+
+							<div v-if="userInput.isAdvanceMode" class="form-check-inline">
+								<label for="inputCounterAttackMax">反擊次數</label><br/>
+								<input class="form-control" type="text" inputmode="numeric" id="inputCounterAttackMax" v-model="userInput.maxCounterAttack">
+							</div>
+						</div>
+
+						<div class="form-group mb-3 col-lg-9">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-printmode1" value="All" v-model="userInput.printOutputMode" />
+								<label class="form-check-label no-select" for="input-printmode1">全部</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-printmode2" value="OnlyDamage" v-model="userInput.printOutputMode" />
+								<label class="form-check-label no-select" for="input-printmode2">傷害</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-printmode3" value="OnlyAttack" v-model="userInput.printOutputMode" />
+								<label class="form-check-label no-select" for="input-printmode3">攻擊</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-printmode4" value="OnlyPoison" v-model="userInput.printOutputMode" />
+								<label class="form-check-label no-select" for="input-printmode4">持續傷害</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-printmode5" value="OnlySupport" v-model="userInput.printOutputMode" />
+								<label class="form-check-label no-select" for="input-printmode5">輔助</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-printmode6" value="OnlyHeal" v-model="userInput.printOutputMode" />
+								<label class="form-check-label no-select" for="input-printmode6">補量</label>
+							</div>
+						</div>
+
+
+						<div class="table-responsive" >
+							<table class="table resultTable">
+								<tbody>
+									<tr>
+										<th scope="col" class="col-md-1">回合</th>
+										<!-- <div class="col" v-for="(name, idx) in userInput.char" style="vertical-align: top;"></div> -->
+										<!-- <template v-for="card in cards" :key="card"> -->
+										<template v-for="(name, idx) in userInput.cardname" :key="name">
+											<th scope="col" :class="'col-md-2'+ getThNameClass(name) " >
+												<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
+												<label :for="'inputIsCardEnabled-'+idx">{{ name }}</label>
+												<!-- <div v-if="isCardInBattle(card)">{{ name }}</div> -->
+											</th>
+										</template>
+									</tr>
+									<template v-if="userInput.isShowTurns && battle != null">
+										<tr v-for="turn in userInput.turns">
+											<td scope="row" class="col-md-1">{{ turn }}</td>
+											<template v-for="card in cards" :key="card">
+												<td scope="row" :class="'col-md-2' + getTdClass(card, turn)" @click="changeAttackType(card, turn)" >
+													<div v-if="isCardInBattle(card)">{{ getBattleTurnValue(card.name, turn) }}</v-if>
+												</td>
+											</template>
+										</tr>
+									</template>
+								</tbody>
+								<tfoot v-if="battle != null">
+									<tr>
+										<th scope="row" class="col-md-1 summary">總計</th>
+										<template v-for="card in cards" :key="card">
+											<td scope="row" class="col-md-2 summary" >
+												<div v-if="isCardInBattle(card)">{{ getBattleTotalValue(card.name) }}</v-if>
+											</td>
+										</template>
+									</tr>
+									<tr>
+										<th scope="row" colspan="5" class="col-md-5 summary">{{ userInput.printOutputMode == 'All' ? '隊伍總傷害' : '隊伍總數值' }}</td>
+										<td scope="row" colspan="1" class="col-md-1 summary" >
+											<div v-if="battle != null">{{ getBattleTeamTotalValue() }}</v-if>
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div v-if="tab == 'JSON'" class="row justify-content-center mb-2">
+				<div class="col-xs-12 col-md-12 col-lg-9">
+					<div class="row">
+						<h5>匯入角色JSON</h5>
+
+						<div class="row">
+							<div class="col-md-9 row mb-2 mt-2">
+								<textarea rows="10" v-model="inputJson"></textarea>
+							</div>
+							<div class="col-md-9 row mb-2 mt-2">
+								<button type="button" class="btn btn-primary" @click="importJsonStr">匯入</button>
+							</div>
+							<div v-if="importJsonResult.length > 0" class="col-md-9 row mb-2 mt-2 alert alert-info">{{ importJsonResult }}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="module" src="./res/js/uiMain.js"></script>
+
+	
+</body>
+
+</html>
