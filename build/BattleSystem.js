@@ -1,4 +1,4 @@
-import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType } from './Constants';
+import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType } from './Constants.js';
 const ALWAYS_EFFECTIVE = 99;
 var GAME_CONFIG = {
     MAX_LEVEL: 60,
