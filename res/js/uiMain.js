@@ -1,7 +1,6 @@
 import { Character, Rarity, Element, AttackType, ActionPattern } from './../../build/Constants.js';
 import { CardCenter, Team, Battle, Condition } from './../../build/BattleSystem.js';
-import { CardData } from './../../build/SampleData.js';
-
+// import { CardData } from './../../build/SampleData.js';
 
 var config = {
 	MAX_LEVEL: 60,
@@ -13,7 +12,7 @@ var config = {
 	}
 };
 
-var NuCarnivalAttackCalApp = Vue.createApp({
+Vue.createApp({
     data() {
 		return{
 			tab: 'CAL',
@@ -52,8 +51,13 @@ var NuCarnivalAttackCalApp = Vue.createApp({
 		this.ACTION_PATTERN = ActionPattern;
 		this.DEFAULT_STAR = config.DEFAULT_STAR;
 
-		CardCenter.setMainCardData(CardData);
-		this.loadCards();
+		fetch("./res/json/cardData.json")
+		.then(resp => resp.json())
+		.then(json => {
+			CardCenter.setMainCardData(json);
+			this.loadCards();
+		});
+		
 	},
 	methods: {
 		switchTab(tab){

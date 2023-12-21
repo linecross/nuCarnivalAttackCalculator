@@ -129,7 +129,7 @@ export class CardCenter{
 	}
 
 	private static concatData(o1:{}, o2:{}) : {}{
-		for (var key in Object.keys(o2)){
+		for (var key of Object.keys(o2)){
 			o1[key] = o2[key];
 		}
 		return o1;
