@@ -647,6 +647,7 @@ export class Battle{
 				var newRule = rule.cloneSimpleChild();
 				newRule.target = new RuleTarget();
 				newRule.condition = null;
+				newRule.isPassive = false;
 
 				// -----我方Buff-----
 				// 各種buff （普攻/必殺/造傷/下毒/治療/持續治療增加）
@@ -667,11 +668,13 @@ export class Battle{
 				// 我方獲得技能
 				else if (rule.type == RuleType.appendRule){
 					newRule = rule.value as Rule;
+					newRule.isPassive = false;
 					this.battleTurns[targetName].addRule(newRule.cloneSimple());
 				}
 				// 敵方獲得技能
 				else if (rule.type == RuleType.enemyAppendRule){
 					newRule = rule.value as Rule;
+					newRule.isPassive = false;
 					var result = this.enemyBattleTurn.addRule(newRule.cloneSimple());
 				}
 			}
@@ -716,17 +719,20 @@ export class Battle{
 					var newRule = rule.cloneSimple();
 					newRule.type = RuleType.attack;
 					newRule.turn = 1;
+					newRule.isPassive = false;
 					newRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
 					additionalPostAtkRule.push(newRule);
 				}
 				// 我方獲得技能
 				else if (rule.type == RuleType.appendRule){
 					var newRule = rule.value as Rule;
+					newRule.isPassive = false;
 					this.battleTurns[card.name].addRule(newRule.cloneSimple());
 				}
 				// 敵方獲得技能
 				else if (rule.type == RuleType.enemyAppendRule){
 					var newRule = rule.value as Rule;
+					newRule.isPassive = false;
 					this.enemyBattleTurn.addRule(newRule.cloneSimple());
 				}
 			}
@@ -786,10 +792,12 @@ export class Battle{
 							for (var postTargetName of postTargetNames){
 								if (postRule.type == RuleType.appendRule){
 									var newRule = postRule.value as Rule;
+									newRule.isPassive = false;
 									this.battleTurns[postTargetName].addRule(newRule.cloneSimpleChild());
 								}
 								else if (postRule.type == RuleType.enemyAppendRule){
 									var newRule = postRule.value as Rule;
+									newRule.isPassive = false;
 									this.enemyBattleTurn.addRule(newRule.cloneSimpleChild());
 								}
 							}
@@ -825,6 +833,7 @@ export class Battle{
 							// 敵方獲得技能
 							if (postRule.type == RuleType.enemyAppendRule){
 								var newRule = postRule.value as Rule;
+								newRule.isPassive = false;
 								this.enemyBattleTurn.addRule(newRule.cloneSimpleChild());
 							}
 						}

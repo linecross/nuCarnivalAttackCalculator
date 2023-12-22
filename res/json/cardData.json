@@ -844,6 +844,7 @@
           "type": "攻擊力增加",
           "value": "5%",
           "maxCount": 6,
+          "turn": 99,
           "condition": "攻擊時"
         }
       ],
@@ -981,6 +982,7 @@
           "type": "攻擊力增加",
           "value": "9%",
           "maxCount": 3,
+          "turn": 99,
           "condition": "攻擊時"
         }
       ],
@@ -1199,6 +1201,7 @@
           "value": "2%",
           "target": "全體",
           "maxCount": 6,
+          "turn": 99,
           "condition": "攻擊時"
         }
       ],
@@ -1302,7 +1305,7 @@
     },
     "追夏．啖天": {
       "char": "啖天", "fullname": null, "alias": null,
-      "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
+      "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 6937, "baseAtk": 2383, "coolDown": 3,
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
@@ -1432,7 +1435,8 @@
           "value": "6%",
           "target": "全體",
           "maxCount": 2,
-          "condition": { "type": "攻擊模式", "value": "必殺技" }
+          "turn": 99,
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "10%", "target": "全體" }],
@@ -2016,6 +2020,7 @@
           "type": "敵方受到普攻傷害增加",
           "value": "12%",
           "maxCount": 3,
+          "turn": 99,
           "condition": "攻擊時"
         }
       ],
