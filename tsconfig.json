@@ -1,15 +1,13 @@
 {
     "compilerOptions": {
-        "outDir": "build",
+        "rootDir": "./src",
+        "outDir": "./build",
         "sourceMap": true,
-        // "module": "commonjs",
-        "module": "es6",
-        "target": "es6"
+        "module": "commonjs",
+        // "module": "es6",
+        // "target": "es6",
     },
     "exclude": [
-        "node_modules"
-    ],
-    "ts-node": {
-        "swc": true
-    }
+        "node_modules", "src/Main.ts", "*.js", "src/SampleData.ts"
+    ]
 }

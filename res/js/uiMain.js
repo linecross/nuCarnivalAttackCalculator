@@ -1,6 +1,5 @@
 import { Character, Rarity, Element, AttackType, ActionPattern } from './../../build/Constants.js';
 import { CardCenter, Team, Battle, Condition } from './../../build/BattleSystem.js';
-// import { CardData } from './../../build/SampleData.js';
 
 var config = {
 	MAX_LEVEL: 60,

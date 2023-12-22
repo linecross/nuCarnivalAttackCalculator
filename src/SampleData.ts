@@ -1126,4 +1126,49 @@ export const CardData = {
 		star5Rule:    [ {type: '必殺技傷害增加', value: '41%'} ],
 		pot6Rule:     [ {type: '必殺技傷害增加', value: '15%'} ],
 	},
+
+	// '測試': {
+	// 	char: '布儡', fullname: null, alias: null,
+	// 	rarity: 'SSR', class: '攻擊', element: '火', potType: 'HP先行',
+	// 	baseHp: 4554, baseAtk: 1138, coolDown: 4,
+	// 	attackRule:   [ {type: '攻擊', value: '100%'} ],
+	// 	skillLv1Rule: [  ],
+	// 	skillLv2Rule: [ ],
+	// 	skillLv3Rule: [ {type: '敵方受到傷害增加', value: '15%', turn: 2}, {type: '攻擊', value: '1000%'},
+	// 					{type: '我方獲得技能', value: 
+	// 						{type: '敵方獲得技能', turn: 4, condition: '攻擊時', value: 
+	// 							{type: '敵方受到傷害增加', value: '15%', turn: 2 }
+	// 						}
+	// 					} ],
+	// 	star3Rule:    [ ],
+	// 	star5Rule:    [ ],
+	// 	pot6Rule:     [ ],
+	// },
+	// '測試２號': {
+	// 	char: '測試', fullname: null, alias: null,
+	// 	rarity: 'SSR', class: '攻擊', element: '火', potType: 'HP先行',
+	// 	baseHp: 4554, baseAtk: 1138, coolDown: 50, hp: 1000, atk: 1000,
+	// 	attackRule:   [ {type: '攻擊', value: '100%'} ],
+	// 	skillLv1Rule: [ {type: '攻擊', value: '1000%'} ],
+	// 	skillLv2Rule: [ {type: '攻擊', value: '1000%'} ],
+	// 	skillLv3Rule: [ {type: '攻擊', value: '1000%'} ],
+	// 	star3Rule:    [ ],
+	// 	star5Rule:    [ ],
+	// 	pot6Rule:     [ ],
+	// },
+
+	
+	'伊得．測試員': {
+		char: '伊得', fullname: null, alias: null,
+		rarity: 'SSR', class: '攻擊', element: '火', potType: 'HP先行',
+		baseHp: 4554, baseAtk: 1138, coolDown: 50, hp: 1000, atk: 1000,
+		attackRule:   [ {type: '攻擊', value: '100%'} ],
+		skillLv1Rule: [ {type: '攻擊', value: '1000%'} ],
+		skillLv2Rule: [ {type: '攻擊', value: '1000%'} ],
+		skillLv3Rule: [ {type: '攻擊', value: '1000%'} ],
+		star3Rule:    [ ],
+		star5Rule:    [ ],
+		pot6Rule:     [ ],
+	},
+
 };

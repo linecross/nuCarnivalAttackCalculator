@@ -1,4 +1,7 @@
-export const Character = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ActionPattern = exports.TargetType = exports.ConditionType = exports.AttackType = exports.RuleValueByType = exports.RuleType = exports.PotentialType = exports.Rarity = exports.Element = exports.Class = exports.Character = void 0;
+exports.Character = {
     Yakumo: '八雲',
     Edmond: '艾德蒙特',
     Olivine: '奧利文',
@@ -12,11 +15,11 @@ export const Character = {
     Morvay: '墨菲',
     Eiden: '伊得',
 };
-export const Class = { Striker: '攻擊', Support: '輔助', Healer: '治療', Guardian: '守護', Saboteur: '妨礙' };
-export const Element = { NA: 'N/A', Wood: '木', Fire: '火', Water: '水', Light: '光', Dark: '闇' };
-export const Rarity = { SSR: 'SSR', SR: 'SR', R: 'R', N: 'N' };
-export const PotentialType = { A: 'HP先行', B: 'ATK先行', C: '平均型', D: 'NR卡' };
-export const RuleType = {
+exports.Class = { Striker: '攻擊', Support: '輔助', Healer: '治療', Guardian: '守護', Saboteur: '妨礙' };
+exports.Element = { NA: 'N/A', Wood: '木', Fire: '火', Water: '水', Light: '光', Dark: '闇' };
+exports.Rarity = { SSR: 'SSR', SR: 'SR', R: 'R', N: 'N' };
+exports.PotentialType = { A: 'HP先行', B: 'ATK先行', C: '平均型', D: 'NR卡' };
+exports.RuleType = {
     attack: '攻擊',
     support: '輔助',
     heal: '治療',
@@ -45,9 +48,9 @@ export const RuleType = {
     appendRule: '我方獲得技能',
     enemyAppendRule: '敵方獲得技能',
 };
-export const RuleValueByType = { atk: 'ATK', hp: 'HP' };
-export const AttackType = { BasicAttack: '普攻', SkillAttack: '必殺技', Guard: '防禦' };
-export const ConditionType = {
+exports.RuleValueByType = { atk: 'ATK', hp: 'HP' };
+exports.AttackType = { BasicAttack: '普攻', SkillAttack: '必殺技', Guard: '防禦' };
+exports.ConditionType = {
     hasChar: '角色在場',
     charCount: '隊伍中每存在角色',
     hasClass: '隊伍中有定位',
@@ -63,14 +66,14 @@ export const ConditionType = {
     enemyIsAttackByChar: '被角色攻擊',
     enemyIsAttackByClass: '被定位攻擊',
 };
-export const TargetType = {
+exports.TargetType = {
     self: '自己',
     all: '全體',
     isClass: '定位',
     isChar: '角色',
     isPosition: '位置',
 };
-export const ActionPattern = {
+exports.ActionPattern = {
     Immediately: '有招就放',
     Delay1Turn: '延遲1回合',
     AddCD1: 'CD+1',
