@@ -1046,15 +1046,15 @@
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
-        { "type": "反擊", "value": "129%", "turn": 2, "maxCount": 99 }
+        { "type": "反擊", "value": "62%", "turn": 2, "maxCount": 99 }
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
-        { "type": "反擊", "value": "173%", "turn": 2, "maxCount": 99 }
+        { "type": "反擊", "value": "74%", "turn": 2, "maxCount": 99 }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
-        { "type": "反擊", "value": "216%", "turn": 2, "maxCount": 99 }
+        { "type": "反擊", "value": "87%", "turn": 2, "maxCount": 99 }
       ],
       "star3Rule": [
         {
@@ -1944,11 +1944,11 @@
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
-        { "type": "反擊", "value": "75%" }
+        { "type": "反擊", "value": "129%" }
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
-        { "type": "反擊", "value": "216%" }
+        { "type": "反擊", "value": "173%" }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
