@@ -1509,14 +1509,14 @@ export class Rule{
 
 export class Condition{
 	type: ConditionType;
-	value: number | string | Class | AttackType;
+	value: number | number[] | string | Class | AttackType;
 
 	// can only check after battle start
 	static CHECK_IN_BATTLE_LIST : ConditionType[] = [ConditionType.isAttackType, ConditionType.isAttack, ConditionType.everyTurn, ConditionType.atTurn];
 
 	static IS_HP_FULFILL : boolean = true;
 
-	constructor(type: ConditionType, value: number | string | Class | AttackType){
+	constructor(type: ConditionType, value: number | number[] | string | Class | AttackType){
 		this.type = type;
 		this.value = value;
 	}
@@ -1541,7 +1541,12 @@ export class Condition{
 			return ((currentTurn-1) % (this.value as number)) == 0;
 		}
 		else if (this.type == ConditionType.atTurn){
-			return (this.value as number) == currentTurn;
+			if (Array.isArray(this.value)){
+				return (this.value as number[]).includes(currentTurn);
+			}
+			else{
+				return (this.value as number) == currentTurn;
+			}
 		}
 		else if (this.type == ConditionType.enemyIsAttacked){
 			return charAttackType == AttackType.BasicAttack || charAttackType == AttackType.SkillAttack;

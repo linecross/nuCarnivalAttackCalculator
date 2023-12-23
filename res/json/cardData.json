@@ -179,6 +179,7 @@
           "type": "攻擊力增加",
           "value": "4%",
           "maxCount": 10,
+          "turn": 99,
           "condition": { "type": "每n回合", "value": 1 }
         }
       ],
@@ -430,6 +431,7 @@
           "type": "攻擊力增加",
           "value": "4%",
           "maxCount": 10,
+          "turn": 99,
           "condition": { "type": "每n回合", "value": 1 }
         }
       ],
@@ -681,6 +683,7 @@
           "type": "攻擊力增加",
           "value": "4%",
           "maxCount": 10,
+          "turn": 99,
           "condition": { "type": "每n回合", "value": 1 }
         }
       ],
@@ -1060,6 +1063,7 @@
         {
           "type": "減少冷卻回合",
           "value": 4,
+          "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
         },
         {
@@ -1291,6 +1295,7 @@
           "type": "攻擊力增加",
           "value": "5%",
           "maxCount": 5,
+          "turn": 99,
           "condition": { "type": "每n回合", "value": 1 }
         }
       ],
@@ -1495,6 +1500,7 @@
         {
           "type": "減少冷卻回合",
           "value": 3,
+          "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
         }
       ],
@@ -1636,6 +1642,7 @@
         {
           "type": "減少冷卻回合",
           "value": 3,
+          "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
         }
       ],
@@ -1815,6 +1822,7 @@
           "type": "攻擊力增加",
           "value": "9%",
           "maxCount": 3,
+          "turn": 99,
           "condition": { "type": "每n回合", "value": 1 }
         }
       ],
@@ -2110,6 +2118,7 @@
         {
           "type": "必殺技傷害增加",
           "value": "60%",
+          "turn": 1,
           "condition": { "type": "每n回合", "value": 3 }
         }
       ],
@@ -2290,6 +2299,7 @@
         {
           "type": "減少冷卻回合",
           "value": 3,
+          "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
         },
         { "type": "普攻傷害增加", "value": "36%" }
@@ -2299,6 +2309,7 @@
           "type": "普攻傷害增加",
           "value": "18%",
           "maxCount": 3,
+          "turn": 99,
           "condition": { "type": "第n回合", "value": [2, 3, 4] }
         }
       ],
@@ -2468,5 +2479,5 @@
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "41%" }],
       "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
     }
-  }
+}
   
