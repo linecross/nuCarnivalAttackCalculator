@@ -1,6 +1,5 @@
-import { Battle, Team, Card, CardCenter } from './BattleSystem';
-import { Rarity, ActionPattern } from './Constants';
-import { CardData } from './SampleData';
+import { Battle, Team, Card, CardCenter } from './BattleSystem.js';
+import { CardData } from './SampleData.js';
 
 CardCenter.setMainCardData(CardData);
 

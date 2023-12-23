@@ -3,11 +3,28 @@
         "rootDir": "./src",
         "outDir": "./build",
         "sourceMap": true,
-        "module": "commonjs",
-        // "module": "es6",
-        // "target": "es6",
+        "moduleResolution": "NodeNext",
+        "module": "NodeNext",
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "target": "es6"
     },
     "exclude": [
-        "node_modules", "src/Main.ts", "*.js", "src/SampleData.ts"
-    ]
+        "node_modules", 
+        "jest.config.ts",
+        "src/Main.ts", 
+        "src/SampleData.ts",
+        "src/__tests__/**",
+        "*.js"
+    ],
+    "ts-node": {
+        "compilerOptions": {
+            "moduleResolution": "Node",
+            "module": "es6",
+            "target": "es6"
+        },
+        "esm": true,
+        "experimentalSpecifierResolution": "node",
+        "transpileOnly": true,
+    }
 }

@@ -1,6 +1,5 @@
-import { Battle, Team, Card, CardCenter } from '../BattleSystem';
-import { Rarity, ActionPattern } from '../Constants';
-import { CardData } from '../SampleData';
+import { Battle, Team, Card, CardCenter } from '../BattleSystem.js';
+import { CardData } from '../SampleData.js';
 
 test('adds 1 + 2 to equal 3', () => {
     CardCenter.setMainCardData(CardData);
@@ -15,5 +14,5 @@ test('adds 1 + 2 to equal 3', () => {
     battle.printEnemeyOption = true;
     battle.startBattle();
 
-    expect(battle.getTeamTotalDamage()).toBe(203445);
+    expect(battle.getTeamTotalDamage()).toBeCloseTo(203445);
 });

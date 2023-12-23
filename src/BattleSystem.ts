@@ -1,4 +1,4 @@
-import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType } from './Constants';
+import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType } from './Constants.js';
 
 const ALWAYS_EFFECTIVE : number = 99;
 
