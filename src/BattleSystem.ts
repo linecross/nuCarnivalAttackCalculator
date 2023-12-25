@@ -313,6 +313,35 @@ export class Card{
 
 	static loadCardFromJson(name: string, data:Object) : Card {
 		var card = new Card();
+		// var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
+		// var permRules = ['star3Rule', 'star5Rule', 'pot6Rule'];
+		// for (var key of Object.keys(data)) {
+		// 	if (simpleRules.includes(key)){
+		// 		card[key] = [];
+		// 		for (var ruleItem of data[key]){
+		// 			card[key].push(Rule.loadSimpleRule(ruleItem));
+		// 		}
+		// 	}
+		// 	else if (permRules.includes(key)){
+		// 		card[key] = [];
+		// 		for (var ruleItem of data[key]){
+		// 			card[key].push(Rule.loadPermRule(ruleItem));
+		// 		}
+		// 	}
+		// 	else{
+		// 		card[key] = data[key];
+		// 	}
+		// }
+		card = Card.updateCard(card, data);
+		card.name = name;
+		return card;
+	}
+
+	updateCard(data: Object) : Card{
+		return Card.updateCard(this, data);
+	}
+
+	static updateCard(card: Card, data:Object) : Card {
 		var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
 		var permRules = ['star3Rule', 'star5Rule', 'pot6Rule'];
 		for (var key of Object.keys(data)) {
@@ -332,7 +361,6 @@ export class Card{
 				card[key] = data[key];
 			}
 		}
-		card.name = name;
 		return card;
 	}
 }
@@ -541,7 +569,7 @@ export class Battle{
 		this.battleTurns[cardName].actionPattern = pattern;
 	}
 
-	setManualActionPattern(cardName: string, skillTurns : number[], guardTurns=[]){
+	setManualActionPattern(cardName: string, skillTurns : number[], guardTurns : number[] =[]){
 		for (var i=1; i<=this.turns; i++){
 			if (guardTurns.includes(i)){
 				this.battleTurns[cardName].action[i] = AttackType.Guard;
@@ -1195,9 +1223,14 @@ export class Battle{
 
 
 export class Team{
+    [x: string]: any;
+    team(arg0: string) {
+        throw new Error('Method not implemented.');
+    }
 	cards: Card[] = [];
 	position: string[] = [];
 	actionOrder: string[] = [];
+    team: any;
 
 	reset(){
 		this.cards = [];
