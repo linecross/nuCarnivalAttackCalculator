@@ -4,10 +4,10 @@ import {type MatcherHintOptions, printExpected, printReceived, stringify, EXPECT
 
 // Copy and modified from toBeCloseTo
 // toBeAround: compare integer, diff by percentage first (may change later)
-export const toBeAround: MatcherFunction<[expected: unknown, diffPercent: unknown]> = 
+export const toBeAround: MatcherFunction<[expected: number, diffPercent?: number]> = 
     function(received: number, expected: number, diffPercent: number = 0.1) {
         const matcherName = 'toBeAround';
-        const secondArgument = arguments.length === 3 ? 'precision' : null;
+        const secondArgument = arguments.length === 3 ? 'precision' : undefined;
         const isNot = this.isNot;
         const options: MatcherHintOptions = {
           isNot,
@@ -79,10 +79,10 @@ expect.extend({
 declare global {
   namespace jest {
     interface AsymmetricMatchers {
-      toBeAround(floor: number, diffPercent?: number): void;
+      toBeAround(expected: number, diffPercent?: number): void;
     }
     interface Matchers<R> {
-      toBeAround(floor: number, diffPercent?: number): R;
+      toBeAround(expected: number, diffPercent?: number): R;
     }
   }
 }

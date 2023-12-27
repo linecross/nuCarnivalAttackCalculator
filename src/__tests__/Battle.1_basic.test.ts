@@ -3,27 +3,37 @@ import { ActionPattern } from '../Constants.js';
 import CardData from './sample/cardData.json';
 import '../jest/toBeAround.js';
 
-describe('攻擊手＞單人測試：ATK=1000', () => {
+describe('攻擊手＞基本單人測試：ATK=1000', () => {
     beforeAll(() => {
         CardCenter.setMainCardData(CardData);
     });
 
-    var cardName : string = 'Striker1';
     var battle : Battle;
-    var turn : number = 20;
-    var cardData : string = '{}';
-    var skillTurns : number[] = [];
-    var guardTurns : number[] = [];
+    var cardName : string = 'Striker1';
+    
+    var turn : number;
+    var otherCards : string[];
+    var cardData : string;
+    var skillTurns : number[];
+    var guardTurns : number[];
 
     beforeEach(() => {
         turn = 20;
         cardData = '{}';
+        otherCards = [];
         skillTurns = [];
         guardTurns = [];
     });
 
     function setupBattle(): Battle{
-        battle = loadBattle(loadTeam(loadCard(cardName, cardData)));
+        var team = new Team();
+        team.addCard(loadCard(cardName, cardData));
+        for (var name of otherCards){
+            team.addCard(loadCard(name));
+        }
+        CardCenter.setupDefaultTeamStar(team, 5, 5);
+
+        battle = loadBattle(team);
         battle.setManualActionPattern(cardName, skillTurns, guardTurns);
         battle.startBattle();
         return battle;
@@ -35,12 +45,6 @@ describe('攻擊手＞單人測試：ATK=1000', () => {
             card.updateCard(JSON.parse(data));
         }
         return card;
-    }
-    function loadTeam(card: Card){
-        var team = new Team();
-        team.addCard(card);
-        CardCenter.setupDefaultTeamStar(team, 5, 5);
-        return team;
     }
     function loadBattle(team: Team, turn = 14) : Battle{
         var battle = new Battle(team, turn);
@@ -54,13 +58,13 @@ describe('攻擊手＞單人測試：ATK=1000', () => {
     }
 
     describe('無被動', () => {
-        beforeAll(()=>{
+        beforeEach(()=>{
             cardData = `{"coolDown": 3}`;
             skillTurns = [4];
             setupBattle();
         });
 
-        test('普攻=100%', () => {
+        test('連擊', () => {
             expect(battle.getTurnValue(cardName, 1)).toBeAround(1000);
             expect(battle.getTurnValue(cardName, 8)).toBeAround(1000);
         });
@@ -127,69 +131,79 @@ describe('攻擊手＞單人測試：ATK=1000', () => {
         });
     });
 
-    describe('規則 > 條件 > 每n回合', () => {
-        test('每經過3回合，必殺技傷害增加60%【沙啖3星】', () => {
-            cardData = `{
-                "coolDown": 3,
-                "star3Rule": [
-                    {"type": "必殺技傷害增加", "value": "60%", "turn": 1, "condition": { "type": "每n回合", "value": 3 } }
-                ]
-            }`;
-            skillTurns = [4, 7, 12];
+    describe('多次攻擊', () => {
+        
+        test('連擊100%（共300%）', () => {
+            cardData = `{ "attackRule": [ {"type": "攻擊", "value": "100%", "maxCount": 3} ] }`;
             setupBattle();
 
-            expect(battle.getTurnValue(cardName, 4)).toBeAround(16000);
-            expect(battle.getTurnValue(cardName, 7)).toBeAround(16000);
-            expect(battle.getTurnValue(cardName, 12)).toBeAround(10000);
+            expect(battle.getTurnValue(cardName, 1)).toBeAround(3000);
         });
 
-        test('每經過1回合，攻擊力增加5%（最多10層）【SR可爾5星】', () => {
-            cardData = `{
-                "coolDown": 3,
-                "star3Rule": [
-                    {"type": "攻擊力增加", "value": "5%", "turn": 99, "maxCount": 10, "condition": { "type": "每n回合", "value": 1 } }
-                ]
-            }`;
+        test('攻擊100%，再攻擊300%（共400%）', () => {
+            cardData = `{ "attackRule": [ {"type": "攻擊", "value": "100%"}, {"type": "攻擊", "value": "300%"} ] }`;
+            setupBattle();
+
+            expect(battle.getTurnValue(cardName, 1)).toBeAround(4000);
+        });
+
+        test('先攻擊100%，後提升攻擊力5% 6回合', () => {
+            cardData = `{ "attackRule": [ {"type": "攻擊", "value": "100%"}, {"type": "攻擊力增加", "turn": 6, "value": "5%"} ] }`;
+            setupBattle();
+
+            expect(battle.getTurnValue(cardName, 1)).toBeAround(1000);
+            expect(battle.getTurnValue(cardName, 2)).toBeAround(1050);
+            expect(battle.getTurnValue(cardName, 6)).toBeAround(1250);
+            expect(battle.getTurnValue(cardName, 7)).toBeAround(1250);
+        });
+
+        test('先提升攻擊力5% 6回合，後攻擊100%', () => {
+            cardData = `{ "attackRule": [ {"type": "攻擊力增加", "turn": 6, "value": "5%"}, {"type": "攻擊", "value": "100%"} ] }`;
             setupBattle();
 
             expect(battle.getTurnValue(cardName, 1)).toBeAround(1050);
-            expect(battle.getTurnValue(cardName, 5)).toBeAround(1250);
-            expect(battle.getTurnValue(cardName, 10)).toBeAround(1500);
-            expect(battle.getTurnValue(cardName, 11)).toBeAround(1500);
+            expect(battle.getTurnValue(cardName, 2)).toBeAround(1100);
+            expect(battle.getTurnValue(cardName, 6)).toBeAround(1300);
+            expect(battle.getTurnValue(cardName, 7)).toBeAround(1300);
+        });
+    }); 
+
+    describe('普攻追擊', () => {
+        
+        test('普攻100%，必殺技發動 普攻追擊80% 3回合', () => {
+            cardData = `{ 
+                "coolDown": 3,
+                "skillLv3Rule": [ {"type": "攻擊", "value": "1000%"}, {"type": "普攻追擊", "value": "80%", "turn": 3} ] 
+            }`;
+            skillTurns = [4];
+            setupBattle();
+
+            expect(battle.getTurnValue(cardName, 3)).toBeAround(1000);
+            expect(battle.getTurnValue(cardName, 4)).toBeAround(10000);
+            expect(battle.getTurnValue(cardName, 5)).toBeAround(1800);
+            expect(battle.getTurnValue(cardName, 6)).toBeAround(1800);
+            expect(battle.getTurnValue(cardName, 7)).toBeAround(1000);
         });
     });
 
-    describe('規則 > 條件 > 第n回合', () => {
-        test('第1回合，無法開必殺技', () => {
-            skillTurns = [1];
+    describe('反擊', () => {
+        beforeEach(()=>{
+            cardData = `{ 
+                "coolDown": 3,
+                "skillLv3Rule": [ {"type": "攻擊", "value": "1000%"}, {"type": "反擊", "value": "80%", "turn": 3} ] 
+            }`;
+            skillTurns = [4];
             setupBattle();
-            expect(battle.getTurnValue(cardName, 1)).toBeAround(1000);
         });
 
-        test('第1回合，開必殺技', () => {
-            cardData = `{
-                "star3Rule": [
-                    {"type": "減少冷卻回合", "value": "3", "turn": 1, "condition": { "type": "第n回合", "value": 1 } }
-                ]
-            }`;
-            skillTurns = [1];
+        test('必殺技1000%，必殺技發動 反擊120%（無反擊）', () => {
+            
             setupBattle();
-            expect(battle.getTurnValue(cardName, 1)).toBeAround(10000);
+
+            expect(battle.getTurnValue(cardName, 1)).toBeAround(4000);
         });
 
-        test('第5回合起，普攻傷害增加 20%（永久）', () => {
-            cardData = `{
-                "star3Rule": [
-                    {"type": "普攻傷害增加", "value": "20%", "turn": 99, "condition": { "type": "第n回合", "value": 5 } }
-                ]
-            }`;
-            skillTurns = [];
-            setupBattle();
-            expect(battle.getTurnValue(cardName, 1)).toBeAround(1000);
-            expect(battle.getTurnValue(cardName, 4)).toBeAround(1000);
-            expect(battle.getTurnValue(cardName, 5)).toBeAround(1200);
-            expect(battle.getTurnValue(cardName, 6)).toBeAround(1200);
-        });
     });
 
+    
 });
