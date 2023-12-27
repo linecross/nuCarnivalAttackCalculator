@@ -418,15 +418,12 @@ export class BattleTurn{
 		var attackTypes:RuleType[] = [RuleType.attack, RuleType.poisonAttack];
 		var attackRules = this.ruleLog[turn].filter(e=>attackTypes.includes(e.type));
 		if (attackRules.length == 0 && existingRules.length > 0){
-			existingRules[0].maxCount += 1;
+			(existingRules[0] as LogRule).addCount();
 		}
 		else{
-			var logRule = rule.clone();
+			var logRule = new LogRule(rule.clone());
 			logRule.condition = null;
 			logRule.target = null;
-			if (rule.type != RuleType.attack && rule.type != RuleType.poisonAttack){
-				logRule.maxCount = 1;
-			}
 			this.ruleLog[turn].push(logRule);
 		}
 	}
@@ -1191,7 +1188,6 @@ export class Battle{
 
 		rules = rules.filter(function(rule : Rule){
 			var acceptTypes : RuleType[] = [RuleType.attack, RuleType.poisonAttack, RuleType.support, RuleType.continueHeal, RuleType.heal];
-
 			if (hasAttack){
 				if (attackType == AttackType.BasicAttack){
 					acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp, RuleType.allAtkUp]);
@@ -1232,7 +1228,7 @@ export class Battle{
 
 	getTurnRuleLogStr(cardname: string, turn: number) : string{
 		var rules = this.getTurnRuleLog(cardname, turn);
-		return rules.map(r=>r.getLogString()).join('\n');
+		return rules.map(r=>r.toString()).join('\n');
 	}
 
 	static getElementalBuff(e1 : Element, e2 : Element){
@@ -1486,19 +1482,6 @@ export class Rule{
 		return s;
 	}
 
-	public getLogString() : string{
-		var s = this.type + ' ' + this.value;
-		if (this.maxCount > 1){
-			if (this.type == RuleType.attack || this.type == RuleType.poisonAttack){
-				s += '（'+this.maxCount+'次）'
-			}
-			else{
-				s += '（'+this.maxCount+'層）'
-			}
-		}
-		return s;
-	}
-
 	public clone(){
 		var cloneRule = new Rule({id: this.id, isPassive: this.isPassive, type: this.type, value: this.value, valueBy: this.valueBy,
 			turn: this.turn, maxCount: this.maxCount, condition: this.condition, target: this.target});
@@ -1624,6 +1607,36 @@ export class Rule{
 		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, condition, target});
 	}
 }
+
+export class LogRule extends Rule{
+	applyCount: number = 1;
+
+	constructor(rule: Rule){
+		super(rule);
+
+		if (rule.type == RuleType.attack){
+			this.applyCount = rule.maxCount;
+		}
+	}
+
+	addCount(){
+		this.applyCount++;
+	}
+
+	public toString() : string{
+		var s = this.type + '：' + this.value;
+		if (this.maxCount > 1){
+			if (this.type == RuleType.attack || this.type == RuleType.poisonAttack){
+				s += '（'+this.applyCount+'次）'
+			}
+			else{
+				s += '（'+this.applyCount+'層）'
+			}
+		}
+		return s;
+	}
+}
+
 
 export class Condition{
 	type: ConditionType;
