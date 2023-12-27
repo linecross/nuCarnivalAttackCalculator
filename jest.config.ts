@@ -24,7 +24,8 @@ const jestConfig: JestConfigWithTsJest = {
     "^.+\\.(t|j)sx?$": "@swc/jest",
     // '^.+\\.tsx?$': 'esbuild-jest'
   },
-
+  collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.ts', '!src/jest/**.ts']
 }
 
 export default jestConfig

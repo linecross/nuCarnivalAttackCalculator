@@ -56,7 +56,13 @@ Vue.createApp({
 			CardCenter.setMainCardData(json);
 			this.loadCards();
 		});
-		
+	},
+	updated()
+	{
+		const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
+			'animation': false
+		}));
 	},
 	methods: {
 		switchTab(tab){
@@ -162,6 +168,23 @@ Vue.createApp({
 		},
 		getBattleTeamTotalValue(){
 			return this.battle.getTeamTotalValue();
+		},
+		getBattleTurnRuleLogStr(cardname, turn){
+			var ruleLogs = this.battle.getTurnRuleLog(cardname, turn);
+			var ruleStrList = [];
+			for (var rule of ruleLogs){
+				if (rule.type.startsWith('敵方受到')){
+					ruleStrList.push('<span class="info-debuff">' + rule.toString() + "</span>");
+				}
+				else if (['攻擊', '輔助', '治療', '持續治療', '持續傷害'].includes(rule.type)){
+					ruleStrList.push('<span class="info-attack">' + rule.toString() + "</span>");
+				}
+				else{
+					ruleStrList.push('<span class="info-buff">' + rule.toString() + "</span>");
+				}
+			}
+			var title = '<span class="info-title"><b><u>【'+cardname+'（T' + turn+'）】</u></b><span><br/>';
+			return title+ruleStrList.join('<br/>');
 		},
 		isCardInBattle(card){
 			if (card == null){
