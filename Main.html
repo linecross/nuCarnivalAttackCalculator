@@ -13,12 +13,14 @@
 
 	<script type="module" src="./build/Constants.js"></script>
 	<script type="module" src="./build/BattleSystem.js"></script>
-	<script type="module" src="./build/SampleData.js"></script>
 	<link rel='stylesheet' href='./res/css/main.css' />
 
 </head>
 
 <body>
+
+	  
+	  
 	<div id='NuCarnivalAttackCalApp'>
 		<div class="container">
 			<div class="row justify-content-center text-center">
@@ -235,8 +237,10 @@
 										<tr v-for="turn in userInput.turns">
 											<td scope="row" class="col-md-1">{{ turn }}</td>
 											<template v-for="card in cards" :key="card">
-												<td scope="row" :class="'col-md-2' + getTdClass(card, turn)" @click="changeAttackType(card, turn)" >
-													<div v-if="isCardInBattle(card)">{{ getBattleTurnValue(card.name, turn) }}</v-if>
+												<td scope="row" :class="'col-md-2' + getTdClass(card, turn)" @click="changeAttackType(card, turn)"
+												data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-html="true" 
+												:data-bs-content="isCardInBattle(card) ? getBattleTurnRuleLogStr(card.name, turn) : ''">
+													<div v-if="isCardInBattle(card)">{{ getBattleTurnValue(card.name, turn) }}</div>
 												</td>
 											</template>
 										</tr>

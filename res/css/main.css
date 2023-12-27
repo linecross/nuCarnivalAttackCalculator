@@ -99,4 +99,14 @@
     background-size: 20px 20px;
     background-repeat: no-repeat;
     left: 10px;
-} */
+} */  
+
+.info-attack{
+    color: #aa2121;
+}
+.info-buff{
+    color: #198754;
+}
+.info-debuff{
+    color: #414141;
+}
