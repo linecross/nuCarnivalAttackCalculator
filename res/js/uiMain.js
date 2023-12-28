@@ -173,6 +173,7 @@ Vue.createApp({
 		getBattleTurnRuleLogStr(cardname, turn){
 			var ruleLogs = this.battle.getTurnRuleLog(cardname, turn);
 			var ruleStrList = [];
+			var title = '<span class="info-title"><b><u>【'+cardname+'（T' + turn+'）】</u></b><span><br/>';
 			for (var rule of ruleLogs){
 				if (rule.type.startsWith('敵方受到')){
 					ruleStrList.push('<span class="info-debuff">' + rule.toString() + "</span>");
@@ -184,8 +185,27 @@ Vue.createApp({
 					ruleStrList.push('<span class="info-buff">' + rule.toString() + "</span>");
 				}
 			}
-			var title = '<span class="info-title"><b><u>【'+cardname+'（T' + turn+'）】</u></b><span><br/>';
 			return title+ruleStrList.join('<br/>');
+		},
+		getPassiveRuleSummary(cardname){
+			if (cardname == null || cardname == '') return '';
+			var summary = [];
+			var card = this.cards[this.getIndexByCardname(cardname)];
+			if (card!=null){
+				var title = '<span class="info-title"><b><u>【'+cardname+'】</u></b><span><br/>';
+				if (card.star >= 3) summary.push('3星被動：'+card.star3Rule.toString().replaceAll(',', '，'));
+				if (card.star == 5)	summary.push('5星被動：'+card.star5Rule.toString().replaceAll(',', '，'));
+		
+				if ((card.rarity == Rarity.SSR || card.rarity == Rarity.SR)){
+					if (card.potential >= 6){
+						summary.push('潛6被動：'+card.pot6Rule.toString().replaceAll(',', '，'));
+					}
+				}
+				else if (card.potential >= 3){
+					summary.push('潛6被動：'+card.pot6Rule.toString().replaceAll(',', '，'));
+				};
+			}
+			return title+summary.join('<br />');
 		},
 		isCardInBattle(card){
 			if (card == null){

@@ -127,3 +127,7 @@
 .card-swap-icon > .fa-solid:active{
     color: #f0418d;
 }
+
+.popover{
+    max-width: 100%;
+}

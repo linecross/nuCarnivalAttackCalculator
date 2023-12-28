@@ -213,14 +213,15 @@
 							</div>
 						</div>
 
-
 						<div class="table-responsive" >
 							<table class="table resultTable">
 								<tbody>
 									<tr>
 										<th scope="col" class="col-md-1">回合</th>
 										<template v-for="(name, idx) in userInput.cardname" :key="name">
-											<th scope="col" :class="'col-md-2'+ getThNameClass(name) " >
+											<th scope="col" :class="'col-md-2'+ getThNameClass(name) "
+												data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
+												:data-bs-content="getPassiveRuleSummary(name)">
 												<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
 												<label :for="'inputIsCardEnabled-'+idx">{{ name }}</label>
 											</th>
