@@ -1,5 +1,5 @@
 import { Character, Rarity, Element, AttackType, ActionPattern } from './../../build/Constants.js';
-import { CardCenter, Team, Battle, Condition } from './../../build/BattleSystem.js';
+import { CardCenter, Team, Battle, Condition, LogRule } from './../../build/BattleSystem.js';
 
 var config = {
 	MAX_LEVEL: 60,
@@ -60,9 +60,10 @@ Vue.createApp({
 	updated()
 	{
 		const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
+		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => bootstrap.Popover.getOrCreateInstance(popoverTriggerEl, {
 			'animation': false
 		}));
+		popoverList.forEach(e=>e._config.content=e._element.getAttribute('data-bs-content'));
 	},
 	methods: {
 		switchTab(tab){
@@ -76,12 +77,17 @@ Vue.createApp({
 				var name = this.userInput.cardname[i];
 				if (name != '' && (this.cards[i] == null || this.cards[i].name != name)){
 					var card = CardCenter.loadCard(name);
+					if (this.userInput.defaultStar == 'FULL'){
+						card.star = 5;
+					}
 					if (this.userInput.defaultStar == 'SSR3'){
 						if (card.rarity == 'SSR') card.star = 3;
+						else card.star = 5;
 					}
 					else if (this.userInput.defaultStar == 'SSR1'){
 						if (card.rarity == 'SSR') card.star = 1;
-						if (card.rarity == 'SR') card.star = 3;
+						else if (card.rarity == 'SR') card.star = 3;
+						else card.star = 5;
 					}
 
 					this.cards[i] = card;
@@ -172,6 +178,7 @@ Vue.createApp({
 		getBattleTurnRuleLogStr(cardname, turn){
 			var ruleLogs = this.battle.getTurnRuleLog(cardname, turn);
 			var ruleStrList = [];
+			var title = '<span class="info-title"><b><u>【'+cardname+'（T' + turn+'）】</u></b><span><br/>';
 			for (var rule of ruleLogs){
 				if (rule.type.startsWith('敵方受到')){
 					ruleStrList.push('<span class="info-debuff">' + rule.toString() + "</span>");
@@ -183,8 +190,30 @@ Vue.createApp({
 					ruleStrList.push('<span class="info-buff">' + rule.toString() + "</span>");
 				}
 			}
-			var title = '<span class="info-title"><b><u>【'+cardname+'（T' + turn+'）】</u></b><span><br/>';
 			return title+ruleStrList.join('<br/>');
+		},
+		getPassiveRuleSummary(cardname){
+			if (cardname == null || cardname == '') return '';
+			var summary = [];
+			var card = this.cards[this.getIndexByCardname(cardname)];
+			if (card!=null){
+				var title = '<span class="info-title"><b><u>【'+cardname+'】</u></b><span><br/>';
+				if (card.star >= 3) {
+					summary.push('3星被動：'+card.star3Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
+				}
+				if (card.star == 5){
+					summary.push('5星被動：'+card.star5Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
+				}
+				if ((card.rarity == Rarity.SSR || card.rarity == Rarity.SR)){
+					if (card.potential >= 6){
+						summary.push('潛6被動：'+card.pot6Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
+					}
+				}
+				else if (card.potential >= 3){
+					summary.push('潛6被動：'+card.pot6Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
+				};
+			}
+			return title+summary.join('<br />');
 		},
 		isCardInBattle(card){
 			if (card == null){
@@ -259,6 +288,14 @@ Vue.createApp({
 				if (arr[i] == type) output.push(i);
 			}
 			return output;
+		},
+		swapCard(i, j){
+			[this.userInput.char[i], this.userInput.char[j]] = [this.userInput.char[j], this.userInput.char[i]];
+			[this.userInput.cardname[i], this.userInput.cardname[j]] = [this.userInput.cardname[j], this.userInput.cardname[i]];
+			[this.userInput.cardActionPattern[i], this.userInput.cardActionPattern[j]] = [this.userInput.cardActionPattern[j], this.userInput.cardActionPattern[i]];
+			[this.userInput.cardManualAction[i], this.userInput.cardManualAction[j]] = [this.userInput.cardManualAction[j], this.userInput.cardManualAction[i]];
+			[this.userInput.isCardEnabled[i], this.userInput.isCardEnabled[j]] = [this.userInput.isCardEnabled[j], this.userInput.isCardEnabled[i]];
+			[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
 		},
 		getIndexByCardname(cardname){
 			for (var i=0; i<this.userInput.cardname.length; i++){

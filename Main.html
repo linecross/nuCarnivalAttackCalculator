@@ -38,6 +38,9 @@
 						<li class="nav-item">
 							<a :class="'nav-link ' + (tab == 'JSON' ? 'active' : '')" href="#" @click="switchTab('JSON')">匯入Json</a>
 						</li>
+						<li class="nav-item">
+							<a :class="'nav-link ' + (tab == 'LOGS' ? 'active' : '')" href="#" @click="switchTab('LOGS')">已知問題</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -85,14 +88,10 @@
 						<h5>隊伍設定</h5>
 						<div class="col" v-for="(name, idx) in userInput.char" style="vertical-align: top;">
 							<div class="row form-group">
-								<div class="form-check">
+								<div class="form-check text-center">
 									<label :for="'inputIsCardEnabled-' + idx">第 {{ idx+1 }} 位</label>
+									<span v-if="idx < 4" class="card-swap-icon float-end" @click="swapCard(idx, idx+1)"><i class="fa-solid fa-left-right"></i></span>
 								</div>
-								
-								<!-- <label :for="'inputChar'+(idx+1)">第 {{ idx+1 }} 位</label> -->
-
-								
-
 								<select :id="'inputChar'+(idx+1)" class="form-select" v-model="userInput.char[idx]">
 									<option v-for="name in CHARACTERS" :value="name">{{ name }}</option>
 								</select>
@@ -217,19 +216,17 @@
 							</div>
 						</div>
 
-
 						<div class="table-responsive" >
 							<table class="table resultTable">
 								<tbody>
 									<tr>
 										<th scope="col" class="col-md-1">回合</th>
-										<!-- <div class="col" v-for="(name, idx) in userInput.char" style="vertical-align: top;"></div> -->
-										<!-- <template v-for="card in cards" :key="card"> -->
 										<template v-for="(name, idx) in userInput.cardname" :key="name">
-											<th scope="col" :class="'col-md-2'+ getThNameClass(name) " >
+											<th scope="col" :class="'col-md-2'+ getThNameClass(name) "
+												data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
+												:data-bs-content="getPassiveRuleSummary(name)">
 												<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
 												<label :for="'inputIsCardEnabled-'+idx">{{ name }}</label>
-												<!-- <div v-if="isCardInBattle(card)">{{ name }}</div> -->
 											</th>
 										</template>
 									</tr>
@@ -282,6 +279,37 @@
 							</div>
 							<div v-if="importJsonResult.length > 0" class="col-md-9 row mb-2 mt-2 alert alert-info">{{ importJsonResult }}</div>
 						</div>
+					</div>
+				</div>
+			</div>
+
+			<div v-if="tab == 'LOGS'" class="row justify-content-center mb-2">
+				<div class="col-xs-12 col-md-12 col-lg-9">
+					<div class="row">
+						<h5>已知問題，日後有時間會修正</h5>
+
+						<div class="row">
+							<ul>
+								<li>當被動技能的條件是「攻擊時」，現時會先加buff，再攻擊（應該是先攻擊，後加buff）</li>
+							</ul>
+						</div>
+						<hr>
+
+						<h5>已知問題，但應該不會修正（Very low priority）</h5>
+
+						<div class="row">
+							<ul>
+								<li>現時沒有處理「被攻擊時」「被治療時」，條件會以「每n回合」「第n回合」來取代</li>
+								<li>現時沒有處理「受到治療量增加」和「受到持續治療量增加」</li>
+								<li>現時沒有「受到傷害減少」、「敵方攻擊力減少」等被動，所以json沒有加，卡片就不會顯示技能</li>
+								<li>選擇顯示「補量」時，聖崑、錆布等以HP進行治療的仍然會顯示攻擊力相關buff tooltips</li>
+							</ul>
+						</div>
+						<hr>
+
+						<h5>匯報BUGS</h5>
+						<div>請至 <a href="https://www.plurk.com/p/phlbsg">噗浪偷偷說</a> </div>
+						
 					</div>
 				</div>
 			</div>
