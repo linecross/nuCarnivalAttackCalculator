@@ -60,9 +60,10 @@ Vue.createApp({
 	updated()
 	{
 		const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl, {
+		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => bootstrap.Popover.getOrCreateInstance(popoverTriggerEl, {
 			'animation': false
 		}));
+		popoverList.forEach(e=>e._config.content=e._element.getAttribute('data-bs-content'));
 	},
 	methods: {
 		switchTab(tab){
