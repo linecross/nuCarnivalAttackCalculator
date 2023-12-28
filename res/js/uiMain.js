@@ -1,5 +1,5 @@
 import { Character, Rarity, Element, AttackType, ActionPattern } from './../../build/Constants.js';
-import { CardCenter, Team, Battle, Condition } from './../../build/BattleSystem.js';
+import { CardCenter, Team, Battle, Condition, LogRule } from './../../build/BattleSystem.js';
 
 var config = {
 	MAX_LEVEL: 60,
@@ -77,12 +77,17 @@ Vue.createApp({
 				var name = this.userInput.cardname[i];
 				if (name != '' && (this.cards[i] == null || this.cards[i].name != name)){
 					var card = CardCenter.loadCard(name);
+					if (this.userInput.defaultStar == 'FULL'){
+						card.star = 5;
+					}
 					if (this.userInput.defaultStar == 'SSR3'){
 						if (card.rarity == 'SSR') card.star = 3;
+						else card.star = 5;
 					}
 					else if (this.userInput.defaultStar == 'SSR1'){
 						if (card.rarity == 'SSR') card.star = 1;
-						if (card.rarity == 'SR') card.star = 3;
+						else if (card.rarity == 'SR') card.star = 3;
+						else card.star = 5;
 					}
 
 					this.cards[i] = card;
@@ -193,16 +198,19 @@ Vue.createApp({
 			var card = this.cards[this.getIndexByCardname(cardname)];
 			if (card!=null){
 				var title = '<span class="info-title"><b><u>【'+cardname+'】</u></b><span><br/>';
-				if (card.star >= 3) summary.push('3星被動：'+card.star3Rule.toString().replaceAll(',', '，'));
-				if (card.star == 5)	summary.push('5星被動：'+card.star5Rule.toString().replaceAll(',', '，'));
-		
+				if (card.star >= 3) {
+					summary.push('3星被動：'+card.star3Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
+				}
+				if (card.star == 5){
+					summary.push('5星被動：'+card.star5Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
+				}
 				if ((card.rarity == Rarity.SSR || card.rarity == Rarity.SR)){
 					if (card.potential >= 6){
-						summary.push('潛6被動：'+card.pot6Rule.toString().replaceAll(',', '，'));
+						summary.push('潛6被動：'+card.pot6Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
 					}
 				}
 				else if (card.potential >= 3){
-					summary.push('潛6被動：'+card.pot6Rule.toString().replaceAll(',', '，'));
+					summary.push('潛6被動：'+card.pot6Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
 				};
 			}
 			return title+summary.join('<br />');

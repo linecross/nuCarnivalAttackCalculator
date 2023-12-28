@@ -1463,6 +1463,18 @@ export class RuleTarget{
 		var excludeNames = this.getExcludeTarget(team, card);
 		return includeNames.filter(e=>!excludeNames.includes(e));
 	}
+
+	public toString() : string{
+		var type = this.type;
+		var value = this.value;
+		var exceptStr = this.exceptType != null ? this.exceptValue != null ? this.exceptValue : this.exceptType : '';
+		if (exceptStr.length > 0) exceptStr = '（除了' + exceptStr + '）';
+
+		if (value == null){
+			return type + exceptStr;
+		}
+		return value.toString() + exceptStr;
+	}
 }
 
 export class Rule{
@@ -1670,6 +1682,23 @@ export class LogRule extends Rule{
 		}
 		return s;
 	}
+	
+	public getFullSkillInfo() : string{
+		var s = this.type + this.value;
+		if (this.target != null && this.target.type != TargetType.self){
+			s = this.target + s;
+		}
+		if (this.condition != null && this.condition.length > 0){
+			s = this.condition.map(c=>c.toString()).join('，') + '，' + s;
+		}
+		if (this.turn < 50 && this.turn > 1){
+			s += '（'+this.turn+'回合）'
+		}
+		if (this.maxCount > 1){
+			s += '（最多'+this.maxCount+'層）'
+		}
+		return s;
+	}
 }
 
 
@@ -1737,5 +1766,39 @@ export class Condition{
 			return 1;
 		}
 		return 0;
+	}
+
+	public toString() : string{
+		var type = this.type;
+		var value = this.value;
+		if (type == ConditionType.charCount){
+			return type.replace('角色', '1名「'+value.toString() + '」');
+		}
+		else if (type == ConditionType.classCount){
+			return type.replace('定位', '1名「'+value.toString() + '」');
+		}
+		else if (type == ConditionType.hasChar){
+			return type.replace('角色', '「'+value.toString()+'」') + '時';
+		}
+		else if (type == ConditionType.hasClass){
+			return type.replace('定位', '定位'+value.toString()) + '時';
+		}
+		else if (type == ConditionType.atTurn){
+			return type.replace('n', value.toString()) + '時';
+		}
+		else if (type == ConditionType.everyTurn){
+			return '每經過' + value.toString() + '回合';
+		}
+		else if (type == ConditionType.isAttackType){
+			return value.toString() + '時';
+		}
+		else if (type == ConditionType.isAttack){
+			return type;
+		}
+		else if (type == ConditionType.hpHigher || type == ConditionType.hpLower){
+			return '當前' + type + value + '時';
+		}
+		
+		return type + value;
 	}
 }
