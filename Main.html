@@ -85,14 +85,10 @@
 						<h5>隊伍設定</h5>
 						<div class="col" v-for="(name, idx) in userInput.char" style="vertical-align: top;">
 							<div class="row form-group">
-								<div class="form-check">
+								<div class="form-check text-center">
 									<label :for="'inputIsCardEnabled-' + idx">第 {{ idx+1 }} 位</label>
+									<span v-if="idx < 4" class="card-swap-icon float-end" @click="swapCard(idx, idx+1)"><i class="fa-solid fa-left-right"></i></span>
 								</div>
-								
-								<!-- <label :for="'inputChar'+(idx+1)">第 {{ idx+1 }} 位</label> -->
-
-								
-
 								<select :id="'inputChar'+(idx+1)" class="form-select" v-model="userInput.char[idx]">
 									<option v-for="name in CHARACTERS" :value="name">{{ name }}</option>
 								</select>
@@ -223,13 +219,10 @@
 								<tbody>
 									<tr>
 										<th scope="col" class="col-md-1">回合</th>
-										<!-- <div class="col" v-for="(name, idx) in userInput.char" style="vertical-align: top;"></div> -->
-										<!-- <template v-for="card in cards" :key="card"> -->
 										<template v-for="(name, idx) in userInput.cardname" :key="name">
 											<th scope="col" :class="'col-md-2'+ getThNameClass(name) " >
 												<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
 												<label :for="'inputIsCardEnabled-'+idx">{{ name }}</label>
-												<!-- <div v-if="isCardInBattle(card)">{{ name }}</div> -->
 											</th>
 										</template>
 									</tr>

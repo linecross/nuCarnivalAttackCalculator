@@ -110,3 +110,20 @@
 .info-debuff{
     color: #414141;
 }
+
+.card-swap-icon{
+    position: relative;
+}
+.card-swap-icon > .fa-solid{
+    position: absolute;
+    right: -1.3rem;
+    font-size: 1.3rem;
+    color: #98a8e6;
+    cursor: pointer;    
+}
+.card-swap-icon > .fa-solid:hover{
+    color: #9a4ce8;
+}
+.card-swap-icon > .fa-solid:active{
+    color: #f0418d;
+}

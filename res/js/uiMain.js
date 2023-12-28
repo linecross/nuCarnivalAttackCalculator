@@ -261,6 +261,14 @@ Vue.createApp({
 			}
 			return output;
 		},
+		swapCard(i, j){
+			[this.userInput.char[i], this.userInput.char[j]] = [this.userInput.char[j], this.userInput.char[i]];
+			[this.userInput.cardname[i], this.userInput.cardname[j]] = [this.userInput.cardname[j], this.userInput.cardname[i]];
+			[this.userInput.cardActionPattern[i], this.userInput.cardActionPattern[j]] = [this.userInput.cardActionPattern[j], this.userInput.cardActionPattern[i]];
+			[this.userInput.cardManualAction[i], this.userInput.cardManualAction[j]] = [this.userInput.cardManualAction[j], this.userInput.cardManualAction[i]];
+			[this.userInput.isCardEnabled[i], this.userInput.isCardEnabled[j]] = [this.userInput.isCardEnabled[j], this.userInput.isCardEnabled[i]];
+			[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+		},
 		getIndexByCardname(cardname){
 			for (var i=0; i<this.userInput.cardname.length; i++){
 				if (this.userInput.cardname[i] == cardname){
