@@ -1177,6 +1177,7 @@ export class Battle{
 		return this.battleTurns[cardname].action[turn];
 	}
 
+	// TODO: should simplify those ugly if-else code for different rule types
 	getTurnRuleLog(cardname: string, turn: number) : Rule[]{
 		var attackType : AttackType = this.battleTurns[cardname].action[turn];
 		var rules : Rule[] = this.battleTurns[cardname].ruleLog[turn];
@@ -1184,45 +1185,79 @@ export class Battle{
 		var hasPoisonAttack = rules.map(e=>e.type).includes(RuleType.poisonAttack);
 		var hasHeal = rules.map(e=>e.type).includes(RuleType.heal);
 		var hasContHeal = rules.map(e=>e.type).includes(RuleType.continueHeal);
-		var isGetEnemyInfo = this.printEnemeyOption;
+
+		var acceptTypes : RuleType[] = [RuleType.attack, RuleType.poisonAttack, RuleType.support, RuleType.continueHeal, RuleType.heal];
+		if (hasAttack){
+			if (attackType == AttackType.BasicAttack){
+				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp, RuleType.allAtkUp, RuleType.enemyBasicAtkUp, RuleType.enemyAllAtkUp]);
+			}
+			else if (attackType == AttackType.SkillAttack){
+				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.skillAtkUp, RuleType.allAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyAllAtkUp]);
+			}
+		}
+		if (hasPoisonAttack){
+			acceptTypes = acceptTypes.concat([RuleType.basicAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp]);
+		}
+		if (hasHeal){
+			if (attackType == AttackType.BasicAttack){
+				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp]);
+			}
+			else if (attackType == AttackType.SkillAttack){
+				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.skillAtkUp]);
+			}
+		}
+		if (hasContHeal){
+			acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.continueHealUp]);
+		}
 
 		rules = rules.filter(function(rule : Rule){
-			var acceptTypes : RuleType[] = [RuleType.attack, RuleType.poisonAttack, RuleType.support, RuleType.continueHeal, RuleType.heal];
-			if (hasAttack){
-				if (attackType == AttackType.BasicAttack){
-					acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp, RuleType.allAtkUp]);
-					if (isGetEnemyInfo){
-						acceptTypes = acceptTypes.concat([RuleType.enemyBasicAtkUp, RuleType.enemyAllAtkUp]);
-					}
-				}
-				else if (attackType == AttackType.SkillAttack){
-					acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.skillAtkUp, RuleType.allAtkUp]);
-					if (isGetEnemyInfo){
-						acceptTypes = acceptTypes.concat([RuleType.enemySkillAtkUp, RuleType.enemyAllAtkUp]);
-					}
-				}
-			}
-			if (hasPoisonAttack){
-				acceptTypes = acceptTypes.concat([RuleType.basicAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp]);
-				if (isGetEnemyInfo){
-					acceptTypes = acceptTypes.concat([RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp]);
-				}
-			}
-			if (hasHeal){
-				if (attackType == AttackType.BasicAttack){
-					acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp]);
-				}
-				else if (attackType == AttackType.SkillAttack){
-					acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.skillAtkUp]);
-				}
-			}
-			if (hasContHeal){
-				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.continueHealUp]);
-			}
-
 			return acceptTypes.includes(rule.type);
 		});
+		rules = this.filterRulesByPrintOption(rules);
 
+		return rules;
+	}
+
+	private filterRulesByPrintOption(rules : Rule[]){
+		var acceptTypes = [];
+		var hasAttack = rules.map(e=>e.type).includes(RuleType.attack);
+		var hasPoisonAttack = rules.map(e=>e.type).includes(RuleType.poisonAttack);
+		var hasHeal = rules.map(e=>e.type).includes(RuleType.heal);
+		var hasContHeal = rules.map(e=>e.type).includes(RuleType.continueHeal);
+
+		if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
+			return rules;
+		}
+		else if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_SUPPORT){
+			acceptTypes = [RuleType.support];
+		}
+		else{
+			if (hasAttack && [Battle.PRINT_OUTPUT_OPTION.ONLY_ATTACK, 
+				Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE].includes(this.printOutputOption)){
+				acceptTypes = acceptTypes.concat([RuleType.attack, RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.allAtkUp,
+								RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyAllAtkUp]);
+			}
+			if (hasPoisonAttack && [Battle.PRINT_OUTPUT_OPTION.ONLY_POISON, 
+				Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE].includes(this.printOutputOption)){
+				acceptTypes = acceptTypes.concat([RuleType.poisonAttack, RuleType.atkUp, RuleType.poisonAtkUp, RuleType.allAtkUp,
+								RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp]);
+			}
+			if (hasHeal && [Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL].includes(this.printOutputOption)){
+				acceptTypes = acceptTypes.concat([RuleType.heal, RuleType.healUp, RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp]);
+			}
+			if (hasContHeal && [Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL].includes(this.printOutputOption)){
+				acceptTypes = acceptTypes.concat([RuleType.continueHeal, RuleType.continueHealUp, RuleType.atkUp]);
+			}
+		}
+
+		if (!this.printEnemeyOption){
+			var removeTypes = [RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp];
+			acceptTypes = acceptTypes.filter(e=>!removeTypes.includes(e));
+		}
+
+		rules = rules.filter(function(rule : Rule){
+			return acceptTypes.includes(rule.type);
+		});
 		return rules;
 	}
 
