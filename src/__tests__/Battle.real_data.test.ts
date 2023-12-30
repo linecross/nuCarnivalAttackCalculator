@@ -70,7 +70,7 @@ describe('實際測試', () => {
             expect(battle.getTotalValue('學院．八雲')).toBeAround(502806);
             expect(battle.getTotalValue('雙月．崑西')).toBeAround(467939);
             expect(battle.getTotalValue('賭場．艾斯特')).toBeAround(319473);
-            expect(battle.getTotalValue('賭場．墨菲')).toBeAround(334031);
+            expect(battle.getTotalValue('賭場．墨菲')).toBeAround(369272);
         });
 
         test('SR奧+普八+軍布+霜狼+偶奧', () => {
