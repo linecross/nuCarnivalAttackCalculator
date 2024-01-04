@@ -827,7 +827,13 @@ export class Battle {
                         // 減CD
                         else if (rule.type == RuleType.cdMinus) {
                             var cooldownCount = Battle.getNumber(rule.value);
-                            this.battleTurns[targetName].skillCD = this.battleTurns[targetName].skillCD - cooldownCount;
+                            var targetSkillCD = this.battleTurns[targetName].skillCD;
+                            if (targetSkillCD > 0) {
+                                this.battleTurns[targetName].skillCD = targetSkillCD - cooldownCount;
+                            }
+                            if (targetSkillCD < 0) {
+                                this.battleTurns[targetName].skillCD = 0;
+                            }
                         }
                         // 我方獲得技能
                         else if (rule.type == RuleType.appendRule) {
