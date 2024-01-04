@@ -2478,6 +2478,51 @@
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "41%" }],
       "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+    },
+    "魔王．伊得": {
+      "char": "伊得", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "平均型",
+      "baseHp": 6973, "baseAtk": 2348, "coolDown": 3,
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+        },
+        { "type": "攻擊", "value": "204%" }],
+      "skillLv2Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+        },
+        { "type": "攻擊", "value": "238%" }, 
+        {
+          "type": "減少冷卻回合",
+          "value": 1,
+          "target": { "type": "定位", "value": "攻擊", "exceptType": "自己" }
+        }],
+      "skillLv3Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+        },
+        { "type": "攻擊", "value": "273%" }, 
+        {
+          "type": "減少冷卻回合",
+          "value": 1,
+          "target": { "type": "定位", "value": "攻擊", "exceptType": "自己" }
+        }],
+      "star3Rule": [ { "type": "攻擊力增加", "value": "12%", "turn": 99, "target": {"type": "定位", "value": "攻擊"} }, 
+        {
+          "type": "減少冷卻回合",
+          "value": 3,
+          "turn": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        }
+      ],
+      "star5Rule": [{ "type": "攻擊力增加", "value": "12%", "turn": 99, "maxCount": 3, "target": "全體", "condition": {"type": "隊伍中每存在定位", "value": "攻擊"} } ],
+      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }]
     }
+  
 }
   
