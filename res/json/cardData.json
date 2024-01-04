@@ -2487,13 +2487,21 @@
       "skillLv1Rule": [
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+          "value": { "type": "敵方受到普攻傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
         },
         { "type": "攻擊", "value": "204%" }],
       "skillLv2Rule": [
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+          "value": { "type": "敵方受到普攻傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
         },
         { "type": "攻擊", "value": "238%" }, 
         {
@@ -2504,7 +2512,11 @@
       "skillLv3Rule": [
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+          "value": { "type": "敵方受到普攻傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "34%", "turn": 3, "condition": {"type": "被定位攻擊", "value": "攻擊"} }
         },
         { "type": "攻擊", "value": "273%" }, 
         {
