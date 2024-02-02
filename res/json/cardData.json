@@ -2541,11 +2541,11 @@
       "baseHp": 6902, "baseAtk": 2383, "coolDown": 3,
       "attackRule": [{ "type": "攻擊", "value": "100%" }, { "type": "持續治療", "value": "5%", "turn": 2 }],
       "skillLv1Rule": [
-        { "type": "持續治療", "value": "25%", "turn": 3 },
+        { "type": "持續治療", "value": "14%", "turn": 3 },
         { "type": "攻擊", "value": "204%" }
       ],
       "skillLv2Rule": [
-        { "type": "攻擊力增加", "value": "27%", "turn": 3 }, { "type": "持續治療", "value": "25%", "turn": 3 },
+        { "type": "攻擊力增加", "value": "27%", "turn": 3 }, { "type": "持續治療", "value": "20%", "turn": 3 },
         { "type": "攻擊", "value": "238%" }
       ],
       "skillLv3Rule": [
