@@ -2534,7 +2534,79 @@
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "12%", "turn": 99, "maxCount": 3, "target": "全體", "condition": {"type": "隊伍中每存在定位", "value": "攻擊"} } ],
       "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }]
+    },
+    "迷夢．八雲": {
+      "char": "八雲", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
+      "baseHp": 6902, "baseAtk": 2383, "coolDown": 3,
+      "attackRule": [{ "type": "攻擊", "value": "100%" }, { "type": "持續治療", "value": "5%", "turn": 2 }],
+      "skillLv1Rule": [
+        { "type": "持續治療", "value": "25%", "turn": 3 },
+        { "type": "攻擊", "value": "204%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊力增加", "value": "27%", "turn": 3 }, { "type": "持續治療", "value": "25%", "turn": 3 },
+        { "type": "攻擊", "value": "238%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊力增加", "value": "27%", "turn": 3 }, { "type": "持續治療", "value": "25%", "turn": 3 },
+        { "type": "攻擊", "value": "273%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "持續治療量增加",
+          "value": "36%",
+          "condition": { "type": "隊伍中有屬性", "value": "水", "minCount": 2 }
+        },
+        {
+          "type": "造成傷害增加",
+          "value": "36%",
+          "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 }
+        }
+      ],
+      "star5Rule": [
+        { 
+          "type": "造成傷害增加", 
+          "value": "40%", 
+          "turn": 1,
+          "condition": { "type": "每n回合", "value": 3 } 
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+    },
+    "迷夢．奧利文": {
+      "char": "奧利文", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "水", "potType": "ATK先行",
+      "baseHp": 11563, "baseAtk": 1423, "coolDown": 3,
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "100%" },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
+        }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "100%" },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
+        }
+      ],
+      "star3Rule": [],
+      "star5Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "14%",
+          "turn": 3,
+          "target": "全體",
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        }
+      ],
+      "pot6Rule": []
     }
-  
 }
   
