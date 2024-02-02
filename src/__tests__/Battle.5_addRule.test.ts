@@ -60,7 +60,7 @@ describe('增加規則', () => {
 
     describe('複雜規則：增加規則', () => {
 
-        test('被動：攻擊時，令敵方獲得「被test1攻擊時，受到傷害增加10%」（鍍布）', () => {
+        test('被動：攻擊時，觸發「使目標受到『test1』傷害增加10%」（鍍布）', () => {
             cardData = `{ 
                 "star3Rule": [ {"type": "敵方獲得技能", "condition": "攻擊時", "value": {
                     "type": "敵方受到傷害增加", "value": "10%", "turn": 99, "maxCount": 5,
@@ -101,8 +101,6 @@ describe('增加規則', () => {
             }`;
             setupBattle();
 
-            expect(battle.getTurnValue('Striker1', 1)).toBeAround(1000);
-
             expect(battle.getTurnValue('Striker1', 4)).toBeAround(10000);
             expect(battle.getTurnValue('Striker2', 4)).toBeAround(10000);
 
@@ -118,6 +116,36 @@ describe('增加規則', () => {
             expect(battle.getTurnValue('Striker2', 7)).toBeAround(11500);
             expect(battle.getTurnValue('Striker3', 7)).toBeAround(11500);
         });
+
+        test('必殺技：令敵方獲得「被攻擊時，敵方受到傷害增加5% 3回合」（鍍副）', () => {
+            cardData = `{ 
+                "skillLv3Rule": [
+                    {
+                      "type": "敵方獲得技能",
+                      "value": {
+                        "type": "敵方獲得技能",
+                        "turn": 3,
+                        "condition": "被攻擊時",
+                        "value": { "type": "敵方受到傷害增加", "value": "5%", "turn": 3 }
+                      }
+                    },
+                    { "type": "攻擊", "value": "1000%" }
+                ]
+            }`;
+            setupBattle();
+
+            expect(battle.getTurnValue('Striker1', 1)).toBeAround(1000);
+
+            expect(battle.getTurnValue('Striker1', 4)).toBeAround(10000);
+            expect(battle.getTurnValue('Striker2', 4)).toBeAround(10500);
+            expect(battle.getTurnValue('Striker3', 4)).toBeAround(11000);
+            expect(battle.getTurnValue('Guard1', 4)).toBeAround(11500);
+
+            expect(battle.getTurnValue('Striker1', 5)).toBeAround(1200);
+            expect(battle.getTurnValue('Striker1', 6)).toBeAround(1400);
+        });
+
+        
     });
 
 });

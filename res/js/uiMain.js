@@ -34,6 +34,7 @@ Vue.createApp({
 				isCalcEnemyDebuff: false,
 				printOutputMode: Battle.PRINT_OUTPUT_OPTION.ALL,
 			},
+			cardJsonLastModified: '',
 			cards: [null, null, null, null, null],
 			battle: null,
 			inputJson: null,
@@ -51,7 +52,14 @@ Vue.createApp({
 		this.DEFAULT_STAR = config.DEFAULT_STAR;
 
 		fetch("./res/json/cardData.json")
-		.then(resp => resp.json())
+		.then(resp => {
+			var date = new Date(resp.headers.get("last-modified"));
+			this.cardJsonLastModified = date.getFullYear() + ' 年 ' + (date.getMonth()+1) + ' 月 ' + date.getDate() + ' 日 ' 
+				+ (date.getHours() > 10 ? '' : '0') + date.getHours() + ':'
+				+ (date.getMinutes() > 10 ? '' : '0') + date.getMinutes() +':'
+				+ (date.getSeconds() > 10 ? '' : '0') + date.getSeconds() ;
+			return resp.json();
+		})
 		.then(json => {
 			CardCenter.setMainCardData(json);
 			this.loadCards();

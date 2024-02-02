@@ -262,6 +262,11 @@
 							</table>
 						</div>
 					</div>
+
+					<hr/>
+					<div class="row justify-content-center mb-2">
+						<span>角色資料 最後更新日期：{{ cardJsonLastModified }}</span>
+					</div>
 				</div>
 			</div>
 
@@ -286,10 +291,11 @@
 			<div v-if="tab == 'LOGS'" class="row justify-content-center mb-2">
 				<div class="col-xs-12 col-md-12 col-lg-9">
 					<div class="row">
-						<h5>已知問題，日後有時間會修正</h5>
+						<h5>已修正</h5>
 
 						<div class="row">
 							<ul>
+								<li>[20240202]</li>
 								<li>當被動技能的條件是「攻擊時」，現時會先加buff，再攻擊<br/>
 									- 應該是先攻擊，後加buff<br/>
 									- 影響：白八等角色的一回合傷害數值
@@ -300,6 +306,17 @@
 								</li>
 								<li>輔助選擇伊得時，其他人只能在「有招就放」行動模式下正確行動<br/>
 									- 搭伊得就應該有招就放，有時間才修正
+								</li>
+							</ul>
+						</div>
+						<hr>
+
+						<h5>已知問題，日後有時間會修正</h5>
+
+						<div class="row">
+							<ul>
+								<li>當角色有複合能力（例：大招可以攻擊同時治療），可能只會顯示部份buff<br/>
+									- 數值仍然正常計算<br/>
 								</li>
 							</ul>
 						</div>
