@@ -2561,7 +2561,7 @@
         {
           "type": "造成傷害增加",
           "value": "36%",
-          "condition": { "type": "隊伍中有屬性", "value": "水", "minCount": 2 }
+          "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 }
         }
       ],
       "star5Rule": [
