@@ -58,10 +58,11 @@ describe('實際測試', () => {
     describe('輔助+攻擊手組合', () => {
 
         test('Quick test', () => {
-            cards = ['血鑰．奧利文']
+            cards = ['迷夢．八雲','SR艾德蒙特']
+            // cards = ['迷夢．八雲']
             setupBattle();
 
-            console.info(battle.getTurnRuleLogStr('血鑰．奧利文', 7));
+            console.info(battle.getTurnRuleLogStr('迷夢．八雲', 1));
         });
 
         test('SR奧+學八+月崑+賭艾+賭墨', () => {

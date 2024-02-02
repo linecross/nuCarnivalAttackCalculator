@@ -22,6 +22,8 @@ export const RuleType = {
     heal: '治療',
     continueHeal: '持續治療',
     poisonAttack: '持續傷害',
+    poisonAttackState: '持續傷害被動',
+    continueHealState: '持續治療被動',
     basicAtkFollowup: '普攻追擊',
     basicAtkFollowupSkill: '普攻追擊被動',
     counterAttack: '反擊',
@@ -31,27 +33,29 @@ export const RuleType = {
     skillAtkUp: '必殺技傷害增加',
     poisonAtkUp: '持續傷害增加',
     allAtkUp: '造成傷害增加',
+    healUp: '治療量增加',
+    continueHealUp: '持續治療量增加',
     enemyBasicAtkUp: '敵方受到普攻傷害增加',
     enemySkillAtkUp: '敵方受到必殺技傷害增加',
     enemyPoisonAtkUp: '敵方受到持續傷害增加',
     enemyAllAtkUp: '敵方受到傷害增加',
-    hpUp: '最大HP增加',
-    healUp: '治療量增加',
-    continueHealUp: '持續治療量增加',
     partyHealUp: '我方受到治療量增加',
     partyContinueHealUp: '我方受到持續治療量增加',
     cdMinus: '減少冷卻回合',
+    hpUp: '最大HP增加',
     // 較複雜的技能規則
     appendRule: '我方獲得技能',
     enemyAppendRule: '敵方獲得技能',
 };
 export const RuleValueByType = { atk: 'ATK', hp: 'HP' };
-export const AttackType = { BasicAttack: '普攻', SkillAttack: '必殺技', Guard: '防禦' };
+export const AttackType = { BasicAttack: '普攻', SkillAttack: '必殺技', Guard: '防禦', None: 'NONE' };
 export const ConditionType = {
     hasChar: '角色在場',
     charCount: '隊伍中每存在角色',
     hasClass: '隊伍中有定位',
     classCount: '隊伍中每存在定位',
+    hasElement: '隊伍中有屬性',
+    elementCount: '隊伍中每存在屬性',
     hpHigher: '血量大於',
     hpLower: '血量少於',
     isAttackType: '攻擊方式',
@@ -62,6 +66,7 @@ export const ConditionType = {
     enemyIsAttacked: '被攻擊時',
     enemyIsAttackByChar: '被角色攻擊',
     enemyIsAttackByClass: '被定位攻擊',
+    enemyIsAttackByElement: '被屬性攻擊'
 };
 export const TargetType = {
     self: '自己',
@@ -79,5 +84,18 @@ export const ActionPattern = {
     AddCD1Delay1Turn: 'CD+1及延遲1回合',
     AddCD2Ahead1Turn: 'CD+2及提早1回合',
     Manual: '手動設置'
+};
+export const TurnActionType = {
+    beforeTurn: "beforeTurn",
+    beforeAction: "beforeAction",
+    afterAction: "afterAction",
+    attack: "attack",
+    afterAttack: "afterAttack",
+    atTurnEnd: "atTrunEnd",
+    poison: "poison",
+    heal: "heal",
+    support: "support",
+    guard: "guard",
+    none: "none"
 };
 //# sourceMappingURL=Constants.js.map
