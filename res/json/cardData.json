@@ -2586,14 +2586,14 @@
         { "type": "攻擊", "value": "100%" },
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
         }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
         }
       ],
       "star3Rule": [],
