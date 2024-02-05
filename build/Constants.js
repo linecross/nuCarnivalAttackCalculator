@@ -38,6 +38,7 @@ export const RuleType = {
     enemyBasicAtkUp: '敵方受到普攻傷害增加',
     enemySkillAtkUp: '敵方受到必殺技傷害增加',
     enemyPoisonAtkUp: '敵方受到持續傷害增加',
+    enemyElementAtkUp: '敵方受到屬性傷害增加',
     enemyAllAtkUp: '敵方受到傷害增加',
     partyHealUp: '我方受到治療量增加',
     partyContinueHealUp: '我方受到持續治療量增加',
