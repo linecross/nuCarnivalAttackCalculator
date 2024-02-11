@@ -40,8 +40,9 @@ export const RuleType = {
     enemyPoisonAtkUp: '敵方受到持續傷害增加',
     enemyElementAtkUp: '敵方受到屬性傷害增加',
     enemyAllAtkUp: '敵方受到傷害增加',
-    partyHealUp: '我方受到治療量增加',
-    partyContinueHealUp: '我方受到持續治療量增加',
+    partyAllHealUp: '我方受到治療增加',
+    partyHealUp: '我方受到瞬間治療增加',
+    partyContinueHealUp: '我方受到持續治療增加',
     cdMinus: '減少冷卻回合',
     hpUp: '最大HP增加',
     // 較複雜的技能規則
