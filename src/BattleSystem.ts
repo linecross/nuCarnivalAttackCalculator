@@ -532,7 +532,7 @@ export class Battle{
 	static PRINT_OUTPUT_OPTION = {ALL : 'All', ONLY_DAMAGE: 'OnlyDamage', ONLY_ATTACK:'OnlyAttack', ONLY_SUPPORT:'OnlySupport', ONLY_HEAL:'OnlyHeal', ONLY_POISON:'OnlyPoison'}; 
 
 	static OUTPUT_TYPES : RuleType[] = [RuleType.attack, RuleType.poisonAttack, RuleType.heal, RuleType.continueHeal, RuleType.support];
-	static TEAM_BUFF_TYPES : RuleType[] = [RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp];
+	static TEAM_BUFF_TYPES : RuleType[] = [RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp, RuleType.partyAllHealUp];
 	static ENEMY_BUFF_TYPES : RuleType[] = [RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp];
 
 	constructor(team: Team, turns : number = 13){
@@ -833,11 +833,16 @@ export class Battle{
 			if (contHealVal != null && contHealVal > 0){
 				var cardRules = this.battleTurns[card.name].rules
 							.filter((r:Rule)=>r.isConditionsFulfilled(card, this.team, this.currentTurnAction, attackType, this.currentTurn));
-				var ourBuffs = cardRules.filter((r:Rule)=>r.type == RuleType.partyContinueHealUp);
+				var ourBuffs = cardRules.filter((r:Rule)=>r.type == RuleType.partyContinueHealUp || r.type == RuleType.partyAllHealUp);
 				var buffs : Rule[] = [];
 				for (var buff of ourBuffs){
+					var buffType = buff.type;
+					// 持續傷害：「我方受到持續治療增加」跟「我方受到治療增加」屬於同一乘區
+					if (buffType == RuleType.partyContinueHealUp){
+						buffType = RuleType.partyAllHealUp;
+					}
 					var applyCount = buff.getConditionFulfillTimes(card, this.team, this.currentTurnAction, attackType, this.currentTurn);
-					buffs[buff.type] = (buffs[buff.type] || 0) + (Battle.getNumber(buff.value as string) * applyCount);
+					buffs[buffType] = (buffs[buffType] || 0) + (Battle.getNumber(buff.value as string) * applyCount);
 				}
 				var outputVal = contHealVal;
 				for (var key of Object.keys(buffs)){
@@ -856,7 +861,7 @@ export class Battle{
 		[RuleType.poisonAttack]: [RuleType.atkUp, RuleType.poisonAtkUp, RuleType.allAtkUp, 
 			RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp],
 		[RuleType.heal]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.healUp,
-			RuleType.partyHealUp],
+			RuleType.partyHealUp, RuleType.partyAllHealUp],
 		[RuleType.continueHeal]: [RuleType.atkUp, RuleType.continueHealUp, RuleType.partyContinueHealUp],
 		[RuleType.support]: [],
 	};
@@ -1260,10 +1265,10 @@ export class Battle{
 		}
 		if (hasHeal){
 			if (attackType == AttackType.BasicAttack){
-				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp, RuleType.healUp, RuleType.partyHealUp]);
+				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp, RuleType.healUp, RuleType.partyHealUp, RuleType.partyAllHealUp]);
 			}
 			else if (attackType == AttackType.SkillAttack){
-				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.skillAtkUp, RuleType.healUp, RuleType.partyHealUp]);
+				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.skillAtkUp, RuleType.healUp, RuleType.partyHealUp, RuleType.partyAllHealUp]);
 			}
 		}
 		if (hasContHeal){

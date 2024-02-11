@@ -1163,12 +1163,12 @@
       "baseHp": 7222, "baseAtk": 2170, "coolDown": 4,
       "attackRule": [
         { "type": "輔助", "value": "25%", "target": "全體" },
-        { "type": "我方受到持續治療量增加", "value": "25%", "target": "全體" }
+        { "type": "我方受到持續治療增加", "value": "25%", "target": "全體" }
       ],
       "skillLv1Rule": [
         { "type": "輔助", "value": "62%", "turn": 2, "target": "全體" },
         {
-          "type": "我方受到持續治療量增加",
+          "type": "我方受到持續治療增加",
           "value": "55%",
           "turn": 3,
           "target": "全體"
@@ -1177,7 +1177,7 @@
       "skillLv2Rule": [
         { "type": "輔助", "value": "74%", "turn": 2, "target": "全體" },
         {
-          "type": "我方受到持續治療量增加",
+          "type": "我方受到持續治療增加",
           "value": "65%",
           "turn": 3,
           "target": "全體"
@@ -1186,7 +1186,7 @@
       "skillLv3Rule": [
         { "type": "輔助", "value": "87%", "turn": 2, "target": "全體" },
         {
-          "type": "我方受到持續治療量增加",
+          "type": "我方受到持續治療增加",
           "value": "75%",
           "turn": 3,
           "target": "全體"
@@ -1694,7 +1694,7 @@
         }
       ],
       "star5Rule": [{ "type": "造成傷害增加", "value": "9%", "target": "全體" }],
-      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }]
+      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }]
     },
     "春林．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -2433,7 +2433,7 @@
       "skillLv1Rule": [{ "type": "輔助", "value": "124%", "target": "全體" }],
       "skillLv2Rule": [
         {
-          "type": "我方受到持續治療量增加",
+          "type": "我方受到持續治療增加",
           "value": "27%",
           "turn": 4,
           "target": "全體"
@@ -2442,7 +2442,7 @@
       ],
       "skillLv3Rule": [
         {
-          "type": "我方受到持續治療量增加",
+          "type": "我方受到持續治療增加",
           "value": "27%",
           "turn": 4,
           "target": "全體"
@@ -2533,7 +2533,7 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "12%", "turn": 99, "maxCount": 3, "target": "全體", "condition": {"type": "隊伍中每存在定位", "value": "攻擊"} } ],
-      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }]
+      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }]
     },
     "迷夢．八雲": {
       "char": "八雲", "fullname": null, "alias": null,
