@@ -278,7 +278,7 @@
     "R墨菲": {
       "char": "墨菲", "fullname": null, "alias": null,
       "rarity": "R", "class": "守護", "element": "闇", "potType": "NR卡",
-      "baseHp": 9606, "baseAtk": 1031, "coolDown": 3,
+      "baseHp": 8147, "baseAtk": 889, "coolDown": 3,
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
