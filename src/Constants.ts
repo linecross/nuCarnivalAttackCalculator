@@ -129,3 +129,6 @@ export const TurnActionType = {
 	none: "none"
 } as const;
 export type TurnActionType = typeof TurnActionType[keyof typeof TurnActionType];
+
+export const CounterAttackMode = {firstTurnOnly: '僅第一回合', everyTurn : '每回合'} as const;
+export type CounterAttackMode = typeof CounterAttackMode[keyof typeof CounterAttackMode];

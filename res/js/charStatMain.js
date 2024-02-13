@@ -1,4 +1,4 @@
-var config = {
+var chartConfig = {
 	CHAR_NAMES: ['八雲','艾德蒙特','奧利文','崑西','玖夜','可爾','布儡','啖天','歛','艾斯特','墨菲','伊得'],
 	MAX_LEVEL: 60,
 	levels: [1,15,20,25,30,35,40,45,50,55,60],
@@ -163,13 +163,13 @@ var NuCarnivalCharChartApp = Vue.createApp({
 		}
 	},
 	created() {
-		this.CHAR_NAMES = config.CHAR_NAMES;
-		this.MAX_LEVEL = config.MAX_LEVEL;
-		// this.charData = config.charData;
-		this.levels = config.levels;
-		this.rooms = config.rooms;
-		this.roomPercents = config.roomPercents;
-		this.potentials = config.potentials;
+		this.CHAR_NAMES = chartConfig.CHAR_NAMES;
+		this.MAX_LEVEL = chartConfig.MAX_LEVEL;
+		// this.charData = chartConfig.charData;
+		this.levels = chartConfig.levels;
+		this.rooms = chartConfig.rooms;
+		this.roomPercents = chartConfig.roomPercents;
+		this.potentials = chartConfig.potentials;
 		this.charData = {};
 		var vueObj = this;
 
@@ -180,7 +180,7 @@ var NuCarnivalCharChartApp = Vue.createApp({
 		})
 		.then(json => {
 			var charData = {};
-			for (var charName of config.CHAR_NAMES){
+			for (var charName of chartConfig.CHAR_NAMES){
 				var list=Object.entries(json).filter(e=>{
 					var value = e[1];
 					return value['char'] == charName;

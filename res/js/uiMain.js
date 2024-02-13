@@ -1,4 +1,4 @@
-import { Character, Rarity, Element, AttackType, ActionPattern } from './../../build/Constants.js';
+import { Character, Rarity, Element, AttackType, ActionPattern, CounterAttackMode } from './../../build/Constants.js';
 import { CardCenter, Team, Battle, Condition, LogRule } from './../../build/BattleSystem.js';
 
 var config = {
@@ -27,6 +27,7 @@ Vue.createApp({
 				turns: 14,
 				isShowTurns: true,
 				maxCounterAttack: 0,
+				counterAttackMode: CounterAttackMode.everyTurn,
 				isAllowHpCond: Condition.IS_HP_FULFILL,
 				isModifyCardVal: false,
 				defaultStar: 'SSR3',
@@ -50,6 +51,7 @@ Vue.createApp({
 		this.ELEMENTS = Element;
 		this.ACTION_PATTERN = ActionPattern;
 		this.DEFAULT_STAR = config.DEFAULT_STAR;
+		this.COUNTER_ATTACK_MODE = CounterAttackMode;
 
 		fetch("./res/json/cardData.json")
 		.then(resp => {
@@ -153,6 +155,7 @@ Vue.createApp({
 
 			this.battle.init();
 			this.battle.counterAttackCount = this.userInput.maxCounterAttack;
+			this.battle.counterAttackMode = this.userInput.counterAttackMode;
 			this.battle.enemyElement = this.userInput.enemyElement;
 			this.battle.printEnemeyOption = this.userInput.isCalcEnemyDebuff;
 			this.battle.printOutputOption = this.userInput.printOutputMode;
@@ -400,6 +403,9 @@ Vue.createApp({
 			}
 			this.userInput.turns = turn;
 			this.setupBattle();
+		},
+		'userInput.counterAttackMode'(newVal, oldVal){
+			this.updateBattle();
 		},
 		'userInput.maxCounterAttack'(newVal, oldVal){
 			this.updateBattle();

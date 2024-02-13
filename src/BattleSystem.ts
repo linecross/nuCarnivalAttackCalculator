@@ -1,4 +1,4 @@
-import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType, TurnActionType } from './Constants.js';
+import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
 
 const ALWAYS_EFFECTIVE : number = 99;
 
@@ -406,7 +406,7 @@ export class BattleTurn{
 		var existingRules = this.ruleLog[turn].filter(e=>e.id == rule.id);
 		var attackTypes:RuleType[] = [RuleType.attack, RuleType.heal];
 		var attackRules = this.ruleLog[turn].filter(e=>attackTypes.includes(e.type));
-		console.debug(turn+":["+rule.id+"]"+rule.type+rule.value+":"+rule.maxCount+"||"+existingRules.length);
+		// console.debug(turn+":["+rule.id+"]"+rule.type+rule.value+":"+rule.maxCount+"||"+existingRules.length);
 		// Seperate buff before and after attack
 		if (attackRules.length == 0 && existingRules.length > 0){
 			for (var i=0; i<applyCount; i++){
@@ -526,6 +526,7 @@ export class Battle{
 	enemyBattleTurn : BattleTurn;
 
 	counterAttackCount: number = 0;
+	counterAttackMode: CounterAttackMode = CounterAttackMode.everyTurn;
 	printOutputOption: string = Battle.PRINT_OUTPUT_OPTION.ALL;
 	printEnemeyOption: boolean = false;
 
@@ -795,7 +796,10 @@ export class Battle{
 					newRule.turn = 1;
 					newRule.maxCount = Math.min(this.counterAttackCount, rule.maxCount);
 					this.attack(AttackType.SkillAttack, newRule, card);
-					rule.turn = 0; // consume
+					
+					if (this.counterAttackMode == CounterAttackMode.firstTurnOnly){
+						rule.turn = 0; // consume
+					}
 				}
 			}
 
@@ -1104,7 +1108,7 @@ export class Battle{
 		else{
 			this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal * hitCount;
 			this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
-			this.battleTurns[card.name].addRuleLog(currentTurn, rule);
+			this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
 		}
 	}
 

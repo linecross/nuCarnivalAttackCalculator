@@ -24,13 +24,13 @@
 	<div id='NuCarnivalAttackCalApp'>
 		<div class="container">
 			<div class="row justify-content-center text-center">
-				<div class="col-xs-18 col-md-17 col-lg-9">
+				<div class="col-xs-18 col-md-17 col-lg-10">
 					<h4>新世界狂歡：傷害計算機</h4>
 					<hr>
 				</div>
 			</div>
 			<div v-if="userInput.isAdvanceMode" class="row justify-content-center mb-2">
-				<div class="col-xs-12 col-md-12 col-lg-9">
+				<div class="col-xs-12 col-md-12 col-lg-10">
 					<ul class="nav nav-tabs">
 						<li class="nav-item">
 							<a :class="'nav-link ' + (tab == 'CAL' ? 'active' : '')" href="#" @click="switchTab('CAL')">計算機</a>
@@ -45,11 +45,11 @@
 				</div>
 			</div>
 			<div v-if="tab == 'CAL'" class="row justify-content-center mb-2">
-				<div class="col-xs-12 col-md-12 col-lg-9">
+				<div class="col-xs-12 col-md-12 col-lg-10">
 					<div class="row">
 						<h5>基本設定</h5>
 						
-						<div class="form-group col-xs-12 col-md-12 col-lg-9">
+						<div class="form-group col-xs-12 col-md-12 col-lg-10">
 							<span class="form-check-inline">
 								<label for="inputIsAdvanceMode">進階顯示</label><br/>
 								<input class="form-check-input" type="checkbox" id="inputIsAdvanceMode" :checked="userInput.isAdvanceMode" v-model="userInput.isAdvanceMode">
@@ -161,7 +161,7 @@
 					
 					<hr>
 					<div class="row mt-2 mb-2">
-						<div class="form-group  mb-3 col-lg-9">
+						<div class="form-group  mb-3 col-lg-10">
 							<span class="form-check-inline">
 								<label for="inputIsCalcEnemyDebuff">計算敵方易傷</label><br/>
 								<input class="form-check-input" type="checkbox" id="inputIsCalcEnemyDebuff" :checked="userInput.isCalcEnemyDebuff" v-model="userInput.isCalcEnemyDebuff">
@@ -184,12 +184,19 @@
 							<span class="verticalLine"></span>
 
 							<div v-if="userInput.isAdvanceMode" class="form-check-inline">
+								<label for="inputCounterAttackMode">反擊模式</label><br/>
+								<select :id="'inputCard-actionPatten-'+(idx+1)" class="col-auto form-control wide-input form-select"  v-model="userInput.counterAttackMode">
+									<option v-for="mode in COUNTER_ATTACK_MODE" :value="mode">{{ mode }}</option>
+								</select>
+							</div>
+
+							<div v-if="userInput.isAdvanceMode" class="form-check-inline">
 								<label for="inputCounterAttackMax">反擊次數</label><br/>
 								<input class="form-control" type="text" inputmode="numeric" id="inputCounterAttackMax" v-model="userInput.maxCounterAttack">
 							</div>
 						</div>
 
-						<div class="form-group mb-3 col-lg-9">
+						<div class="form-group mb-3 col-lg-10">
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" id="input-printmode1" value="All" v-model="userInput.printOutputMode" />
 								<label class="form-check-label no-select" for="input-printmode1">全部</label>
@@ -271,7 +278,7 @@
 			</div>
 
 			<div v-if="tab == 'JSON'" class="row justify-content-center mb-2">
-				<div class="col-xs-12 col-md-12 col-lg-9">
+				<div class="col-xs-12 col-md-12 col-lg-10">
 					<div class="row">
 						<h5>匯入角色JSON</h5>
 
@@ -289,11 +296,15 @@
 			</div>
 
 			<div v-if="tab == 'LOGS'" class="row justify-content-center mb-2">
-				<div class="col-xs-12 col-md-12 col-lg-9">
+				<div class="col-xs-12 col-md-12 col-lg-10">
 					<div class="row">
 						<h5>已修正</h5>
 
 						<div class="row">
+							<ul>
+								<li>[20240213]</li>
+								<li>追加「反擊模式」選項</li>
+							</ul>
 							<ul>
 								<li>[20240211]</li>
 								<li>修正銀伊、魔伊的潛6被動</li>
