@@ -100,4 +100,5 @@ export const TurnActionType = {
     guard: "guard",
     none: "none"
 };
+export const CounterAttackMode = { firstTurnOnly: '僅第一回合', everyTurn: '每回合' };
 //# sourceMappingURL=Constants.js.map

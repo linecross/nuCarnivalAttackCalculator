@@ -1,4 +1,4 @@
-import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType, TurnActionType } from './Constants.js';
+import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
 const ALWAYS_EFFECTIVE = 99;
 var GAME_CONFIG = {
     MAX_LEVEL: 60,
@@ -351,7 +351,7 @@ export class BattleTurn {
         var existingRules = this.ruleLog[turn].filter(e => e.id == rule.id);
         var attackTypes = [RuleType.attack, RuleType.heal];
         var attackRules = this.ruleLog[turn].filter(e => attackTypes.includes(e.type));
-        console.debug(turn + ":[" + rule.id + "]" + rule.type + rule.value + ":" + rule.maxCount + "||" + existingRules.length);
+        // console.debug(turn+":["+rule.id+"]"+rule.type+rule.value+":"+rule.maxCount+"||"+existingRules.length);
         // Seperate buff before and after attack
         if (attackRules.length == 0 && existingRules.length > 0) {
             for (var i = 0; i < applyCount; i++) {
@@ -456,6 +456,7 @@ export class Battle {
         this.battleTurns = [];
         this.enemyElement = Element.NA;
         this.counterAttackCount = 0;
+        this.counterAttackMode = CounterAttackMode.everyTurn;
         this.printOutputOption = Battle.PRINT_OUTPUT_OPTION.ALL;
         this.printEnemeyOption = false;
         this.turns = turns;
@@ -684,7 +685,9 @@ export class Battle {
                     newRule.turn = 1;
                     newRule.maxCount = Math.min(this.counterAttackCount, rule.maxCount);
                     this.attack(AttackType.SkillAttack, newRule, card);
-                    rule.turn = 0; // consume
+                    if (this.counterAttackMode == CounterAttackMode.firstTurnOnly) {
+                        rule.turn = 0; // consume
+                    }
                 }
             }
             // ---------------------------回合結束------------------------------------
@@ -965,7 +968,7 @@ export class Battle {
         else {
             this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal * hitCount;
             this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
-            this.battleTurns[card.name].addRuleLog(currentTurn, rule);
+            this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
         }
     }
     getTurnValue(cardname, turn) {
