@@ -74,7 +74,7 @@ describe('輔助測試', () => {
         test('緩補+我方緩補量增加', () => {
             cardData = `{
                 "coolDown": 3,
-                "attackRule": [ { "type": "我方受到持續治療量增加", "value": "25%", "target": "全體" }, {"type": "持續治療", "value": "50%", "turn": 2 } ],
+                "attackRule": [ { "type": "我方受到持續治療增加", "value": "25%", "target": "全體" }, {"type": "持續治療", "value": "50%", "turn": 2 } ],
                 "skillLv3Rule": [ {"type": "持續治療", "value": "100%", "turn": 3} ]
             }`;
             setupBattle();
