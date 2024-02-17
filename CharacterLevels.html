@@ -64,6 +64,10 @@
 						<input class="form-check-input" type="radio" id="showATK" value="atk" v-model="input.atkOrHp" />
 						<label class="form-check-label no-select" for="showATK">ATK</label>
 					</div>
+					<div class="form-check form-check-inline" title="顯示戰力值">
+						<input class="form-check-input" type="radio" id="showBattlePower" value="bp" v-model="input.atkOrHp" />
+						<label class="form-check-label no-select" for="showBattlePower">戰力值</label>
+					</div>
 					<hr />
 				</div>
 			</div>
@@ -149,6 +153,7 @@
 									<template v-for="star in 5" :key="star">
 										<th v-if="displayHP" scope="col" :class="highlightTableHpOrAtkHeader(star, 'hp')">HP</th>
 										<th v-if="displayATK" scope="col" :class="highlightTableHpOrAtkHeader(star, 'atk')">ATK</th>
+										<th v-if="displayBattlePower" scope="col" :class="highlightTableHpOrAtkHeader(star, 'bp')">戰力值</th>
 									</template>
 								</tr>
 							</thead>
@@ -160,6 +165,7 @@
 									<template v-for="star in 5" :key="star">
 										<td v-if="displayHP" :class="highlightTableRecord(star, level, 'hp')" @click="selectTableRecord(star, level, 'hp')">{{ calculateCharValue(input.charName, input.charId, star, level, getRoomPercentage(input.room), getCurrentPotenial('hp'), 'hp') }}</td>
 										<td v-if="displayATK" :class="highlightTableRecord(star, level, 'atk')" @click="selectTableRecord(star, level, 'atk')">{{ calculateCharValue(input.charName, input.charId, star, level, getRoomPercentage(input.room), getCurrentPotenial('atk'), 'atk') }}</td>
+										<td v-if="displayBattlePower" :class="highlightTableRecord(star, level, 'bp')" @click="selectTableRecord(star, level, 'bp')">{{ calculateBattlePower(input.charName, input.charId, star, level, getRoomPercentage(input.room), getCurrentPotenial('hp'), getCurrentPotenial('atk')) }}</td>
 									</template>
 								</tr>
 
@@ -170,6 +176,7 @@
 									<template v-for="star in 5" :key="star">
 										<td v-if="displayHP" :class="highlightTableRecord(star, room, 'hp')" @click="selectTableRecord(star, room, 'hp')">{{ calculateCharValue(input.charName, input.charId, star, input.level, getRoomPercentage(room), getCurrentPotenial('hp'), 'hp') }}</td>
 										<td v-if="displayATK" :class="highlightTableRecord(star, room, 'atk')" @click="selectTableRecord(star, room, 'atk')">{{ calculateCharValue(input.charName, input.charId, star, input.level, getRoomPercentage(room), getCurrentPotenial('atk'), 'atk') }}</td>
+										<td v-if="displayBattlePower" :class="highlightTableRecord(star, room, 'bp')" @click="selectTableRecord(star, room, 'bp')">{{ calculateBattlePower(input.charName, input.charId, star, input.level, getRoomPercentage(room), getCurrentPotenial('hp'), getCurrentPotenial('atk')) }}</td>
 									</template>
 								</tr>
 
@@ -178,10 +185,12 @@
 										<div>{{ idx }}</div>
 										<div v-if="displayHP" style="font-size: 0.5rem;" >HP：{{ getPotentialPercentOfOneTier('hp', idx) }}%</div>
 										<div v-if="displayATK" style="font-size: 0.5rem;" >ATK：{{ getPotentialPercentOfOneTier('atk', idx) }}%</div>
+										<div v-if="displayBattlePower" style="font-size: 0.5rem;" >ATK：{{ getPotentialPercentOfOneTier('bp', idx) }}%</div>
 									</th>
 									<template v-for="star in 5" :key="star">
 										<td v-if="displayHP" :class="highlightTableRecord(star, idx, 'hp')" @click="selectTableRecord(star, idx, 'hp')">{{ calculateCharValue(input.charName, input.charId, star, input.level, getRoomPercentage(input.room), getPotentialPercent('hp', tier), 'hp') }}</td>
 										<td v-if="displayATK" :class="highlightTableRecord(star, idx, 'atk')" @click="selectTableRecord(star, idx, 'atk')">{{ calculateCharValue(input.charName, input.charId, star, input.level, getRoomPercentage(input.room), getPotentialPercent('atk', tier), 'atk') }}</td>
+										<td v-if="displayBattlePower" :class="highlightTableRecord(star, idx, 'bp')" @click="selectTableRecord(star, idx, 'bp')">{{ calculateBattlePower(input.charName, input.charId, star, input.level, getRoomPercentage(input.room), getPotentialPercent('hp', tier), getPotentialPercent('atk', tier)) }}</td>
 									</template>
 								</tr>
 							</tbody>
