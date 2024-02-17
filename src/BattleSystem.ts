@@ -262,16 +262,20 @@ export class Card{
 
 	getAtk() : number{
 		if (this.atk != null){
-			return this.atk;
+			return Math.floor(this.atk);
 		}
 		return this.getCardVal(this.baseAtk, this.getAtkPotential());
 	}
 
 	getHp() : number{
 		if (this.hp != null){
-			return this.hp;
+			return Math.floor(this.hp);
 		}
 		return this.getCardVal(this.baseHp, this.getHpPotential());
+	}
+
+	getBp() : number{
+		return Math.floor(this.getHp() + (this.getAtk() * 5));
 	}
 
 	getHpPotential() : number{
@@ -1451,6 +1455,10 @@ export class Team{
 			cards.push(this.getCard(name));
 		}
 		return cards;
+	}
+
+	getBattlePower() : number{
+		return this.cards.reduce((sum, card) => sum + card.getBp(), 0);
 	}
 
 	getCharCount(char : string) : number{

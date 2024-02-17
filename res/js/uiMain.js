@@ -351,6 +351,12 @@ Vue.createApp({
 		selectedCardActionPattern(){
 			return this.userInput.cardActionPattern.join(',');
 		},
+		getTeamBattlePower(){
+			if (this.battle != null){
+				return this.battle.team.getBattlePower();
+			}
+			return 0;
+		},
 		updatedCardData(){
 			var result = '';
 			for (var card of this.cards){

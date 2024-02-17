@@ -141,6 +141,10 @@
 									<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].atk"></input>
 									<input v-else type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getAtk()" disabled="true"></input>
 								</div>
+								<div v-if="userInput.isAdvanceMode" class="row">
+									<label class="col-auto">戰力值</label>
+									<input type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getBp()" disabled="true"></input>
+								</div>
 
 								<div v-if="userInput.isAdvanceMode" class="row">
 									<label class="col-auto" :for="'inputCard-order-'+(idx+1)">行動順序</label>
@@ -221,6 +225,10 @@
 								<input class="form-check-input" type="radio" id="input-printmode6" value="OnlyHeal" v-model="userInput.printOutputMode" />
 								<label class="form-check-label no-select" for="input-printmode6">補量</label>
 							</div>
+						</div>
+
+						<div class="form-group mb-3 col-lg-10">
+							<label class="col-auto">總戰力值：{{getTeamBattlePower}}</label>
 						</div>
 
 						<div class="table-responsive" >
