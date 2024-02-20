@@ -89,6 +89,11 @@
     background-color: #bae9c8;
 } 
 
+.resultTable th input[type='checkbox']{
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
 /* .resultTable th.ele-dark div::before{
     content: "";
     background-image: url(https://static.miraheze.org/nucarnivalwiki/thumb/d/d8/Type_-_Dark.png/33px-Type_-_Dark.png);
@@ -130,4 +135,159 @@
 
 .popover{
     max-width: 100%;
+}
+
+.card-block{
+    display: inline-block; 
+    text-align: center;
+    white-space: normal;
+
+    padding: 0.375rem;
+    border-radius: 0.5rem;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: none;
+    transition: all .25s ease-in-out;
+}
+
+#cardSelector .card-block{
+    width: 200px; 
+    height: 200px; 
+}
+
+.card-block:hover{
+    background-color: #c6e2ffe3;
+}
+
+.card-block:hover .card-name{
+    background-color: #1679d0;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.card-block:hover .card-image-div{
+    transform: scale(1.1);
+}
+
+.card-image-div{
+    position: relative;
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    transition: all .15s ease-in-out;
+}
+
+.card-image{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    border-radius: 0.8rem;
+}
+
+.card-icon-element{
+    position: absolute;
+    top: 6px;
+    left: 5px;
+    z-index: 130;
+}
+
+.card-icon-class{
+    position: absolute;
+    width: 45px;
+    top: 5px;
+    right: 1px;
+    filter: drop-shadow(0 0 0.2rem #646464);
+    z-index: 120;
+}
+
+.card-icon-rarity{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 110;
+    filter: drop-shadow(0 0 0.2rem #000000b2);
+    border-radius: 0.8rem;
+}
+
+.card-name{
+    font-size: 1.25rem;
+    text-shadow: 1px 1px 2px black;
+    color: white;
+    background-color: #595959;
+    border-radius: 10px;
+    width: 150px;
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    transition: all .25s ease-in-out;
+}
+
+#cardSelector .btn, #cardSelector input, #cardSelector button {
+    font-size: 1.15rem;
+}
+
+#cardSelector .modal-dialog{
+    max-width: 90%;
+}
+#cardSelector .modal-body{
+    display: flex; 
+    flex-direction: row;
+}
+#cardSelector .filter-panel{
+    display: inline-flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1 1 30%;
+    min-height: 100px;
+    transition: all .25s ease-in-out;
+}
+#cardSelector .card-panel{
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-height: 100px;
+}
+#cardSelector .cardFilter-element span, #cardSelector .cardFilter-clazz span{
+    margin-right: 1rem;
+}
+#cardSelector .cardFilter-element label, #cardSelector .cardFilter-clazz label{
+    cursor: pointer;
+}
+#cardSelector .cardFilter-element label img{
+    width: 35px;
+    height: 35px;
+    filter: drop-shadow(0 0 0.2rem #646464) brightness(0.8);
+    opacity: 0.5;
+    transition: all .25s ease-in-out;
+    background-color: black;
+    border-radius: 50%;
+}
+#cardSelector .cardFilter-element input:checked + label img{
+    opacity: 1;
+    filter: drop-shadow(0 0 0.25rem #333) brightness(1);
+}
+
+#cardSelector .cardFilter-clazz label img{
+    width: 35px;
+    height: 35px;
+    filter: drop-shadow(0 0 0.2rem #646464) brightness(0.8);
+    opacity: 0.5;
+    transition: all .25s ease-in-out;
+    background-color: black;
+    border-radius: 50%;
+}
+#cardSelector .cardFilter-clazz input:checked + label img{
+    opacity: 1;
+    filter: drop-shadow(0 0 0.25rem #333) brightness(1);
+}
+
+
+
+
+.resultTable .card-block.disabled{
+    opacity: 0.6;
+}
+
+.popover{
+    font-size: 1rem;
 }

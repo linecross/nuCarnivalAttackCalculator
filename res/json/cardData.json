@@ -3,6 +3,7 @@
       "char": "艾斯特", "fullname": null, "alias": null,
       "rarity": "N", "class": "攻擊", "element": "火", "potType": "NR卡",
       "baseHp": 4767, "baseAtk": 1102, "coolDown": 4,
+      "img": "Aster_N_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
@@ -27,6 +28,7 @@
       "char": "墨菲", "fullname": null, "alias": null,
       "rarity": "N", "class": "守護", "element": "水", "potType": "NR卡",
       "baseHp": 6937, "baseAtk": 747, "coolDown": 3,
+      "img": "Morvay_N_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
@@ -46,6 +48,7 @@
       "rarity": "N", "class": "治療", "element": "光", "potType": "NR卡",
       "baseHp": 4554, "baseAtk": 1138, "coolDown": 3,
       "attackRule": [{ "type": "治療", "value": "75%" }],
+      "img": "Yakumo_N_01.jpg",
       "skillLv1Rule": [
         { "type": "治療", "value": "133%" },
         { "type": "持續治療", "value": "34%", "turn": 2 }
@@ -66,6 +69,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "N", "class": "攻擊", "element": "闇", "potType": "NR卡",
       "baseHp": 4305, "baseAtk": 1209, "coolDown": 3,
+      "img": "Edmond_N_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "229%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "273%" }],
@@ -85,6 +89,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "N", "class": "輔助", "element": "闇", "potType": "NR卡",
       "baseHp": 5657, "baseAtk": 925, "coolDown": 4,
+      "img": "Olivine_N_01.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
       "skillLv1Rule": [
         { "type": "輔助", "value": "71%", "turn": 2, "target": "全體" }
@@ -109,6 +114,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "N", "class": "攻擊", "element": "光", "potType": "NR卡",
       "baseHp": 4127, "baseAtk": 1245, "coolDown": 6,
+      "img": "Quincy_N_01.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
@@ -131,6 +137,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "N", "class": "妨礙", "element": "木", "potType": "NR卡",
       "baseHp": 4660, "baseAtk": 1102, "coolDown": 4,
+      "img": "Kuya_N_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
@@ -150,6 +157,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "N", "class": "攻擊", "element": "水", "potType": "NR卡",
       "baseHp": 4198, "baseAtk": 1245, "coolDown": 4,
+      "img": "Garu_N_01.jpg",
       "attackRule": [
         { "type": "敵方受到傷害增加", "value": "4%", "turn": 2 },
         { "type": "攻擊", "value": "50%" }
@@ -189,6 +197,7 @@
       "char": "布儡", "fullname": null, "alias": null,
       "rarity": "N", "class": "攻擊", "element": "木", "potType": "NR卡",
       "baseHp": 4447, "baseAtk": 1174, "coolDown": 4,
+      "img": "Blade_N_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "63%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "142%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "173%" }],
@@ -208,6 +217,7 @@
       "char": "啖天", "fullname": null, "alias": null,
       "rarity": "N", "class": "攻擊", "element": "光", "potType": "NR卡",
       "baseHp": 4482, "baseAtk": 1174, "coolDown": 3,
+      "img": "Dante_N_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
@@ -236,6 +246,7 @@
       "char": "歛", "fullname": null, "alias": null,
       "rarity": "N", "class": "妨礙", "element": "火", "potType": "NR卡",
       "baseHp": 4589, "baseAtk": 1138, "coolDown": 3,
+      "img": "Rei_N_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "204%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "238%" }],
@@ -255,6 +266,7 @@
       "char": "艾斯特", "fullname": null, "alias": null,
       "rarity": "R", "class": "攻擊", "element": "闇", "potType": "NR卡",
       "baseHp": 5443, "baseAtk": 1316, "coolDown": 4,
+      "img": "Aster_R_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
@@ -279,6 +291,7 @@
       "char": "墨菲", "fullname": null, "alias": null,
       "rarity": "R", "class": "守護", "element": "闇", "potType": "NR卡",
       "baseHp": 8147, "baseAtk": 889, "coolDown": 3,
+      "img": "Morvay_R_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
@@ -297,6 +310,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "R", "class": "治療", "element": "木", "potType": "NR卡",
       "baseHp": 5301, "baseAtk": 1352, "coolDown": 3,
+      "img": "Yakumo_R_01.jpg",
       "attackRule": [{ "type": "治療", "value": "75%" }],
       "skillLv1Rule": [
         { "type": "治療", "value": "133%" },
@@ -318,6 +332,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "R", "class": "攻擊", "element": "火", "potType": "NR卡",
       "baseHp": 5052, "baseAtk": 1423, "coolDown": 3,
+      "img": "Edmond_R_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "229%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "273%" }],
@@ -337,6 +352,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "R", "class": "輔助", "element": "木", "potType": "NR卡",
       "baseHp": 6653, "baseAtk": 1067, "coolDown": 4,
+      "img": "Olivine_R_01.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
       "skillLv1Rule": [
         { "type": "輔助", "value": "71%", "turn": 2, "target": "全體" }
@@ -361,6 +377,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "R", "class": "攻擊", "element": "水", "potType": "NR卡",
       "baseHp": 4874, "baseAtk": 1494, "coolDown": 6,
+      "img": "Quincy_R_01.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
@@ -383,6 +400,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "R", "class": "妨礙", "element": "火", "potType": "NR卡",
       "baseHp": 5514, "baseAtk": 1316, "coolDown": 4,
+      "img": "Kuya_R_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
@@ -402,6 +420,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "R", "class": "攻擊", "element": "光", "potType": "NR卡",
       "baseHp": 4945, "baseAtk": 1458, "coolDown": 4,
+      "img": "Garu_R_01.jpg",
       "attackRule": [
         { "type": "敵方受到傷害增加", "value": "4%", "turn": 2 },
         { "type": "攻擊", "value": "50%" }
@@ -441,6 +460,7 @@
       "char": "布儡", "fullname": null, "alias": null,
       "rarity": "R", "class": "攻擊", "element": "水", "potType": "NR卡",
       "baseHp": 5158, "baseAtk": 1387, "coolDown": 4,
+      "img": "Blade_R_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "63%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "142%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "173%" }],
@@ -460,6 +480,7 @@
       "char": "啖天", "fullname": null, "alias": null,
       "rarity": "R", "class": "攻擊", "element": "闇", "potType": "NR卡",
       "baseHp": 5230, "baseAtk": 1387, "coolDown": 3,
+      "img": "Dante_R_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
@@ -488,6 +509,7 @@
       "char": "歛", "fullname": null, "alias": null,
       "rarity": "R", "class": "妨礙", "element": "水", "potType": "NR卡",
       "baseHp": 5479, "baseAtk": 1316, "coolDown": 3,
+      "img": "Rei_R_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "204%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "238%" }],
@@ -507,6 +529,7 @@
       "char": "艾斯特", "fullname": null, "alias": null,
       "rarity": "SR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 6333, "baseAtk": 1565, "coolDown": 4,
+      "img": "Aster_SR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
@@ -531,6 +554,7 @@
       "char": "墨菲", "fullname": null, "alias": null,
       "rarity": "SR", "class": "守護", "element": "火", "potType": "ATK先行",
       "baseHp": 9606, "baseAtk": 1031, "coolDown": 3,
+      "img": "Morvay_SR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
@@ -549,6 +573,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "SR", "class": "治療", "element": "火", "potType": "ATK先行",
       "baseHp": 6155, "baseAtk": 1636, "coolDown": 3,
+      "img": "Yakumo_SR_01.jpg",
       "attackRule": [{ "type": "治療", "value": "75%" }],
       "skillLv1Rule": [
         { "type": "治療", "value": "133%" },
@@ -570,6 +595,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "SR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 5977, "baseAtk": 1672, "coolDown": 3,
+      "img": "Edmond_SR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "229%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "273%" }],
@@ -589,6 +615,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "SR", "class": "輔助", "element": "光", "potType": "平均型",
       "baseHp": 7827, "baseAtk": 1280, "coolDown": 4,
+      "img": "Olivine_SR_01.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
       "skillLv1Rule": [
         { "type": "輔助", "value": "71%", "turn": 2, "target": "全體" }
@@ -613,6 +640,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "SR", "class": "攻擊", "element": "木", "potType": "HP先行",
       "baseHp": 5728, "baseAtk": 1743, "coolDown": 6,
+      "img": "Quincy_SR_01.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
@@ -635,6 +663,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "SR", "class": "妨礙", "element": "闇", "potType": "ATK先行",
       "baseHp": 6439, "baseAtk": 1565, "coolDown": 4,
+      "img": "Kuya_SR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
@@ -654,6 +683,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "SR", "class": "攻擊", "element": "闇", "potType": "HP先行",
       "baseHp": 5799, "baseAtk": 1707, "coolDown": 4,
+      "img": "Garu_SR_01.jpg",
       "attackRule": [
         { "type": "敵方受到傷害增加", "value": "4%", "turn": 2 },
         { "type": "攻擊", "value": "50%" }
@@ -693,6 +723,7 @@
       "char": "布儡", "fullname": null, "alias": null,
       "rarity": "SR", "class": "攻擊", "element": "光", "potType": "HP先行",
       "baseHp": 6048, "baseAtk": 1672, "coolDown": 4,
+      "img": "Blade_SR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "63%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "142%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "173%" }],
@@ -712,6 +743,7 @@
       "char": "啖天", "fullname": null, "alias": null,
       "rarity": "SR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 6190, "baseAtk": 1601, "coolDown": 3,
+      "img": "Dante_SR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
@@ -740,6 +772,7 @@
       "char": "歛", "fullname": null, "alias": null,
       "rarity": "SR", "class": "妨礙", "element": "闇", "potType": "HP先行",
       "baseHp": 6333, "baseAtk": 1565, "coolDown": 3,
+      "img": "Rei_SR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "204%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "238%" }],
@@ -759,6 +792,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 7507, "baseAtk": 2099, "coolDown": 4,
+      "img": "Yakumo_SSR_01.jpg",
       "attackRule": [
         { "type": "攻擊力增加", "value": "10%", "turn": 3 },
         { "type": "攻擊", "value": "100%" }
@@ -789,6 +823,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 7400, "baseAtk": 2134, "coolDown": 3,
+      "img": "Edmond_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "125%" },
@@ -817,6 +852,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "治療", "element": "光", "potType": "ATK先行",
       "baseHp": 7934, "baseAtk": 1992, "coolDown": 4,
+      "img": "Olivine_SSR_01.jpg",
       "attackRule": [{ "type": "持續治療", "value": "25%", "turn": 3 }],
       "skillLv1Rule": [
         { "type": "治療", "value": "145%" },
@@ -838,6 +874,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "木", "potType": "HP先行",
       "baseHp": 7151, "baseAtk": 2205, "coolDown": 6,
+      "img": "Quincy_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "434%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "546%" }],
@@ -858,6 +895,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "平均型",
       "baseHp": 7791, "baseAtk": 2028, "coolDown": 4,
+      "img": "Kuya_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "50%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "124%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "148%" }],
@@ -877,6 +915,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "HP先行",
       "baseHp": 7791, "baseAtk": 2028, "coolDown": 4,
+      "img": "Garu_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "63%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "142%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "173%" }],
@@ -896,6 +935,7 @@
       "char": "布儡", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
       "baseHp": 6937, "baseAtk": 2277, "coolDown": 3,
+      "img": "Blade_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "造成傷害增加", "value": "12.5%", "maxCount": 2, "turn": 99 },
@@ -924,6 +964,7 @@
       "char": "啖天", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "守護", "element": "火", "potType": "ATK先行",
       "baseHp": 11314, "baseAtk": 1387, "coolDown": 4,
+      "img": "Dante_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "75%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
@@ -936,6 +977,7 @@
       "char": "歛", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "HP先行",
       "baseHp": 7115, "baseAtk": 2205, "coolDown": 3,
+      "img": "Rei_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "造成傷害增加", "value": "25%", "turn": 2 },
@@ -964,6 +1006,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "HP先行",
       "baseHp": 7044, "baseAtk": 2241, "coolDown": 3,
+      "img": "Yakumo_SSR_02.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "必殺技傷害增加", "value": "3%", "turn": 99, "maxCount": 6 }
@@ -999,6 +1042,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
       "baseHp": 6831, "baseAtk": 2312, "coolDown": 3,
+      "img": "Edmond_SSR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "63%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "64%" },
@@ -1026,6 +1070,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "輔助", "element": "水", "potType": "平均型",
       "baseHp": 9321, "baseAtk": 1672, "coolDown": 4,
+      "img": "Olivine_SSR_02.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
       "skillLv1Rule": [{ "type": "輔助", "value": "107%", "target": "全體" }],
       "skillLv2Rule": [{ "type": "輔助", "value": "129%", "target": "全體" }],
@@ -1046,6 +1091,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "守護", "element": "木", "potType": "ATK先行",
       "baseHp": 11563, "baseAtk": 1352, "coolDown": 4,
+      "img": "Quincy_SSR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
@@ -1082,6 +1128,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "妨礙", "element": "火", "potType": "平均型",
       "baseHp": 8076, "baseAtk": 1956, "coolDown": 3,
+      "img": "Kuya_SSR_02.jpg",
       "attackRule": [{ "type": "持續傷害", "value": "50%", "turn": 4 }],
       "skillLv1Rule": [
         { "type": "持續傷害", "value": "136%", "turn": 3 },
@@ -1124,6 +1171,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
       "baseHp": 7329, "baseAtk": 2134, "coolDown": 3,
+      "img": "Garu_SSR_02.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "敵方受到傷害增加", "value": "2%", "turn": 7 }
@@ -1161,6 +1209,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "輔助", "element": "木", "potType": "平均型",
       "baseHp": 7222, "baseAtk": 2170, "coolDown": 4,
+      "img": "Yakumo_SSR_03.jpg",
       "attackRule": [
         { "type": "輔助", "value": "25%", "target": "全體" },
         { "type": "我方受到持續治療增加", "value": "25%", "target": "全體" }
@@ -1215,6 +1264,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "ATK先行",
       "baseHp": 6724, "baseAtk": 2348, "coolDown": 4,
+      "img": "Olivine_SSR_03.jpg",
       "attackRule": [{ "type": "攻擊", "value": "50%", "maxCount": 3 }],
       "skillLv1Rule": [
         { "type": "必殺技傷害增加", "value": "27%", "turn": 2 },
@@ -1242,6 +1292,7 @@
       "char": "布儡", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 6973, "baseAtk": 2241, "coolDown": 3,
+      "img": "Blade_SSR_02.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "40%" },
         { "type": "反擊", "value": "23%", "maxCount": 99 }
@@ -1277,6 +1328,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 7649, "baseAtk": 2063, "coolDown": 3,
+      "img": "Edmond_SSR_03.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "204%" },
@@ -1311,7 +1363,8 @@
     "追夏．啖天": {
       "char": "啖天", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
-      "baseHp": 6937, "baseAtk": 2383, "coolDown": 3,
+      "baseHp": 6511, "baseAtk": 2419, "coolDown": 3,
+      "img": "Dante_SSR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "敵方受到必殺技傷害增加", "value": "27%" },
@@ -1340,6 +1393,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "HP先行",
       "baseHp": 6617, "baseAtk": 2383, "coolDown": 4,
+      "img": "Quincy_SSR_03.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "造成傷害增加", "value": "40%", "turn": 2 },
@@ -1371,6 +1425,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "治療", "element": "闇", "potType": "ATK先行",
       "baseHp": 8218, "baseAtk": 1921, "coolDown": 4,
+      "img": "Kuya_SSR_03.jpg",
       "attackRule": [{ "type": "治療", "value": "68%" }],
       "skillLv1Rule": [{ "type": "治療", "value": "133%" }],
       "skillLv2Rule": [{ "type": "治療", "value": "157%" }],
@@ -1397,6 +1452,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "守護", "element": "火", "potType": "ATK先行",
       "baseHp": 12274, "baseAtk": 1316, "coolDown": 3,
+      "img": "Yakumo_SSR_04.jpg",
       "attackRule": [{ "type": "攻擊", "value": "50%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "50" },
@@ -1418,6 +1474,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "輔助", "element": "光", "potType": "平均型",
       "baseHp": 8040, "baseAtk": 2028, "coolDown": 4,
+      "img": "Garu_SSR_03.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "輔助", "value": "30%", "target": "全體" }
@@ -1451,6 +1508,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "平均型",
       "baseHp": 8254, "baseAtk": 1992, "coolDown": 3,
+      "img": "Edmond_SSR_04.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         {
@@ -1510,6 +1568,7 @@
       "char": "布儡", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "妨礙", "element": "木", "potType": "平均型",
       "baseHp": 7578, "baseAtk": 2170, "coolDown": 4,
+      "img": "Blade_SSR_03.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "造成傷害增加", "value": "20%", "turn": 3 },
@@ -1543,6 +1602,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "治療", "element": "木", "potType": "HP先行",
       "baseHp": 7649, "baseAtk": 2134, "coolDown": 4,
+      "img": "Olivine_SSR_04.jpg",
       "attackRule": [
         { "type": "治療", "value": "25%" },
         { "type": "持續治療", "value": "25%", "turn": 2 }
@@ -1581,6 +1641,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "ATK先行",
       "baseHp": 7507, "baseAtk": 2205, "coolDown": 4,
+      "img": "Quincy_SSR_04.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "治療", "value": "10%", "valueBy": "HP" }
@@ -1612,6 +1673,7 @@
       "char": "啖天", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "輔助", "element": "光", "potType": "平均型",
       "baseHp": 8112, "baseAtk": 2028, "coolDown": 4,
+      "img": "Dante_SSR_03.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
       "skillLv1Rule": [
         {
@@ -1661,6 +1723,7 @@
       "char": "伊得", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "輔助", "element": "火", "potType": "平均型",
       "baseHp": 7898, "baseAtk": 2063, "coolDown": 5,
+      "img": "Eiden_SSR_01.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
       "skillLv1Rule": [
         { "type": "輔助", "value": "22%", "turn": 5, "target": "全體" },
@@ -1700,6 +1763,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "守護", "element": "木", "potType": "ATK先行",
       "baseHp": 11385, "baseAtk": 1458, "coolDown": 6,
+      "img": "Edmond_SSR_05.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
@@ -1721,6 +1785,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 7293, "baseAtk": 2277, "coolDown": 4,
+      "img": "Kuya_SSR_04.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "持續傷害", "value": "20%", "turn": 2 }
@@ -1786,6 +1851,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "守護", "element": "水", "potType": "ATK先行",
       "baseHp": 11741, "baseAtk": 1387, "coolDown": 4,
+      "img": "Garu_SSR_04.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [],
       "skillLv2Rule": [],
@@ -1804,6 +1870,7 @@
       "char": "布儡", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 7044, "baseAtk": 2348, "coolDown": 4,
+      "img": "Blade_SSR_04.jpg",
       "attackRule": [{ "type": "攻擊", "value": "50%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "60%", "maxCount": 3 },
@@ -1840,6 +1907,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "SR", "class": "妨礙", "element": "水", "potType": "HP先行",
       "baseHp": 6546, "baseAtk": 1921, "coolDown": 4,
+      "img": "Quincy_SR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
@@ -1859,6 +1927,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "木", "potType": "HP先行",
       "baseHp": 7151, "baseAtk": 2312, "coolDown": 4,
+      "img": "Yakumo_SSR_05.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "125%" },
@@ -1892,6 +1961,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "輔助", "element": "闇", "potType": "平均型",
       "baseHp": 7791, "baseAtk": 2099, "coolDown": 3,
+      "img": "Olivine_SSR_05.jpg",
       "attackRule": [{ "type": "輔助", "value": "35%", "target": "全體" }],
       "skillLv1Rule": [{ "type": "輔助", "value": "120%", "target": "全體" }],
       "skillLv2Rule": [
@@ -1918,6 +1988,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "治療", "element": "水", "potType": "ATK先行",
       "baseHp": 7400, "baseAtk": 2241, "coolDown": 3,
+      "img": "Quincy_SSR_05.jpg",
       "attackRule": [{ "type": "治療", "value": "75%" }],
       "skillLv1Rule": [
         { "type": "治療", "value": "150%" },
@@ -1949,6 +2020,7 @@
       "char": "歛", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "守護", "element": "光", "potType": "ATK先行",
       "baseHp": 11207, "baseAtk": 1458, "coolDown": 3,
+      "img": "Rei_SSR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
@@ -1980,6 +2052,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "輔助", "element": "火", "potType": "ATK先行",
       "baseHp": 7969, "baseAtk": 2063, "coolDown": 3,
+      "img": "Edmond_SSR_06.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "輔助", "value": "30%", "target": "全體" }
@@ -2039,6 +2112,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
       "baseHp": 6831, "baseAtk": 2419, "coolDown": 4,
+      "img": "Kuya_SSR_05.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "63%" },
         { "type": "持續傷害", "value": "50%", "turn": 2 }
@@ -2084,6 +2158,7 @@
       "char": "啖天", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 6937, "baseAtk": 2383, "coolDown": 3,
+      "img": "Dante_SSR_04.jpg",
       "attackRule": [{ "type": "攻擊", "value": "50%", "maxCount": 3 }],
       "skillLv1Rule": [
         {
@@ -2129,6 +2204,7 @@
       "char": "艾斯特", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "妨礙", "element": "光", "potType": "平均型",
       "baseHp": 7009, "baseAtk": 2348, "coolDown": 4,
+      "img": "Aster_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "269%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "325%" }],
@@ -2152,6 +2228,7 @@
       "char": "墨菲", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 6902, "baseAtk": 2383, "coolDown": 4,
+      "img": "Morvay_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "245%" },
@@ -2184,6 +2261,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "木", "potType": "HP先行",
       "baseHp": 6795, "baseAtk": 2419, "coolDown": 6,
+      "img": "Yakumo_SSR_06.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "攻擊力增加", "value": "27%", "turn": 4 },
@@ -2216,6 +2294,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "治療", "element": "木", "potType": "ATK先行",
       "baseHp": 7115, "baseAtk": 2312, "coolDown": 3,
+      "img": "Garu_SSR_05.jpg",
       "attackRule": [
         { "type": "治療", "value": "25%" },
         { "type": "持續治療", "value": "25%", "turn": 2 }
@@ -2262,6 +2341,7 @@
       "char": "布儡", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "HP先行",
       "baseHp": 7080, "baseAtk": 2312, "coolDown": 4,
+      "img": "Blade_SSR_05.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "284%" }],
       "skillLv2Rule": [
@@ -2280,6 +2360,7 @@
       "char": "歛", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 7009, "baseAtk": 2348, "coolDown": 6,
+      "img": "Rei_SSR_03.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "125%" },
@@ -2319,6 +2400,7 @@
       "char": "玖夜", "fullname": null, "alias": null,
       "rarity": "SR", "class": "輔助", "element": "闇", "potType": "ATK先行",
       "baseHp": 6653, "baseAtk": 1921, "coolDown": 3,
+      "img": "Kuya_SR_02.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
       "skillLv1Rule": [{ "type": "輔助", "value": "112%", "target": "全體" }],
       "skillLv2Rule": [{ "type": "輔助", "value": "133%", "target": "全體" }],
@@ -2336,6 +2418,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "平均型",
       "baseHp": 7471, "baseAtk": 2205, "coolDown": 6,
+      "img": "Olivine_SSR_06.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "持續治療", "value": "27%", "turn": 4 },
@@ -2366,6 +2449,7 @@
       "char": "啖天", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "妨礙", "element": "闇", "potType": "平均型",
       "baseHp": 7329, "baseAtk": 2241, "coolDown": 3,
+      "img": "Dante_SSR_05.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "45%", "maxCount": 3 },
         { "type": "敵方受到傷害增加", "value": "7.5%" }
@@ -2395,6 +2479,7 @@
       "char": "艾德蒙特", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "治療", "element": "光", "potType": "平均型",
       "baseHp": 7258, "baseAtk": 2277, "coolDown": 4,
+      "img": "Edmond_SSR_07.jpg",
       "attackRule": [{ "type": "治療", "value": "75%" }],
       "skillLv1Rule": [
         { "type": "治療", "value": "100%" },
@@ -2429,6 +2514,7 @@
       "char": "崑西", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "輔助", "element": "火", "potType": "平均型",
       "baseHp": 7187, "baseAtk": 2277, "coolDown": 4,
+      "img": "Quincy_SSR_06.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
       "skillLv1Rule": [{ "type": "輔助", "value": "124%", "target": "全體" }],
       "skillLv2Rule": [
@@ -2464,6 +2550,7 @@
       "char": "可爾", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 6866, "baseAtk": 2383, "coolDown": 4,
+      "img": "Garu_SSR_06.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [{ "type": "攻擊", "value": "56%", "maxCount": 6 }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "69%", "maxCount": 6 }],
@@ -2483,6 +2570,7 @@
       "char": "伊得", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "平均型",
       "baseHp": 6973, "baseAtk": 2348, "coolDown": 3,
+      "img": "Eiden_SSR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         {
@@ -2539,6 +2627,7 @@
       "char": "八雲", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
       "baseHp": 6902, "baseAtk": 2383, "coolDown": 3,
+      "img": "Yakumo_SSR_07.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }, { "type": "持續治療", "value": "5%", "turn": 2 }],
       "skillLv1Rule": [
         { "type": "持續治療", "value": "14%", "turn": 3 },
@@ -2578,6 +2667,7 @@
       "char": "奧利文", "fullname": null, "alias": null,
       "rarity": "SSR", "class": "守護", "element": "水", "potType": "ATK先行",
       "baseHp": 11563, "baseAtk": 1423, "coolDown": 3,
+      "img": "Olivine_SSR_07.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" }

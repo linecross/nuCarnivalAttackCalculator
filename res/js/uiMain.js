@@ -8,6 +8,29 @@ var config = {
 	POT_SELECT: [0,6,9,12],
 	DEFAULT_STAR: {
 		FULL: '全員滿星', SSR3: '3星SSR+5星SR', SSR1: '1星SSR+3星SR'
+	},
+	FILTERS:{
+		rarity: ['N','R','SR','SSR'],
+		char: Object.values(Character),
+		clazz: ['攻擊','守護','妨礙','輔助','治療'],
+		element: ['火','水','木','光','闇'],
+	},
+	CHAR_FOLDER: {
+		'八雲': 'yakumo', '艾德蒙特': 'edmond', '奧利文': 'olivine',
+		'崑西': 'quincy', '玖夜': 'kuya', '可爾': 'garu',
+		'布儡': 'blade', '啖天': 'dante', '歛': 'rei',
+		'艾斯特': 'aster', '墨菲': 'morvay', '伊得': 'eiden'
+	},
+	IMAGE_PATH: {
+		'element': {
+			'光': 'light', '闇': 'dark', '火': 'fire', '水': 'water', '木': 'wood'
+		},
+		'class': {
+			'攻擊':'attack', '守護':'guard', '妨礙':'saboteur', '輔助':'support', '治療':'heal'
+		},
+		'rarity':{
+			'N':'n', 'R':'r', 'SR':'sr', 'SSR':'ssr'
+		}
 	}
 };
 
@@ -35,6 +58,15 @@ Vue.createApp({
 				isCalcEnemyDebuff: false,
 				printOutputMode: Battle.PRINT_OUTPUT_OPTION.ALL,
 			},
+			cardFilter:{
+				currentIdx: -1,
+				selectCardName: '',
+				searchStr: '',
+				rarity: ['N','R','SR','SSR'],
+				char: [],
+				clazz: ['攻擊','守護','妨礙','輔助','治療'],
+				element: ['火','水','木','光','闇'],
+			},
 			cardJsonLastModified: '',
 			cards: [null, null, null, null, null],
 			battle: null,
@@ -52,6 +84,7 @@ Vue.createApp({
 		this.ACTION_PATTERN = ActionPattern;
 		this.DEFAULT_STAR = config.DEFAULT_STAR;
 		this.COUNTER_ATTACK_MODE = CounterAttackMode;
+		this.FILTERS = config.FILTERS;
 
 		fetch("./res/json/cardData.json")
 		.then(resp => {
@@ -316,6 +349,60 @@ Vue.createApp({
 			}
 			return -1;
 		},
+		getCardByCardname(cardname){
+			var idx = this.getIndexByCardname(cardname);
+			if (idx >= 0){
+				return this.cards[idx];
+			}
+			return null;
+		},
+		cardFilterSelectNone(field){
+			if (field != null){
+				this.cardFilter[field] = [];
+			}
+			else{
+				this.cardFilterSelectNone('rarity');
+				this.cardFilterSelectNone('clazz');
+				this.cardFilterSelectNone('element');
+				this.cardFilterSelectNone('char');
+				this.cardFilter.searchStr = '';
+			}
+		},
+		openCardSelector(idx){
+			this.cardFilter.currentIdx = idx;
+			this.cardFilterSelectNone('rarity');
+			this.cardFilterSelectNone('clazz');
+			this.cardFilterSelectNone('element');
+			this.cardFilterSelectNone('char');
+			this.cardFilter.searchStr = '';
+			if (this.userInput.cardname[idx] != null && this.userInput.cardname[idx].length > 0){
+				this.cardFilter.selectCardName = this.userInput.cardname[idx];
+			}
+			else{
+				this.cardFilter.selectCardName = '';
+			}
+		},
+		selectCard(cardname){
+			this.cardFilter.selectCardName = cardname;
+		},
+		getCardImagePath(cardData){
+			if (cardData == null || cardData.img == null){
+				return './res/img/card/no_image.png';
+			}
+			return './res/img/card/' + config.CHAR_FOLDER[cardData.char] + '/' + cardData.img;
+		},
+		getCardIconPath(cardData, type){
+			if (cardData == null){
+				return '';
+			}
+			return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][cardData[type]] + '.png';
+		},
+		getFilterPanalIconPath(type, value){
+			return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
+		},
+		loadNoCardImage(event){
+			event.target.src = this.getCardImagePath();
+		},
 		importJsonStr(){
 			// remove spaces and tab, convert quotes, add quotes
 			var cleanedStr = this.inputJson.replace(/[\r\n\t]/g, '').replace(/'/g, '"').replace(/(\w+):/g, '"$1":');
@@ -350,6 +437,54 @@ Vue.createApp({
 		},
 		selectedCardActionPattern(){
 			return this.userInput.cardActionPattern.join(',');
+		},
+		getTeamBattlePower(){
+			if (this.battle != null){
+				return this.battle.team.getBattlePower();
+			}
+			return 0;
+		},
+		getFilteredCards(){
+			var arr = [];
+			var cardData = CardCenter.getCardData();
+			for (var card of Object.entries(cardData)) {
+				arr.push(card);
+			}
+
+			var searchStr = this.cardFilter.searchStr;
+			var chars = this.cardFilter.char;
+			var rarity = this.cardFilter.rarity;
+			var clazz = this.cardFilter.clazz;
+			var element = this.cardFilter.element;
+			
+			if (chars.length > 0){
+				arr = arr.filter(e=>chars.includes(e[1].char));
+			}
+			if (rarity.length > 0){
+				arr = arr.filter(e=>rarity.includes(e[1].rarity));
+			}
+			if (clazz.length > 0){
+				arr = arr.filter(e=>clazz.includes(e[1].class));
+			}
+			if (element.length > 0){
+				arr = arr.filter(e=>element.includes(e[1].element));
+			}
+			if (searchStr != null && searchStr.length > 0){
+				var searchStrArr = searchStr.trim().split(' ');
+				for (var str of searchStrArr){
+					str = str.trim();
+					if (str.startsWith("-")){
+						str = str.slice(1);
+						arr = arr.filter(e=>e[0].indexOf(str) == -1 && JSON.stringify(e[1]).indexOf(str) == -1);
+					}
+					else{
+						arr = arr.filter(e=>e[0].indexOf(str) > -1 || JSON.stringify(e[1]).indexOf(str) > -1);
+					}
+				}
+			}
+			
+			arr = arr.reverse();
+			return arr;
 		},
 		updatedCardData(){
 			var result = '';
@@ -435,6 +570,12 @@ Vue.createApp({
 				}
 			}
 			this.updateBattle();
+		},
+		'cardFilter.selectCardName'(newCardName, oldVal){
+			if (newCardName != null && newCardName.length > 0){
+				this.userInput.cardname[this.cardFilter.currentIdx] = newCardName;
+				this.userInput.char[this.cardFilter.currentIdx] = CardCenter.getCardData()[newCardName].char;
+			}
 		},
 		inputJson(){
 			if (this.importJsonResult != ''){

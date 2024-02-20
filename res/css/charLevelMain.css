@@ -57,11 +57,18 @@ body{
     background-color:  #ffcbcb;
 }
 
+.resultTable th.selected.bp, .resultTable td.selected.bp{
+    background-color:  #e6e0ff;
+}
+
 .resultTable td.higher.hp{
     background-color:  rgb(240, 255, 243);
 }
 .resultTable td.higher.atk{
     background-color:  rgb(255, 248, 245);
+}
+.resultTable td.higher.bp{
+    background-color:  rgb(249, 236, 255);
 }
 
 .form-control, .form-select{

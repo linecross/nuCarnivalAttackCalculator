@@ -201,6 +201,9 @@ var NuCarnivalCharChartApp = Vue.createApp({
 	},
 	methods: {
 		calculateCharValue(charName, charId, star, level, roomPercent, potentialPercent, hpOrAtk){
+			if (!['both', 'hp', 'atk'].includes(hpOrAtk)){
+				return;
+			}
 			if (Object.keys(this.charData).length > 0){
 				let data = this.charData[charName][charId];
 				if (data == null) {return ''}
@@ -218,6 +221,16 @@ var NuCarnivalCharChartApp = Vue.createApp({
 			}
 			return result;
 		},
+		getBattlePower(hp, atk){
+			return Math.ceil(hp + (atk * 5));
+		},
+		calculateBattlePower(charName, charId, star, level, roomPercent, hpPotentialPercent, atkPotentialPercent){
+			if (Object.keys(this.charData).length > 0){
+				var hp = this.calculateCharValue(charName, charId, star, level, roomPercent, hpPotentialPercent, 'hp');
+				var atk = this.calculateCharValue(charName, charId, star, level, roomPercent, atkPotentialPercent, 'atk');
+				return this.getBattlePower(hp, atk);
+			}
+		},
 		getPotentialPercent(hpOrAtk, tier){
 			if (this.currentChar == null) return 0;
 			let potArr = this.potentials[this.currentChar.potType][hpOrAtk];
@@ -228,6 +241,9 @@ var NuCarnivalCharChartApp = Vue.createApp({
 			return sum;
 		},
 		getPotentialPercentOfOneTier(hpOrAtk, tier){
+			if (!['hp', 'atk'].includes(hpOrAtk)){
+				return;
+			}
 			if (this.currentChar == null) return 0;
 			let potArr = this.potentials[this.currentChar.potType][hpOrAtk];
 			if (tier <= 0 || tier > 12){
@@ -237,11 +253,14 @@ var NuCarnivalCharChartApp = Vue.createApp({
 			return pot.toFixed(1);
 		},
 		selectTableRecord(star, val, hpOrAtk){
+			console.info("this.input.displayMode="+this.input.displayMode+", val="+val);
+			// Deselect
 			if (this.selected.star == star && this.selected[this.input.displayMode] == val && this.selected.hpOrAtk == hpOrAtk ){
 				this.selected.star = null;
 				this.selected[this.input.displayMode] = null;
 				this.selected.hpOrAtk = null;
 			}
+			// Select
 			else{
 				this.selected.star = star;
 				this.selected[this.input.displayMode] = val;
@@ -252,12 +271,23 @@ var NuCarnivalCharChartApp = Vue.createApp({
 			if (this.selected.star == star && this.selected[this.input.displayMode] == val && this.selected.hpOrAtk == hpOrAtk ){
 				return "selected " + this.selected.hpOrAtk;
 			}
+			console.info("this.selected.star="+star+", this.selected[this.input.displayMode]="+this.selected[this.input.displayMode]+", this.selected.hpOrAtk="+this.selected.hpOrAtk+", hpOrAtk="+hpOrAtk);
 			if (this.selected.star != null && this.selected[this.input.displayMode] != null && this.selected.hpOrAtk == hpOrAtk){
 				var level = this.input.displayMode == 'level' ? val : this.input.level;
 				var room = this.input.displayMode == 'room' ? val : this.input.room;
-				var potential = this.input.displayMode == 'potential' ? this.getPotentialPercent(hpOrAtk, val+1) : this.getCurrentPotenial(hpOrAtk);
 				var calValue = 0;
-				calValue = this.calculateCharValue(this.input.charName, this.input.charId, star, level, this.getRoomPercentage(room), potential, hpOrAtk);
+				console.info('test');
+
+				if (this.selected.hpOrAtk == 'bp'){
+					var hpPotential = this.input.displayMode == 'potential' ? this.getPotentialPercent('hp', val+1) : this.getCurrentPotenial('hp');
+					var atkPotential = this.input.displayMode == 'potential' ? this.getPotentialPercent('atk', val+1) : this.getCurrentPotenial('atk');
+					calValue = this.calculateBattlePower(this.input.charName, this.input.charId, star, level, this.getRoomPercentage(room), hpPotential, atkPotential);
+				}
+				else{
+					var potential = this.input.displayMode == 'potential' ? this.getPotentialPercent(hpOrAtk, val+1) : this.getCurrentPotenial(hpOrAtk);
+					calValue = this.calculateCharValue(this.input.charName, this.input.charId, star, level, this.getRoomPercentage(room), potential, hpOrAtk);
+				}
+				console.info('calValue='+calValue+", this.selectedValue="+this.selectedValue );
 				if (calValue >= this.selectedValue){
 					return "higher " + this.selected.hpOrAtk;
 				}
@@ -330,10 +360,13 @@ var NuCarnivalCharChartApp = Vue.createApp({
 			}
 		},
 		displayHP(){
-			return this.input.atkOrHp != 'atk';
+			return this.input.atkOrHp == 'hp' || this.input.atkOrHp == 'both';
 		},
 		displayATK(){
-			return this.input.atkOrHp != 'hp';
+			return this.input.atkOrHp == 'atk' || this.input.atkOrHp == 'both';
+		},
+		displayBattlePower(){
+			return this.input.atkOrHp == 'bp';
 		},
 		tierMax(){
 			if (this.currentChar == null) return 0;
@@ -349,9 +382,16 @@ var NuCarnivalCharChartApp = Vue.createApp({
 				var star = this.selected.star;
 				var level = this.input.displayMode == 'level' ? this.selected.level : this.input.level;
 				var room = this.input.displayMode == 'room' ? this.selected.room : this.input.room;
-				var potential = this.input.displayMode == 'potential' ? this.getPotentialPercent(this.selected.hpOrAtk, this.selected.potential+1) : this.getCurrentPotenial(this.selected.hpOrAtk);
 				var calValue = 1000000;
-				calValue = this.calculateCharValue(this.input.charName, this.input.charId, star, level, this.getRoomPercentage(room), potential, this.selected.hpOrAtk);
+				if (this.selected.hpOrAtk == 'bp'){
+					var hpPotential = this.input.displayMode == 'potential' ? this.getPotentialPercent('hp', this.selected.potential+1) : this.getCurrentPotenial('hp');
+					var atkPotential = this.input.displayMode == 'potential' ? this.getPotentialPercent('atk', this.selected.potential+1) : this.getCurrentPotenial('atk');
+					calValue = this.calculateBattlePower(this.input.charName, this.input.charId, star, level, this.getRoomPercentage(room), hpPotential, atkPotential);
+				}
+				else{
+					var potential = this.input.displayMode == 'potential' ? this.getPotentialPercent(this.selected.hpOrAtk, this.selected.potential+1) : this.getCurrentPotenial(this.selected.hpOrAtk);
+					calValue = this.calculateCharValue(this.input.charName, this.input.charId, star, level, this.getRoomPercentage(room), potential, this.selected.hpOrAtk);
+				}
 				return calValue;
 			}
 			return 1000000;
