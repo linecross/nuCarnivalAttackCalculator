@@ -229,15 +229,18 @@ export class Card {
     }
     getAtk() {
         if (this.atk != null) {
-            return this.atk;
+            return Math.floor(this.atk);
         }
         return this.getCardVal(this.baseAtk, this.getAtkPotential());
     }
     getHp() {
         if (this.hp != null) {
-            return this.hp;
+            return Math.floor(this.hp);
         }
         return this.getCardVal(this.baseHp, this.getHpPotential());
+    }
+    getBp() {
+        return Math.floor(this.getHp() + (this.getAtk() * 5));
     }
     getHpPotential() {
         return this.getPotentialPercent('hp', this.potential);
@@ -1291,6 +1294,9 @@ export class Team {
             cards.push(this.getCard(name));
         }
         return cards;
+    }
+    getBattlePower() {
+        return this.cards.reduce((sum, card) => sum + card.getBp(), 0);
     }
     getCharCount(char) {
         return this.cards.filter(e => e.char == char).length;
