@@ -193,6 +193,8 @@ export class Card{
 	potential: number = 12;
 	coolDown: number;
 
+	img: string;
+
 	star3Rule: Rule[] = [];
 	star5Rule: Rule[] = [];
 	pot6Rule: Rule[] = [];
