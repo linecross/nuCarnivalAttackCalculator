@@ -2415,7 +2415,7 @@
       "star": 3
     },
     "血鑰．奧利文": {
-      "char": "奧利文", "fullname": null, "alias": null,
+      "char": "奧利文", "fullname": null, "alias": "槍奧",
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "平均型",
       "baseHp": 7471, "baseAtk": 2205, "coolDown": 6,
       "img": "Olivine_SSR_06.jpg",
@@ -2446,7 +2446,7 @@
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
     },
     "血鑰．啖天": {
-      "char": "啖天", "fullname": null, "alias": null,
+      "char": "啖天", "fullname": null, "alias": "槍啖",
       "rarity": "SSR", "class": "妨礙", "element": "闇", "potType": "平均型",
       "baseHp": 7329, "baseAtk": 2241, "coolDown": 3,
       "img": "Dante_SSR_05.jpg",
@@ -2697,6 +2697,103 @@
         }
       ],
       "pot6Rule": []
+    },
+    "迷夢．玖夜": {
+      "char": "玖夜", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "木", "potType": "HP先行",
+      "baseHp": 7115, "baseAtk": 2312, "coolDown": 4,
+      "img": "Kuya_SSR_06.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
+        },
+        { "type": "攻擊", "value": "247%" }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
+        },
+        { "type": "造成傷害增加", "value": "13.5%", "maxCount": 2, "turn": 99 },
+        { "type": "攻擊", "value": "296%" }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
+        },
+        { "type": "造成傷害增加", "value": "13.5%", "maxCount": 2, "turn": 99 },
+        { "type": "攻擊", "value": "345%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "18%",
+          "condition": { "type": "隊伍中有屬性", "value": "木", "minCount": 2 }
+        },
+        {
+          "type": "必殺技傷害增加",
+          "value": "12%",
+          "turn": 3,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] },
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        }
+      ],
+      "star5Rule": [
+        {
+          "type": "攻擊",
+          "value": "61%",
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+    },
+    "迷夢．歛": {
+      "char": "歛", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "木", "potType": "平均型",
+      "baseHp": 6795, "baseAtk": 2419, "coolDown": 4,
+      "img": "Rei_SSR_04.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "敵方受到傷害增加", "value": "20%" },
+        { "type": "攻擊", "value": "247%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方受到傷害增加", "value": "20%" },
+        { "type": "造成傷害增加", "value": "17%", "target": { "type": "定位", "value": ["攻擊", "妨礙"] } },
+        { "type": "攻擊", "value": "296%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方受到傷害增加", "value": "20%" },
+        { "type": "造成傷害增加", "value": "17%", "target": { "type": "定位", "value": ["攻擊", "妨礙"] } },
+        { "type": "攻擊", "value": "345%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "必殺技傷害增加",
+          "value": "27%",
+          "condition": { "type": "隊伍中有定位", "value": "輔助" }
+        },
+        {
+          "type": "必殺技傷害增加",
+          "value": "2%",
+          "turn": 99,
+          "maxCount": 6,
+          "target": "全體",
+          "condition": "攻擊時"
+        }
+      ],
+      "star5Rule": [
+        {
+          "type": "敵方受到必殺技傷害增加",
+          "value": "20%",
+          "turn": 99,
+          "condition": { "type": "第n回合", "value": 1 }
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
     }
 }
   
