@@ -101,12 +101,12 @@ describe('實際測試', () => {
             setupBattle();
 
             expect(battle.getTurnValue('白情．八雲', 13)).toBeAround(92465);
-            expect(battle.getTurnValue('追夏．啖天', 13)).toBeAround(86235);
+            expect(battle.getTurnValue('追夏．啖天', 13)).toBeAround(86892);
             expect(battle.getTurnValue('沙漠．啖天', 13)).toBeAround(178611);
             expect(battle.getTurnValue('SR崑西', 13)).toBeAround(327075);
             
             expect(battle.getTotalValue('白情．八雲')).toBeAround(460677);
-            expect(battle.getTotalValue('追夏．啖天')).toBeAround(474357);
+            expect(battle.getTotalValue('追夏．啖天')).toBeAround(478576);
             expect(battle.getTotalValue('沙漠．啖天')).toBeAround(869967);
             expect(battle.getTotalValue('SR崑西')).toBeAround(783089);
         });

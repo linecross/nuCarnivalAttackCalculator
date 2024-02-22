@@ -14,6 +14,7 @@ var config = {
 		char: Object.values(Character),
 		clazz: ['攻擊','守護','妨礙','輔助','治療'],
 		element: ['火','水','木','光','闇'],
+		coolDown: [3, 4, 5, 6],
 	},
 	CHAR_FOLDER: {
 		'八雲': 'yakumo', '艾德蒙特': 'edmond', '奧利文': 'olivine',
@@ -30,6 +31,9 @@ var config = {
 		},
 		'rarity':{
 			'N':'n', 'R':'r', 'SR':'sr', 'SSR':'ssr'
+		},
+		'coolDown':{
+			'3':3, '4': 4, '5': 5, '6': 6
 		}
 	}
 };
@@ -62,16 +66,18 @@ Vue.createApp({
 				currentIdx: -1,
 				selectCardName: '',
 				searchStr: '',
-				rarity: ['N','R','SR','SSR'],
+				rarity: [],
 				char: [],
-				clazz: ['攻擊','守護','妨礙','輔助','治療'],
-				element: ['火','水','木','光','闇'],
+				clazz: [],
+				element: [],
+				coolDown: [],
 			},
 			cardJsonLastModified: '',
 			cards: [null, null, null, null, null],
 			battle: null,
 			inputJson: null,
 			importJsonResult: '',
+			cardDetailCardName: '',
 		}
 	},
 	created()
@@ -254,7 +260,7 @@ Vue.createApp({
 					}
 				}
 				else if (card.potential >= 3){
-					summary.push('潛6被動：'+card.pot6Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
+					summary.push('潛3被動：'+card.pot6Rule.map(e=>new LogRule(e).getFullSkillInfo()).join('／'));
 				};
 			}
 			return title+summary.join('<br />');
@@ -364,6 +370,7 @@ Vue.createApp({
 				this.cardFilterSelectNone('rarity');
 				this.cardFilterSelectNone('clazz');
 				this.cardFilterSelectNone('element');
+				this.cardFilterSelectNone('coolDown');
 				this.cardFilterSelectNone('char');
 				this.cardFilter.searchStr = '';
 			}
@@ -373,6 +380,7 @@ Vue.createApp({
 			this.cardFilterSelectNone('rarity');
 			this.cardFilterSelectNone('clazz');
 			this.cardFilterSelectNone('element');
+			this.cardFilterSelectNone('coolDown');
 			this.cardFilterSelectNone('char');
 			this.cardFilter.searchStr = '';
 			if (this.userInput.cardname[idx] != null && this.userInput.cardname[idx].length > 0){
@@ -402,6 +410,66 @@ Vue.createApp({
 		},
 		loadNoCardImage(event){
 			event.target.src = this.getCardImagePath();
+		},
+		showCardDetail(cardname){
+			if (cardname == '') return;
+			this.cardDetailCardName = cardname;
+			var panel = document.getElementById('cardDetailPanel');
+			var bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(panel);
+			bsOffcanvas.show();
+		},
+		getCardData(cardname){
+			var cardData = CardCenter.getCardData();
+			return cardData[cardname];
+		},
+		getRuleAsString(rule){
+			var summary = [];
+			summary.push(rule.map(e=>new LogRule(e).getFullSkillInfo()).join('，'));
+			return summary.join('<br />');
+		},
+		getPrevCardname(cardname){
+			var idx = this.getIndexByCardname(cardname);
+			if (idx == -1){
+				return '';
+			}
+			var prevCardname = '';
+			for (var i=idx-1; i>=0; i--){
+				if (this.userInput.cardname[i].length > 0){
+					prevCardname = this.userInput.cardname[i];
+					break;
+				}
+			}
+			if (prevCardname.length == 0){
+				for (var i=4; i>idx; i--){
+					if (this.userInput.cardname[i].length > 0){
+						prevCardname = this.userInput.cardname[i];
+						break;
+					}
+				}
+			}
+			return prevCardname;
+		},
+		getNextCardname(cardname){
+			var idx = this.getIndexByCardname(cardname);
+			if (idx == -1){
+				return '';
+			}
+			var nextCardname = '';
+			for (var i=idx+1; i<5; i++){
+				if (this.userInput.cardname[i].length > 0){
+					nextCardname = this.userInput.cardname[i];
+					break;
+				}
+			}
+			if (nextCardname.length == 0){
+				for (var i=0; i<idx; i++){
+					if (this.userInput.cardname[i].length > 0){
+						nextCardname = this.userInput.cardname[i];
+						break;
+					}
+				}
+			}
+			return nextCardname;
 		},
 		importJsonStr(){
 			// remove spaces and tab, convert quotes, add quotes
@@ -456,6 +524,7 @@ Vue.createApp({
 			var rarity = this.cardFilter.rarity;
 			var clazz = this.cardFilter.clazz;
 			var element = this.cardFilter.element;
+			var coolDown = this.cardFilter.coolDown;
 			
 			if (chars.length > 0){
 				arr = arr.filter(e=>chars.includes(e[1].char));
@@ -468,6 +537,9 @@ Vue.createApp({
 			}
 			if (element.length > 0){
 				arr = arr.filter(e=>element.includes(e[1].element));
+			}
+			if (coolDown.length > 0){
+				arr = arr.filter(e=>coolDown.includes(e[1].coolDown));
 			}
 			if (searchStr != null && searchStr.length > 0){
 				var searchStrArr = searchStr.trim().split(' ');
@@ -485,6 +557,14 @@ Vue.createApp({
 			
 			arr = arr.reverse();
 			return arr;
+		},
+		cardDetailCardData(){
+			if (this.cardDetailCardName != null && this.cardDetailCardName.length > 0){
+				// var cardData = CardCenter.getCardData();
+				var cardObject = CardCenter.loadCard(this.cardDetailCardName);
+				return cardObject;
+			}
+			return null;
 		},
 		updatedCardData(){
 			var result = '';

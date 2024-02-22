@@ -56,7 +56,6 @@
 									<template v-for="clazz in FILTERS.clazz">
 										<span>
 											<input type="checkbox" class="btn-check" name="cardFilter-clazz" :id="'cardFilter-'+clazz" :value="clazz" v-model="cardFilter.clazz">
-											<!-- <label class="btn btn-outline-primary col-1 mx-2 my-1 w-auto" :for="'cardFilter-'+clazz">{{clazz}}</label> -->
 											<label class="col-1 mx-2 w-auto" :for="'cardFilter-'+clazz" >
 												<img :src="getFilterPanalIconPath('class', clazz)"/>
 											</label>
@@ -71,7 +70,15 @@
 											<label class="col-1 mx-2 w-auto" :for="'cardFilter-'+element" >
 												<img :src="getFilterPanalIconPath('element', element)"/>
 											</label>
-											
+										</span>
+									</template>
+								</div>
+								<div class="py-1">
+									<h5>CD</h5>
+									<template v-for="coolDown in FILTERS.coolDown">
+										<span>
+											<input type="checkbox" class="btn-check" name="cardFilter-coolDown" autocomplete="off" :id="'cardFilter-'+coolDown" :value="coolDown" v-model="cardFilter.coolDown">
+											<label class="btn btn-outline-primary col-1 mx-2 my-1 w-auto" :for="'cardFilter-'+coolDown">{{coolDown}}</label>
 										</span>
 									</template>
 								</div>
@@ -101,6 +108,49 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+			
+			<div class="offcanvas offcanvas-end" data-bs-scroll="false" data-bs-backdrop="true" tabindex="-1" id="cardDetailPanel" aria-labelledby="cardDetailPanelLabel">
+				<div class="offcanvas-header">
+					<h4 class="offcanvas-title" id="cardDetailPanelLabel">{{ cardDetailCardName }} - 詳細資料</h4>
+					<span class="badge text-bg-warning">實驗性功能</span>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div  v-if="cardDetailCardName != ''" class="offcanvas-body">
+					<div class="alert alert-warning" role="alert">
+						<div>
+							角色技能是按照計算機的功能需求調整刪減，僅供參考
+						</div>
+						<div>
+							例：沒有「被攻擊時」「被治療時」「免疫被動」等能力敘述
+						</div>
+					</div>
+					<div class="row align-items-center">
+						<div class="col icon text-end" @click="showCardDetail(getPrevCardname(cardDetailCardName))"><i class="fa-solid fa-caret-left"></i></div>
+						<div class="col card-block">
+							<div class="card-image-div">
+								<img :src="getCardImagePath(cardDetailCardData)" @error="loadNoCardImage" class="card-image">
+								<img :src="getCardIconPath(cardDetailCardData, 'element')" class="card-icon-element" />
+								<img :src="getCardIconPath(cardDetailCardData, 'class')" class="card-icon-class" />
+								<img :src="getCardIconPath(cardDetailCardData, 'rarity')" class="card-icon-rarity" />
+							</div>
+						</div>
+						<div class="col icon text-start" @click="showCardDetail(getNextCardname(cardDetailCardName))"><i class="fa-solid fa-caret-right"></i></div>
+					</div>
+					<div class="row">HP：{{cardDetailCardData.baseHp}} </div>
+					<div class="row">ATK：{{cardDetailCardData.baseAtk}} </div>
+					<div class="row">潛力類型：{{cardDetailCardData.potType}} </div>
+					<div class="row">CD：{{cardDetailCardData.coolDown}} </div>
+					<hr />
+					<div class="row">普攻：{{getRuleAsString(cardDetailCardData.attackRule)}} </div>
+					<div class="row">技能 Lv1：{{getRuleAsString(cardDetailCardData.skillLv1Rule)}} </div>
+					<div class="row">技能 Lv2：{{getRuleAsString(cardDetailCardData.skillLv2Rule)}} </div>
+					<div class="row">技能 Lv3：{{getRuleAsString(cardDetailCardData.skillLv3Rule)}} </div>
+					<hr />
+					<div class="row">3星被動：{{getRuleAsString(cardDetailCardData.star3Rule)}} </div>
+					<div class="row">5星被動：{{getRuleAsString(cardDetailCardData.star5Rule)}} </div>
+					<div class="row">潛{{(cardDetailCardData.rarity == 'SSR' || cardDetailCardData.rarity == 'SR') ? 6 : 3}}被動：{{getRuleAsString(cardDetailCardData.pot6Rule)}} </div>
 				</div>
 			</div>
 
@@ -188,6 +238,12 @@
 										<option v-for="level in LEVEL_SELECT" :value="level">{{ level }}</option>
 									</select>
 								</div> -->
+								<div class="row">
+									<button class="btn btn-primary" type="button" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click="showCardDetail(userInput.cardname[idx])">
+										詳細資料
+									</button>
+								</div>
+
 								<div class="row">
 									<!-- <div class="charStar">
 										<template v-for="star in STARS" :key="star">
@@ -322,7 +378,8 @@
 												<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 													選擇角色...
 												</button>
-												<div v-else :class="'card-block' + (userInput.isCardEnabled[idx] ? '' : ' disabled')" :data-cardname="userInput.cardname[idx]" data-bs-toggle="modal" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+												<template v-else>
+												<div :class="'card-block' + (userInput.isCardEnabled[idx] ? '' : ' disabled')" :data-cardname="userInput.cardname[idx]" data-bs-toggle="modal" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 													<div class="card-image-div">
 														<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
 														<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
@@ -331,9 +388,15 @@
 													</div>
 													<div class="card-name">{{userInput.cardname[idx]}}</div>
 												</div>
+												<div class="row">
+													<button class="btn btn-primary" type="button" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click="showCardDetail(userInput.cardname[idx])">
+														詳細資料
+													</button>
+												</div>
 												<div>
 													<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
 												</div>
+											</template>
 											</th>
 										</template>
 									</tr>
@@ -401,6 +464,11 @@
 						<h5>已修正</h5>
 
 						<div class="row">
+							<ul>
+								<li>[20240223] - v2.1</li>
+								<li>UI變動：追加角色篩選器功能，追加角色圖片</li>
+								<li>追加角色資料顯示（實驗性，從資料、功能的各方面都未完善，僅供簡單核對資料倍率）</li>
+							</ul>
 							<ul>
 								<li>[20240213]</li>
 								<li>追加「反擊模式」選項</li>
