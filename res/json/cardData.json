@@ -2456,12 +2456,12 @@
       ],
       "skillLv1Rule": [{ "type": "攻擊", "value": "43%", "maxCount": 6 }],
       "skillLv2Rule": [
-        { "type": "攻擊", "value": "51%", "maxCount": 6 },
-        { "type": "敵方受到傷害增加", "value": "14%", "turn": 3 }
+        { "type": "敵方受到傷害增加", "value": "14%", "turn": 3 },
+        { "type": "攻擊", "value": "51%", "maxCount": 6 }
       ],
       "skillLv3Rule": [
-        { "type": "攻擊", "value": "60%", "maxCount": 6 },
-        { "type": "敵方受到傷害增加", "value": "14%", "turn": 3 }
+        { "type": "敵方受到傷害增加", "value": "14%", "turn": 3 },
+        { "type": "攻擊", "value": "60%", "maxCount": 6 }
       ],
       "star3Rule": [
         {
