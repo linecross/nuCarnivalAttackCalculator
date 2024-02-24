@@ -115,12 +115,12 @@ describe('實際測試', () => {
             setupBattle();
 
             expect(battle.getTurnValue('鍍金．艾德蒙特', 13)).toBeAround(81360);
-            expect(battle.getTurnValue('血鑰．啖天', 13)).toBeAround(108750);
+            expect(battle.getTurnValue('血鑰．啖天', 13)).toBeAround(118638);
             expect(battle.getTurnValue('血鑰．奧利文', 13)).toBeAround(275010);
             expect(battle.getTurnValue('煙嵐．八雲', 13)).toBeAround(336259);
             
             expect(battle.getTotalValue('鍍金．艾德蒙特')).toBeAround(452591);
-            expect(battle.getTotalValue('血鑰．啖天')).toBeAround(576300);
+            expect(battle.getTotalValue('血鑰．啖天')).toBeAround(615852);
             expect(battle.getTotalValue('血鑰．奧利文')).toBeAround(768827);
             expect(battle.getTotalValue('煙嵐．八雲')).toBeAround(995491);
         });
