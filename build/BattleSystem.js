@@ -1246,8 +1246,7 @@ Battle.ENEMY_BUFF_TYPES = [RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, R
 Battle.ACTION_ACCEPT_BUFFS = {
     [RuleType.attack]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.allAtkUp,
         RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyAllAtkUp],
-    [RuleType.poisonAttack]: [RuleType.atkUp, RuleType.poisonAtkUp, RuleType.allAtkUp,
-        RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp],
+    [RuleType.poisonAttack]: [RuleType.atkUp, RuleType.poisonAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp],
     [RuleType.heal]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.healUp,
         RuleType.partyHealUp, RuleType.partyAllHealUp],
     [RuleType.continueHeal]: [RuleType.atkUp, RuleType.continueHealUp, RuleType.partyContinueHealUp],
