@@ -238,6 +238,7 @@
     display: inline-flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
     flex: 1 1 30%;
     min-height: 100px;
     transition: all .25s ease-in-out;
@@ -281,6 +282,158 @@
     filter: drop-shadow(0 0 0.25rem #333) brightness(1);
 }
 
+:root {
+    --yakumo-bg-color: #e15353;
+    --edmond-bg-color: #2173dc;
+    --olivine-bg-color: #2fbf68;
+    --quincy-bg-color: #d7ab2a;
+    --kuya-bg-color: #9c6ad8;
+    --garu-bg-color: #955f5f;
+    --blade-bg-color: #b49eba;
+    --dante-bg-color: #e52b2b;
+    --rei-bg-color: #7b7b7b;
+    --aster-bg-color: #f283b2;
+    --morvay-bg-color: #940161;
+    --eiden-bg-color: #63a5df;
+}
+
+
+#cardSelector .cardFilter-char.image span{
+    margin-right: 0.2rem;
+}
+#cardSelector .cardFilter-char.image label{
+    cursor: pointer;
+    font-size: 1.3rem;
+    border-radius: 1rem;
+    border: 3px solid transparent;
+    padding: 3px;
+    opacity: 0.7;
+    max-width: 80px;
+    transition: all .15s ease-in-out;
+}
+#cardSelector .cardFilter-char.image img{
+    /* object-fit: none;
+    object-position: 40%;
+    width: 80px;
+    height: 80px; */
+    margin-left: -25px;
+}
+
+
+#cardSelector .cardFilter-char.image input:checked + label {
+    opacity: 1;
+    font-weight: 600;
+    /* border: 3px double #000; */
+}
+
+#cardSelector .cardFilter-char.image .filter-yakumo input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--yakumo-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-edmond input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--edmond-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-olivine input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--olivine-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-quincy input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--quincy-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-kuya input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--kuya-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-garu input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--garu-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-blade input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--blade-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-dante input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--dante-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-rei input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--rei-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-aster input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--aster-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-morvay input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--morvay-bg-color)) brightness(1)
+}
+#cardSelector .cardFilter-char.image .filter-eiden input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--eiden-bg-color)) brightness(1)
+}
+
+#cardSelector .cardFilter-char.pixel span{
+    margin-right: 0.2rem;
+}
+#cardSelector .cardFilter-char.pixel label{
+    cursor: pointer;
+    font-size: 1.3rem;
+    min-width: 60px;
+    border-radius: 1rem;
+    border: 3px solid transparent;
+    padding: 3px;
+}
+#cardSelector .cardFilter-char.pixel label {
+    opacity: 0.7;
+}
+#cardSelector .cardFilter-char.pixel input:checked + label {
+    opacity: 1;
+    font-weight: 600;
+    border: 3px double #000;
+}
+#cardSelector .cardFilter-char.pixel input:checked + label {
+    filter: drop-shadow(0 0 0.15rem #ffca86) brightness(1)
+}
+
+#cardSelector .cardFilter-char.text .btn {
+    color: white;
+    border: 0px;
+    opacity: 0.5;
+    transition: all .25s ease-in-out;
+}
+#cardSelector .cardFilter-char.text input:checked + .btn {
+    opacity: 1;
+    filter: drop-shadow(0 0 0.2rem #646464) brightness(1);
+    font-weight: 900;
+}
+
+#cardSelector .cardFilter-char.text .filter-yakumo .btn {
+    background-color: var(--yakumo-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-edmond .btn {
+    background-color: var(--edmond-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-olivine .btn {
+    background-color: var(--olivine-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-quincy .btn {
+    background-color: var(--quincy-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-kuya .btn {
+    background-color: var(--kuya-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-garu .btn {
+    background-color: var(--garu-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-blade .btn {
+    background-color: var(--blade-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-dante .btn {
+    background-color: var(--dante-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-rei .btn {
+    background-color: var(--rei-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-aster .btn {
+    background-color: var(--aster-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-morvay .btn {
+    background-color: var(--morvay-bg-color);
+}
+#cardSelector .cardFilter-char.text .filter-eiden .btn {
+    background-color: var(--eiden-bg-color);
+}
 
 #cardDetailPanel.offcanvas{
     z-index: 2045;

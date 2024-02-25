@@ -34,6 +34,13 @@ var config = {
 		},
 		'coolDown':{
 			'3':3, '4': 4, '5': 5, '6': 6
+		},
+		//TODO: fix the dirty data
+		'char': {
+			'八雲': 'yakumo', '艾德蒙特': 'edmond', '奧利文': 'olivine',
+			'崑西': 'quincy', '玖夜': 'kuya', '可爾': 'garu',
+			'布儡': 'blade', '啖天': 'dante', '歛': 'rei',
+			'艾斯特': 'aster', '墨菲': 'morvay', '伊得': 'eiden'
 		}
 	}
 };
@@ -53,13 +60,13 @@ Vue.createApp({
 				isAdvanceMode: true,
 				turns: 14,
 				isShowTurns: true,
-				maxCounterAttack: 0,
+				maxCounterAttack: 1,
 				counterAttackMode: CounterAttackMode.everyTurn,
 				isAllowHpCond: Condition.IS_HP_FULFILL,
 				isModifyCardVal: false,
 				defaultStar: 'SSR3',
 				enemyElement: Element.NA,
-				isCalcEnemyDebuff: false,
+				isCalcEnemyDebuff: true,
 				printOutputMode: Battle.PRINT_OUTPUT_OPTION.ALL,
 			},
 			cardFilter:{
@@ -71,6 +78,19 @@ Vue.createApp({
 				clazz: [],
 				element: [],
 				coolDown: [],
+				charDisplayStyle: 'image',
+			},
+			setting: {
+				userInput: {
+					turns: 14,
+					isShowTurns: true,
+					defaultStar: 'SSR3',
+					isCalcEnemyDebuff: false,
+					maxCounterAttack: 1
+				},
+				general: {
+					charFilterDisplayStyle: 'TEXT',
+				}
 			},
 			cardJsonLastModified: '',
 			cards: [null, null, null, null, null],
@@ -104,6 +124,15 @@ Vue.createApp({
 		.then(json => {
 			CardCenter.setMainCardData(json);
 			this.loadCards();
+		});
+	},
+	mounted: function(){
+		this.loadSettingFromStorage();
+		this.$watch(vm => [vm.setting], val => {
+			this.saveSettingFromStorage();
+		}, {
+			immediate: true,
+			deep: true
 		});
 	},
 	updated()
@@ -406,7 +435,16 @@ Vue.createApp({
 			return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][cardData[type]] + '.png';
 		},
 		getFilterPanalIconPath(type, value){
-			return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
+			if (type == 'char'){
+				var folder = this.cardFilter.charDisplayStyle == 'pixel' ? 'pixel' : 'image';
+				return './res/img/card-icon/' + folder + '/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
+			}
+			else{
+				return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
+			}
+		},
+		getFilterPanelCode(type, value){
+			return config.IMAGE_PATH[type][value];
 		},
 		loadNoCardImage(event){
 			event.target.src = this.getCardImagePath();
@@ -488,7 +526,32 @@ Vue.createApp({
 			} catch(error){
 				this.importJsonResult = "載入失敗，請檢查格式是否正確";
 			}
-		}
+		},
+		loadSettingFromStorage(){
+			let map = JSON.parse(localStorage.getItem("nuAttackCalculator"));
+			if (map == null || map == undefined){
+				return;
+			}
+			for (var key of Object.keys(map.setting)){
+				this.setting[key] = map.setting[key];
+			}
+			this.loadSetting();
+		},
+		loadSetting(){
+			if (this.setting['userInput'] != null){
+				Object.assign(this.userInput, this.setting['userInput']);
+			}
+			var charFilterDisplayStyle = this.setting['general']['charFilterDisplayStyle'];
+			if (['image','text','pixel'].includes(charFilterDisplayStyle)) {
+				this.cardFilter.charDisplayStyle = charFilterDisplayStyle;
+			}
+		},
+		saveSettingFromStorage(){
+			let map = {};
+			map['setting'] = this.setting;
+			localStorage.setItem("nuAttackCalculator", JSON.stringify(map));
+			this.loadSetting();
+		},
 	},
 	computed: {
 		selectedChar() {
