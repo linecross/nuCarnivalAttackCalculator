@@ -89,7 +89,7 @@ Vue.createApp({
 					maxCounterAttack: 1
 				},
 				general: {
-					charFilterDisplayStyle: 'TEXT',
+					charFilterDisplayStyle: 'image',
 				}
 			},
 			cardJsonLastModified: '',
