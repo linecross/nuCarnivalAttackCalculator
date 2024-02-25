@@ -1270,7 +1270,7 @@ export class Battle{
 			}
 		}
 		if (hasPoisonAttack){
-			acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp]);
+			acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.poisonAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp]);
 		}
 		if (hasHeal){
 			if (attackType == AttackType.BasicAttack){
@@ -1322,7 +1322,7 @@ export class Battle{
 			}
 			if (hasPoisonAttack && [Battle.PRINT_OUTPUT_OPTION.ONLY_POISON, 
 				Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE].includes(this.printOutputOption)){
-				acceptTypes = acceptTypes.concat([RuleType.poisonAttack, RuleType.atkUp, RuleType.poisonAtkUp, RuleType.allAtkUp,
+				acceptTypes = acceptTypes.concat([RuleType.poisonAttack, RuleType.atkUp, RuleType.poisonAtkUp,
 								RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp]);
 			}
 			if (hasHeal && [Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL].includes(this.printOutputOption)){
