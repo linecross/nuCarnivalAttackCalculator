@@ -306,6 +306,7 @@
     font-size: 1.3rem;
     border-radius: 1rem;
     border: 3px solid transparent;
+    filter: brightness(0.8);
     padding: 3px;
     opacity: 0.7;
     max-width: 80px;
@@ -319,10 +320,16 @@
     margin-left: -25px;
 }
 
+#cardSelector .cardFilter-char.image input:hover + label {
+    opacity: 1;
+    filter: brightness(1);
+    font-weight: 600;
+}
 
 #cardSelector .cardFilter-char.image input:checked + label {
     opacity: 1;
     font-weight: 600;
+    /* filter: brightness(1); */
     /* border: 3px double #000; */
 }
 
@@ -373,6 +380,7 @@
     border-radius: 1rem;
     border: 3px solid transparent;
     padding: 3px;
+    transition: all .25s ease-in-out;
 }
 #cardSelector .cardFilter-char.pixel label {
     opacity: 0.7;
