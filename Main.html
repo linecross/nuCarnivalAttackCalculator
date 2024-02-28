@@ -372,10 +372,10 @@
 									<label :for="'inputIsCardEnabled-' + idx">第 {{ idx+1 }} 位</label>
 									<span v-if="idx < 4" class="card-swap-icon float-end" @click="swapCard(idx, idx+1)"><i class="fa-solid fa-left-right"></i></span>
 								</div>
-								<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+								<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 									選擇角色...
 								</button>
-								<span v-else class="card-block" :data-cardname="userInput.cardname[idx]" data-bs-toggle="modal" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+								<span v-else class="card-block" :data-cardname="userInput.cardname[idx]" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 									<div class="card-image-div">
 										<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
 										<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
@@ -386,18 +386,16 @@
 											</template>
 										</div>
 										<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
+										<span class="card-icon-remove-btn" @click.stop="removeCard(idx)">
+											<i class="fa-solid fa-square fa-stack-1x"></i>
+											<i class="fa-solid fa-square-xmark fa-stack-1x" ></i>
+										</span>
 									</div>
 									<div class="card-name">{{userInput.cardname[idx]}}</div>
 								</span>
 							</div>
 
 							<div class="row mt-2 mb-2" v-if="cards[idx] != null">
-								<!-- <div class="row">
-									<label class="col-auto" :for="'inputCard-level-'+(idx+1)">等級</label>
-									<select :id="'inputCard-level-'+(idx+1)" class="col-auto form-control"  v-model="cards[idx].level">
-										<option v-for="level in LEVEL_SELECT" :value="level">{{ level }}</option>
-									</select>
-								</div> -->
 								<div v-if="userInput.isAdvanceMode" class="row">
 									<button class="btn btn-primary" type="button" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click="showCardDetail(userInput.cardname[idx])">
 										詳細資料
@@ -466,7 +464,6 @@
 							</span>
 							<span class="form-check-inline">
 								<label for="inputEnemyEle">敵人屬性</label>
-								<!-- <input class="form-control" type="text" inputmode="text" id="inputEnemyEle" v-model="userInput.enemyElement"> -->
 								<select id="inputEnemyEle" class="form-select" v-model="userInput.enemyElement" :disabled="!userInput.isCalcEnemyDebuff">
 									<option v-for="element in ELEMENTS" :value="element">{{ element }}</option>
 								</select>
@@ -551,14 +548,12 @@
 										</th>
 										<template v-for="(name, idx) in userInput.cardname" :key="name">
 											<th scope="col" :class="'col-md-2'+ getThNameClass(name) "
-												data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
-												:data-bs-content="getPassiveRuleSummary(name)">
-
-												<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+												>
+												<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 													選擇角色...
 												</button>
 												<template v-else>
-												<div :class="'card-block' + (userInput.isCardEnabled[idx] ? '' : ' disabled')" :data-cardname="userInput.cardname[idx]" data-bs-toggle="modal" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+												<div :class="'card-block' + (userInput.isCardEnabled[idx] ? '' : ' disabled')" :data-cardname="userInput.cardname[idx]" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 													<div class="card-image-div">
 														<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
 														<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
@@ -569,16 +564,23 @@
 															</template>
 														</div>
 														<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
+														<span class="card-icon-remove-btn" @click.stop="removeCard(idx)">
+															<i class="fa-solid fa-square fa-stack-1x"></i>
+															<i class="fa-solid fa-square-xmark fa-stack-1x" ></i>
+														</span>
 													</div>
 													<div class="card-name">{{userInput.cardname[idx]}}</div>
 												</div>
-												<div v-if="userInput.isAdvanceMode" class="row">
-													<button class="btn btn-primary" type="button" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click="showCardDetail(userInput.cardname[idx])">
-														詳細資料
-													</button>
-												</div>
-												<div>
-													<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
+												<div data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
+												:data-bs-content="getPassiveRuleSummary(name)">
+													<div v-if="userInput.isAdvanceMode" class="row">
+														<button class="btn btn-primary" type="button" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click="showCardDetail(userInput.cardname[idx])">
+															詳細資料
+														</button>
+													</div>
+													<div>
+														<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
+													</div>
 												</div>
 											</template>
 											</th>

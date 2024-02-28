@@ -209,6 +209,34 @@
     border-radius: 0.8rem;
 }
 
+.card-block .card-icon-remove-btn{
+    position: absolute;
+    top: 0px;
+    right: 2.2rem;
+    z-index: 200;
+    display: none;
+    font-size: 0rem;
+    filter: drop-shadow(1px 1px 1px #000000) drop-shadow(-1px -1px 2px #000000);
+    transition: opacity .25s ease-in-out;
+}
+.card-block .card-icon-remove-btn .fa-square-xmark{
+    color:rgb(233, 91, 91);
+}
+.card-block .card-icon-remove-btn .fa-square{
+    color:rgb(255, 255, 255);
+}
+
+.card-block:hover .card-icon-remove-btn{
+    font-size: 2.2rem;
+    display: block;
+    opacity: 0.85;
+}
+
+.card-block:hover .card-icon-remove-btn:hover{
+    opacity: 1;
+}
+
+
 .card-name{
     font-size: 1.25rem;
     text-shadow: 1px 1px 2px black;
