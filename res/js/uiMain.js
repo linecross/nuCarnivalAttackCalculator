@@ -195,15 +195,6 @@ Vue.createApp({
 
 			this.setupBattle();
 		},
-		isCardSelected(){
-			for (var i =0; i<this.userInput.cardname.length; i++){
-				var name = this.userInput.cardname[i];
-				if (name != null && name != ''){
-					return true;
-				}
-			}
-			return false;
-		},
 		getCardnameByActionOrder(){
 			var arr = [];
 			for (var i =0; i<this.userInput.cardname.length; i++){
@@ -216,10 +207,15 @@ Vue.createApp({
 			arr = arr.sort((e1, e2)=>e1.order - e2.order).map(e=>e.name);
 			return arr;
 		},
-		setupBattle(){
-			if (!this.isCardSelected()){
-				return;
+		removeCard(idx){
+			if (idx >= 0 && idx <=5){
+				this.userInput.char[idx] = '';
+				this.userInput.cardname[idx] = '';
+				this.cards[idx] = null;
+				this.setupBattle();
 			}
+		},
+		setupBattle(){
 			var team = new Team();
 			for (var i =0; i<this.userInput.cardname.length; i++){
 				var card = this.cards[i];
@@ -437,6 +433,9 @@ Vue.createApp({
 			else{
 				this.cardFilter.selectCardName = '';
 			}
+			var selector = document.getElementById('cardSelector');
+			var bsModal = bootstrap.Modal.getOrCreateInstance(selector);
+			bsModal.show();
 		},
 		selectCard(cardname){
 			this.cardFilter.selectCardName = cardname;
