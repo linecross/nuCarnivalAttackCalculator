@@ -8,6 +8,7 @@
 	<script src='https://cdn.jsdelivr.net/npm/vue@3.2.33/dist/vue.global.min.js'></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.6/dexie.min.js" integrity="sha512-hkt0s43sr3rIcTtQ+b81gSC1f/WAopl+uV4TxJGr5SrPIEMrBVJEEjNJMVTUyH6SocnKD9LDAnvhgtDQoIThSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" >
 
@@ -127,7 +128,152 @@
 					</div>
 				</div>
 			</div>
-			
+
+			<div class="modal fade" tabindex="-1" id="damageRecordModal" @click="damageRecordPanel.editElement='x'">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content w-100 h-100">
+						<div class="modal-header">
+							<h5 class="modal-title">隊伍記錄</h5>
+							<span class="badge text-bg-warning">僅供簡單記錄</span>
+							<button type="button" class="btn-close text-reset" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body w-100 overflow-hidden">
+							<div class="filter-panel">
+								<div class="py-1 px-1 d-flex">
+									<button type="button" class="btn" :class="damageRecordPanel.manageMode == 'delete' ? 'btn-danger' : 'btn-primary'" @click="damageRecordSwitchManageMode()">
+										{{damageRecordPanel.manageMode == 'delete' ? '不刪了' : '刪除模式'}}
+									</button>
+									<span class="verticalLine"></span>
+									<select class="form-select col-auto w-auto" v-model="damageRecordPanel.cardImgSize">
+										<option value="big">角色圖：較大</option>
+										<option value="normal">角色圖：一般</option>
+										<option value="small">角色圖：較小</option>
+										<option value="none">角色圖：無</option>
+									</select>
+									<span class="verticalLine"></span>
+									<button type="button" class="btn btn-primary" @click="damageRecordFilterSelectNone()">重設</button>
+									
+									<span>
+										<input type="checkbox" class="btn-check heart-checkbox" id="recordPanel-searchFav" v-model="damageRecordPanel.searchFav">
+										<label class="col-1 mx-2 w-auto" for="recordPanel-searchFav">
+											<i v-if="damageRecordPanel.searchFav" class="fa-solid fa-heart"></i>
+											<i v-else="damageRecordPanel.searchFav" class="fa-regular fa-heart"></i>
+										</label>
+									</span>
+									<input class="form-control search-number" type="number" v-model="damageRecordPanel.searchTurn" placeholder="回合數">
+									<input class="form-control search-text" type="text" v-model="damageRecordPanel.searchTeamName" placeholder="搜尋隊伍...">
+									<input class="form-control search-text" type="text" v-model="damageRecordPanel.searchCard" placeholder="搜尋卡片...">
+								</div>
+							</div>
+							<div class="card-panel row overflow-auto w-100" >
+								<table class="table resultTable">
+									<thead>
+										<tr>
+											<th class="col-isFav" scope="col" @click="damageSort('isFav')">
+												<i v-if="damageRecordPanel.sortBy=='isFav'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th scope="col" @click="damageSort('teamName')">
+												隊伍名稱
+												<i v-if="damageRecordPanel.sortBy=='teamName'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th class="col-turn" scope="col" @click="damageSort('turns')">
+												回合
+												<i v-if="damageRecordPanel.sortBy=='turns'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th scope="col" @click="damageSort('card1')">
+												第一位
+												<i v-if="damageRecordPanel.sortBy=='card1'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th scope="col" @click="damageSort('card2')">
+												第二位
+												<i v-if="damageRecordPanel.sortBy=='card2'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th scope="col" @click="damageSort('card3')">
+												第三位
+												<i v-if="damageRecordPanel.sortBy=='card3'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th scope="col" @click="damageSort('card4')">
+												第四位
+												<i v-if="damageRecordPanel.sortBy=='card4'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th scope="col" @click="damageSort('card5')">
+												第五位
+												<i v-if="damageRecordPanel.sortBy=='card5'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th class="col-total" scope="col" @click="damageSort('totalDamage')">
+												隊伍總傷害
+												<i v-if="damageRecordPanel.sortBy=='totalDamage'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+											<th class="col-action" scope="col" @click="damageSort('id')">
+												<i v-if="damageRecordPanel.sortBy=='id'" class="fa-solid" :class="damageRecordPanel.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<template v-for="record in getDamageRecords">
+											<tr>
+												<td rowspan="2">
+													<span>
+														<input type="checkbox" class="btn-check heart-checkbox" :id="'recordPanel-isFav-' + record.id" name="isFavTeam" :value="record.isFav" v-model="record.isFav" @change="updateDamageRecord(record)">
+														<label class="col-1 mx-2 w-auto" :for="'recordPanel-isFav-' + record.id">
+															<i v-if="record.isFav" class="fa-solid fa-heart"></i>
+															<i v-else="record.isFav" class="fa-regular fa-heart"></i>
+														</label>
+													</span>
+												</td>
+												<td rowspan="2" class="col-teamname" @click.stop="damageRecordPanel.editElement='teamName_'+record.id">
+													<textarea v-if="damageRecordPanel.editElement=='teamName_'+record.id" class="form-control" v-model="record.teamName" @change="updateDamageRecord(record)"></textarea>
+													<template v-else v-for="(str, idx) in generateTeamNameHtml(record.teamName)" :key="str">
+														<span v-if="str.startsWith('#')" class="tag" @click.stop="!isEditTeam && addToRecordSearch('searchTeamName', str)">{{str}}</span>
+														<template v-else-if="str=='<br>'">
+															<br/>
+														</template>
+														<template v-else>
+															<template v-if="idx==0"><h5><b>{{str}}</b></h5></template>
+															<template v-else>{{str}}</template>
+														</template>
+													</template>
+												</td>
+												<td rowspan="2" class="col-turn" @click="!isEditTeam && addToRecordSearch('searchTurn', record.turns)">{{ record.turns }}</td>
+												<template v-for="card in record.cards" :key="card" >
+													<td class="card-cell">
+														<div v-if="card != null" :set="cardData = getCardData(card.name)" class="card-block" :class="damageRecordPanel.cardImgSize" @click="!isEditTeam && addToRecordSearch('searchCard', card.name)">
+															<div v-if="damageRecordPanel.cardImgSize != 'none'" class="card-image-div">
+																<img :src="getCardImagePath(cardData)" @error="loadNoCardImage" class="card-image">
+																<img :src="getCardIconPath(cardData, 'element')" class="card-icon-element" />
+																<img :src="getCardIconPath(cardData, 'class')" class="card-icon-class" />
+																<div class="card-icon-star-container">
+																	<template v-for="star in card.star">
+																		<img :src="getCardIconPath(cardData, 'star')" class="card-icon-star" />
+																	</template>
+																</div>
+																<img :src="getCardIconPath(cardData, 'rarity')" class="card-icon-rarity" />
+															</div>
+															<div class="card-name">{{card.name}}</div>
+														</div>
+													</td>
+												</template>
+												<td rowspan="2">{{ record.totalDamage }}</td>
+												<td rowspan="2">
+													<button v-if="damageRecordPanel.manageMode == 'normal'" type="button" class="btn btn-primary" @click="loadDamageRecord(record)" data-bs-dismiss="modal">載入</button>
+													<button v-if="damageRecordPanel.manageMode == 'delete'" type="button" class="btn btn-danger" @click="deleteDamageRecord(record.id)">刪除</button>
+												</td>
+											</tr>
+											<tr>
+												<template v-for="card in record.cards" :key="card">
+													<td>
+														<div v-if="card != null">{{ card.dmg }}</div>
+													</td>
+												</template>
+											</tr>
+										</template>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="offcanvas offcanvas-end" data-bs-scroll="false" data-bs-backdrop="true" tabindex="-1" id="cardDetailPanel" aria-labelledby="cardDetailPanelLabel">
 				<div class="offcanvas-header">
 					<h4 class="offcanvas-title" id="cardDetailPanelLabel">{{ cardDetailCardName }} - 詳細資料</h4>
@@ -234,6 +380,11 @@
 										<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
 										<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
 										<img :src="getCardIconPath(cards[idx], 'class')" class="card-icon-class" />
+										<div class="card-icon-star-container">
+											<template v-for="star in cards[idx].star">
+												<img :src="getCardIconPath(cards[idx], 'star')" class="card-icon-star" />
+											</template>
+										</div>
 										<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
 									</div>
 									<div class="card-name">{{userInput.cardname[idx]}}</div>
@@ -370,8 +521,19 @@
 							</div>
 						</div>
 
-						<div class="form-group mb-3 col-lg-11">
-							<label class="col-auto">總戰力值：{{getTeamBattlePower}}</label>
+						<div class="row">
+							<div class="form-group mb-3 col-lg-3">
+								<label class="col-auto">總戰力值：{{getTeamBattlePower}}</label>
+							</div>
+							<div class="form-group mb-3 col-lg-9 text-end">
+								<div class="form-check-inline">
+									<input class="form-control" type="text" inputmode="text" placeholder="隊伍名稱..." v-model="teamName">
+								</div>
+								<button type="button" class="btn btn-primary me-3" @click="addDamageRecord()">新增</button>
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#damageRecordModal" aria-controls="damageRecordModal" >
+									隊伍記錄
+								</button>
+							</div>
 						</div>
 
 						<div class="table-responsive" >
@@ -380,7 +542,7 @@
 									<tr>
 										<th scope="col" class="col-md-1">
 											<div>
-												<input class="form-control d-inline-block" type="text" inputmode="numeric" id="inputTurn" v-model="userInput.turns" style="width: 4rem; font-size: 1.3rem; text-align: center;">
+												<input class="form-control d-inline-block" type="text" inputmode="numeric" id="inputTurn" v-model="userInput.turns">
 											</div>
 											<div>回合</div>
 											<div>
@@ -401,6 +563,11 @@
 														<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
 														<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
 														<img :src="getCardIconPath(cards[idx], 'class')" class="card-icon-class" />
+														<div class="card-icon-star-container">
+															<template v-for="star in cards[idx].star">
+																<img :src="getCardIconPath(cards[idx], 'star')" class="card-icon-star" />
+															</template>
+														</div>
 														<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
 													</div>
 													<div class="card-name">{{userInput.cardname[idx]}}</div>
@@ -516,6 +683,15 @@
 								<option value="text">文字按鍵</option>
 								<option value="image">角色圖像</option>
 								<option value="pixel">像素+文字</option>
+							</select>
+						</div>
+						<div class="row py-2">
+							<label class="col-3">隊伍記錄：角色圖大小</label>
+							<select class="form-select col-auto w-auto" v-model="setting.general.recordPanelCardImgSize">
+								<option value="big">較大</option>
+								<option value="normal">一般</option>
+								<option value="small">較小</option>
+								<option value="none">無</option>
 							</select>
 						</div>
 					</div>

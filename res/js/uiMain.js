@@ -90,6 +90,7 @@ Vue.createApp({
 				},
 				general: {
 					charFilterDisplayStyle: 'image',
+					recordPanelCardImgSize: 'normal',
 				}
 			},
 			cardJsonLastModified: '',
@@ -98,6 +99,20 @@ Vue.createApp({
 			inputJson: null,
 			importJsonResult: '',
 			cardDetailCardName: '',
+			teamName: '',
+			damageRecords: [],
+			damageRecordPanel: {
+				editElement: '',
+				manageMode: 'normal',
+				cardImgSize: 'normal',
+				sortBy: 'id',
+				sortMode: 'desc',
+				searchFav: false,
+				searchTeamName: '',
+				searchCard: '',
+				searchTurn: null,
+			},
+			db: null,
 		}
 	},
 	created()
@@ -112,6 +127,11 @@ Vue.createApp({
 		this.COUNTER_ATTACK_MODE = CounterAttackMode;
 		this.FILTERS = config.FILTERS;
 
+		this.db = new Dexie('nuAttackCalculatorDB');
+		this.db.version(1).stores({
+			damageRecords: '++id, teamName, turn, cardname'
+		});
+
 		fetch("./res/json/cardData.json")
 		.then(resp => {
 			var date = new Date(resp.headers.get("last-modified"));
@@ -124,10 +144,11 @@ Vue.createApp({
 		.then(json => {
 			CardCenter.setMainCardData(json);
 			this.loadCards();
+			this.loadRecordsFromDB();
 		});
+		this.loadSettingFromStorage();
 	},
 	mounted: function(){
-		this.loadSettingFromStorage();
 		this.$watch(vm => [vm.setting], val => {
 			this.saveSettingFromStorage();
 		}, {
@@ -242,8 +263,6 @@ Vue.createApp({
 			}
 
 			this.battle.startBattle();
-			// this.battle.printResult();
-			// console.info(this.battle.enemyElement);
 		},
 		getBattleTurnValue(cardname, turn){
 			return this.battle.getTurnValue(cardname, turn);
@@ -432,6 +451,9 @@ Vue.createApp({
 			if (cardData == null){
 				return '';
 			}
+			if (type=='star'){
+				return './res/img/card-icon/star.png';
+			}
 			return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][cardData[type]] + '.png';
 		},
 		getFilterPanalIconPath(type, value){
@@ -535,7 +557,15 @@ Vue.createApp({
 			for (var key of Object.keys(map.setting)){
 				this.setting[key] = map.setting[key];
 			}
+
 			this.loadSetting();
+		},
+		loadRecordsFromDB(){
+			this.db.damageRecords.toArray().then(records=>{
+				if (records != null && records.length > 0){
+					this.damageRecords = records;
+				}
+			});
 		},
 		loadSetting(){
 			if (this.setting['userInput'] != null){
@@ -545,6 +575,10 @@ Vue.createApp({
 			if (['image','text','pixel'].includes(charFilterDisplayStyle)) {
 				this.cardFilter.charDisplayStyle = charFilterDisplayStyle;
 			}
+			var recordPanelCardImgSize = this.setting['general']['recordPanelCardImgSize'];
+			if (['normal','big','small', 'none'].includes(recordPanelCardImgSize)) {
+				this.damageRecordPanel.cardImgSize = recordPanelCardImgSize;
+			}
 		},
 		saveSettingFromStorage(){
 			let map = {};
@@ -552,8 +586,198 @@ Vue.createApp({
 			localStorage.setItem("nuAttackCalculator", JSON.stringify(map));
 			this.loadSetting();
 		},
+		loadDamageRecord(record){
+			this.userInput.cardActionOrder = record.cardActionOrder;
+			this.userInput.cardActionPattern = record.cardActionPattern;
+			this.userInput.cardManualAction = record.cardManualAction;
+			this.userInput.turns = record.turns;
+			var cardDmgDataArr = record.cards;
+
+			this.teamName = record.teamName;
+			this.userInput.char = ['', '', '', '', ''];
+			this.userInput.cardname = ['', '', '', '', ''];
+			this.cards = [null, null, null, null, null];
+			for (var i=0; i<5; i++){
+				var cardDmgData = cardDmgDataArr[i];
+				if (cardDmgData != null){
+					var card = CardCenter.loadCard(cardDmgData.name);
+					card.star = cardDmgData.star;
+					this.userInput.cardname[i] = cardDmgData.name;
+					this.userInput.char[i] = card.char;
+					this.cards[i] = card;
+				}
+			}
+			this.setupBattle();
+		},
+		addDamageRecord(){
+			if (this.battle == null){
+				alert('請先加入一張卡片');
+			}
+			var cardDmgDataArr = [];
+			for (var i=0; i<5; i++){
+				var card = this.cards[i];
+				var cardDmgData = null;
+				if (card != null){
+					cardDmgData = {
+						name: card.name, 
+						star: card.star,
+						potential: card.potential,
+						dmg: this.getBattleTotalValue(card.name)
+					};
+				}
+				cardDmgDataArr.push(cardDmgData);
+			}
+			var teamTotalDamage = this.getBattleTeamTotalValue();
+
+			var record = {
+				teamName: this.teamName,
+				turns: this.userInput.turns,
+				cardname: this.userInput.cardname,
+				cardActionOrder: [...this.userInput.cardActionOrder],
+				cardActionPattern: [...this.userInput.cardActionPattern],
+				cardManualAction: [...this.userInput.cardManualAction],
+				cards: cardDmgDataArr,
+				totalDamage: teamTotalDamage,
+				isFav: false,
+			};
+
+			
+			this.db.damageRecords.add(JSON.parse(JSON.stringify(record))).then(recordId=>{
+				record.id = recordId;
+				this.damageRecords.push(record);
+			});
+			
+			this.teamName = '';
+		},
+		deleteDamageRecord(id){
+			this.damageRecords = this.damageRecords.filter(e=>e.id !== id);
+			this.db.damageRecords.delete(id);
+		},
+		updateDamageRecord(record){
+			this.db.damageRecords.put(JSON.parse(JSON.stringify(record)));
+		},
+		damageRecordFilterSelectNone(){
+			this.damageRecordPanel.searchFav = false;
+			this.damageRecordPanel.searchTeamName = '';
+			this.damageRecordPanel.searchCard = '';
+			this.damageRecordPanel.searchTurn = null;
+		},
+		damageRecordSwitchManageMode(){
+			var mode = this.damageRecordPanel.manageMode;
+			mode = mode == 'normal' ? 'delete' : 'normal';
+			this.damageRecordPanel.manageMode = mode;
+		},
+		damageSort(val){
+			if (val == this.damageRecordPanel.sortBy){
+				this.damageRecordPanel.sortMode = this.damageRecordPanel.sortMode == 'asc' ? 'desc' : 'asc';
+			}
+			else{
+				this.damageRecordPanel.sortMode = 'asc';
+			}
+			this.damageRecordPanel.sortBy = val;
+		},
+		generateTeamNameHtml(str){
+			str = str.replaceAll('\n', '\n<br>\n').replaceAll(/(#.+?)(\s|$)/g, '\n$1\n');
+			return str.split('\n').filter(e=>e.trim().length > 0);
+		},
+		addToRecordSearch(fieldId, tag){
+			var searchStr = this.damageRecordPanel[fieldId];
+			if (fieldId == 'searchTurn'){
+				this.damageRecordPanel[fieldId] = searchStr == tag ? null : tag;
+			}
+			else{
+				if (searchStr.indexOf(tag) >= 0){
+					searchStr = searchStr.replaceAll(tag, '').replaceAll('  ', ' ');
+				}
+				else{
+					searchStr += searchStr == '' ? tag : ' ' + tag;
+				}
+				this.damageRecordPanel[fieldId] = searchStr;
+			}
+		}
 	},
 	computed: {
+		isEditTeam(){
+			return this.damageRecordPanel.editElement.startsWith("teamName_");
+		},
+		getDamageRecords() {
+			var arr = [...this.damageRecords];
+			
+			var isFav = this.damageRecordPanel.searchFav;
+			var teamName = this.damageRecordPanel.searchTeamName;
+			var cardname = this.damageRecordPanel.searchCard;
+			var turn = this.damageRecordPanel.searchTurn;
+			
+			if (isFav){
+				arr = arr.filter(e=>e.isFav);
+			}
+			if (teamName.length > 0){
+				var teamNameArr = teamName.trim().split(' ');
+				for (var str of teamNameArr){
+					str = str.trim();
+					if (str.startsWith("-")){
+						str = str.slice(1);
+						arr = arr.filter(e=>e.teamName.indexOf(str) == -1);
+					}
+					else{
+						arr = arr.filter(e=>e.teamName.indexOf(str) > -1);
+					}
+				}
+			}
+			if (cardname.length > 0){
+				var cardnameArr = cardname.trim().split(' ');
+				for (var str of cardnameArr){
+					str = str.trim();
+					if (str.startsWith("-")){
+						str = str.slice(1);
+						arr = arr.filter(e=>e.cardname.join(',').indexOf(str) == -1);
+					}
+					else{
+						arr = arr.filter(e=>e.cardname.join(',').indexOf(str) > -1);
+					}
+				}
+			}
+			if (turn != null && turn > 0){
+				arr = arr.filter(e=>e.turns == turn);
+			}
+
+			var sortBy = this.damageRecordPanel.sortBy;
+			if (sortBy == 'id'){
+				arr = arr.sort((e1, e2)=>e1.id > e2.id);
+			}
+			else if (sortBy == 'teamName'){
+				arr = arr.sort((e1, e2)=>e1.teamName > e2.teamName);
+			}
+			else if (sortBy == 'turns'){
+				arr = arr.sort((e1, e2)=>e1.turns > e2.turns);
+			}
+			else if (sortBy == 'totalDamage'){
+				arr = arr.sort((e1, e2)=>e1.totalDamage > e2.totalDamage);
+			}
+			else if (sortBy == 'isFav'){
+				arr = arr.sort((e1, e2)=>e1.isFav != e2.isFav ? e1.isFav : e1.id > e2.id);
+			}
+			else{ //sort by card name
+				var cardIdx = -1;
+				if (sortBy == 'card1') cardIdx = 0;
+				else if (sortBy == 'card2') cardIdx = 1;
+				else if (sortBy == 'card3') cardIdx = 2;
+				else if (sortBy == 'card4') cardIdx = 3;
+				else if (sortBy == 'card5') cardIdx = 4;
+				if (cardIdx >= 0){
+					arr = arr.sort((e1, e2)=>{
+						if (e1.cards[cardIdx] == null) return -1;
+						if (e2.cards[cardIdx] == null) return 1;
+						return e1.cards[cardIdx].name < e2.cards[cardIdx].name;
+					});
+				}
+			}
+			if (this.damageRecordPanel.sortMode == 'desc'){
+				arr = arr.reverse();
+			}
+			
+			return arr;
+		},
 		selectedChar() {
 			return this.userInput.char.join(',');
 		},
@@ -725,5 +949,6 @@ Vue.createApp({
 				this.importJsonResult = '';
 			}
 		}
+		
 	}
 }).mount('#NuCarnivalAttackCalApp');
