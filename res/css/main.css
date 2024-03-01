@@ -8,9 +8,9 @@
     cursor: pointer;
 }
 
-.resultTable tbody tr:nth-child(even) {
+/* .resultTable tbody tr:nth-child(even) td{
     background: #f0f9ff;
-}
+} */
 
 .resultTable {
     border: 2px solid #000;
