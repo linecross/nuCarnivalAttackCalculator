@@ -438,7 +438,7 @@
 									<input type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getBp()" disabled="true"></input>
 								</div>
 
-								<div v-if="userInput.isAdvanceMode" class="row">
+								<div class="row">
 									<label class="col-auto" :for="'inputCard-order-'+(idx+1)">行動順序</label>
 									<select :id="'inputCard-order-'+(idx+1)" class="col-auto form-control"  v-model="userInput.cardActionOrder[idx]">
 										<option v-for="order in 5" :value="order">{{ order }}</option>
@@ -706,6 +706,11 @@
 						<h5>已修正</h5>
 
 						<div class="row">
+							<ul>
+								<li>[20240301]</li>
+								<li>修正：載入隊伍後，無法載入手動設置的每回合行動</li>
+								<li>修正：行動模式換成「手動設置」時，不應該清空其他隊員的手動行動設置</li>
+							</ul>
 							<ul>
 								<li>[20240228]</li>
 								<li>新增功能：追加「隊伍傷害記錄」</li>

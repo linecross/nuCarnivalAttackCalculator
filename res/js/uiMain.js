@@ -223,7 +223,7 @@ Vue.createApp({
 					team.addCard(card);
 				}
 			}
-
+			
 			if (team.cards.length == 0){
 				this.battle = null;
 			}
@@ -890,8 +890,10 @@ Vue.createApp({
 			this.updateBattle();
 		},
 		selectedCardActionPattern(newVal, oldVal){
+			var newPattern = newVal.split(',');
+			var oldPattern = oldVal.split(',');
 			for (var i=0; i<this.userInput.cardActionPattern.length; i++){
-				if (this.userInput.cardActionPattern[i] == ActionPattern.Manual){
+				if (newPattern[i] != ActionPattern.Manual && oldPattern[i] == ActionPattern.Manual){
 					this.userInput.cardManualAction[i] = [];
 				}
 			}
