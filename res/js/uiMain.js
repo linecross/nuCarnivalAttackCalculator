@@ -589,7 +589,7 @@ Vue.createApp({
 			this.userInput.cardActionOrder = record.cardActionOrder;
 			this.userInput.cardActionPattern = record.cardActionPattern;
 			this.userInput.cardManualAction = record.cardManualAction;
-			this.userInput.turns = record.turns;
+			this.userInput.turns = parseInt(record.turns);
 			var cardDmgDataArr = record.cards;
 
 			this.teamName = record.teamName;
