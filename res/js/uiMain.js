@@ -900,9 +900,9 @@ Vue.createApp({
 			this.updateBattle();
 		},
 		'userInput.turns'(newVal, oldVal){
-			var turn = parseInt(newVal) || oldVal;
+			var turn = parseInt(newVal) || parseInt(oldVal);
 			if ((turn > 50) || (turn <= 0)){
-				turn = oldVal;
+				turn = parseInt(oldVal);
 			}
 			this.userInput.turns = turn;
 			this.setupBattle();
