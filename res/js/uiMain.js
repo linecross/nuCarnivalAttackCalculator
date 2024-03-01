@@ -569,6 +569,7 @@ Vue.createApp({
 		loadSetting(){
 			if (this.setting['userInput'] != null){
 				Object.assign(this.userInput, this.setting['userInput']);
+				this.userInput.turns = parseInt(this.setting['userInput'].turns);
 			}
 			var charFilterDisplayStyle = this.setting['general']['charFilterDisplayStyle'];
 			if (['image','text','pixel'].includes(charFilterDisplayStyle)) {
