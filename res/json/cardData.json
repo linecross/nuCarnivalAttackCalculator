@@ -2794,6 +2794,86 @@
         }
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+    },
+    "夕暮．可爾": {
+      "char": "可爾", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "火", "potType": "平均型",
+      "baseHp": 7293, "baseAtk": 2241, "coolDown": 3,
+      "img": "Garu_SSR_07.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "100%" }, { "type": "觸發技效果增加", "value": "25%", "target": "全體" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "184%" },
+        { "type": "敵方受到觸發技傷害增加", "value": "27%", "turn": 3 },
+        { "type": "反擊", "value": "46%", "turn": 2, "maxCount": 99 }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "219%" },
+        { "type": "敵方受到觸發技傷害增加", "value": "27%", "turn": 3 },
+        { "type": "反擊", "value": "55%", "turn": 2, "maxCount": 99 }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "253%" },
+        { "type": "敵方受到觸發技傷害增加", "value": "27%", "turn": 3 },
+        { "type": "反擊", "value": "64%", "turn": 2, "maxCount": 99 }
+      ],
+      "star3Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "6%",
+          "turn": 99,
+          "maxCount": 3,
+          "condition": "攻擊時"
+        },
+		    {
+          "type": "觸發技效果增加",
+          "value": "18%",
+          "target": "全體"
+        }
+      ],
+      "star5Rule": [
+        {
+          "type": "必殺技傷害增加",
+          "value": "21%"
+        },
+		    {
+          "type": "攻擊力增加",
+          "value": "14%"
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+    },
+	"夕暮．啖天": {
+      "char": "啖天", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "治療", "element": "木", "potType": "ATK先行",
+      "baseHp": 7827, "baseAtk": 2099, "coolDown": 3,
+      "img": "Dante_SSR_06.jpg",
+      "attackRule": [
+        { "type": "治療", "value": "25%" },
+        { "type": "持續治療", "value": "25%", "turn": 2 }
+      ],
+      "skillLv1Rule": [
+        { "type": "治療", "value": "150%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "治療", "value": "150%" },
+        { "type": "造成傷害增加", "value": "10%", "target": "全體", "turn": 3 }
+      ],
+      "skillLv3Rule": [
+        { "type": "治療", "value": "150%" },
+		    { "type": "造成傷害增加", "value": "10%", "target": "全體", "turn": 3 }
+      ],
+      "star3Rule": [
+        { "type": "治療", "value": "19%", "condition": "攻擊時" },
+		    {
+          "type": "觸發技效果增加",
+          "value": "18%",
+          "target": "全體"
+        }
+      ],
+      "star5Rule": [
+		{ "type": "我方受到治療增加", "value": "14%", "target": "全體" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
     }
 }
   
