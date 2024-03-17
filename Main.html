@@ -9,6 +9,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.6/dexie.min.js" integrity="sha512-hkt0s43sr3rIcTtQ+b81gSC1f/WAopl+uV4TxJGr5SrPIEMrBVJEEjNJMVTUyH6SocnKD9LDAnvhgtDQoIThSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" >
 
@@ -140,9 +141,11 @@
 						<div class="modal-body w-100 overflow-hidden">
 							<div class="filter-panel">
 								<div class="py-1 px-1 d-flex">
-									<button type="button" class="btn" :class="damageRecordPanel.manageMode == 'delete' ? 'btn-danger' : 'btn-primary'" @click="damageRecordSwitchManageMode()">
-										{{damageRecordPanel.manageMode == 'delete' ? '不刪了' : '刪除模式'}}
-									</button>
+									<div>
+										<button type="button" class="btn" :class="damageRecordPanel.manageMode == 'delete' ? 'btn-danger' : 'btn-primary'" @click="damageRecordSwitchManageMode()">
+											{{damageRecordPanel.manageMode == 'delete' ? '不刪了' : '刪除模式'}}
+										</button>
+									</div>
 									<span class="verticalLine"></span>
 									<select class="form-select col-auto w-auto" v-model="damageRecordPanel.cardImgSize">
 										<option value="big">角色圖：較大</option>
@@ -151,8 +154,9 @@
 										<option value="none">角色圖：無</option>
 									</select>
 									<span class="verticalLine"></span>
-									<button type="button" class="btn btn-primary" @click="damageRecordFilterSelectNone()">重設</button>
-									
+									<div>
+										<button type="button" class="btn btn-primary" @click="damageRecordFilterSelectNone()">重設</button>
+									</div>
 									<span>
 										<input type="checkbox" class="btn-check heart-checkbox" id="recordPanel-searchFav" v-model="damageRecordPanel.searchFav">
 										<label class="col-1 mx-2 w-auto" for="recordPanel-searchFav">
@@ -163,6 +167,11 @@
 									<input class="form-control search-number" type="number" v-model="damageRecordPanel.searchTurn" placeholder="回合數">
 									<input class="form-control search-text" type="text" v-model="damageRecordPanel.searchTeamName" placeholder="搜尋隊伍...">
 									<input class="form-control search-text" type="text" v-model="damageRecordPanel.searchCard" placeholder="搜尋卡片...">
+									<div>
+										<input type="file" id="importDamageRecordBtn" @change="importDamageRecord($event)" accept="application/json"  style="display: none" />
+										<label class="btn btn-primary" for="importDamageRecordBtn">匯入</label>
+										<button type="button" class="btn btn-primary" @click="exportDamageRecord()">匯出</button>
+									</div>
 								</div>
 							</div>
 							<div class="card-panel row overflow-auto w-100" >
@@ -314,6 +323,17 @@
 					<div class="row">3星被動：{{getRuleAsString(cardDetailCardData.star3Rule)}} </div>
 					<div class="row">5星被動：{{getRuleAsString(cardDetailCardData.star5Rule)}} </div>
 					<div class="row">潛{{(cardDetailCardData.rarity == 'SSR' || cardDetailCardData.rarity == 'SR') ? 6 : 3}}被動：{{getRuleAsString(cardDetailCardData.pot6Rule)}} </div>
+				</div>
+			</div>
+
+			<div class="toast-container position-fixed top-0 start-50 translate-middle-x ">
+				<div id="msgToast" class="toast align-items-center" data-bs-delay="1800" role="alert" aria-live="assertive" aria-atomic="true">
+					<div class="d-flex fs-5 border-0 rounded" :class="toastStatus">
+						<div class="toast-body">
+							{{toastMessage}}
+						</div>
+						<button type="button" class="btn-close me-2 m-auto btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+					</div>
 				</div>
 			</div>
 
@@ -707,6 +727,13 @@
 
 						<div class="row">
 							<ul>
+								<li>[20240317]</li>
+								<li>新增功能：隊伍記錄－簡單的匯入匯出</li>
+								<li>修正：加入隊伍的UI提示</li>
+								<li>修正：當記錄中已經有相同的回合數+隊伍+行動模式，按「新增」只會更改隊伍記錄</li>
+								<li>修正：卡片未上場時無法新增隊伍記錄</li>
+							</ul>
+							<ul>
 								<li>[20240301]</li>
 								<li>修正：載入隊伍後，無法載入手動設置的每回合行動</li>
 								<li>修正：行動模式換成「手動設置」時，不應該清空其他隊員的手動行動設置</li>
@@ -729,32 +756,6 @@
 								<li>[20240223] - v2.1</li>
 								<li>UI變動：追加角色篩選器功能，追加角色圖片</li>
 								<li>追加角色資料顯示（實驗性，從資料、功能的各方面都未完善，僅供簡單核對資料倍率）</li>
-							</ul>
-							<ul>
-								<li>[20240213]</li>
-								<li>追加「反擊模式」選項</li>
-							</ul>
-							<ul>
-								<li>[20240211]</li>
-								<li>修正銀伊、魔伊的潛6被動</li>
-								<li>持續治療公式修正</li>
-							</ul>
-							<ul>
-								<li>[20240205]</li>
-								<li>迷夢．奧利文的水屬增傷公式修正</li>
-								<li>持續傷害公式修正</li>
-								<li>手動防禦的Bug修正</li>
-							</ul>
-							<ul>
-								<li>[20240202]</li>
-								<li>當被動技能的條件是「攻擊時」，現時會先加buff，再攻擊<br/>
-									- 應該是先攻擊，後加buff<br/>
-									- 影響：白八等角色的一回合傷害數值
-								</li>
-								<li>並未正確計算每回合各種buff對持續傷害的影響<br/>
-									- 下毒必須每回合結束時按敵方狀態另外計算<br/>
-									- 影響：火狐等所有持續傷害角的持續傷害數值
-								</li>
 							</ul>
 						</div>
 						<hr>
