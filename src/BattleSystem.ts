@@ -895,7 +895,7 @@ export class Battle{
 		else if (attackType == AttackType.SkillAttack){
 			filtered = filtered.filter(r=>r.type != RuleType.basicAtkUp && r.type != RuleType.enemyBasicAtkUp);
 		}
-		if (!atkRule.isTriggerSkill()){
+		if (!atkRule.isTriggerSkill(attackType)){
 			filtered = filtered.filter(r=>r.type != RuleType.triggerAtkUp && r.type != RuleType.enemyTriggerAtkUp);
 		}
 		// Should check and process at turn end
@@ -912,7 +912,7 @@ export class Battle{
 		else if (attackType == AttackType.SkillAttack){
 			filtered = filtered.filter(r=>r.type != RuleType.basicAtkUp && r.type != RuleType.enemyBasicAtkUp);
 		}
-		if (!atkRule.isTriggerSkill()){
+		if (!atkRule.isTriggerSkill(attackType)){
 			filtered = filtered.filter(r=>r.type != RuleType.triggerAtkUp && r.type != RuleType.enemyTriggerAtkUp);
 		}
 		return filtered;
@@ -1752,11 +1752,11 @@ export class Rule{
 		return false;
 	}
 
-	isTriggerSkill(){
+	isTriggerSkill(attackType: string){
 		if (this.isCounterAttack){
 			return true;
 		}
-		if (this.type == RuleType.attack || this.type == RuleType.heal){
+		if (attackType == AttackType.SkillAttack && (this.type == RuleType.attack || this.type == RuleType.heal)){
 			if (this.condition != null){
 				for (var condition of this.condition){
 					if (condition.type == ConditionType.isAttack || condition.type == ConditionType.isAttackType){
