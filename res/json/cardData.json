@@ -2871,7 +2871,7 @@
         }
       ],
       "star5Rule": [
-		{ "type": "我方受到治療增加", "value": "14%", "target": "全體" }
+		    { "type": "我方受到治療增加", "value": "14%", "target": "全體" }
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
     }
