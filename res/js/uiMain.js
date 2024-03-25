@@ -648,7 +648,7 @@ Vue.createApp({
 			var record = {
 				teamName: this.teamName,
 				turns: this.userInput.turns,
-				cardname: this.userInput.cardname,
+				cardname: [...this.userInput.cardname],
 				isCardEnabled: [...this.userInput.isCardEnabled],
 				cardActionOrder: [...this.userInput.cardActionOrder],
 				cardActionPattern: [...this.userInput.cardActionPattern],
