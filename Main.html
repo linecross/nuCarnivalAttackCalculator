@@ -406,9 +406,13 @@
 											</template>
 										</div>
 										<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
-										<span class="card-icon-remove-btn" @click.stop="removeCard(idx)">
-											<i class="fa-solid fa-square fa-stack-1x"></i>
-											<i class="fa-solid fa-square-xmark fa-stack-1x" ></i>
+										<span class="fa-stack card-icon-btn card-icon-info-btn" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click.stop="showCardDetail(userInput.cardname[idx])">
+											<i class="fa-solid fa-square fa-stack-2x"></i>
+											<i class="fa-solid fa-info fa-stack-1x" ></i>
+										</span>
+										<span class="fa-stack card-icon-btn card-icon-remove-btn" @click.stop="removeCard(idx)">
+											<i class="fa-solid fa-square fa-stack-2x"></i>
+											<i class="fa-solid fa-xmark fa-stack-1x" ></i>
 										</span>
 									</div>
 									<div class="card-name">{{userInput.cardname[idx]}}</div>
@@ -416,12 +420,6 @@
 							</div>
 
 							<div class="row mt-2 mb-2" v-if="cards[idx] != null">
-								<div v-if="userInput.isAdvanceMode" class="row">
-									<button class="btn btn-primary" type="button" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click="showCardDetail(userInput.cardname[idx])">
-										詳細資料
-									</button>
-								</div>
-
 								<div class="row">
 									<!-- <div class="charStar">
 										<template v-for="star in STARS" :key="star">
@@ -584,20 +582,19 @@
 															</template>
 														</div>
 														<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
-														<span class="card-icon-remove-btn" @click.stop="removeCard(idx)">
-															<i class="fa-solid fa-square fa-stack-1x"></i>
-															<i class="fa-solid fa-square-xmark fa-stack-1x" ></i>
+														<span class="fa-stack card-icon-btn card-icon-info-btn" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click.stop="showCardDetail(userInput.cardname[idx])">
+															<i class="fa-solid fa-square fa-stack-2x"></i>
+															<i class="fa-solid fa-info fa-stack-1x" ></i>
+														</span>
+														<span class="fa-stack card-icon-btn card-icon-remove-btn" @click.stop="removeCard(idx)">
+															<i class="fa-solid fa-square fa-stack-2x"></i>
+															<i class="fa-solid fa-xmark fa-stack-1x" ></i>
 														</span>
 													</div>
 													<div class="card-name">{{userInput.cardname[idx]}}</div>
 												</div>
 												<div data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
 												:data-bs-content="getPassiveRuleSummary(name)">
-													<div v-if="userInput.isAdvanceMode" class="row">
-														<button class="btn btn-primary" type="button" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click="showCardDetail(userInput.cardname[idx])">
-															詳細資料
-														</button>
-													</div>
 													<div>
 														<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
 													</div>

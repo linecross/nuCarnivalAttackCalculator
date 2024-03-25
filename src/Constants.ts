@@ -105,6 +105,13 @@ export const TargetType = {
 };
 export type TargetType = typeof TargetType[keyof typeof TargetType];
 
+export const SkillType = {
+	none: 'N/A',
+	trigger: '觸發',
+	append: '追加',
+};
+export type SkillType = typeof SkillType[keyof typeof SkillType];
+
 export const ActionPattern = {
 	Immediately : '有招就放', 
 	Delay1Turn: '延遲1回合', 
