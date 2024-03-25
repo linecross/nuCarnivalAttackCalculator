@@ -79,6 +79,11 @@ export const TargetType = {
     isChar: '角色',
     isPosition: '位置',
 };
+export const SkillType = {
+    none: 'N/A',
+    trigger: '觸發',
+    append: '追加',
+};
 export const ActionPattern = {
     Immediately: '有招就放',
     Delay1Turn: '延遲1回合',
