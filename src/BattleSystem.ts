@@ -1,4 +1,4 @@
-import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
+import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, SkillType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
 
 const ALWAYS_EFFECTIVE : number = 99;
 
@@ -1605,6 +1605,7 @@ export class Rule{
 
 	isPassive: boolean;
 	type: RuleType;
+	skillType: SkillType = SkillType.none;
 	value: string | Rule;
 	valueBy: RuleValueByType;
 	turn: number ;
@@ -1621,7 +1622,7 @@ export class Rule{
 		return Rule.idCounter++;
 	}
 
-	constructor({id = null, parentCardName = "", isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy = RuleValueByType.atk as RuleValueByType, turn=50, maxCount=1, condition=null, target=null}){
+	constructor({id = null, parentCardName = "", isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy = RuleValueByType.atk as RuleValueByType, turn=50, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}){
 		this.id = id == null ? Rule.createId() : id;
 		this.parentCardName = parentCardName;
 		this.isPassive = isPassive;
@@ -1636,6 +1637,7 @@ export class Rule{
 		this.valueBy = valueBy;
 		this.turn = turn;
 		this.maxCount = maxCount;
+		this.skillType = skillType;
 		if (condition == null || Array.isArray(condition)){
 			this.condition = condition;
 		}
@@ -1658,7 +1660,7 @@ export class Rule{
 
 	public clone(){
 		var cloneRule = new Rule({id: this.id, parentCardName: this.parentCardName, isPassive: this.isPassive, type: this.type, value: this.value, valueBy: this.valueBy,
-			turn: this.turn, maxCount: this.maxCount, condition: this.condition, target: this.target});
+			turn: this.turn, maxCount: this.maxCount, skillType: this.skillType, condition: this.condition, target: this.target});
 		if (this.condition != null){
 			cloneRule.condition = this.condition;
 		}
@@ -1673,11 +1675,8 @@ export class Rule{
 
 	// Not passive
 	public cloneSimple(){
-		var cloneRule = new Rule({id: this.id, parentCardName: this.parentCardName, isPassive: false, type: this.type, value: this.value, valueBy: this.valueBy,
-			turn: this.turn, maxCount: this.maxCount, condition: this.condition, target: this.target});
-		if (this.condition != null){
-			cloneRule.condition = this.condition;
-		}
+		var cloneRule = this.clone();
+		cloneRule.isPassive = false;
 		return cloneRule;
 	}
 
@@ -1753,9 +1752,10 @@ export class Rule{
 	}
 
 	isTriggerSkill(attackType: string){
-		if (this.isCounterAttack){
+		if (this.isCounterAttack || this.skillType == SkillType.trigger){
 			return true;
 		}
+		// FIXME: 現時假設 「必殺技」+「攻擊時/被攻擊時」+「攻擊/治療」 = 觸發技，日後可能要移除
 		if (attackType == AttackType.SkillAttack && (this.type == RuleType.attack || this.type == RuleType.heal)){
 			if (this.condition != null){
 				for (var condition of this.condition){
@@ -1779,7 +1779,7 @@ export class Rule{
 		return cardNames;
 	}
 
-	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, condition=null, target=null}) : Rule{
+	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
 		if (type == RuleType.appendRule || type == RuleType.enemyAppendRule){
 			value = Rule.loadRule(value);
 		}
@@ -1809,17 +1809,17 @@ export class Rule{
 		}
 
 
-		var rule = new Rule({isPassive: isPassive, type: type, value:value, valueBy: valueBy, turn: turn, maxCount: maxCount, condition: conditionArr, target: targetItem});
+		var rule = new Rule({isPassive: isPassive, type: type, value:value, valueBy: valueBy, turn: turn, maxCount: maxCount, skillType: skillType, condition: conditionArr, target: targetItem});
 		return rule;
 	}
 
-	static loadSimpleRule({type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, condition=null, target=null}) : Rule{
+	static loadSimpleRule({type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
 		var isPassive = false;
-		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, condition, target});
+		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, skillType, condition, target});
 	}
-	static loadPermRule({type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=ALWAYS_EFFECTIVE, maxCount=1, condition=null, target=null}) : Rule{
+	static loadPermRule({type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=ALWAYS_EFFECTIVE, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
 		var isPassive = true;
-		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, condition, target});
+		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, skillType, condition, target});
 	}
 }
 

@@ -2745,7 +2745,8 @@
         {
           "type": "攻擊",
           "value": "61%",
-          "condition": { "type": "攻擊方式", "value": "必殺技" }
+          "condition": { "type": "攻擊方式", "value": "必殺技" },
+          "skillType": "觸發"
         }
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
