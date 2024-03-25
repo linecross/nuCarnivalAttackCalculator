@@ -867,7 +867,14 @@ Vue.createApp({
 					arr = arr.sort((e1, e2)=>{
 						if (e1.cards[cardIdx] == null) return -1;
 						if (e2.cards[cardIdx] == null) return 1;
-						return e1.cards[cardIdx].name < e2.cards[cardIdx].name;
+						if (e1.cards[cardIdx].name == e2.cards[cardIdx].name){
+							if (e1.cards[cardIdx].dmg == null) return -1;
+							else if (e2.cards[cardIdx].dmg == null) return 1;
+							else return e1.cards[cardIdx].dmg > e2.cards[cardIdx].dmg;
+						}
+						else{
+							return e1.cards[cardIdx].name > e2.cards[cardIdx].name;
+						}
 					});
 				}
 			}
