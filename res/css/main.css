@@ -257,8 +257,7 @@
     color:rgb(105, 105, 105);
 }
 .resultTable th.charItem.sortable-swap-highlight {
-    border-color: #ff0000 !important;
-    border-width: 4px;
+    filter: brightness(0.8);
 }
 
 .card-block:hover .card-icon-btn{
@@ -528,6 +527,9 @@
     z-index: 2040;
 }
 
+.resultTable .card-block{
+    max-height: 195px;
+}
 .resultTable .card-block.disabled{
     opacity: 0.6;
 }
