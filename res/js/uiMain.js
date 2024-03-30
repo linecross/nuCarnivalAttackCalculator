@@ -57,6 +57,7 @@ Vue.createApp({
 				cardManualAction:[[],[],[],[],[]],
 				isCardEnabled: [true, true, true, true, true],
 
+				updateKey: 0,
 				isAdvanceMode: true,
 				turns: 14,
 				isShowTurns: true,
@@ -157,6 +158,8 @@ Vue.createApp({
 			immediate: true,
 			deep: true
 		});
+
+		this.createSortable();
 	},
 	updated()
 	{
@@ -165,8 +168,50 @@ Vue.createApp({
 			'animation': false
 		}));
 		popoverList.forEach(e=>e._config.content=e._element.getAttribute('data-bs-content'));
+
+		const isCharItemDraggable = document.querySelector('#charInputList.isDraggable');
+		if (isCharItemDraggable == null){
+			this.createSortable();
+			console.info(this.userInput.cardname);
+		}
 	},
 	methods: {
+		createSortable(){
+			var el = document.getElementById("charInputList");
+			var vueObj = this;
+			Sortable.create(el, {
+				draggable: ".charItem",
+				dataIdAttr: 'data-id',
+				handle: '.drag-handler',
+				swapClass: "sortable-swap-highlight",
+				chosenClass: "sortable-chosen",
+				swap: true,
+				onUpdate: function (evt) {
+					if (evt.oldIndex != evt.newIndex){
+						// console.info(evt.oldIndex + ' to ' + evt.newIndex);
+						vueObj.swapCard(evt.oldIndex, evt.newIndex);
+					}
+				},
+			});
+			el.classList.add("isDraggable");
+
+			el = document.querySelector(".resultTable .table-header");
+			Sortable.create(el, {
+				draggable: ".charItem",
+				dataIdAttr: 'data-id',
+				handle: '.card-block .card-icon-move-btn',
+				swapClass: "sortable-swap-highlight",
+				chosenClass: "sortable-chosen",
+				swap: true,
+				onUpdate: function (evt) {
+					if (evt.oldIndex != evt.newIndex){
+						// console.info(evt.oldIndex + ' to ' + evt.newIndex);
+						vueObj.swapCard(evt.oldIndex-1, evt.newIndex-1);
+					}
+				},
+			});
+			el.classList.add("isDraggable");
+		},
 		switchTab(tab){
 			this.tab = tab;
 		},
@@ -392,6 +437,7 @@ Vue.createApp({
 			[this.userInput.cardManualAction[i], this.userInput.cardManualAction[j]] = [this.userInput.cardManualAction[j], this.userInput.cardManualAction[i]];
 			[this.userInput.isCardEnabled[i], this.userInput.isCardEnabled[j]] = [this.userInput.isCardEnabled[j], this.userInput.isCardEnabled[i]];
 			[this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+			this.userInput.updateKey += 1 ;
 		},
 		getIndexByCardname(cardname){
 			for (var i=0; i<this.userInput.cardname.length; i++){
