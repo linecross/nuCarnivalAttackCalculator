@@ -240,6 +240,27 @@
     color:rgb(75, 114, 255);
 }
 
+.card-block .card-icon-move-btn{
+    left: 0rem;
+    cursor: grab;
+ }
+.card-block .card-icon-move-btn .fa-up-down-left-right{
+    color:rgb(255, 255, 255);
+}
+.card-block .card-icon-move-btn .fa-square{
+    color:rgb(0, 0, 0);
+}
+.sortable-chosen .card-block .card-icon-move-btn{
+    cursor: grabbing;
+}
+.sortable-chosen .card-block .card-icon-move-btn .fa-square{
+    color:rgb(105, 105, 105);
+}
+.resultTable th.charItem.sortable-swap-highlight {
+    border-color: #ff0000 !important;
+    border-width: 4px;
+}
+
 .card-block:hover .card-icon-btn{
     font-size: 1.2rem;
     display: block;
@@ -698,4 +719,61 @@
     padding-left: 8px;
     padding-right: 8px;
     margin: 3px;
+}
+
+.drag-handler, .drag-handler label {
+    cursor: grab;
+}
+.drag-bar-container{
+    position: relative;
+    height: 20px;
+}
+.drag-bar-container i{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.drag-bar {
+    position: absolute;
+    top: 0px;
+    left: 10%;
+    height: 10px;
+    border-radius: 10px;
+    width: 80%;
+    background: linear-gradient( 0deg, #919191 50%, #c5c5c5 50% );
+    background-size: auto;
+    border: 1px solid;
+    background-size: 5px 4px;
+}
+
+#charInputList .card-data{
+    margin-left: auto;
+    margin-right: auto;
+}
+#charInputList .drag-handler .form-check{
+    padding: 0px;
+
+}
+#charInputList .sortable-swap-highlight {
+    background: #fd737375;
+    border-radius: 15px;
+}
+#charInputList .sortable-chosen{
+    background: #7398fd75;
+    border-radius: 15px;
+}
+.sortable-chosen .drag-handler, .sortable-chosen .drag-handler label {
+    cursor: grabbing;
+}
+.sortable-chosen .drag-handler .drag-bar{
+    background: linear-gradient( 0deg, #3b75ff 50%, #47baff 50% );
+}
+.sortable-chosen .drag-handler i{
+    color: #0044e2;
+}
+.sortable-swap-highlight .drag-handler .drag-bar{
+    background: linear-gradient( 0deg, #e05a5a 50%, #ec8686 50%);
+}
+.sortable-swap-highlight .drag-handler i{
+    color: rgb(207, 71, 71);
 }

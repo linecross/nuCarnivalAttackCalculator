@@ -10,6 +10,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.6/dexie.min.js" integrity="sha512-hkt0s43sr3rIcTtQ+b81gSC1f/WAopl+uV4TxJGr5SrPIEMrBVJEEjNJMVTUyH6SocnKD9LDAnvhgtDQoIThSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src=" https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js "></script>
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" >
 
@@ -386,88 +387,96 @@
 
 					<div class="row">
 						<h5>隊伍設定</h5>
-						<div class="col" v-for="(name, idx) in userInput.char" style="vertical-align: top;">
-							<div class="row mt-2 mb-2 form-group">
-								<div class="form-check text-center">
-									<label :for="'inputIsCardEnabled-' + idx">第 {{ idx+1 }} 位</label>
-									<span v-if="idx < 4" class="card-swap-icon float-end" @click="swapCard(idx, idx+1)"><i class="fa-solid fa-left-right"></i></span>
-								</div>
-								<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
-									選擇角色...
-								</button>
-								<span v-else class="card-block" :data-cardname="userInput.cardname[idx]" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
-									<div class="card-image-div">
-										<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
-										<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
-										<img :src="getCardIconPath(cards[idx], 'class')" class="card-icon-class" />
-										<div class="card-icon-star-container">
-											<template v-for="star in cards[idx].star">
-												<img :src="getCardIconPath(cards[idx], 'star')" class="card-icon-star" />
-											</template>
+						<div id="charInputList" class="row" :key="userInput.updateKey">
+							<div class="col charItem" v-for="(name, idx) in userInput.char" :data-id="idx" style="vertical-align: top;">
+								<div class="row mt-2 mb-2 form-group">
+									<div class="drag-handler">
+										<div class="drag-bar-container">
+											<div class="drag-bar"></div>
+											<i class="fa-solid fa-up-down-left-right"></i>
 										</div>
-										<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
-										<span class="fa-stack card-icon-btn card-icon-info-btn" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click.stop="showCardDetail(userInput.cardname[idx])">
-											<i class="fa-solid fa-square fa-stack-2x"></i>
-											<i class="fa-solid fa-info fa-stack-1x" ></i>
-										</span>
-										<span class="fa-stack card-icon-btn card-icon-remove-btn" @click.stop="removeCard(idx)">
-											<i class="fa-solid fa-square fa-stack-2x"></i>
-											<i class="fa-solid fa-xmark fa-stack-1x" ></i>
-										</span>
+										<div class="form-check text-center">
+											<label>第 {{ idx+1 }} 位</label>
+											<!-- <span v-if="idx < 4" class="card-swap-icon float-end" @click="swapCard(idx, idx+1)"><i class="fa-solid fa-left-right"></i></span> -->
+										</div>
 									</div>
-									<div class="card-name">{{userInput.cardname[idx]}}</div>
-								</span>
-							</div>
-
-							<div class="row mt-2 mb-2" v-if="cards[idx] != null">
-								<div class="row">
-									<!-- <div class="charStar">
-										<template v-for="star in STARS" :key="star">
-											
-											<input type="radio" name="charStar" :value="5-star" :id="'inputCard-star'+star+'-'+(idx+1)" v-model="cards[idx].star">
-											<label :for="'inputCard-star'+star+'-'+(idx+1)">☆</label>
-										</template>
-									</div> -->
-									<label class="col-auto" :for="'inputCard-star-'+(idx+1)">星數</label>
-									<select :id="'inputCard-star-'+(idx+1)" class="col-auto form-control"  v-model="cards[idx].star">
-										<option v-for="star in STARS" :value="star">{{ star }}</option>
-									</select>
-								</div>
-								<div v-if="userInput.isAdvanceMode" class="row">
-									<label class="col-auto" :for="'inputCard-pot-'+(idx+1)">潛力</label>
-									<select :id="'inputCard-pot-'+(idx+1)" class="col-auto form-control"  v-model="cards[idx].potential">
-										<option v-for="pot in POT_SELECT" :value="pot">{{ pot }}</option>
-									</select>
-								</div>
-
-								<div v-if="userInput.isAdvanceMode" class="row">
-									<label class="col-auto">HP</label>
-									<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].hp" ></input>
-									<input v-else type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getHp()" disabled="true"></input>
-									
-								</div>
-								<div v-if="userInput.isAdvanceMode" class="row">
-									<label class="col-auto">ATK</label>
-									<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].atk"></input>
-									<input v-else type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getAtk()" disabled="true"></input>
-								</div>
-								<div v-if="userInput.isAdvanceMode" class="row">
-									<label class="col-auto">戰力值</label>
-									<input type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getBp()" disabled="true"></input>
+									<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+										選擇角色...
+									</button>
+									<span v-else class="card-block" :data-cardname="userInput.cardname[idx]" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+										<div class="card-image-div">
+											<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
+											<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
+											<img :src="getCardIconPath(cards[idx], 'class')" class="card-icon-class" />
+											<div class="card-icon-star-container">
+												<template v-for="star in cards[idx].star">
+													<img :src="getCardIconPath(cards[idx], 'star')" class="card-icon-star" />
+												</template>
+											</div>
+											<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
+											<span class="fa-stack card-icon-btn card-icon-info-btn" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click.stop="showCardDetail(userInput.cardname[idx])">
+												<i class="fa-solid fa-square fa-stack-2x"></i>
+												<i class="fa-solid fa-info fa-stack-1x" ></i>
+											</span>
+											<span class="fa-stack card-icon-btn card-icon-remove-btn" @click.stop="removeCard(idx)">
+												<i class="fa-solid fa-square fa-stack-2x"></i>
+												<i class="fa-solid fa-xmark fa-stack-1x" ></i>
+											</span>
+										</div>
+										<div class="card-name">{{userInput.cardname[idx]}}</div>
+									</span>
 								</div>
 
-								<div class="row">
-									<label class="col-auto" :for="'inputCard-order-'+(idx+1)">行動順序</label>
-									<select :id="'inputCard-order-'+(idx+1)" class="col-auto form-control"  v-model="userInput.cardActionOrder[idx]">
-										<option v-for="order in 5" :value="order">{{ order }}</option>
-									</select>
-								</div>
+								<div class="row mt-2 mb-2 card-data" v-if="cards[idx] != null">
+									<div class="row">
+										<!-- <div class="charStar">
+											<template v-for="star in STARS" :key="star">
+												
+												<input type="radio" name="charStar" :value="5-star" :id="'inputCard-star'+star+'-'+(idx+1)" v-model="cards[idx].star">
+												<label :for="'inputCard-star'+star+'-'+(idx+1)">☆</label>
+											</template>
+										</div> -->
+										<label class="col-auto" :for="'inputCard-star-'+(idx+1)">星數</label>
+										<select :id="'inputCard-star-'+(idx+1)" class="col-auto form-control"  v-model="cards[idx].star">
+											<option v-for="star in STARS" :value="star">{{ star }}</option>
+										</select>
+									</div>
+									<div v-if="userInput.isAdvanceMode" class="row">
+										<label class="col-auto" :for="'inputCard-pot-'+(idx+1)">潛力</label>
+										<select :id="'inputCard-pot-'+(idx+1)" class="col-auto form-control"  v-model="cards[idx].potential">
+											<option v-for="pot in POT_SELECT" :value="pot">{{ pot }}</option>
+										</select>
+									</div>
 
-								<div class="row">
-									<label class="col-auto" :for="'inputCard-actionPatten-'+(idx+1)">行動模式</label>
-									<select :id="'inputCard-actionPatten-'+(idx+1)" class="col-auto form-control wide-input form-select"  v-model="userInput.cardActionPattern[idx]">
-										<option v-for="action in ACTION_PATTERN" :value="action">{{ action }}</option>
-									</select>
+									<div v-if="userInput.isAdvanceMode" class="row">
+										<label class="col-auto">HP</label>
+										<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].hp" ></input>
+										<input v-else type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getHp()" disabled="true"></input>
+										
+									</div>
+									<div v-if="userInput.isAdvanceMode" class="row">
+										<label class="col-auto">ATK</label>
+										<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].atk"></input>
+										<input v-else type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getAtk()" disabled="true"></input>
+									</div>
+									<div v-if="userInput.isAdvanceMode" class="row">
+										<label class="col-auto">戰力值</label>
+										<input type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getBp()" disabled="true"></input>
+									</div>
+
+									<div class="row">
+										<label class="col-auto" :for="'inputCard-order-'+(idx+1)">行動順序</label>
+										<select :id="'inputCard-order-'+(idx+1)" class="col-auto form-control"  v-model="userInput.cardActionOrder[idx]">
+											<option v-for="order in 5" :value="order">{{ order }}</option>
+										</select>
+									</div>
+
+									<div class="row">
+										<label class="col-auto" :for="'inputCard-actionPatten-'+(idx+1)">行動模式</label>
+										<select :id="'inputCard-actionPatten-'+(idx+1)" class="col-auto form-control wide-input form-select"  v-model="userInput.cardActionPattern[idx]">
+											<option v-for="action in ACTION_PATTERN" :value="action">{{ action }}</option>
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -552,9 +561,9 @@
 						</div>
 
 						<div class="table-responsive" >
-							<table class="table resultTable">
+							<table class="table resultTable" :key="userInput.updateKey">
 								<tbody>
-									<tr>
+									<tr class="table-header">
 										<th scope="col" class="col-md-1">
 											<div>
 												<input class="form-control d-inline-block" type="text" inputmode="numeric" id="inputTurn" v-model="userInput.turns">
@@ -565,7 +574,7 @@
 											</div>
 										</th>
 										<template v-for="(name, idx) in userInput.cardname" :key="name">
-											<th scope="col" :class="'col-md-2'+ getThNameClass(name) "
+											<th :data-id="name" scope="col" :class="'charItem col-md-2'+ getThNameClass(name) "
 												>
 												<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 													選擇角色...
@@ -582,6 +591,10 @@
 															</template>
 														</div>
 														<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
+														<span class="fa-stack card-icon-btn card-icon-move-btn" @click.stop>
+															<i class="fa-solid fa-square fa-stack-2x"></i>
+															<i class="fa-solid fa-up-down-left-right fa-stack-1x" ></i>
+														</span>
 														<span class="fa-stack card-icon-btn card-icon-info-btn" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click.stop="showCardDetail(userInput.cardname[idx])">
 															<i class="fa-solid fa-square fa-stack-2x"></i>
 															<i class="fa-solid fa-info fa-stack-1x" ></i>
