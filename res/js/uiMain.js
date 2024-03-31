@@ -153,7 +153,6 @@ Vue.createApp({
 		.then(json => {
 			CardCenter.setMainCardData(json);
 			this.loadCards();
-			this.loadRecordsFromDB();
 		});
 		this.loadSettingFromStorage();
 	},
@@ -174,6 +173,12 @@ Vue.createApp({
 			'animation': false
 		}));
 		popoverList.forEach(e=>e._config.content=e._element.getAttribute('data-bs-content'));
+
+		// Performance tune: clear damage records after close modal
+		const myModalEl = document.getElementById('damageRecordModal')
+		myModalEl.addEventListener('hidden.bs.modal', event => {
+			this.damageRecords = [];
+		})
 
 		const isCharItemDraggable = document.querySelector('#charInputList.isDraggable');
 		if (isCharItemDraggable == null){
@@ -747,17 +752,19 @@ Vue.createApp({
 					record.teamName = existRecord.teamName;
 					teamNameTitle = record.teamName.split('\n')[0];
 				}
-				this.db.damageRecords.put(JSON.parse(JSON.stringify(record))).then(recordId=>{
-					this.damageRecords = this.damageRecords.filter(e=>e.id != recordId);
-					this.damageRecords.push(record);
-				});
+				// this.db.damageRecords.put(JSON.parse(JSON.stringify(record))).then(recordId=>{
+				// 	this.damageRecords = this.damageRecords.filter(e=>e.id != recordId);
+				// 	this.damageRecords.push(record);
+				// });
+				this.db.damageRecords.put(JSON.parse(JSON.stringify(record)));
 				this.showToast('已更新隊伍 ' + teamNameTitle);
 			}
 			else{
-				this.db.damageRecords.add(JSON.parse(JSON.stringify(record))).then(recordId=>{
-					record.id = recordId;
-					this.damageRecords.push(record);
-				});
+				// this.db.damageRecords.add(JSON.parse(JSON.stringify(record))).then(recordId=>{
+				// 	record.id = recordId;
+				// 	this.damageRecords.push(record);
+				// });
+				this.db.damageRecords.add(JSON.parse(JSON.stringify(record)));
 				this.showToast('已加入隊伍 ' + teamNameTitle);
 			}
 			this.teamName = '';
