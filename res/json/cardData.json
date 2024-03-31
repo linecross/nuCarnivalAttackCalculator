@@ -22,7 +22,8 @@
         }
       ],
       "star5Rule": [{ "type": "普攻傷害增加", "value": "50%" }],
-      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }]
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "N墨菲": {
       "char": "墨菲", "fullname": null, "alias": null,
@@ -41,7 +42,8 @@
         }
       ],
       "star5Rule": [],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "N八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -63,7 +65,8 @@
       ],
       "star3Rule": [{ "type": "治療量增加", "value": "25%" }],
       "star5Rule": [{ "type": "最大HP增加", "value": "6%", "target": "全體" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "N艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -83,7 +86,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "N奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -108,7 +112,8 @@
           "target": { "type": "定位", "value": "攻擊" }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "N崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -131,7 +136,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "N玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -151,7 +157,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "N可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -191,7 +198,8 @@
           "condition": { "type": "每n回合", "value": 1 }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "N布儡": {
       "char": "布儡", "fullname": null, "alias": null,
@@ -211,7 +219,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "N啖天": {
       "char": "啖天", "fullname": null, "alias": null,
@@ -240,7 +249,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "N歛": {
       "char": "歛", "fullname": null, "alias": null,
@@ -260,7 +270,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "R艾斯特": {
       "char": "艾斯特", "fullname": null, "alias": null,
@@ -285,7 +296,8 @@
         }
       ],
       "star5Rule": [{ "type": "普攻傷害增加", "value": "50%" }],
-      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }]
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "R墨菲": {
       "char": "墨菲", "fullname": null, "alias": null,
@@ -304,7 +316,8 @@
         }
       ],
       "star5Rule": [],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "R八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -326,7 +339,8 @@
       ],
       "star3Rule": [{ "type": "治療量增加", "value": "25%" }],
       "star5Rule": [{ "type": "最大HP增加", "value": "6%", "target": "全體" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "R艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -346,7 +360,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "R奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -371,7 +386,8 @@
           "target": { "type": "定位", "value": "攻擊" }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "R崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -394,7 +410,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "R玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -414,7 +431,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "R可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -454,7 +472,8 @@
           "condition": { "type": "每n回合", "value": 1 }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "R布儡": {
       "char": "布儡", "fullname": null, "alias": null,
@@ -474,7 +493,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "R啖天": {
       "char": "啖天", "fullname": null, "alias": null,
@@ -503,7 +523,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "R歛": {
       "char": "歛", "fullname": null, "alias": null,
@@ -523,7 +544,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "SR艾斯特": {
       "char": "艾斯特", "fullname": null, "alias": null,
@@ -548,7 +570,8 @@
         }
       ],
       "star5Rule": [{ "type": "普攻傷害增加", "value": "50%" }],
-      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }]
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "SR墨菲": {
       "char": "墨菲", "fullname": null, "alias": null,
@@ -567,7 +590,8 @@
         }
       ],
       "star5Rule": [],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "SR八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -589,7 +613,8 @@
       ],
       "star3Rule": [{ "type": "治療量增加", "value": "25%" }],
       "star5Rule": [{ "type": "最大HP增加", "value": "6%", "target": "全體" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "SR艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -609,7 +634,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "SR奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -634,7 +660,8 @@
           "target": { "type": "定位", "value": "攻擊" }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "SR崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -657,7 +684,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "SR玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -677,7 +705,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "SR可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -717,7 +746,8 @@
           "condition": { "type": "每n回合", "value": 1 }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "SR布儡": {
       "char": "布儡", "fullname": null, "alias": null,
@@ -737,7 +767,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "SR啖天": {
       "char": "啖天", "fullname": null, "alias": null,
@@ -766,7 +797,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "SR歛": {
       "char": "歛", "fullname": null, "alias": null,
@@ -786,7 +818,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "常駐．八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -817,7 +850,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "常駐．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -846,7 +880,8 @@
         }
       ],
       "star5Rule": [{ "type": "普攻傷害增加", "value": "50%" }],
-      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }]
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "常駐．奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -868,7 +903,8 @@
       ],
       "star3Rule": [],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "常駐．崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -889,7 +925,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "33%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "常駐．玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -909,7 +946,8 @@
         }
       ],
       "star5Rule": [],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "常駐．可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -929,7 +967,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "常駐．布儡": {
       "char": "布儡", "fullname": null, "alias": null,
@@ -958,7 +997,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "常駐．啖天": {
       "char": "啖天", "fullname": null, "alias": null,
@@ -971,7 +1011,8 @@
       "skillLv3Rule": [{ "type": "攻擊", "value": "100%" }],
       "star3Rule": [],
       "star5Rule": [],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "常駐．歛": {
       "char": "歛", "fullname": null, "alias": null,
@@ -1000,7 +1041,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "白情．八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -1036,7 +1078,8 @@
         { "type": "攻擊力增加", "value": "18%" },
         { "type": "必殺技傷害增加", "value": "15%" }
       ],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "白情．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -1064,7 +1107,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "27%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "春狩．奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -1085,7 +1129,8 @@
           "target": { "type": "定位", "value": ["攻擊", "守護", "妨礙"] }
         }
       ],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "5%", "target": "全體" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "5%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "春狩．崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -1122,7 +1167,8 @@
         { "type": "攻擊力增加", "value": "14%" },
         { "type": "最大HP增加", "value": "14%" }
       ],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "妖宴．玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -1165,7 +1211,8 @@
         }
       ],
       "star5Rule": [],
-      "pot6Rule": [{ "type": "持續傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "持續傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "妖宴．可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -1203,7 +1250,8 @@
           "condition": { "type": "第n回合", "value": 1 }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "偶像．八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -1258,7 +1306,8 @@
           "condition": "攻擊時"
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "偶像．奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -1286,7 +1335,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "偶像．布儡": {
       "char": "布儡", "fullname": null, "alias": null,
@@ -1322,7 +1372,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "追夏．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -1358,7 +1409,8 @@
           "condition": { "type": "血量大於", "value": "85%" }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "追夏．啖天": {
       "char": "啖天", "fullname": null, "alias": null,
@@ -1387,7 +1439,8 @@
         }
       ],
       "star5Rule": [{ "type": "敵方受到必殺技傷害增加", "value": "19%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%", "target": "全體" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "雙月．崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -1419,7 +1472,8 @@
         }
       ],
       "star5Rule": [{ "type": "造成傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "造成傷害增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "造成傷害增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "雙月．玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -1446,7 +1500,8 @@
           "target": { "type": "定位", "value": "治療" }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "幽影．八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -1468,7 +1523,8 @@
       ],
       "star3Rule": [],
       "star5Rule": [],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "幽影．可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -1502,7 +1558,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "10%", "target": "全體" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "鍍金．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -1562,7 +1619,8 @@
           "condition": { "type": "第n回合", "value": 1 }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "鍍金．布儡": {
       "char": "布儡", "fullname": null, "alias": null,
@@ -1596,7 +1654,8 @@
           }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "聖夜．奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -1635,7 +1694,8 @@
         }
       ],
       "star5Rule": [{ "type": "最大HP增加", "value": "12%", "target": "全體" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "聖夜．崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -1667,7 +1727,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "聖夜．啖天": {
       "char": "啖天", "fullname": null, "alias": null,
@@ -1717,7 +1778,8 @@
           "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
         }
       ],
-      "pot6Rule": [{ "type": "普攻傷害增加", "value": "6%", "target": "全體" }]
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "6%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "銀羽．伊得": {
       "char": "伊得", "fullname": null, "alias": null,
@@ -1757,7 +1819,8 @@
         }
       ],
       "star5Rule": [{ "type": "造成傷害增加", "value": "9%", "target": "全體" }],
-      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }]
+      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "春林．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -1779,7 +1842,8 @@
       ],
       "star3Rule": [{ "type": "最大HP增加", "value": "27%" }],
       "star5Rule": [],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "春林．玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -1845,7 +1909,8 @@
           "condition": { "type": "血量大於", "value": "99%" }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "軍服．可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -1864,7 +1929,8 @@
         }
       ],
       "star5Rule": [],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "軍服．布儡": {
       "char": "布儡", "fullname": null, "alias": null,
@@ -1901,7 +1967,8 @@
           "condition": { "type": "隊伍中有定位", "value": "守護" }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "軍服．崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -1921,7 +1988,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "學院．八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -1955,7 +2023,8 @@
           "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
         }
       ],
-      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }]
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "學院．奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -1982,7 +2051,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "14%", "target": "全體" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "雨．崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -2014,7 +2084,8 @@
       ],
       "star3Rule": [{ "type": "攻擊力增加", "value": "18%" }],
       "star5Rule": [{ "type": "最大HP增加", "value": "12%", "target": "全體" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "雨．歛": {
       "char": "歛", "fullname": null, "alias": null,
@@ -2046,7 +2117,8 @@
           "condition": { "type": "隊伍中每存在角色", "value": "歛" }
         }
       ],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "沙漠．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -2106,7 +2178,8 @@
         }
       ],
       "star5Rule": [{ "type": "普攻傷害增加", "value": "27%", "target": "全體" }],
-      "pot6Rule": [{ "type": "普攻傷害增加", "value": "6%", "target": "全體" }]
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "6%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "沙漠．玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -2152,7 +2225,8 @@
           "condition": { "type": "血量少於", "value": "99%" }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "沙漠．啖天": {
       "char": "啖天", "fullname": null, "alias": null,
@@ -2198,7 +2272,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "41%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "賭場．艾斯特": {
       "char": "艾斯特", "fullname": null, "alias": null,
@@ -2222,7 +2297,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "賭場．墨菲": {
       "char": "墨菲", "fullname": null, "alias": null,
@@ -2255,7 +2331,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "38%" }],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "煙嵐．八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -2288,7 +2365,8 @@
         }
       ],
       "star5Rule": [{ "type": "造成傷害增加", "value": "27%" }],
-      "pot6Rule": [{ "type": "造成傷害增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "造成傷害增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "煙嵐．可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -2335,7 +2413,8 @@
         { "type": "治療量增加", "value": "27%" },
         { "type": "持續治療量增加", "value": "27%" }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "錆色．布儡": {
       "char": "布儡", "fullname": null, "alias": null,
@@ -2354,7 +2433,8 @@
       ],
       "star3Rule": [{ "type": "攻擊力增加", "value": "36%" }],
       "star5Rule": [{ "type": "攻擊力增加", "value": "27%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "錆色．歛": {
       "char": "歛", "fullname": null, "alias": null,
@@ -2394,7 +2474,8 @@
           "condition": { "type": "第n回合", "value": [2, 3, 4] }
         }
       ],
-      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }]
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "錆色．玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
@@ -2412,7 +2493,7 @@
         { "type": "必殺技傷害增加", "value": "27%", "target": "全體" }
       ],
       "pot6Rule": [{ "type": "必殺技傷害增加", "value": "5%", "target": "全體" }],
-      "star": 3
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "血鑰．奧利文": {
       "char": "奧利文", "fullname": null, "alias": "槍奧",
@@ -2443,7 +2524,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "27%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "血鑰．啖天": {
       "char": "啖天", "fullname": null, "alias": "槍啖",
@@ -2473,7 +2555,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "27%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "晶霜．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
@@ -2508,7 +2591,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "27%" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "晶霜．崑西": {
       "char": "崑西", "fullname": null, "alias": null,
@@ -2544,7 +2628,8 @@
         { "type": "攻擊力增加", "value": "9%", "target": "全體" }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "14%", "target": "全體" }],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "晶霜．可爾": {
       "char": "可爾", "fullname": null, "alias": null,
@@ -2564,7 +2649,8 @@
         }
       ],
       "star5Rule": [{ "type": "必殺技傷害增加", "value": "41%" }],
-      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }]
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "魔王．伊得": {
       "char": "伊得", "fullname": null, "alias": null,
@@ -2621,7 +2707,8 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "12%", "turn": 99, "maxCount": 3, "target": "全體", "condition": {"type": "隊伍中每存在定位", "value": "攻擊"} } ],
-      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }]
+      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "迷夢．八雲": {
       "char": "八雲", "fullname": null, "alias": null,
@@ -2661,7 +2748,8 @@
           "condition": { "type": "每n回合", "value": 3 } 
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "迷夢．奧利文": {
       "char": "奧利文", "fullname": null, "alias": null,
@@ -2696,7 +2784,8 @@
           "condition": { "type": "攻擊方式", "value": "必殺技" }
         }
       ],
-      "pot6Rule": []
+      "pot6Rule": [],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "迷夢．玖夜": {
       "char": "玖夜", "fullname": "", "alias": null,
@@ -2749,7 +2838,8 @@
           "skillType": "觸發"
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "迷夢．歛": {
       "char": "歛", "fullname": "", "alias": null,
@@ -2794,7 +2884,8 @@
           "condition": { "type": "第n回合", "value": 1 }
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "夕暮．可爾": {
       "char": "可爾", "fullname": "", "alias": null,
@@ -2841,7 +2932,8 @@
           "value": "14%"
         }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
 	"夕暮．啖天": {
       "char": "啖天", "fullname": "", "alias": null,
@@ -2874,7 +2966,8 @@
       "star5Rule": [
 		    { "type": "我方受到治療增加", "value": "14%", "target": "全體" }
       ],
-      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }]
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   

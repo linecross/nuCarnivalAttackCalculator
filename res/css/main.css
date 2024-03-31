@@ -2,6 +2,7 @@
     border-left: 1px solid #666;
     padding-left: 1px;
     padding-right: 1rem;
+    content: ' ';
 }
 
 .form-check-label, .form-check-input{
@@ -570,7 +571,7 @@
     background-color: #e8f2ff;
 }
 
-#damageRecordModal .btn {
+.btn {
     white-space: nowrap;
 }
 
