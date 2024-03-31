@@ -170,6 +170,7 @@ export class Card {
         this.star3Rule = [];
         this.star5Rule = [];
         this.pot6Rule = [];
+        this.pot12Rule = [];
         this.attackRule = [];
         this.skillLv1Rule = [];
         this.skillLv2Rule = [];
@@ -197,9 +198,17 @@ export class Card {
             if (this.potential >= 6) {
                 ruleArr.concat(this.pot6Rule);
             }
+            if (this.potential >= 12) {
+                ruleArr.concat(this.pot12Rule);
+            }
         }
-        else if (this.potential >= 3) {
-            ruleArr.concat(this.pot6Rule);
+        else {
+            if (this.potential >= 3) {
+                ruleArr.concat(this.pot6Rule);
+            }
+            if (this.potential >= 6) {
+                ruleArr.concat(this.pot12Rule);
+            }
         }
         return ruleArr;
     }
@@ -287,7 +296,7 @@ export class Card {
     }
     static updateCard(card, data) {
         var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
-        var permRules = ['star3Rule', 'star5Rule', 'pot6Rule'];
+        var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
         for (var key of Object.keys(data)) {
             if (simpleRules.includes(key)) {
                 card[key] = [];
@@ -507,8 +516,18 @@ export class Battle {
             toAddRules = toAddRules.concat(card.star3Rule);
         if (card.star >= 5)
             toAddRules = toAddRules.concat(card.star5Rule);
-        if (card.potential >= 6)
-            toAddRules = toAddRules.concat(card.pot6Rule);
+        if (card.rarity == 'SSR' || card.rarity == 'SR') {
+            if (card.potential >= 6)
+                toAddRules = toAddRules.concat(card.pot6Rule);
+            if (card.potential >= 12)
+                toAddRules = toAddRules.concat(card.pot12Rule);
+        }
+        else {
+            if (card.potential >= 3)
+                toAddRules = toAddRules.concat(card.pot6Rule);
+            if (card.potential >= 6)
+                toAddRules = toAddRules.concat(card.pot12Rule);
+        }
         for (var rule of toAddRules) {
             // If rule only check in battle, only add to card but not targets
             if (rule.isRuleCheckInBattle()) {
@@ -1230,6 +1249,7 @@ export class Battle {
         console.info('3星\t' + this.team.cards.map(e => e.star3Rule).join('\t'));
         console.info('5星\t' + this.team.cards.map(e => e.star5Rule).join('\t'));
         console.info('潛6\t' + this.team.cards.map(e => e.pot6Rule).join('\t'));
+        console.info('潛12\t' + this.team.cards.map(e => e.pot12Rule).join('\t'));
         console.info();
         var totalOutput = [];
         var totalEnemyDamage = [];
@@ -1629,6 +1649,9 @@ export class LogRule extends Rule {
     }
     getFullSkillInfo() {
         var s = this.type + this.value;
+        if (this.value == null) {
+            s = this.type;
+        }
         if (this.target != null && this.target.type != TargetType.self) {
             s = this.target + s;
         }
