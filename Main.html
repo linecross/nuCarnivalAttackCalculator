@@ -587,7 +587,7 @@
 									<input class="form-control" type="text" inputmode="text" placeholder="隊伍名稱..." v-model="teamName">
 								</div>
 								<button type="button" class="btn btn-primary me-3" @click="addDamageRecord()">新增</button>
-								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#damageRecordModal" aria-controls="damageRecordModal" >
+								<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#damageRecordModal" aria-controls="damageRecordModal" @click="loadRecordsFromDB">
 									隊伍記錄
 								</button>
 							</div>
@@ -770,6 +770,15 @@
 
 						<div class="row">
 							<ul>
+								<li>[20240331]</li>
+								<li>新增功能：卡片可以直接拖曳</li>
+								<li>新增功能：選擇角色－加上能力過濾</li>
+								<li>新增功能：選擇角色－加上 AND / OR</li>
+								<li>修正：R/N卡潛3時被動並未計算</li>
+								<li>修正：選擇角色版面在點擊過濾後會歪掉</li>
+								<li>效能修正：點擊「隊伍記錄」才會載入記錄</li>
+							</ul>
+							<ul>
 								<li>[20240317]</li>
 								<li>新增功能：隊伍記錄－簡單的匯入匯出</li>
 								<li>修正：加入隊伍的UI提示</li>
@@ -810,6 +819,7 @@
 								<li>當角色有複合能力（例：大招可以攻擊同時治療），可能只會顯示部份buff<br/>
 									- 數值仍然正常計算<br/>
 								</li>
+								<li>效能問題：當「隊伍記錄」越來越多，速度會變慢</li>
 							</ul>
 						</div>
 						<hr>
