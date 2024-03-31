@@ -180,10 +180,10 @@ Vue.createApp({
 			this.damageRecords = [];
 		})
 
-		const isCharItemDraggable = document.querySelector('#charInputList.isDraggable');
-		if (isCharItemDraggable == null){
+		// Add back draggable after UI changes
+		const charInputList = document.querySelector('#charInputList');
+		if (charInputList != null && !charInputList.classList.contains('isDraggable')){
 			this.createSortable();
-			console.info(this.userInput.cardname);
 		}
 	},
 	methods: {
