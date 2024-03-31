@@ -39,7 +39,11 @@
 							<h5 class="modal-title">選擇角色</h5>
 							<span class="verticalLine"></span>
 								<div class="py-1 d-flex cardFilter-searchForm">
-									<input class="form-control me-3" type="text" id="cardFilter-searchStr" v-model="cardFilter.searchStr" placeholder="搜尋...">
+									<button type="button" class="btn" :class="cardFilter.searchStrOp == 'AND' ? 'btn-primary' : 'btn-dark'" 
+									@click="cardFilter.searchStrOp = (cardFilter.searchStrOp == 'AND' ? 'OR' : 'AND')">
+										{{cardFilter.searchStrOp}}
+									</button>
+									<input class="form-control mx-3" type="text" id="cardFilter-searchStr" v-model="cardFilter.searchStr" placeholder="搜尋...">
 									<button type="button" class="btn btn-primary" @click="cardFilterSelectNone()">重設</button>
 								</div>	
 							<button type="button" class="btn-close text-reset" data-bs-dismiss="modal" aria-label="Close"></button>

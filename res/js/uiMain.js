@@ -19,7 +19,7 @@ var config = {
 		buffSkill: ['攻擊力增加','普攻傷害增加','必殺技傷害增加','持續傷害增加','觸發技效果增加','造成傷害增加',
 		'敵方受到普攻傷害增加','敵方受到必殺技傷害增加','敵方受到持續傷害增加','敵方受到觸發技傷害增加','敵方受到屬性傷害增加','敵方受到傷害增加'],
 		healBuffSkill: ['治療量增加','持續治療量增加',
-		'我方受到治療增加','我方受到瞬間治療增加','我方受到持續治療增加'],
+		'我方受到治療增加','我方受到持續治療增加'],
 	},
 	CHAR_FOLDER: {
 		'八雲': 'yakumo', '艾德蒙特': 'edmond', '奧利文': 'olivine',
@@ -79,6 +79,7 @@ Vue.createApp({
 				currentIdx: -1,
 				selectCardName: '',
 				searchStr: '',
+				searchStrOp: 'AND',
 				rarity: [],
 				char: [],
 				clazz: [],
@@ -478,6 +479,7 @@ Vue.createApp({
 				this.cardFilterSelectNone('coolDown');
 				this.cardFilterSelectNone('char');
 				this.cardFilter.searchStr = '';
+				this.cardFilter.searchStrOp = 'AND';
 			}
 		},
 		openCardSelector(idx){
@@ -488,6 +490,7 @@ Vue.createApp({
 			this.cardFilterSelectNone('coolDown');
 			this.cardFilterSelectNone('char');
 			this.cardFilter.searchStr = '';
+			this.cardFilter.searchStrOp = 'AND';
 			if (this.userInput.cardname[idx] != null && this.userInput.cardname[idx].length > 0){
 				this.cardFilter.selectCardName = this.userInput.cardname[idx];
 			}
@@ -990,6 +993,7 @@ Vue.createApp({
 			}
 
 			var searchStr = this.cardFilter.searchStr;
+			var searchStrOp = this.cardFilter.searchStrOp;
 			var chars = this.cardFilter.char;
 			var rarity = this.cardFilter.rarity;
 			var clazz = this.cardFilter.clazz;
@@ -1013,15 +1017,22 @@ Vue.createApp({
 			}
 			if (searchStr != null && searchStr.length > 0){
 				var searchStrArr = searchStr.trim().split(' ');
-				for (var str of searchStrArr){
-					str = str.trim();
-					if (str.startsWith("-")){
-						str = str.slice(1);
-						arr = arr.filter(e=>e[0].indexOf(str) == -1 && JSON.stringify(e[1]).indexOf(str) == -1);
+				if (searchStrOp == 'AND'){
+					for (var str of searchStrArr){
+						str = str.trim();
+						if (str.startsWith("-")){
+							str = str.slice(1);
+							arr = arr.filter(e=>e[0].indexOf(str) == -1 && JSON.stringify(e[1]).indexOf(str) == -1);
+						}
+						else{
+							arr = arr.filter(e=>e[0].indexOf(str) > -1 || JSON.stringify(e[1]).indexOf(str) > -1);
+						}
 					}
-					else{
-						arr = arr.filter(e=>e[0].indexOf(str) > -1 || JSON.stringify(e[1]).indexOf(str) > -1);
-					}
+				}
+				else if (searchStrOp == 'OR'){
+					var includeStrArr = searchStrArr.filter(e=>!e.startsWith("-"));
+					// var excludeStrArr = searchStrArr.filter(e=>e.startsWith("-")).map(e=>e.slice(1));
+					arr = arr.filter(e=>includeStrArr.some(s=>e[0].includes(s)) || includeStrArr.some(s=>JSON.stringify(e[1]).includes(s)));
 				}
 			}
 			
