@@ -2,6 +2,9 @@
     border-left: 1px solid #666;
     padding-left: 1px;
     padding-right: 1rem;
+    content: ' ';
+    margin-left: 1rem;
+    min-height: 50%;
 }
 
 .form-check-label, .form-check-input{
@@ -304,11 +307,18 @@
     flex: 1 1 30%;
     min-height: 100px;
     transition: all .25s ease-in-out;
+    position: sticky;
+    top: 0;
+}
+#cardSelector .cardFilter-searchForm{
+    width: 70%;
 }
 #cardSelector .card-panel{
     flex: 1 1 auto;
     overflow-y: auto;
     min-height: 100px;
+    position: sticky;
+    top: 0;
 }
 #cardSelector .cardFilter-element span, #cardSelector .cardFilter-clazz span{
     margin-right: 1rem;
@@ -570,7 +580,7 @@
     background-color: #e8f2ff;
 }
 
-#damageRecordModal .btn {
+.btn {
     white-space: nowrap;
 }
 

@@ -66,6 +66,11 @@ export const RuleType = {
 	// 較複雜的技能規則
 	appendRule: '我方獲得技能',
 	enemyAppendRule: '敵方獲得技能',
+
+	// 不會在計算機生效的被動（純記錄）
+	immuneParalysis: '免疫麻痺',
+	immuneSleep: '免疫睡眠',
+	immuneSilence: '免疫沈默'
 } as const;
 export type RuleType = typeof RuleType[keyof typeof RuleType];
 
