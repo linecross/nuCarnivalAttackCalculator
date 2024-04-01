@@ -1,4 +1,5 @@
-import { Battle, Team, Card, CardCenter } from '../BattleSystem.js';
+import { Battle } from '../BattleSystem.js';
+import { Team, Card, CardCenter } from '../Card.js';
 import { ActionPattern } from '../Constants.js';
 import CardData from './sample/cardData.json';
 import '../jest/toBeAround.js';
