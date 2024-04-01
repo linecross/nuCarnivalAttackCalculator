@@ -971,9 +971,6 @@ Vue.createApp({
 			
 			return arr;
 		},
-		selectedChar() {
-			return this.userInput.char.join(',');
-		},
 		selectedCard() {
 			return this.userInput.cardname.join(',');
 		},
@@ -1055,35 +1052,36 @@ Vue.createApp({
 			return null;
 		},
 		updatedCardData(){
-			var result = '';
+			var result = [];
 			for (var card of this.cards){
 				if (card != null){
-					result += card.name + ',' + card.star + ',' + card.level + ',' + card.potential + ',' + card.atk;
+					result.push(card.name + ',' + card.star + ',' + card.level + ',' + card.potential + ',' + card.atk);
 				}
-				result += ';';
 			}
-			return result;
+			return result.sort().join(';');
 		},
 	},
 	watch:{
-		selectedChar(newVal, oldVal){
-			for (var i =0; i<this.userInput.char.length; i++){
-				var char = this.userInput.char[i];
-				if (char == null || char == ''){
-					this.userInput.cardname[i] = '';
-					this.cards[i] = null;
-				}
-				else if (!this.getCardnameByChar(char).includes(this.userInput.cardname[i])){
-					this.userInput.cardname[i] = '';
-					this.cards[i] = null;
-				}
-			}
-		},
 		selectedCard(newVal, oldVal) {
-			this.loadCards();
-		},
+			var oldStr = oldVal.split(',').sort().join(',');
+			var newStr = newVal.split(',').sort().join(',');
+			// Card added
+			if (oldStr != newStr){
+				this.loadCards();
+			}
+			// Card swapped
+			else{
+				this.setupBattle();
+			}
+		},	
 		updatedCardData(newVal, oldVal){
-			this.updateBattle();
+			var newCards = newVal.split(';').map(e=>e.split(',')[0]).join(',');
+			var oldCards = oldVal.split(';').map(e=>e.split(',')[0]).join(',');
+
+			// No new card loaded, only star/pot/atk changes
+			if (newCards == oldCards){
+				this.updateBattle();
+			}
 		},
 		selectedCardEnabled(newVal, oldVal){
 			this.setupBattle();
