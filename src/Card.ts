@@ -171,18 +171,11 @@ export class Card{
 		var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
 		var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
 		for (var key of Object.keys(data)) {
-			if (simpleRules.includes(key)){
+			if (simpleRules.includes(key) || permRules.includes(key)){
+				var isPermRule = permRules.includes(key);
 				card[key] = [];
 				for (var ruleItem of data[key]){
-					var rule = Rule.loadSimpleRule(ruleItem);
-					rule.parentCardName = card.name;
-					card[key].push(rule);
-				}
-			}
-			else if (permRules.includes(key)){
-				card[key] = [];
-				for (var ruleItem of data[key]){
-					var rule = Rule.loadPermRule(ruleItem);
+					var rule = Rule.loadRule(ruleItem, isPermRule);
 					rule.parentCardName = card.name;
 					card[key].push(rule);
 				}

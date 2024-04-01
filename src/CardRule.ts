@@ -6,7 +6,7 @@ export class Rule{
 	id: number;
 	parentCardName: string;
 
-	isPassive: boolean;
+	isPassive: boolean;  // star3 / star6 / pot6 passive skill indicator
 	type: RuleType;
 	skillType: SkillType = SkillType.none;
 	value: string | Rule;
@@ -63,6 +63,7 @@ export class Rule{
 		return s;
 	}
 
+	// Exact clone including rule ID
 	public clone(){
 		var cloneRule = new Rule({id: this.id, parentCardName: this.parentCardName, isPassive: this.isPassive, type: this.type, value: this.value, valueBy: this.valueBy,
 			turn: this.turn, maxCount: this.maxCount, skillType: this.skillType, condition: this.condition, target: this.target});
@@ -72,6 +73,7 @@ export class Rule{
 		return cloneRule;
 	}
 
+	// rule ID increment
 	public cloneSimpleChild(){
 		var cloneRule = this.clone();
 		cloneRule.id += Rule.CHILD_RULE_ID_INCREMENT;
@@ -156,7 +158,7 @@ export class Rule{
 		return false;
 	}
 
-	isTriggerSkill(attackType: string){
+	isTriggerSkill(attackType: string = AttackType.BasicAttack){
 		if (this.isCounterAttack || this.skillType == SkillType.trigger){
 			return true;
 		}
@@ -184,11 +186,23 @@ export class Rule{
 		return cardNames;
 	}
 
-	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
+	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}, isPermRule = false) : Rule{
+		// Default values setup
+		if (isPermRule) {
+			isPassive = true;
+			if (turn == null) turn = Rule.ALWAYS_EFFECTIVE;
+		}
+		else{
+			isPassive = false;
+			if (turn == null) turn = 1;
+		}
+
+		// Load append rule
 		if (type == RuleType.appendRule || type == RuleType.enemyAppendRule){
 			value = Rule.loadRule(value);
 		}
 
+		// Load condition
 		var conditionArr = null;
 		if (condition != null){
 			conditionArr = [];
@@ -205,6 +219,7 @@ export class Rule{
 			}
 		}
 
+		// Load Target
 		var targetItem = null;
 		if (target != null){
 			if (typeof target == 'string'){
@@ -213,18 +228,8 @@ export class Rule{
 			targetItem = RuleTarget.loadTarget(target);
 		}
 
-
 		var rule = new Rule({isPassive: isPassive, type: type, value:value, valueBy: valueBy, turn: turn, maxCount: maxCount, skillType: skillType, condition: conditionArr, target: targetItem});
 		return rule;
-	}
-
-	static loadSimpleRule({type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
-		var isPassive = false;
-		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, skillType, condition, target});
-	}
-	static loadPermRule({type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=Rule.ALWAYS_EFFECTIVE, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
-		var isPassive = true;
-		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, skillType, condition, target});
 	}
 }
 
