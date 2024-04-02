@@ -18,7 +18,14 @@ export class LogRule extends Rule{
 
 	public toString() : string{
 		var s = '【'+this.parentCardName+'】';
-		s += this.type + '：' + this.value;
+		var type = this.type;
+		if (type == RuleType.attack && this.isCounterAttack){
+			type = RuleType.counterAttack;
+		}
+		else if (type == RuleType.attack && this.isFollowUpAttack){
+			type = RuleType.basicAtkFollowup;
+		}
+		s += type + '：' + this.value;
 		if (this.maxCount > 1 || this.applyCount > 1){
 			if (this.type == RuleType.attack || this.type == RuleType.poisonAttack){
 				s += '（'+this.applyCount+'次）'

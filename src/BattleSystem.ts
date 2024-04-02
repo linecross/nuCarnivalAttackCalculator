@@ -14,6 +14,8 @@ export class Battle{
 	enemyElement : Element = Element.NA;
 	enemyBattleTurn : BattleTurn;
 
+	isRuleLogAddedPerTurn: boolean = false;
+
 	counterAttackCount: number = 0;
 	counterAttackMode: CounterAttackMode = CounterAttackMode.everyTurn;
 	printOutputOption: string = Battle.PRINT_OUTPUT_OPTION.ALL;
@@ -190,6 +192,7 @@ export class Battle{
 
 	startRoundPerCard(attackType: AttackType, card: Card) : AttackType{
 		this.currentTurnAction = TurnActionType.beforeTurn;
+		this.isRuleLogAddedPerTurn = false;
 
 		// ---------------------------每個人攻擊前------------------------------------
 		var preAttackRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.isPreAttackRule());
@@ -212,6 +215,22 @@ export class Battle{
 		
 		// ---------------------------正式攻擊------------------------------------
 		if (attackType == AttackType.Guard){
+			var logRules = this.filterBuffsForLog(this.battleTurns[card.name].rules);
+			for (var buff of logRules){
+				var applyCount = buff.getConditionFulfillTimes(card, this.team, TurnActionType.guard, attackType, this.currentTurn);
+				if (applyCount > 0){
+					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
+				}
+			}
+			logRules = this.filterBuffsForLog(this.enemyBattleTurn.rules, true);
+			for (var buff of logRules){
+				var applyCount = buff.getConditionFulfillTimes(card, this.team, TurnActionType.guard, attackType, this.currentTurn);
+				if (applyCount > 0){
+					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
+				}
+			}
+			this.isRuleLogAddedPerTurn = true;
+
 			this.battleTurns[card.name].action[this.currentTurn] = attackType;
 			return attackType;
 		}
@@ -247,6 +266,7 @@ export class Battle{
 							atkFollowupRule.type = RuleType.attack;
 							atkFollowupRule.turn = 1;
 							atkFollowupRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
+							atkFollowupRule.isFollowUpAttack = true;
 							this.attack(attackType, atkFollowupRule, card);
 							this.currentTurnAction = TurnActionType.afterAttack;
 							hasAttackEnemy = true;
@@ -390,18 +410,10 @@ export class Battle{
 		return filtered;
 	}
 
-	private filterBuffsForLog(rules: Rule[], atkRule: Rule, ruleType: RuleType, attackType: AttackType, isEnemy:boolean = false) : Rule[]{
-		var filtered = rules.filter(r=> isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
+	private filterBuffsForLog(rules: Rule[], isEnemy:boolean = false) : Rule[]{
+		var filtered = rules.filter(r=> Battle.OUTPUT_TYPES.has(r.type) || Battle.TEAM_BUFF_TYPES.has(r.type) || Battle.ENEMY_BUFF_TYPES.has(r.type));
+		filtered = filtered.filter(r=> isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
 		filtered = filtered.filter(r=>!(r.isBeforeRoundRule() || r.isPreAttackRule() || r.isPostAttackRule()));
-		if (attackType == AttackType.BasicAttack){
-			filtered = filtered.filter(r=>r.type != RuleType.skillAtkUp && r.type != RuleType.enemySkillAtkUp);
-		}
-		else if (attackType == AttackType.SkillAttack){
-			filtered = filtered.filter(r=>r.type != RuleType.basicAtkUp && r.type != RuleType.enemyBasicAtkUp);
-		}
-		if (!atkRule.isTriggerSkill(attackType)){
-			filtered = filtered.filter(r=>r.type != RuleType.triggerAtkUp && r.type != RuleType.enemyTriggerAtkUp);
-		}
 		return filtered;
 	}
 
@@ -436,6 +448,8 @@ export class Battle{
 		}
 	}
 
+	static LOG_EXCLUDE_TURNACTIONTYPE : Set<TurnActionType> = new Set([TurnActionType.beforeAction, TurnActionType.beforeTurn, TurnActionType.atTurnEnd]);
+
 	private addBuffToTargets(rule: Rule, card: Card, attackType: AttackType){
 		if (!(Battle.TEAM_BUFF_TYPES.has(rule.type) || Battle.ENEMY_BUFF_TYPES.has(rule.type))){
 			return;
@@ -453,7 +467,7 @@ export class Battle{
 			if (Battle.TEAM_BUFF_TYPES.has(rule.type)){
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				if (isRuleAdded && targetName == card.name && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& this.currentTurnAction != TurnActionType.beforeAction && this.currentTurnAction != TurnActionType.beforeTurn && this.currentTurnAction != TurnActionType.atTurnEnd){
+					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -461,7 +475,7 @@ export class Battle{
 			else if (Battle.ENEMY_BUFF_TYPES.has(rule.type)){
 				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
 				if (isRuleAdded && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& this.currentTurnAction != TurnActionType.beforeAction && this.currentTurnAction != TurnActionType.beforeTurn && this.currentTurnAction != TurnActionType.atTurnEnd){
+					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -482,7 +496,7 @@ export class Battle{
 				newRule.parentCardName = targetName;
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				if (isRuleAdded && targetName == card.name && Battle.TEAM_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& this.currentTurnAction != TurnActionType.beforeAction && this.currentTurnAction != TurnActionType.beforeTurn && this.currentTurnAction != TurnActionType.atTurnEnd){
+					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -490,7 +504,7 @@ export class Battle{
 				newRule.parentCardName = card.name;
 				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
 				if (isRuleAdded && Battle.ENEMY_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& this.currentTurnAction != TurnActionType.beforeAction && this.currentTurnAction != TurnActionType.beforeTurn && this.currentTurnAction != TurnActionType.atTurnEnd){
+					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -503,7 +517,7 @@ export class Battle{
 			return;
 		}
 
-		var isAddRuleLog = this.currentTurnAction == TurnActionType.beforeAction;
+		// var isAddRuleLog = this.currentTurnAction == TurnActionType.beforeAction;
 
 		// Calculate
 		var atk : number = card.getAtk();
@@ -549,26 +563,24 @@ export class Battle{
 			}
 
 			debuffs[buffType] = (debuffs[buffType] || 0) + (Battle.getNumber(buff.value as string) * applyCount);
-			if (isAddRuleLog && applyCount > 0){
-				this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
-			}
 		}
 
-		if (isAddRuleLog){
-			var logRules = this.filterBuffsForLog(cardRules, rule, rule.type, attackType);
+		if (!this.isRuleLogAddedPerTurn){
+			var logRules = this.filterBuffsForLog(cardRules);
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this.team, action, attackType, currentTurn);
 				if (applyCount > 0){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
-			logRules = this.filterBuffsForLog(this.enemyBattleTurn.rules, rule, rule.type, attackType);
+			logRules = this.filterBuffsForLog(this.enemyBattleTurn.rules, true);
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this.team, action, attackType, currentTurn);
 				if (applyCount > 0){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
+			this.isRuleLogAddedPerTurn = true;
 		}
 
 		var hitCount = rule.maxCount || 1;
@@ -778,12 +790,12 @@ export class Battle{
 			}
 		}
 		// Remove Skill buff when Basic Attack + no Trigger Attack
-		if (attackType == AttackType.BasicAttack && !RuleHelper.hasTriggerAttack(rules)){
+		if ((attackType == AttackType.BasicAttack || attackType == AttackType.Guard) && !RuleHelper.hasTriggerAttack(rules)){
 			acceptTypes.delete(RuleType.skillAtkUp);
 			acceptTypes.delete(RuleType.enemySkillAtkUp);
 		}
 		// Remove Basic buff when Skill Attack
-		if (attackType == AttackType.SkillAttack){
+		if (attackType == AttackType.SkillAttack || attackType == AttackType.Guard){
 			acceptTypes.delete(RuleType.basicAtkUp);
 			acceptTypes.delete(RuleType.enemyBasicAtkUp);
 		}
@@ -976,7 +988,7 @@ export class BattleTurn{
 		var attackTypes:RuleType[] = [RuleType.attack, RuleType.heal];
 		var attackRules = this.ruleLog[turn].filter(e=>attackTypes.includes(e.type));
 		// console.debug(turn+":["+rule.id+"]"+rule.type+rule.value+":"+rule.maxCount+"||"+existingRules.length);
-		// Seperate buff before and after attack
+		// Don't combine buffs log before and after attack action
 		if (attackRules.length == 0 && existingRules.length > 0){
 			for (var i=0; i<applyCount; i++){
 				(existingRules[0] as LogRule).addCount();
