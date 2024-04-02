@@ -1,5 +1,8 @@
 import { Character, Rarity, Element, AttackType, ActionPattern, CounterAttackMode } from './../../build/Constants.js';
-import { CardCenter, Team, Battle, Condition, LogRule } from './../../build/BattleSystem.js';
+import { Battle } from './../../build/BattleSystem.js';
+import { Team, Card, CardCenter } from './../../build/Card.js';
+import { Condition } from './../../build/CardRule.js';
+import { LogRule } from './../../build/LogRule.js';
 
 var config = {
 	MAX_LEVEL: 60,
@@ -21,12 +24,6 @@ var config = {
 		healBuffSkill: ['治療量增加','持續治療量增加',
 		'我方受到治療增加','我方受到持續治療增加'],
 	},
-	CHAR_FOLDER: {
-		'八雲': 'yakumo', '艾德蒙特': 'edmond', '奧利文': 'olivine',
-		'崑西': 'quincy', '玖夜': 'kuya', '可爾': 'garu',
-		'布儡': 'blade', '啖天': 'dante', '歛': 'rei',
-		'艾斯特': 'aster', '墨菲': 'morvay', '伊得': 'eiden'
-	},
 	IMAGE_PATH: {
 		'element': {
 			'光': 'light', '闇': 'dark', '火': 'fire', '水': 'water', '木': 'wood'
@@ -40,7 +37,6 @@ var config = {
 		'coolDown':{
 			'3':3, '4': 4, '5': 5, '6': 6
 		},
-		//TODO: fix the dirty data
 		'char': {
 			'八雲': 'yakumo', '艾德蒙特': 'edmond', '奧利文': 'olivine',
 			'崑西': 'quincy', '玖夜': 'kuya', '可爾': 'garu',
@@ -513,7 +509,7 @@ Vue.createApp({
 			if (cardData == null || cardData.img == null){
 				return './res/img/card/no_image.png';
 			}
-			return './res/img/card/' + config.CHAR_FOLDER[cardData.char] + '/' + cardData.img;
+			return './res/img/card/' + config.IMAGE_PATH.char[cardData.char] + '/' + cardData.img;
 		},
 		getCardIconPath(cardData, type){
 			if (cardData == null){
@@ -971,9 +967,6 @@ Vue.createApp({
 			
 			return arr;
 		},
-		selectedChar() {
-			return this.userInput.char.join(',');
-		},
 		selectedCard() {
 			return this.userInput.cardname.join(',');
 		},
@@ -1055,35 +1048,36 @@ Vue.createApp({
 			return null;
 		},
 		updatedCardData(){
-			var result = '';
+			var result = [];
 			for (var card of this.cards){
 				if (card != null){
-					result += card.name + ',' + card.star + ',' + card.level + ',' + card.potential + ',' + card.atk;
+					result.push(card.name + ',' + card.star + ',' + card.level + ',' + card.potential + ',' + card.atk);
 				}
-				result += ';';
 			}
-			return result;
+			return result.sort().join(';');
 		},
 	},
 	watch:{
-		selectedChar(newVal, oldVal){
-			for (var i =0; i<this.userInput.char.length; i++){
-				var char = this.userInput.char[i];
-				if (char == null || char == ''){
-					this.userInput.cardname[i] = '';
-					this.cards[i] = null;
-				}
-				else if (!this.getCardnameByChar(char).includes(this.userInput.cardname[i])){
-					this.userInput.cardname[i] = '';
-					this.cards[i] = null;
-				}
-			}
-		},
 		selectedCard(newVal, oldVal) {
-			this.loadCards();
-		},
+			var oldStr = oldVal.split(',').sort().join(',');
+			var newStr = newVal.split(',').sort().join(',');
+			// Card added
+			if (oldStr != newStr){
+				this.loadCards();
+			}
+			// Card swapped
+			else{
+				this.setupBattle();
+			}
+		},	
 		updatedCardData(newVal, oldVal){
-			this.updateBattle();
+			var newCards = newVal.split(';').map(e=>e.split(',')[0]).join(',');
+			var oldCards = oldVal.split(';').map(e=>e.split(',')[0]).join(',');
+
+			// No new card loaded, only star/pot/atk changes
+			if (newCards == oldCards){
+				this.updateBattle();
+			}
 		},
 		selectedCardEnabled(newVal, oldVal){
 			this.setupBattle();

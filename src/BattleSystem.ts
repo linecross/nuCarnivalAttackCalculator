@@ -1,535 +1,9 @@
 import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, SkillType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
+import { Card, Team } from './Card.js';
+import { Rule, RuleTarget, Condition } from './CardRule.js';
+import { RuleHelper } from './util/RuleHelper.js';
+import { LogRule } from './LogRule.js';
 
-const ALWAYS_EFFECTIVE : number = 99;
-
-var GAME_CONFIG = {
-	MAX_LEVEL: 60,
-	POTTYPE:{
-		'A': {
-			hp: [
-				[0, 0, 3, 3, 3, 3],
-				[0, 0, 3.5, 3.5, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 3.5, 3.5, 3.5],
-				[0, 0, 0, 3.5, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 0, 4],
-			],
-			atk: [
-				[2, 2, 0, 0, 0, 0],
-				[2, 2, 0, 0, 0, 0],
-				[2, 2, 2, 2, 0, 0],
-				[2, 2, 2, 0, 0, 0],
-				[2, 2, 2, 0, 0, 0],
-				[0, 2, 2, 2, 0, 0],
-				[2.5, 2.5, 2.5, 2.5, 0, 0],
-				[2.5, 2.5, 2.5, 2.5, 0, 0],
-				[2.5, 2.5, 2.5, 2.5, 0, 0],
-				[3, 3, 3, 3, 0, 0],
-				[3, 3, 3, 3, 0, 0],
-				[0, 3, 3, 3, 3, 0],
-			],
-		},
-		'B': {
-			hp: [
-				[2, 2, 0, 0, 0, 0],
-				[2, 2, 0, 0, 0, 0],
-				[2, 2, 2, 2, 0, 0],
-				[2, 2, 2, 0, 0, 0],
-				[2, 2, 2, 0, 0, 0],
-				[0, 2, 2, 2, 0, 0],
-				[2.5, 2.5, 2.5, 2.5, 0, 0],
-				[2.5, 2.5, 2.5, 2.5, 0, 0],
-				[2.5, 2.5, 2.5, 2.5, 0, 0],
-				[3, 3, 3, 3, 0, 0],
-				[3, 3, 3, 3, 0, 0],
-				[0, 3, 3, 3, 3, 0],
-			],
-			atk: [
-				[0, 0, 3, 3, 3, 3],
-				[0, 0, 3.5, 3.5, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 3.5, 3.5, 3.5],
-				[0, 0, 0, 3.5, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 3.5, 3.5],
-				[0, 0, 0, 0, 0, 4],
-			],
-		},
-		'C': {
-			hp: [
-				[0, 0, 0, 0, 0, 0],
-				[2.7, 2.7, 2.7, 2.7, 2.7, 2.7],
-				[0, 2.7, 0, 2.7, 0, 2.7],
-				[2.7, 0, 0, 0, 0, 0],
-				[0, 2.8, 2.8, 2.8, 2.8, 2.8],
-				[0, 2.8, 0, 2.8, 0, 2.8],
-				[0, 2.8, 0, 2.8, 0, 3],
-				[0, 3, 0, 3, 0, 3],
-				[0, 3, 0, 3, 0, 3],
-				[0, 3, 0, 3, 0, 3],
-				[0, 3, 0, 3, 0, 3],
-				[0, 0, 0, 3, 0, 3],
-			],
-			atk: [
-				[2.7, 2.7, 2.7, 2.7, 2.7, 2.7],
-				[0, 0, 0, 0, 0, 0],
-				[2.7, 0, 2.7, 0, 2.7, 0],
-				[0, 2.7, 2.8, 2.8, 2.8, 2.8],
-				[2.8, 0, 0, 0, 0, 0],
-				[0, 0, 2.8, 0, 2.8, 0],
-				[2.8, 0, 2.8, 0, 2.8, 0],
-				[3, 0, 3, 0, 3, 0],
-				[3, 0, 3, 0, 3, 0],
-				[3, 0, 3, 0, 3, 0],
-				[3, 0, 3, 0, 3, 0],
-				[0, 3, 3, 0, 3, 0],
-			],
-		},
-		'D': {
-			hp: [
-				[0, 0, 0, 0, 0, 0],
-				[2.7, 2.7, 2.8, 2.8, 3, 3],
-				[0, 3, 0, 3, 0, 3],
-				[0, 0, 0, 0, 0, 0],
-				[3, 3, 3, 3, 3, 3],
-				[0, 0, 3, 0, 3, 0],
-			],
-			atk: [
-				[2.7, 2.7, 2.8, 2.8, 3, 3],
-				[0, 0, 0, 0, 0, 0],
-				[0, 0, 3, 0, 3, 0],
-				[3, 3, 3, 3, 3, 3],
-				[0, 0, 0, 0, 0, 0],
-				[0, 3, 0, 3, 0, 3],
-			],
-		},
-	},
-};
-
-
-export class CardCenter{
-	private static cardData: {} = {};
-	private static userCardData: {} = {};
-
-	static setMainCardData(obj:{}){
-		CardCenter.cardData = obj;
-	}
-	static addUserCardData(newObj:{}){
-		CardCenter.concatData(CardCenter.userCardData, newObj);
-	}
-
-	private static concatData(o1:{}, o2:{}) : {}{
-		for (var key of Object.keys(o2)){
-			o1[key] = o2[key];
-		}
-		return o1;
-	}
-
-	static getCardData(){
-		var fullCardData = JSON.parse(JSON.stringify(CardCenter.cardData));
-		fullCardData = CardCenter.concatData(fullCardData, CardCenter.userCardData);
-		return fullCardData;
-	}
-
-	static setupDefaultTeamStar(team: Team, ssrStar: number, srStar: number){
-		for (var card of team.cards){
-			if (card.rarity == Rarity.SSR){
-				card.star = ssrStar;
-			}
-			else if (card.rarity == Rarity.SR){
-				card.star = srStar;
-			}
-		}
-	}
-
-	static loadCard(name: string) : Card{
-		if (CardCenter.getCardData()[name] == null){
-			throw new Error('Card does not exists: ' + name);
-		}
-		return Card.loadCardFromJson(name, CardCenter.getCardData()[name]);
-	}
-
-	static getCardNameByChar(char: string) : string[]{
-		var arr : string[] = [];
-		var cardData = CardCenter.getCardData();
-		for (var name of Object.keys(cardData)){
-			if (cardData[name].char == char){
-				arr.push(name);
-			}
-		}
-		arr = arr.reverse();
-		return arr;
-	}
-}
-
-export class Card{
-	name: string;
-	fullname: string;
-    char: string;
-	rarity: Rarity;
-	class: Class;
-	element: Element;
-	potType: PotentialType;
-
-	baseHp: number ;
-	baseAtk: number ;
-
-	hp: number;
-	atk: number;
-
-	level: number = 60
-	star: number = 5;
-	bond: number = 5;
-	potential: number = 12;
-	coolDown: number;
-
-	img: string;
-
-	star3Rule: Rule[] = [];
-	star5Rule: Rule[] = [];
-	pot6Rule: Rule[] = [];
-	pot12Rule: Rule[] = [];
-
-	attackRule: Rule[] = [];
-
-	skillLv1Rule: Rule[] = [];
-	skillLv2Rule: Rule[] = [];
-	skillLv3Rule: Rule[] = [];
-
-	skillRule: Rule[] = [];
-
-	constructor(name?: string, char?: string, rarity?: Rarity){
-		this.name = name;
-		this.char = char;
-		this.rarity = rarity;
-	}
-
-	initSkill(){
-		if (this.star >= 4) this.skillRule = this.skillLv3Rule;
-		else if (this.star >= 2) this.skillRule = this.skillLv2Rule;
-		else this.skillRule = this.skillLv1Rule;
-	}
-
-	getPassiveRuleSummary(){
-		var ruleArr : Rule[] = [];
-		if (this.star >= 3) ruleArr.concat(this.star3Rule);
-		if (this.star == 5)	ruleArr.concat(this.star5Rule);
-
-		if ((this.rarity == Rarity.SSR || this.rarity == Rarity.SR)){
-			if (this.potential >= 6){
-				ruleArr.concat(this.pot6Rule);
-			}
-			if (this.potential >= 12){
-				ruleArr.concat(this.pot12Rule);
-			}
-		}
-		else {
-			if (this.potential >= 3){
-				ruleArr.concat(this.pot6Rule);
-			}
-			if (this.potential >= 6){
-				ruleArr.concat(this.pot12Rule);
-			}
-		}
-		return ruleArr;
-	}
-
-	getAttackRuleSummary(){
-		this.initSkill();
-		var ruleArr : Rule[] = [];
-		ruleArr.concat(this.attackRule);
-		ruleArr.concat(this.skillRule);
-		return ruleArr;
-	}
-
-	private getCardVal(baseVal : number, potential : number) : number{
-		var val : number = 0;
-		val = Math.ceil(baseVal / Math.pow(1.05, 59)) * (0.5 + (0.1 * this.star));
-		var bondVal = 0;
-		if (this.bond > 0){
-			if (this.rarity == Rarity.SSR){
-				var bondVals = [5, 10, 20, 35, 60];
-				bondVal = bondVals[this.bond-1];
-			}
-			else if (this.rarity == Rarity.SR || this.rarity == Rarity.R){
-				var bondVals = [5, 10, 20, 30, 50];
-				bondVal = bondVals[this.bond-1];
-			}
-		}
-		val = Math.floor(val * Math.pow(1.05, this.level-1) * (1+bondVal/100) * (1+potential/100));
-
-		return val;
-	}
-
-	getAtk() : number{
-		if (this.atk != null){
-			return Math.floor(this.atk);
-		}
-		return this.getCardVal(this.baseAtk, this.getAtkPotential());
-	}
-
-	getHp() : number{
-		if (this.hp != null){
-			return Math.floor(this.hp);
-		}
-		return this.getCardVal(this.baseHp, this.getHpPotential());
-	}
-
-	getBp() : number{
-		return Math.floor(this.getHp() + (this.getAtk() * 5));
-	}
-
-	getHpPotential() : number{
-		return this.getPotentialPercent('hp', this.potential);
-	}
-
-	getAtkPotential() : number{
-		return this.getPotentialPercent('atk', this.potential);
-	}
-
-	getPotentialPercent(hpOrAtk: string, tier: number) : number{
-		var potType = 'D';
-		if (this.potType == PotentialType.A) potType = 'A';
-		else if (this.potType == PotentialType.B) potType = 'B';
-		else if (this.potType == PotentialType.C) potType = 'C';
-		else if (this.potType == PotentialType.D) potType = 'D';
-
-		if ((this.rarity == 'R' || this.rarity == 'N') && tier > 6){
-			tier = 6;
-		}
-
-		tier = tier+1;
-		let potArr = GAME_CONFIG.POTTYPE[potType][hpOrAtk];
-		var sum = 0;
-		for (let i = 0; i < tier-1; i++){
-			sum += potArr[i].reduce((a, b) => a + b);
-		}
-		return sum;
-	}
-
-	static loadCard(data:Object) : Card {
-		var card = new Card();
-		for (var key of Object.keys(data)) {
-			card[key] = data[key];
-		}
-		
-		return card;
-	}
-
-	static loadCardFromJson(name: string, data:Object) : Card {
-		var card = new Card();
-		card.name = name;
-		card = Card.updateCard(card, data);
-		return card;
-	}
-
-	updateCard(data: Object) : Card{
-		return Card.updateCard(this, data);
-	}
-
-	static updateCard(card: Card, data:Object) : Card {
-		var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
-		var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
-		for (var key of Object.keys(data)) {
-			if (simpleRules.includes(key)){
-				card[key] = [];
-				for (var ruleItem of data[key]){
-					var rule = Rule.loadSimpleRule(ruleItem);
-					rule.parentCardName = card.name;
-					card[key].push(rule);
-				}
-			}
-			else if (permRules.includes(key)){
-				card[key] = [];
-				for (var ruleItem of data[key]){
-					var rule = Rule.loadPermRule(ruleItem);
-					rule.parentCardName = card.name;
-					card[key].push(rule);
-				}
-			}
-			else{
-				card[key] = data[key];
-			}
-		}
-		return card;
-	}
-}
-
-export class BattleTurn{
-	cardName: string;
-	skillCD: number;
-	action: AttackType[];
-	actionPattern: string;
-	outputs: number[][];
-	enemyDamage: number[][];
-	rules: Rule[];
-	ruleLog: Rule[][];
-
-	constructor(cardName: string){
-		this.cardName = cardName;
-		this.skillCD = 0;
-		this.action = [];
-		this.actionPattern = ActionPattern.Immediately;
-		this.outputs = [];
-		this.enemyDamage = [];
-		this.rules = [];
-		this.ruleLog = [];
-	}
-
-	addRule(newRule : Rule) : boolean{
-		// Always effective rule: check max count allowed
-		if (newRule.turn == ALWAYS_EFFECTIVE){
-			var currentCount = this.rules.filter(rule=>rule.id == newRule.id).length;
-			if (currentCount < newRule.maxCount){
-				this.rules.push(newRule);
-				return true;
-			}
-		}
-		// Rule will be consumed over time
-		else{
-			this.rules.push(newRule);
-			return true;
-		}
-		return false;
-	}
-
-	clearRulePerRound(){
-		for (var rule of this.rules){
-			if (!rule.isPassive && rule.turn != ALWAYS_EFFECTIVE){
-				rule.turn = rule.turn - 1;
-			}
-		}
-		
-		this.rules = this.rules.filter(rule=>rule.turn > 0);
-	}
-
-	addRuleLog(turn: number, rule : Rule, applyCount = 1){
-		if (turn >= this.ruleLog.length){
-			return;
-		}
-
-		var existingRules = this.ruleLog[turn].filter(e=>e.id == rule.id);
-		var attackTypes:RuleType[] = [RuleType.attack, RuleType.heal];
-		var attackRules = this.ruleLog[turn].filter(e=>attackTypes.includes(e.type));
-		// console.debug(turn+":["+rule.id+"]"+rule.type+rule.value+":"+rule.maxCount+"||"+existingRules.length);
-		// Seperate buff before and after attack
-		if (attackRules.length == 0 && existingRules.length > 0){
-			for (var i=0; i<applyCount; i++){
-				(existingRules[0] as LogRule).addCount();
-			}
-		}
-		else{
-			var logRule = new LogRule(rule.clone());
-			logRule.condition = null;
-			logRule.target = null;
-			logRule.applyCount = applyCount;
-			this.ruleLog[turn].push(logRule);
-		}
-	}
-
-	countDownCDPerRound(){
-		if (this.skillCD > 0){
-			this.skillCD -= 1;
-		}
-	}
-
-	isSkillAvailable(){
-		if (this.skillCD == 0){
-			return true;
-		}
-		return false;
-	}
-
-	private getLastSkillTurn() : number{
-		if (!this.isSkillAvailable()){
-			return -1;
-		}
-		var lastTurn = 0;
-		
-		for (var i=this.action.length-1; i>=0; i--){
-			if (this.action[i] == AttackType.SkillAttack){
-				lastTurn = i;
-				break;
-			}
-		}
-
-		return lastTurn;
-	}
-
-	getSkillDelayedTurn(currentTurn: number, cooldown: number) : number{
-		var lastTurn = this.getLastSkillTurn();
-		if (lastTurn == 0){ 
-			lastTurn = 1;
-		}
-		return currentTurn - (lastTurn + cooldown);
-	}
-
-	isGuard(currentTurn: number, cooldown: number){
-		if (this.actionPattern == ActionPattern.Manual){
-			return this.action[currentTurn] == AttackType.Guard;
-		}
-		return false;
-	}
-
-	isReleaseSkill(currentTurn: number, cooldown: number){
-		if (!this.isSkillAvailable()){
-			return false;
-		}
-
-		if (this.actionPattern == ActionPattern.Immediately){
-			return true;
-		}
-		else if (this.actionPattern == ActionPattern.Delay1Turn){
-			if (this.getLastSkillTurn() == 0){
-				return this.getSkillDelayedTurn(currentTurn, cooldown) >= 1;
-			}
-			else{
-				return true;
-			}
-		}
-		else if (this.actionPattern == ActionPattern.AddCD1){
-			return (this.getSkillDelayedTurn(currentTurn, cooldown) == 1);
-		}
-		else if (this.actionPattern == ActionPattern.AddCD2){
-			return (this.getSkillDelayedTurn(currentTurn, cooldown) == 2);
-		}
-		else if (this.actionPattern == ActionPattern.AddCD3){
-			return (this.getSkillDelayedTurn(currentTurn, cooldown) == 3);
-		}
-		else if (this.actionPattern == ActionPattern.AddCD1Delay1Turn){
-			if (this.getLastSkillTurn() == 0){
-				return (this.getSkillDelayedTurn(currentTurn, cooldown) == 2);
-			}
-			else{
-				return (this.getSkillDelayedTurn(currentTurn, cooldown) == 1);
-			}
-		}
-		else if (this.actionPattern == ActionPattern.AddCD2Ahead1Turn){
-			if (this.getLastSkillTurn() == 0){
-				return (this.getSkillDelayedTurn(currentTurn, cooldown) == 1);
-			}
-			else{
-				return (this.getSkillDelayedTurn(currentTurn, cooldown) == 2);
-			}
-		}
-		else if (this.actionPattern == ActionPattern.Manual){
-			return this.action[currentTurn] == AttackType.SkillAttack;
-		}
-
-
-		return false;
-	}
-}
 
 export class Battle{
 	turns : number = 13;
@@ -540,6 +14,8 @@ export class Battle{
 	enemyElement : Element = Element.NA;
 	enemyBattleTurn : BattleTurn;
 
+	isRuleLogAddedPerTurn: boolean = false;
+
 	counterAttackCount: number = 0;
 	counterAttackMode: CounterAttackMode = CounterAttackMode.everyTurn;
 	printOutputOption: string = Battle.PRINT_OUTPUT_OPTION.ALL;
@@ -547,9 +23,19 @@ export class Battle{
 
 	static PRINT_OUTPUT_OPTION = {ALL : 'All', ONLY_DAMAGE: 'OnlyDamage', ONLY_ATTACK:'OnlyAttack', ONLY_SUPPORT:'OnlySupport', ONLY_HEAL:'OnlyHeal', ONLY_POISON:'OnlyPoison'}; 
 
-	static OUTPUT_TYPES : RuleType[] = [RuleType.attack, RuleType.poisonAttack, RuleType.heal, RuleType.continueHeal, RuleType.support];
-	static TEAM_BUFF_TYPES : RuleType[] = [RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp, RuleType.partyAllHealUp];
-	static ENEMY_BUFF_TYPES : RuleType[] = [RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp];
+	static OUTPUT_TYPES : Set<RuleType> = new Set([RuleType.attack, RuleType.poisonAttack, RuleType.heal, RuleType.continueHeal, RuleType.support]);
+	static TEAM_BUFF_TYPES : Set<RuleType> = new Set([RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp, RuleType.partyAllHealUp]);
+	static ENEMY_BUFF_TYPES : Set<RuleType> = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp]);
+	
+	static ACTION_ACCEPT_BUFFS = {
+		[RuleType.attack]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, 
+			RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp],
+		[RuleType.poisonAttack]: [RuleType.atkUp, RuleType.poisonAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp],
+		[RuleType.heal]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.healUp,
+			RuleType.partyHealUp, RuleType.partyAllHealUp],
+		[RuleType.continueHeal]: [RuleType.atkUp, RuleType.continueHealUp, RuleType.partyContinueHealUp],
+		[RuleType.support]: [],
+	};
 
 	constructor(team: Team, turns : number = 13){
 		this.turns = turns;
@@ -621,7 +107,6 @@ export class Battle{
 				var targetNames = rule.getRuleApplyTarget(team, card);
 				for (var targetName of targetNames){
 					var newRule = rule.clone();
-					newRule.parentCardName = targetName;
 					if (newRule.target != null){
 						newRule.target = new RuleTarget();
 					}
@@ -707,6 +192,7 @@ export class Battle{
 
 	startRoundPerCard(attackType: AttackType, card: Card) : AttackType{
 		this.currentTurnAction = TurnActionType.beforeTurn;
+		this.isRuleLogAddedPerTurn = false;
 
 		// ---------------------------每個人攻擊前------------------------------------
 		var preAttackRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.isPreAttackRule());
@@ -729,6 +215,22 @@ export class Battle{
 		
 		// ---------------------------正式攻擊------------------------------------
 		if (attackType == AttackType.Guard){
+			var logRules = this.filterBuffsForLog(this.battleTurns[card.name].rules);
+			for (var buff of logRules){
+				var applyCount = buff.getConditionFulfillTimes(card, this.team, TurnActionType.guard, attackType, this.currentTurn);
+				if (applyCount > 0){
+					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
+				}
+			}
+			logRules = this.filterBuffsForLog(this.enemyBattleTurn.rules, true);
+			for (var buff of logRules){
+				var applyCount = buff.getConditionFulfillTimes(card, this.team, TurnActionType.guard, attackType, this.currentTurn);
+				if (applyCount > 0){
+					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
+				}
+			}
+			this.isRuleLogAddedPerTurn = true;
+
 			this.battleTurns[card.name].action[this.currentTurn] = attackType;
 			return attackType;
 		}
@@ -742,7 +244,7 @@ export class Battle{
 		var hasProcessedEnemyPostAttack = false;
 		for (var rule of attackRule){
 			var hasAttackEnemy = false;
-			if (Battle.OUTPUT_TYPES.includes(rule.type)){
+			if (Battle.OUTPUT_TYPES.has(rule.type)){
 				this.attack(attackType, rule, card);
 				if (rule.type == RuleType.attack){
 					hasAttackEnemy = true;
@@ -764,11 +266,12 @@ export class Battle{
 							atkFollowupRule.type = RuleType.attack;
 							atkFollowupRule.turn = 1;
 							atkFollowupRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
+							atkFollowupRule.isFollowUpAttack = true;
 							this.attack(attackType, atkFollowupRule, card);
 							this.currentTurnAction = TurnActionType.afterAttack;
 							hasAttackEnemy = true;
 						}
-						else if (Battle.OUTPUT_TYPES.includes(postRule.type)){
+						else if (Battle.OUTPUT_TYPES.has(postRule.type)){
 							this.attack(attackType, postRule, card);
 							if (postRule.type == RuleType.attack){
 								this.currentTurnAction = TurnActionType.afterAttack;
@@ -889,20 +392,8 @@ export class Battle{
 		}
 	}
 
-	static ACTION_ACCEPT_BUFFS = {
-		[RuleType.attack]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, 
-			RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp],
-		[RuleType.poisonAttack]: [RuleType.atkUp, RuleType.poisonAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp],
-		[RuleType.heal]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.healUp,
-			RuleType.partyHealUp, RuleType.partyAllHealUp],
-		[RuleType.continueHeal]: [RuleType.atkUp, RuleType.continueHealUp, RuleType.partyContinueHealUp],
-		[RuleType.support]: [],
-	};
-
-	static ENEMY_BUFFS : RuleType[] = [RuleType.enemyBasicAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp];
-
 	private filterBuffs(rules: Rule[], atkRule: Rule, ruleType: RuleType, attackType: AttackType, isEnemy:boolean = false) : Rule[]{
-		var filtered = rules.filter(r=> isEnemy ? Battle.ENEMY_BUFFS.includes(r.type) : !Battle.ENEMY_BUFFS.includes(r.type));
+		var filtered = rules.filter(r=> isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
 		filtered = filtered.filter(r=>Battle.ACTION_ACCEPT_BUFFS[ruleType].includes(r.type));
 		filtered = filtered.filter(r=>!(r.isBeforeRoundRule() || r.isPreAttackRule() || r.isPostAttackRule()));
 		if (attackType == AttackType.BasicAttack){
@@ -919,18 +410,10 @@ export class Battle{
 		return filtered;
 	}
 
-	private filterBuffsForLog(rules: Rule[], atkRule: Rule, ruleType: RuleType, attackType: AttackType, isEnemy:boolean = false) : Rule[]{
-		var filtered = rules.filter(r=> isEnemy ? Battle.ENEMY_BUFFS.includes(r.type) : !Battle.ENEMY_BUFFS.includes(r.type));
+	private filterBuffsForLog(rules: Rule[], isEnemy:boolean = false) : Rule[]{
+		var filtered = rules.filter(r=> Battle.OUTPUT_TYPES.has(r.type) || Battle.TEAM_BUFF_TYPES.has(r.type) || Battle.ENEMY_BUFF_TYPES.has(r.type));
+		filtered = filtered.filter(r=> isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
 		filtered = filtered.filter(r=>!(r.isBeforeRoundRule() || r.isPreAttackRule() || r.isPostAttackRule()));
-		if (attackType == AttackType.BasicAttack){
-			filtered = filtered.filter(r=>r.type != RuleType.skillAtkUp && r.type != RuleType.enemySkillAtkUp);
-		}
-		else if (attackType == AttackType.SkillAttack){
-			filtered = filtered.filter(r=>r.type != RuleType.basicAtkUp && r.type != RuleType.enemyBasicAtkUp);
-		}
-		if (!atkRule.isTriggerSkill(attackType)){
-			filtered = filtered.filter(r=>r.type != RuleType.triggerAtkUp && r.type != RuleType.enemyTriggerAtkUp);
-		}
 		return filtered;
 	}
 
@@ -965,8 +448,10 @@ export class Battle{
 		}
 	}
 
+	static LOG_EXCLUDE_TURNACTIONTYPE : Set<TurnActionType> = new Set([TurnActionType.beforeAction, TurnActionType.beforeTurn, TurnActionType.atTurnEnd]);
+
 	private addBuffToTargets(rule: Rule, card: Card, attackType: AttackType){
-		if (!(Battle.TEAM_BUFF_TYPES.includes(rule.type) || Battle.ENEMY_BUFF_TYPES.includes(rule.type))){
+		if (!(Battle.TEAM_BUFF_TYPES.has(rule.type) || Battle.ENEMY_BUFF_TYPES.has(rule.type))){
 			return;
 		}
 		if (!rule.isConditionsFulfilled(card, this.team, this.currentTurnAction, attackType, this.currentTurn)){
@@ -979,18 +464,18 @@ export class Battle{
 			newRule.target = null;
 			newRule.condition = null;
 			// 各種buff （普攻/必殺/造傷/下毒/治療/持續治療增加）
-			if (Battle.TEAM_BUFF_TYPES.includes(rule.type)){
+			if (Battle.TEAM_BUFF_TYPES.has(rule.type)){
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				if (isRuleAdded && targetName == card.name && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& this.currentTurnAction != TurnActionType.beforeAction && this.currentTurnAction != TurnActionType.beforeTurn && this.currentTurnAction != TurnActionType.atTurnEnd){
+					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
 			// 敵方Debuff （普攻/必殺/造傷）
-			else if (Battle.ENEMY_BUFF_TYPES.includes(rule.type)){
+			else if (Battle.ENEMY_BUFF_TYPES.has(rule.type)){
 				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
 				if (isRuleAdded && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& this.currentTurnAction != TurnActionType.beforeAction && this.currentTurnAction != TurnActionType.beforeTurn && this.currentTurnAction != TurnActionType.atTurnEnd){
+					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -1010,16 +495,16 @@ export class Battle{
 			if (rule.type == RuleType.appendRule){
 				newRule.parentCardName = targetName;
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
-				if (isRuleAdded && targetName == card.name && Battle.TEAM_BUFF_TYPES.includes(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& this.currentTurnAction != TurnActionType.beforeAction && this.currentTurnAction != TurnActionType.beforeTurn && this.currentTurnAction != TurnActionType.atTurnEnd){
+				if (isRuleAdded && targetName == card.name && Battle.TEAM_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
+					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
 			else if (rule.type == RuleType.enemyAppendRule){
 				newRule.parentCardName = card.name;
 				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
-				if (isRuleAdded && Battle.ENEMY_BUFF_TYPES.includes(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& this.currentTurnAction != TurnActionType.beforeAction && this.currentTurnAction != TurnActionType.beforeTurn && this.currentTurnAction != TurnActionType.atTurnEnd){
+				if (isRuleAdded && Battle.ENEMY_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
+					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -1032,7 +517,7 @@ export class Battle{
 			return;
 		}
 
-		var isAddRuleLog = this.currentTurnAction == TurnActionType.beforeAction;
+		// var isAddRuleLog = this.currentTurnAction == TurnActionType.beforeAction;
 
 		// Calculate
 		var atk : number = card.getAtk();
@@ -1078,26 +563,24 @@ export class Battle{
 			}
 
 			debuffs[buffType] = (debuffs[buffType] || 0) + (Battle.getNumber(buff.value as string) * applyCount);
-			if (isAddRuleLog && applyCount > 0){
-				this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
-			}
 		}
 
-		if (isAddRuleLog){
-			var logRules = this.filterBuffsForLog(cardRules, rule, rule.type, attackType);
+		if (!this.isRuleLogAddedPerTurn){
+			var logRules = this.filterBuffsForLog(cardRules);
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this.team, action, attackType, currentTurn);
 				if (applyCount > 0){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
-			logRules = this.filterBuffsForLog(this.enemyBattleTurn.rules, rule, rule.type, attackType);
+			logRules = this.filterBuffsForLog(this.enemyBattleTurn.rules, true);
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this.team, action, attackType, currentTurn);
 				if (applyCount > 0){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
+			this.isRuleLogAddedPerTurn = true;
 		}
 
 		var hitCount = rule.maxCount || 1;
@@ -1295,41 +778,35 @@ export class Battle{
 		return this.battleTurns[cardname].action[turn];
 	}
 
-	// TODO: should simplify those ugly if-else code for different rule types
 	getTurnRuleLog(cardname: string, turn: number) : Rule[]{
 		var attackType : AttackType = this.battleTurns[cardname].action[turn];
 		var rules : Rule[] = this.battleTurns[cardname].ruleLog[turn];
-		var hasAttack = rules.map(e=>e.type).includes(RuleType.attack);
-		var hasPoisonAttack = rules.map(e=>e.type).includes(RuleType.poisonAttack);
-		var hasHeal = rules.map(e=>e.type).includes(RuleType.heal);
-		var hasContHeal = rules.map(e=>e.type).includes(RuleType.continueHeal);
+		var ruleTypes : Set<RuleType> = new Set(rules.map(e=>e.type));
+		var acceptTypes : Set<RuleType> = new Set(Battle.OUTPUT_TYPES);
 
-		var acceptTypes : RuleType[] = [RuleType.attack, RuleType.poisonAttack, RuleType.support, RuleType.continueHeal, RuleType.heal];
-		if (hasAttack){
-			if (attackType == AttackType.BasicAttack){
-				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.enemyBasicAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp]);
-			}
-			else if (attackType == AttackType.SkillAttack){
-				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp]);
+		for (var actionType of Battle.OUTPUT_TYPES){
+			if (ruleTypes.has(actionType)){
+				Battle.ACTION_ACCEPT_BUFFS[actionType].forEach(e => acceptTypes.add(e));
 			}
 		}
-		if (hasPoisonAttack){
-			acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.poisonAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp]);
+		// Remove Skill buff when Basic Attack + no Trigger Attack
+		if ((attackType == AttackType.BasicAttack || attackType == AttackType.Guard) && !RuleHelper.hasTriggerAttack(rules)){
+			acceptTypes.delete(RuleType.skillAtkUp);
+			acceptTypes.delete(RuleType.enemySkillAtkUp);
 		}
-		if (hasHeal){
-			if (attackType == AttackType.BasicAttack){
-				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.basicAtkUp, RuleType.healUp, RuleType.triggerAtkUp, RuleType.partyHealUp, RuleType.partyAllHealUp]);
-			}
-			else if (attackType == AttackType.SkillAttack){
-				acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.skillAtkUp, RuleType.healUp, RuleType.triggerAtkUp, RuleType.partyHealUp, RuleType.partyAllHealUp]);
-			}
+		// Remove Basic buff when Skill Attack
+		if (attackType == AttackType.SkillAttack || attackType == AttackType.Guard){
+			acceptTypes.delete(RuleType.basicAtkUp);
+			acceptTypes.delete(RuleType.enemyBasicAtkUp);
 		}
-		if (hasContHeal){
-			acceptTypes = acceptTypes.concat([RuleType.atkUp, RuleType.continueHealUp, RuleType.partyContinueHealUp]);
+		// Remove Trigger buff when no Trigger Attack
+		if (!RuleHelper.hasTriggerAttack(rules)){
+			acceptTypes.delete(RuleType.triggerAtkUp);
+			acceptTypes.delete(RuleType.enemyTriggerAtkUp);
 		}
 
 		rules = rules.filter(function(rule : Rule){
-			return acceptTypes.includes(rule.type);
+			return acceptTypes.has(rule.type);
 		});
 		rules = this.filterRulesByPrintOption(rules);
 
@@ -1346,44 +823,43 @@ export class Battle{
 	}
 
 	private filterRulesByPrintOption(rules : Rule[]){
-		var acceptTypes = [];
-		var hasAttack = rules.map(e=>e.type).includes(RuleType.attack);
-		var hasPoisonAttack = rules.map(e=>e.type).includes(RuleType.poisonAttack);
-		var hasHeal = rules.map(e=>e.type).includes(RuleType.heal);
-		var hasContHeal = rules.map(e=>e.type).includes(RuleType.continueHeal);
+		// var acceptTypes = [];
+		var ruleTypes : Set<RuleType> = new Set(rules.map(e=>e.type));
+		var acceptTypes : Set<RuleType> = new Set();
 
 		if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
 			return rules;
 		}
 		else if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_SUPPORT){
-			acceptTypes = [RuleType.support];
+			acceptTypes.add(RuleType.support);
 		}
 		else{
-			if (hasAttack && [Battle.PRINT_OUTPUT_OPTION.ONLY_ATTACK, 
+			if (ruleTypes.has(RuleType.attack) && [Battle.PRINT_OUTPUT_OPTION.ONLY_ATTACK, 
 				Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE].includes(this.printOutputOption)){
-				acceptTypes = acceptTypes.concat([RuleType.attack, RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp,
-								RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp]);
+				acceptTypes.add(RuleType.attack);
+				Battle.ACTION_ACCEPT_BUFFS[RuleType.attack].forEach(e => acceptTypes.add(e));
 			}
-			if (hasPoisonAttack && [Battle.PRINT_OUTPUT_OPTION.ONLY_POISON, 
+			if (ruleTypes.has(RuleType.poisonAttack) && [Battle.PRINT_OUTPUT_OPTION.ONLY_POISON, 
 				Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE].includes(this.printOutputOption)){
-				acceptTypes = acceptTypes.concat([RuleType.poisonAttack, RuleType.atkUp, RuleType.poisonAtkUp,
-								RuleType.enemyPoisonAtkUp, RuleType.enemyAllAtkUp]);
+				acceptTypes.add(RuleType.poisonAttack);
+				Battle.ACTION_ACCEPT_BUFFS[RuleType.poisonAttack].forEach(e => acceptTypes.add(e));
 			}
-			if (hasHeal && [Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL].includes(this.printOutputOption)){
-				acceptTypes = acceptTypes.concat([RuleType.heal, RuleType.healUp, RuleType.atkUp, RuleType.triggerAtkUp, RuleType.basicAtkUp, RuleType.skillAtkUp]);
+			if (ruleTypes.has(RuleType.heal) && [Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL].includes(this.printOutputOption)){
+				acceptTypes.add(RuleType.heal);
+				Battle.ACTION_ACCEPT_BUFFS[RuleType.heal].forEach(e => acceptTypes.add(e));
 			}
-			if (hasContHeal && [Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL].includes(this.printOutputOption)){
-				acceptTypes = acceptTypes.concat([RuleType.continueHeal, RuleType.continueHealUp, RuleType.atkUp]);
+			if (ruleTypes.has(RuleType.continueHeal) && [Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL].includes(this.printOutputOption)){
+				acceptTypes.add(RuleType.continueHeal);
+				Battle.ACTION_ACCEPT_BUFFS[RuleType.continueHeal].forEach(e => acceptTypes.add(e));
 			}
 		}
 
 		if (!this.printEnemeyOption){
-			var removeTypes = [RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp];
-			acceptTypes = acceptTypes.filter(e=>!removeTypes.includes(e));
+			Battle.ENEMY_BUFF_TYPES.forEach(e => acceptTypes.delete(e));
 		}
 
 		rules = rules.filter(function(rule : Rule){
-			return acceptTypes.includes(rule.type);
+			return acceptTypes.has(rule.type);
 		});
 		return rules;
 	}
@@ -1455,567 +931,168 @@ export class Battle{
 	}
 }
 
+export class BattleTurn{
+	cardName: string;
+	skillCD: number;
+	action: AttackType[];
+	actionPattern: string;
+	outputs: number[][];
+	enemyDamage: number[][];
+	rules: Rule[];
+	ruleLog: Rule[][];
 
-export class Team{
-	cards: Card[] = [];
-	position: string[] = [];
-	actionOrder: string[] = [];
-    team: any;
-
-	reset(){
-		this.cards = [];
-		this.position = [];
-		this.actionOrder = [];
+	constructor(cardName: string){
+		this.cardName = cardName;
+		this.skillCD = 0;
+		this.action = [];
+		this.actionPattern = ActionPattern.Immediately;
+		this.outputs = [];
+		this.enemyDamage = [];
+		this.rules = [];
+		this.ruleLog = [];
 	}
 
-	addCard(card : Card){
-		if (card != null){
-			this.cards.push(card);
-		}
-		this.position[this.cards.length] = card.name;
-		this.actionOrder[this.cards.length-1] = card.name;
-	}
-
-	updateActionOrder(names : string[]){
-		this.actionOrder = names;
-	}
-
-	getCard(name: string) : Card | null {
-		var result = this.cards.filter(e=> e.name == name);
-		return result.length > 0 ? result[0] : null;
-	}
-
-	getCardByPos(posArr: number[]) : Card[]{
-		var cards : Card[] = [];
-		for (var pos of posArr){
-			if (this.cards.length >= pos){
-				cards.push(this.getCard(this.position[pos]));
-			}
-		}
-		return cards;
-	}
-
-	getCardByActionOrder() : Card[]{
-		var cards : Card[] = [];
-		for (var name of this.actionOrder){
-			cards.push(this.getCard(name));
-		}
-		return cards;
-	}
-
-	getBattlePower() : number{
-		return this.cards.reduce((sum, card) => sum + card.getBp(), 0);
-	}
-
-	getCharCount(char : string) : number{
-		return this.cards.filter(e=> e.char == char).length;
-	}
-
-	hasChar(char : string) : boolean{
-		return this.getCharCount(char) > 0;
-	}
-
-	getClassCount(cardClass : Class) : number{
-		return this.cards.filter(e=> e.class == cardClass).length;
-	}
-
-	hasClass(cardClass : Class) : boolean{
-		return this.getClassCount(cardClass) > 0;
-	}
-
-	getElementCount(element : string) : number{
-		return this.cards.filter(e=> e.element == element).length;
-	}
-
-	hasElement(element : string) : boolean{
-		return this.getElementCount(element) > 0;
-	}
-}
-
-export class RuleTarget{
-	type : TargetType;
-	value : string[] | Class[] | number[] | null;
-	exceptType : TargetType | null;
-	exceptValue : string[] | Class[] | number[] | null;
-	
-	constructor(type = TargetType.self, value = null, exceptType = null, exceptValue = null){
-		this.type = type;
-		this.exceptType = exceptType;
-
-		if (Array.isArray(value) || value == null){
-			this.value = value;
-		}
-		else{
-			this.value = [value];
-		}
-
-		if (Array.isArray(exceptValue) || exceptValue == null){
-			this.exceptValue = exceptValue;
-		}
-		else{
-			this.exceptValue = [exceptValue];
-		}
-	}
-
-	static loadTarget({type = TargetType.self, value = null, exceptType = null, exceptValue = null}){
-		var target = new RuleTarget(type, value, exceptType, exceptValue);
-		return target;
-	}
-
-	private getTarget(type : TargetType, value : string[] | Class[] | number[] | null, team: Team, card: Card){
-		var cardNames = [];
-		if (type == null){
-			// do nothing
-		}
-		else if (type == TargetType.self){
-			cardNames.push(card.name);
-		}
-		else if (type == TargetType.all){
-			cardNames = Object.values(team.cards).map(e=>e.name);
-		}
-		else if (type == TargetType.isClass){
-			var targetClasses = value as Class[];
-			cardNames = Object.values(team.cards).filter(e=>targetClasses.includes(e.class)).map(e=>e.name);
-		}
-		else if (type == TargetType.isChar){
-			var targetChars = value as string[];
-			cardNames = Object.values(team.cards).filter(e=>targetChars.includes(e.char)).map(e=>e.name);
-		}
-		else if (type == TargetType.isPosition){
-			var targetPos = value as number[];
-			var targetCards = team.getCardByPos(targetPos);
-			cardNames = targetCards.map(e=>e.name);
-		}
-		return cardNames;
-	}
-
-	getIncludeTarget(team: Team, card: Card) : string[] {
-		return this.getTarget(this.type, this.value, team, card);
-	}
-
-	getExcludeTarget(team: Team, card: Card) : string[] {
-		return this.getTarget(this.exceptType, this.exceptValue, team, card);
-	}
-
-	getTargetCard(team: Team, card: Card) : string[] {
-		var includeNames = this.getIncludeTarget(team, card);
-		var excludeNames = this.getExcludeTarget(team, card);
-		return includeNames.filter(e=>!excludeNames.includes(e));
-	}
-
-	public toString() : string{
-		var type = this.type;
-		var value = this.value;
-		var exceptStr = this.exceptType != null ? this.exceptValue != null ? this.exceptValue : this.exceptType : '';
-		if (exceptStr.length > 0) exceptStr = '（除了' + exceptStr + '）';
-
-		if (value == null){
-			return type + exceptStr;
-		}
-		return value.toString() + exceptStr;
-	}
-}
-
-export class Rule{
-	id: number;
-	parentCardName: string;
-
-	isPassive: boolean;
-	type: RuleType;
-	skillType: SkillType = SkillType.none;
-	value: string | Rule;
-	valueBy: RuleValueByType;
-	turn: number ;
-	maxCount: number;
-	target: RuleTarget | null = null;
-	condition: Condition[] | null = null ;
-	isCounterAttack: boolean = false;
-
-	static idCounter: number = 0;
-	static BATTLE_INIT_RULE_ID: number = 10000;
-	static CHILD_RULE_ID_INCREMENT: number = 300000;
-
-	static createId(){
-		return Rule.idCounter++;
-	}
-
-	constructor({id = null, parentCardName = "", isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy = RuleValueByType.atk as RuleValueByType, turn=50, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}){
-		this.id = id == null ? Rule.createId() : id;
-		this.parentCardName = parentCardName;
-		this.isPassive = isPassive;
-		if (typeof type == 'string'){
-			var idx = Object.values(RuleType).indexOf(type as RuleType);
-			this.type = RuleType[Object.keys(RuleType)[idx]];
-		}
-		else{
-			this.type = type;
-		}
-		this.value = value;
-		this.valueBy = valueBy;
-		this.turn = turn;
-		this.maxCount = maxCount;
-		this.skillType = skillType;
-		if (condition == null || Array.isArray(condition)){
-			this.condition = condition;
-		}
-		else{
-			this.condition = [condition];
-		}
-		this.target = target;
-	}
-
-	public toString() : string{
-		var s = this.type + ' ' + this.value;
-		if (this.turn < 50 && this.turn > 1){
-			s += '（'+this.turn+'回合）'
-		}
-		if (this.maxCount > 1){
-			s += '（最多'+this.maxCount+'層）'
-		}
-		return s;
-	}
-
-	public clone(){
-		var cloneRule = new Rule({id: this.id, parentCardName: this.parentCardName, isPassive: this.isPassive, type: this.type, value: this.value, valueBy: this.valueBy,
-			turn: this.turn, maxCount: this.maxCount, skillType: this.skillType, condition: this.condition, target: this.target});
-		if (this.condition != null){
-			cloneRule.condition = this.condition;
-		}
-		return cloneRule;
-	}
-
-	public cloneSimpleChild(){
-		var cloneRule = this.clone();
-		cloneRule.id += Rule.CHILD_RULE_ID_INCREMENT;
-		return cloneRule;
-	}
-
-	// Not passive
-	public cloneSimple(){
-		var cloneRule = this.clone();
-		cloneRule.isPassive = false;
-		return cloneRule;
-	}
-
-	isConditionsFulfilled(card: Card, team: Team, turnAction: TurnActionType, attackType : AttackType, turn: number) : boolean{
-		if (this.condition == null || this.condition.length == 0){
-			return true;
-		}
-		var isFulfilled = true;
-		for (var condition of this.condition){
-			isFulfilled = isFulfilled && condition.isFulfilled(card, team, turnAction, attackType, turn);
-		}
-		return isFulfilled;
-	}
-
-	getConditionFulfillTimes(card: Card, team: Team, turnAction: TurnActionType, attackType : AttackType, turn: number){
-		if (this.condition == null || this.condition.length == 0 || this.maxCount == null){
-			return 1;
-		}
-		var count = this.maxCount;
-		for (var condition of this.condition){
-			count = Math.min(count, condition.getFulfillTimes(card, team, turnAction, attackType, turn));
-		}
-		return count;
-	}
-
-	isRuleCheckInBattle(){
-		if (this.condition == null || this.condition.length == 0){
-			return false;
-		}
-		for (var condition of this.condition){
-			if (Condition.CHECK_IN_BATTLE_LIST.includes(condition.type)){
+	addRule(newRule : Rule) : boolean{
+		// Always effective rule: check max count allowed
+		if (newRule.turn == Rule.ALWAYS_EFFECTIVE){
+			var currentCount = this.rules.filter(rule=>rule.id == newRule.id).length;
+			if (currentCount < newRule.maxCount){
+				this.rules.push(newRule);
 				return true;
 			}
 		}
-		return false;
-	}
-
-	isPostAttackRule(){
-		if (this.type == RuleType.basicAtkFollowupSkill){
-			return true;
-		}
-		if (this.condition == null || this.condition.length == 0){
-			return false;
-		}
-		var types : ConditionType[] = [ConditionType.isAttack, ConditionType.isAttackType, 
-			ConditionType.enemyIsAttacked];
-		for (var condition of this.condition){
-			if (types.includes(condition.type)){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	isBeforeRoundRule(){
-		if (this.condition != null){
-			for (var condition of this.condition){
-				if (condition.type == ConditionType.atTurn || condition.type == ConditionType.everyTurn){
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	isPreAttackRule(){
-		if (this.condition == null || this.condition.length == 0){
-			if (this.type == RuleType.appendRule || this.type == RuleType.enemyAppendRule){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	isTriggerSkill(attackType: string){
-		if (this.isCounterAttack || this.skillType == SkillType.trigger){
-			return true;
-		}
-		// FIXME: 現時假設 「必殺技」+「攻擊時/被攻擊時」+「攻擊/治療」 = 觸發技，日後可能要移除
-		if (attackType == AttackType.SkillAttack && (this.type == RuleType.attack || this.type == RuleType.heal)){
-			if (this.condition != null){
-				for (var condition of this.condition){
-					if (condition.type == ConditionType.isAttack || condition.type == ConditionType.isAttackType){
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	getRuleApplyTarget(team: Team, card: Card) : string[] {
-		var cardNames = [];
-		if (this.target == null){
-			cardNames.push(card.name); //self
-		}
+		// Rule will be consumed over time
 		else{
-			cardNames = this.target.getTargetCard(team, card);
-		}
-		return cardNames;
-	}
-
-	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
-		if (type == RuleType.appendRule || type == RuleType.enemyAppendRule){
-			value = Rule.loadRule(value);
-		}
-
-		var conditionArr = null;
-		if (condition != null){
-			conditionArr = [];
-			if (Array.isArray(condition)){
-				for (var item of condition){
-					conditionArr.push(new Condition(item.type, item.value, item.minCount));
-				}
-			}
-			else if (typeof condition == 'string'){
-				conditionArr.push(new Condition(condition as ConditionType, null, null));
-			}
-			else{
-				conditionArr.push(new Condition(condition.type, condition.value, condition.minCount));
-			}
-		}
-
-		var targetItem = null;
-		if (target != null){
-			if (typeof target == 'string'){
-				target = {type: target};
-			}
-			targetItem = RuleTarget.loadTarget(target);
-		}
-
-
-		var rule = new Rule({isPassive: isPassive, type: type, value:value, valueBy: valueBy, turn: turn, maxCount: maxCount, skillType: skillType, condition: conditionArr, target: targetItem});
-		return rule;
-	}
-
-	static loadSimpleRule({type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=1, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
-		var isPassive = false;
-		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, skillType, condition, target});
-	}
-	static loadPermRule({type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=ALWAYS_EFFECTIVE, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}) : Rule{
-		var isPassive = true;
-		return Rule.loadRule({isPassive, type, value, valueBy, turn, maxCount, skillType, condition, target});
-	}
-}
-
-export class LogRule extends Rule{
-	applyCount: number = 1;
-
-	constructor(rule: Rule){
-		super(rule);
-
-		if (rule.type == RuleType.attack){
-			this.applyCount = rule.maxCount;
-		}
-	}
-
-	addCount(){
-		this.applyCount++;
-	}
-
-	public toString() : string{
-		var s = '【'+this.parentCardName+'】';
-		s += this.type + '：' + this.value;
-		if (this.maxCount > 1 || this.applyCount > 1){
-			if (this.type == RuleType.attack || this.type == RuleType.poisonAttack){
-				s += '（'+this.applyCount+'次）'
-			}
-			else{
-				s += '（'+this.applyCount+'層）'
-			}
-		}
-		return s;
-	}
-	
-	public getFullSkillInfo() : string{
-		var s = this.type + this.value;
-		if (this.value == null){
-			s = this.type;
-		}
-		if (this.target != null && this.target.type != TargetType.self){
-			s = this.target + s;
-		}
-		if (this.condition != null && this.condition.length > 0){
-			s = this.condition.map(c=>c.toString()).join('，') + '，' + s;
-		}
-		if (this.turn < 50 && this.turn > 1){
-			s += '（'+this.turn+'回合）'
-		}
-		if (this.maxCount > 1){
-			s += '（最多'+this.maxCount+'層）'
-		}
-		return s;
-	}
-}
-
-
-export class Condition{
-	type: ConditionType;
-	value: number | number[] | string | Class | AttackType;
-	minCount: number;
-
-	// can only check after battle start
-	static CHECK_IN_BATTLE_LIST : ConditionType[] = [ConditionType.isAttackType, ConditionType.isAttack, ConditionType.everyTurn, ConditionType.atTurn];
-
-	static IS_HP_FULFILL : boolean = true;
-
-	constructor(type: ConditionType, value: number | number[] | string | Class | AttackType, minCount: number = 1){
-		this.type = type;
-		this.value = value;
-		if (minCount != null){
-			this.minCount = minCount;
-		}
-	}
-	
-	isFulfilled(card: Card, team: Team, turnAction: TurnActionType, charAttackType : AttackType, currentTurn: number) : boolean{
-		if (this.type == ConditionType.hasChar || this.type == ConditionType.charCount){
-			return team.getCharCount(this.value.toString()) >= this.minCount;
-		}
-		else if (this.type == ConditionType.hasClass || this.type == ConditionType.classCount){
-			return team.getClassCount(this.value as Class) >= this.minCount;
-		}
-		else if (this.type == ConditionType.hasElement || this.type == ConditionType.elementCount){
-			return team.getElementCount(this.value.toString()) >= this.minCount;
-		}
-		else if (this.type == ConditionType.hpHigher || this.type == ConditionType.hpLower){
-			return Condition.IS_HP_FULFILL;
-		}
-		else if (this.type == ConditionType.isAttackType){
-			return (this.value as AttackType) == charAttackType;
-		}
-		else if (this.type == ConditionType.isAttack){
-			return charAttackType == AttackType.BasicAttack || charAttackType == AttackType.SkillAttack;
-		}
-		else if (this.type == ConditionType.everyTurn){
-			return ((currentTurn-1) % (this.value as number)) == 0;
-		}
-		else if (this.type == ConditionType.atTurn){
-			if (Array.isArray(this.value)){
-				return (this.value as number[]).includes(currentTurn);
-			}
-			else{
-				return (this.value as number) == currentTurn;
-			}
-		}
-		else if (this.type == ConditionType.enemyIsAttacked){
-			if (turnAction == TurnActionType.afterAttack){
-				return charAttackType == AttackType.BasicAttack || charAttackType == AttackType.SkillAttack;
-			}
-		}
-		else if (this.type == ConditionType.enemyIsAttackByChar){
-			if (turnAction == TurnActionType.attack){
-				return (this.value as string) == card.char;
-			}
-		}
-		else if (this.type == ConditionType.enemyIsAttackByClass){
-			if (turnAction == TurnActionType.attack){
-				return (this.value as string) == card.class;
-			}
-		}
-		else if (this.type == ConditionType.enemyIsAttackByElement){
-			if (turnAction == TurnActionType.attack){
-				return (this.value as string) == card.element;
-			}
+			this.rules.push(newRule);
+			return true;
 		}
 		return false;
 	}
 
-	getFulfillTimes(card: Card, team: Team, turnAction: TurnActionType, charAttackType : AttackType, currentTurn: number): number{
-		if (this.type == ConditionType.charCount){
-			return team.getCharCount(this.value.toString());
-		}
-		else if (this.type == ConditionType.classCount){
-			return team.getClassCount(this.value as Class);
-		}
-		else if (this.type == ConditionType.elementCount){
-			return team.getElementCount(this.value.toString());
-		}
-		else if (this.isFulfilled(card, team, turnAction, charAttackType, currentTurn)){
-			return 1;
-		}
-		return 0;
-	}
-
-	public toString() : string{
-		var type = this.type;
-		var value = this.value;
-		var minCount = this.minCount > 1 ? this.minCount + '名' : '';
-		if (type == ConditionType.charCount){
-			return type.replace('角色', '1名「'+value.toString() + '」');
-		}
-		else if (type == ConditionType.classCount){
-			return type.replace('定位', '1名「'+value.toString() + '」');
-		}
-		else if (type == ConditionType.elementCount){
-			return type.replace('屬性', '1名「'+value.toString() + '」');
-		}
-		else if (type == ConditionType.hasChar){
-			return type.replace('角色', minCount+'「'+value.toString()+'」') + '時';
-		}
-		else if (type == ConditionType.hasClass){
-			return type.replace('定位', minCount+'定位'+value.toString()) + '時';
-		}
-		else if (type == ConditionType.hasElement){
-			return type.replace('屬性', minCount+'屬性'+value.toString()) + '時';
-		}
-		else if (type == ConditionType.atTurn){
-			return type.replace('n', value.toString()) + '時';
-		}
-		else if (type == ConditionType.everyTurn){
-			return '每經過' + value.toString() + '回合';
-		}
-		else if (type == ConditionType.isAttackType){
-			return value.toString() + '時';
-		}
-		else if (type == ConditionType.isAttack){
-			return type;
-		}
-		else if (type == ConditionType.hpHigher || type == ConditionType.hpLower){
-			return '當前' + type + value + '時';
+	clearRulePerRound(){
+		for (var rule of this.rules){
+			if (!rule.isPassive && rule.turn != Rule.ALWAYS_EFFECTIVE){
+				rule.turn = rule.turn - 1;
+			}
 		}
 		
-		return type + value;
+		this.rules = this.rules.filter(rule=>rule.turn > 0);
+	}
+
+	addRuleLog(turn: number, rule : Rule, applyCount = 1){
+		if (turn >= this.ruleLog.length){
+			return;
+		}
+
+		var existingRules = this.ruleLog[turn].filter(e=>e.id == rule.id);
+		var attackTypes:RuleType[] = [RuleType.attack, RuleType.heal];
+		var attackRules = this.ruleLog[turn].filter(e=>attackTypes.includes(e.type));
+		// console.debug(turn+":["+rule.id+"]"+rule.type+rule.value+":"+rule.maxCount+"||"+existingRules.length);
+		// Don't combine buffs log before and after attack action
+		if (attackRules.length == 0 && existingRules.length > 0){
+			for (var i=0; i<applyCount; i++){
+				(existingRules[0] as LogRule).addCount();
+			}
+		}
+		else{
+			var logRule = new LogRule(rule.clone());
+			logRule.condition = null;
+			logRule.target = null;
+			logRule.applyCount = applyCount;
+			this.ruleLog[turn].push(logRule);
+		}
+	}
+
+	countDownCDPerRound(){
+		if (this.skillCD > 0){
+			this.skillCD -= 1;
+		}
+	}
+
+	isSkillAvailable(){
+		if (this.skillCD == 0){
+			return true;
+		}
+		return false;
+	}
+
+	private getLastSkillTurn() : number{
+		if (!this.isSkillAvailable()){
+			return -1;
+		}
+		var lastTurn = 0;
+		
+		for (var i=this.action.length-1; i>=0; i--){
+			if (this.action[i] == AttackType.SkillAttack){
+				lastTurn = i;
+				break;
+			}
+		}
+
+		return lastTurn;
+	}
+
+	getSkillDelayedTurn(currentTurn: number, cooldown: number) : number{
+		var lastTurn = this.getLastSkillTurn();
+		if (lastTurn == 0){ 
+			lastTurn = 1;
+		}
+		return currentTurn - (lastTurn + cooldown);
+	}
+
+	isGuard(currentTurn: number, cooldown: number){
+		if (this.actionPattern == ActionPattern.Manual){
+			return this.action[currentTurn] == AttackType.Guard;
+		}
+		return false;
+	}
+
+	isReleaseSkill(currentTurn: number, cooldown: number){
+		if (!this.isSkillAvailable()){
+			return false;
+		}
+
+		if (this.actionPattern == ActionPattern.Immediately){
+			return true;
+		}
+		else if (this.actionPattern == ActionPattern.Delay1Turn){
+			if (this.getLastSkillTurn() == 0){
+				return this.getSkillDelayedTurn(currentTurn, cooldown) >= 1;
+			}
+			else{
+				return true;
+			}
+		}
+		else if (this.actionPattern == ActionPattern.AddCD1){
+			return (this.getSkillDelayedTurn(currentTurn, cooldown) == 1);
+		}
+		else if (this.actionPattern == ActionPattern.AddCD2){
+			return (this.getSkillDelayedTurn(currentTurn, cooldown) == 2);
+		}
+		else if (this.actionPattern == ActionPattern.AddCD3){
+			return (this.getSkillDelayedTurn(currentTurn, cooldown) == 3);
+		}
+		else if (this.actionPattern == ActionPattern.AddCD1Delay1Turn){
+			if (this.getLastSkillTurn() == 0){
+				return (this.getSkillDelayedTurn(currentTurn, cooldown) == 2);
+			}
+			else{
+				return (this.getSkillDelayedTurn(currentTurn, cooldown) == 1);
+			}
+		}
+		else if (this.actionPattern == ActionPattern.AddCD2Ahead1Turn){
+			if (this.getLastSkillTurn() == 0){
+				return (this.getSkillDelayedTurn(currentTurn, cooldown) == 1);
+			}
+			else{
+				return (this.getSkillDelayedTurn(currentTurn, cooldown) == 2);
+			}
+		}
+		else if (this.actionPattern == ActionPattern.Manual){
+			return this.action[currentTurn] == AttackType.SkillAttack;
+		}
+
+
+		return false;
 	}
 }
