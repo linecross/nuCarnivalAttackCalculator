@@ -1,8 +1,11 @@
-import { Character, Rarity, Element, AttackType, ActionPattern, CounterAttackMode } from './../../build/Constants.js';
+import { Character, Rarity, Class, Element, AttackType, ActionPattern, CounterAttackMode } from './../../build/Constants.js';
 import { Battle } from './../../build/BattleSystem.js';
 import { Team, Card, CardCenter } from './../../build/Card.js';
 import { Condition } from './../../build/CardRule.js';
 import { LogRule } from './../../build/LogRule.js';
+import { BiMap } from './../../build/util/BiMap.js';
+
+var { NA, ...ELEMENT_MAP } = Element;
 
 var config = {
 	MAX_LEVEL: 60,
@@ -13,10 +16,10 @@ var config = {
 		FULL: '全員滿星', SSR3: '3星SSR+5星SR', SSR1: '1星SSR+3星SR'
 	},
 	FILTERS:{
-		rarity: ['N','R','SR','SSR'],
+		rarity: Object.values(Rarity),
 		char: Object.values(Character),
-		clazz: ['攻擊','守護','妨礙','輔助','治療'],
-		element: ['火','水','木','光','闇'],
+		clazz: Object.values(Class),
+		element: Object.values(ELEMENT_MAP),
 		coolDown: [3, 4, 5, 6],
 		immuneSkill: ['免疫麻痺','免疫沈默','免疫睡眠'],
 		buffSkill: ['攻擊力增加','普攻傷害增加','必殺技傷害增加','持續傷害增加','觸發技效果增加','造成傷害增加',
@@ -89,11 +92,12 @@ Vue.createApp({
 					isShowTurns: true,
 					defaultStar: 'SSR3',
 					isCalcEnemyDebuff: false,
-					maxCounterAttack: 1
+					maxCounterAttack: 1,
 				},
 				general: {
 					charFilterDisplayStyle: 'image',
 					recordPanelCardImgSize: 'normal',
+					theme: 'light',
 				}
 			},
 			cardJsonLastModified: '',
@@ -183,6 +187,12 @@ Vue.createApp({
 		}
 	},
 	methods: {
+		switchTheme(){
+			var theme = this.setting.general.theme == 'light' ? 'dark' : 'light';
+			this.setting.general.theme = theme;
+			document.documentElement.setAttribute('data-bs-theme', theme);
+			document.documentElement.classList = 'theme-'+theme;
+		},
 		createSortable(){
 			var el = document.getElementById("charInputList");
 			var vueObj = this;
@@ -661,6 +671,11 @@ Vue.createApp({
 			var recordPanelCardImgSize = this.setting['general']['recordPanelCardImgSize'];
 			if (['normal','big','small', 'none'].includes(recordPanelCardImgSize)) {
 				this.damageRecordPanel.cardImgSize = recordPanelCardImgSize;
+			}
+			var theme = this.setting['general']['theme'];
+			if (['light','dark'].includes(theme)) {
+				document.documentElement.setAttribute('data-bs-theme', theme);
+				document.documentElement.classList = 'theme-'+theme;
 			}
 		},
 		saveSettingFromStorage(){
