@@ -137,8 +137,8 @@ Vue.createApp({
 		this.FILTERS = config.FILTERS;
 
 		this.db = new Dexie('nuAttackCalculatorDB');
-		this.db.version(1).stores({
-			damageRecords: '++id, teamName, turn, cardname'
+		this.db.version(2).stores({
+			damageRecords: '++id, teamName, [turns+cardname]'
 		});
 
 		fetch("./res/json/cardData.json")
@@ -718,6 +718,11 @@ Vue.createApp({
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEle);
 			toastBootstrap.show();
 		},
+		showDeleteConfirmToast(){
+			var toastEle = document.getElementById('deleteConfirmToast');
+			var toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEle);
+			toastBootstrap.show();
+		},
 		addDamageRecord(){
 			if (this.battle == null){
 				this.showToast('請先加入一張卡片', 'text-bg-danger');
@@ -754,37 +759,33 @@ Vue.createApp({
 				isFav: false,
 			};
 
+			var vueObj = this;
 			var teamNameTitle = record.teamName.split('\n')[0];
-			var existRecord = this.getExistsDamageRecord(record);
-			if (existRecord != null){
-				record.id = existRecord.id;
-				record.isFav = existRecord.isFav;
-				if (record.teamName == null || record.teamName == ''){
-					record.teamName = existRecord.teamName;
-					teamNameTitle = record.teamName.split('\n')[0];
+			this.getExistsDamageRecord(record).then(existRecord=>{
+				if (existRecord != null){
+					record.id = existRecord.id;
+					record.isFav = existRecord.isFav;
+					if (record.teamName == null || record.teamName == ''){
+						record.teamName = existRecord.teamName;
+						if (record.teamName != null){
+							teamNameTitle = record.teamName.split('\n')[0];
+						}
+					}
+					vueObj.db.damageRecords.put(JSON.parse(JSON.stringify(record)));
+					vueObj.showToast('已更新隊伍 ' + teamNameTitle);
 				}
-				// this.db.damageRecords.put(JSON.parse(JSON.stringify(record))).then(recordId=>{
-				// 	this.damageRecords = this.damageRecords.filter(e=>e.id != recordId);
-				// 	this.damageRecords.push(record);
-				// });
-				this.db.damageRecords.put(JSON.parse(JSON.stringify(record)));
-				this.showToast('已更新隊伍 ' + teamNameTitle);
-			}
-			else{
-				// this.db.damageRecords.add(JSON.parse(JSON.stringify(record))).then(recordId=>{
-				// 	record.id = recordId;
-				// 	this.damageRecords.push(record);
-				// });
-				this.db.damageRecords.add(JSON.parse(JSON.stringify(record)));
-				this.showToast('已加入隊伍 ' + teamNameTitle);
-			}
-			this.teamName = '';
+				else{
+					vueObj.db.damageRecords.add(JSON.parse(JSON.stringify(record)));
+					vueObj.showToast('已加入隊伍 ' + teamNameTitle);
+				}
+				vueObj.teamName = '';
+			});
 		},
-		getExistsDamageRecord(record){
+		async getExistsDamageRecord(record){
 			var isExists = true;
-			for (var damageRecord of this.damageRecords){
-				if (record.turns == damageRecord.turns && record.cardname.join(',') == damageRecord.cardname.join(',') 
-					&& JSON.stringify(record.cardActionPattern) == JSON.stringify(damageRecord.cardActionPattern)
+			var damageRecordList = await this.db.damageRecords.where({"turns":record.turns, "cardname":record.cardname}).toArray();
+			for (var damageRecord of damageRecordList){
+				if (JSON.stringify(record.cardActionPattern) == JSON.stringify(damageRecord.cardActionPattern)
 					&& JSON.stringify(record.cardActionOrder) == JSON.stringify(damageRecord.cardActionOrder)
 					&& JSON.stringify(record.cardManualAction) == JSON.stringify(damageRecord.cardManualAction)){
 					for (var i=0; i<5; i++){
@@ -830,6 +831,7 @@ Vue.createApp({
 			this.damageRecordPanel.sortBy = val;
 		},
 		generateTeamNameHtml(str){
+			if (str == null) str = '';
 			str = str.replaceAll('\n', '\n<br>\n').replaceAll(/(#.+?)(\s|$)/g, '\n$1\n');
 			return str.split('\n').filter(e=>e.trim().length > 0);
 		},
@@ -848,41 +850,50 @@ Vue.createApp({
 				this.damageRecordPanel[fieldId] = searchStr;
 			}
 		},
+		deleteAllDamageRecord(){
+			this.db.damageRecords.clear();
+			this.damageRecords = [];
+		},
 		importDamageRecord(event){
 			var file = event.target.files[0];
 
 			const reader = new FileReader();
-			reader.onload = (e) => {
+			var vueObj = this;
+			reader.onload = async (e) => {
 				var str = e.target.result;
 				var json = JSON.parse(str);
-				var updateCount = 0;
-				var addCount = 0;
+
+				var addList = [];
+				var updateList = [];
 				for (var record of json){
 					delete record.id;
-					var existRecord = this.getExistsDamageRecord(record);
+					var existRecord = await vueObj.getExistsDamageRecord(record);
+
 					if (existRecord != null){
 						record.id = existRecord.id;
 						record.isFav = existRecord.isFav;
 						if (record.teamName == null || record.teamName == ''){
 							record.teamName = existRecord.teamName;
 						}
-						this.db.damageRecords.put(JSON.parse(JSON.stringify(record))).then(recordId=>{
-							this.damageRecords = this.damageRecords.filter(e=>e.id != recordId);
-							this.damageRecords.push(record);
-						});
-						updateCount++;
+						updateList.push(JSON.parse(JSON.stringify(record)));
 					}
 					else{
-						this.db.damageRecords.add(JSON.parse(JSON.stringify(record))).then(recordId=>{
-							record.id = recordId;
-							this.damageRecords.push(record);
-						});
-						addCount++;
+						addList.push(JSON.parse(JSON.stringify(record)));
 					}
 				}
-				var toastMsg = addCount > 0 ? '已新增 ' + addCount + ' 記錄；' : '';
-				toastMsg += updateCount > 0 ? '已更新 ' + updateCount + ' 記錄' : '';
-				this.showToast(toastMsg);
+				vueObj.db.damageRecords.bulkPut(updateList).then(recordId=>{
+					if (addList.length == 0){
+						vueObj.loadRecordsFromDB();
+					}
+				});
+				vueObj.db.damageRecords.bulkAdd(addList).then(recordId=>{
+					vueObj.loadRecordsFromDB();
+				});
+
+				var toastMsg = addList.length > 0 ? '已新增 ' + addList.length + ' 記錄；' : '';
+				toastMsg += updateList.length > 0 ? '已更新 ' + updateList.length + ' 記錄' : '';
+				vueObj.showToast(toastMsg);
+				
 			};
 			reader.readAsText(file);
 		},
