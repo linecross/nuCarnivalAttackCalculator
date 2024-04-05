@@ -1,8 +1,8 @@
 export class BiMap {
-    constructor(map) {
-        this.map = map;
+    constructor(obj) {
+        this.map = new Map(Object.entries(obj));
         this.reverseMap = new Map();
-        for (const key of map.keys()) {
+        for (const key of this.map.keys()) {
             this.reverseMap.set(this.map.get(key), key);
         }
     }
@@ -13,6 +13,12 @@ export class BiMap {
         else {
             return this.reverseMap.get(key);
         }
+    }
+    getObject() {
+        return Object.fromEntries(this.map);
+    }
+    getReverseObject() {
+        return Object.fromEntries(this.reverseMap);
     }
 }
 //# sourceMappingURL=BiMap.js.map

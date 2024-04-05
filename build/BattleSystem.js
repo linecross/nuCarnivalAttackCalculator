@@ -70,6 +70,7 @@ export class Battle {
             if (card.potential >= 6)
                 toAddRules = toAddRules.concat(card.pot12Rule);
         }
+        toAddRules = toAddRules.filter(e => !Battle.UNUSED_RULE_TYPES.has(e.type));
         for (var rule of toAddRules) {
             // If rule only check in battle, only add to card but not targets
             if (rule.isRuleCheckInBattle()) {
@@ -828,6 +829,10 @@ Battle.PRINT_OUTPUT_OPTION = { ALL: 'All', ONLY_DAMAGE: 'OnlyDamage', ONLY_ATTAC
 Battle.OUTPUT_TYPES = new Set([RuleType.attack, RuleType.poisonAttack, RuleType.heal, RuleType.continueHeal, RuleType.support]);
 Battle.TEAM_BUFF_TYPES = new Set([RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp, RuleType.partyAllHealUp]);
 Battle.ENEMY_BUFF_TYPES = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp]);
+Battle.UNUSED_RULE_TYPES = new Set([RuleType.immuneParalysis, RuleType.immuneSilence, RuleType.immuneSleep,
+    RuleType.takeLessDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery,
+    RuleType.enemyLessDamage]);
+Battle.LOG_ONLY_RULE_TYPES = new Set([RuleType.getShield]);
 Battle.ACTION_ACCEPT_BUFFS = {
     [RuleType.attack]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp,
         RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp],

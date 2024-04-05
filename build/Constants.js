@@ -51,6 +51,11 @@ export const RuleType = {
     appendRule: '我方獲得技能',
     enemyAppendRule: '敵方獲得技能',
     // 不會在計算機生效的被動（純記錄）
+    getShield: '獲得護盾',
+    takeLessDamage: '受到傷害減少',
+    takeLessDamageByGuard: '防禦減傷增加',
+    moreRecovery: '受到回復量增加',
+    enemyLessDamage: '敵方造成傷害減少',
     immuneParalysis: '免疫麻痺',
     immuneSleep: '免疫睡眠',
     immuneSilence: '免疫沈默'
