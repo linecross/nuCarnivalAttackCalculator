@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="light">
 <head>
 	<title>新世界狂歡傷害計算機</title>
     <meta charset="utf-8">
@@ -21,17 +21,20 @@
 </head>
 
 <body>
-
-	  
-	  
 	<div id='NuCarnivalAttackCalApp'>
 		<div class="container">
 			<div class="row justify-content-center text-center">
-				<div class="col-xs-18 col-md-17 col-lg-11">
-					<h4>新世界狂歡：傷害計算機</h4>
-					<hr>
+				<div class="row col-xs-18 col-md-17 col-lg-11">
+					<div class="col-1"></div>
+					<h3 class="col align-self-center">新世界狂歡：傷害計算機</h3>
+					<span class="col-1 theme-btn" @click="switchTheme()">
+						<i class="fa-solid fa-circle-half-stroke"></i>
+					</span>
 				</div>
 			</div>
+
+			
+
 			<div class="modal fade" tabindex="-1" id="cardSelector">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 					<div class="modal-content w-100 h-100">
@@ -164,6 +167,22 @@
 			</div>
 
 			<div class="modal fade" tabindex="-1" id="damageRecordModal" @click="damageRecordPanel.editElement='x'">
+
+				<div class="toast-container top-50 start-50 translate-middle">
+					<div class="toast hide" role="alert" id="deleteConfirmToast" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+						<div class="toast-header">
+							<h5>全部刪除</h5>
+						</div>
+					  <div class="toast-body fs-6">
+						是否刪除全部記錄？
+						<div class="mt-2 pt-2 border-top">
+						  <button type="button" class="btn me-2 btn-primary" data-bs-dismiss="toast" @click="deleteAllDamageRecord()">確定</button>
+						  <button type="button" class="btn me-2 btn-secondary" data-bs-dismiss="toast">取消</button>
+						</div>
+					  </div>
+					</div>
+				</div>
+
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 					<div class="modal-content w-100 h-100">
 						<div class="modal-header">
@@ -177,6 +196,9 @@
 									<div>
 										<button type="button" class="btn" :class="damageRecordPanel.manageMode == 'delete' ? 'btn-danger' : 'btn-primary'" @click="damageRecordSwitchManageMode()">
 											{{damageRecordPanel.manageMode == 'delete' ? '不刪了' : '刪除模式'}}
+										</button>
+										<button v-show="damageRecordPanel.manageMode == 'delete'" type="button" class="btn btn-danger" @click="showDeleteConfirmToast()" >
+											全部刪除
 										</button>
 									</div>
 									<span class="verticalLine"></span>
@@ -297,8 +319,8 @@
 												</template>
 												<td rowspan="2">{{ record.totalDamage }}</td>
 												<td rowspan="2">
-													<button v-if="damageRecordPanel.manageMode == 'normal'" type="button" class="btn btn-primary" @click="loadDamageRecord(record)" data-bs-dismiss="modal">載入</button>
-													<button v-if="damageRecordPanel.manageMode == 'delete'" type="button" class="btn btn-danger" @click="deleteDamageRecord(record.id)">刪除</button>
+													<button v-show="damageRecordPanel.manageMode == 'normal'" type="button" class="btn btn-primary" @click="loadDamageRecord(record)" data-bs-dismiss="modal">載入</button>
+													<button v-show="damageRecordPanel.manageMode == 'delete'" type="button" class="btn btn-danger" @click="deleteDamageRecord(record.id)">刪除</button>
 												</td>
 											</tr>
 											<tr>
@@ -313,6 +335,7 @@
 								</table>
 							</div>
 						</div>
+						<div class="modal-footer">{{ '記錄數量：' + getDamageRecords.length }}</div>
 					</div>
 				</div>
 			</div>
@@ -769,6 +792,11 @@
 						<h5>更新日誌</h5>
 
 						<textarea rows="12">
+[20240405]
+新增功能：切換主題
+新增功能：隊伍傷害記錄的「全部刪除」
+修正：隊伍傷害記錄－新增隊伍／匯入記錄時無法更新現有記錄
+
 [20240402]
 修正卡片資料：月玖3星被動－對妨礙的攻擊力加成是12%
 修正buff記錄功能：
