@@ -313,11 +313,19 @@ export class RuleTarget{
 
 	public toString() : string{
 		var type = this.type;
-		var value = this.value;
+		var value = '';
+		if (this.value != null){
+			value = this.value.toString();
+		}
+		if (type == TargetType.isPosition){
+			value = '第' + value + '位';
+		}
 		var exceptStr = this.exceptType != null ? this.exceptValue != null ? this.exceptValue : this.exceptType : '';
+		if (this.exceptType == TargetType.isPosition){
+			exceptStr = '第' + exceptStr + '位';
+		}
 		if (exceptStr.length > 0) exceptStr = '（除了' + exceptStr + '）';
-
-		if (value == null){
+		if (this.value == null){
 			return type + exceptStr;
 		}
 		return value.toString() + exceptStr;
