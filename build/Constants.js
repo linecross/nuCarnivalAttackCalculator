@@ -93,6 +93,14 @@ export const SkillType = {
     trigger: '觸發',
     append: '追加',
 };
+export const OperatorType = {
+    less: '少於',
+    lessOrEq: '少於或等於',
+    more: '大於',
+    moreOrEq: '大於或等於',
+    equal: '等於',
+    not: '不'
+};
 export const ActionPattern = {
     Immediately: '有招就放',
     Delay1Turn: '延遲1回合',

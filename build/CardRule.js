@@ -1,4 +1,4 @@
-import { RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType } from './Constants.js';
+import { RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType } from './Constants.js';
 export class Rule {
     static createId() {
         return Rule.idCounter++;
@@ -179,14 +179,14 @@ export class Rule {
             conditionArr = [];
             if (Array.isArray(condition)) {
                 for (var item of condition) {
-                    conditionArr.push(new Condition(item.type, item.value, item.minCount));
+                    conditionArr.push(new Condition(item.type, item.value, item.operator, item.minCount));
                 }
             }
             else if (typeof condition == 'string') {
-                conditionArr.push(new Condition(condition, null, null));
+                conditionArr.push(new Condition(condition, null, null, null));
             }
             else {
-                conditionArr.push(new Condition(condition.type, condition.value, condition.minCount));
+                conditionArr.push(new Condition(condition.type, condition.value, condition.operator, condition.minCount));
             }
         }
         // Load Target
@@ -285,22 +285,47 @@ export class RuleTarget {
     }
 }
 export class Condition {
-    constructor(type, value, minCount = 1) {
+    constructor(type, value, operator = null, minCount = 1) {
         this.type = type;
         this.value = value;
+        this.operator = operator;
         if (minCount != null) {
             this.minCount = minCount;
         }
     }
     isFulfilled(card, team, turnAction, charAttackType, currentTurn) {
-        if (this.type == ConditionType.hasChar || this.type == ConditionType.charCount) {
+        if (this.type == ConditionType.hasChar) {
             return team.getCharCount(this.value.toString()) >= this.minCount;
         }
-        else if (this.type == ConditionType.hasClass || this.type == ConditionType.classCount) {
+        else if (this.type == ConditionType.charCount) {
+            if (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more) {
+                return team.getCharCount(this.value.toString()) >= this.minCount;
+            }
+            else {
+                return team.getCharCount(this.value.toString()) <= this.minCount;
+            }
+        }
+        else if (this.type == ConditionType.hasClass) {
             return team.getClassCount(this.value) >= this.minCount;
         }
-        else if (this.type == ConditionType.hasElement || this.type == ConditionType.elementCount) {
+        else if (this.type == ConditionType.classCount) {
+            if (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more) {
+                return team.getClassCount(this.value) >= this.minCount;
+            }
+            else {
+                return team.getClassCount(this.value) <= this.minCount;
+            }
+        }
+        else if (this.type == ConditionType.hasElement) {
             return team.getElementCount(this.value.toString()) >= this.minCount;
+        }
+        else if (this.type == ConditionType.elementCount) {
+            if (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more) {
+                return team.getElementCount(this.value.toString()) >= this.minCount;
+            }
+            else {
+                return team.getElementCount(this.value.toString()) <= this.minCount;
+            }
         }
         else if (this.type == ConditionType.hpHigher || this.type == ConditionType.hpLower) {
             return Condition.IS_HP_FULFILL;
@@ -345,13 +370,13 @@ export class Condition {
         return false;
     }
     getFulfillTimes(card, team, turnAction, charAttackType, currentTurn) {
-        if (this.type == ConditionType.charCount) {
+        if (this.type == ConditionType.charCount && (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more)) {
             return team.getCharCount(this.value.toString());
         }
-        else if (this.type == ConditionType.classCount) {
+        else if (this.type == ConditionType.classCount && (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more)) {
             return team.getClassCount(this.value);
         }
-        else if (this.type == ConditionType.elementCount) {
+        else if (this.type == ConditionType.elementCount && (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more)) {
             return team.getElementCount(this.value.toString());
         }
         else if (this.isFulfilled(card, team, turnAction, charAttackType, currentTurn)) {
@@ -362,15 +387,16 @@ export class Condition {
     toString() {
         var type = this.type;
         var value = this.value;
+        var operator = this.operator == null ? '' : this.operator;
         var minCount = this.minCount > 1 ? this.minCount + '名' : '';
         if (type == ConditionType.charCount) {
-            return type.replace('角色', '1名「' + value.toString() + '」');
+            return type.replace('角色', operator + '1名「' + value.toString() + '」');
         }
         else if (type == ConditionType.classCount) {
-            return type.replace('定位', '1名「' + value.toString() + '」');
+            return type.replace('定位', operator + '1名「' + value.toString() + '」');
         }
         else if (type == ConditionType.elementCount) {
-            return type.replace('屬性', '1名「' + value.toString() + '」');
+            return type.replace('屬性', operator + '1名「' + value.toString() + '」');
         }
         else if (type == ConditionType.hasChar) {
             return type.replace('角色', minCount + '「' + value.toString() + '」') + '時';
