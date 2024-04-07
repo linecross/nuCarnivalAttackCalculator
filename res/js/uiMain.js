@@ -118,6 +118,8 @@ Vue.createApp({
 				searchTeamName: '',
 				searchCard: '',
 				searchTurn: null,
+				currentPage: 1,
+				pageMaxCount: 38,
 			},
 			toastMessage: '',
 			toastStatus: '',
@@ -902,13 +904,24 @@ Vue.createApp({
 			var blob = new Blob([json], { type: "text/plain;charset=utf-8" });
     		saveAs(blob, 'output.json');
 		}
-
 	},
 	computed: {
 		isEditTeam(){
 			return this.damageRecordPanel.editElement.startsWith("teamName_");
 		},
+		getDamageRecordsPageCount(){
+			const list = this.getDamageRecords;
+			const pageCount = this.damageRecordPanel.pageMaxCount;
+			return Math.ceil(list.length / pageCount);
+		},
+		getDamageRecordsByPage() {
+			const list = this.getDamageRecords;
+			const pageCount = this.damageRecordPanel.pageMaxCount;
+			const page = this.damageRecordPanel.currentPage - 1;
+			return list.slice(page*pageCount, pageCount + page*pageCount);
+		},
 		getDamageRecords() {
+			this.damageRecordPanel.currentPage = 1;
 			var arr = [...this.damageRecords];
 			
 			var isFav = this.damageRecordPanel.searchFav;
