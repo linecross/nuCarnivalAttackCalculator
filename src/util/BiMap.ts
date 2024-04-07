@@ -1,4 +1,4 @@
-export class BiMap<any, any>{
+export class BiMap{
 	map : Map<any, any>;
 	reverseMap: Map<any, any>;
 

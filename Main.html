@@ -342,13 +342,13 @@
 								<nav aria-label="">
 									<ul class="pagination my-auto">
 									  <li class="page-item" :class="damageRecordPanel.currentPage == 1 ? 'disabled' : ''">
-										<a class="page-link" href="#" @click="damageRecordPanel.currentPage -= 1">‹</a>
+										<a class="page-link" href="#" @click="damageRecordPanel.currentPage -= 1; refreshDamageRecordPanelUI()">‹</a>
 									  </li>
-									  <v-template v-for="pageIdx in getDamageRecordsPageCount">
-										<li class="page-item" :class="damageRecordPanel.currentPage == pageIdx ? 'active' : ''"><a class="page-link" href="#" @click="damageRecordPanel.currentPage = pageIdx">{{ pageIdx }}</a></li>
-									  </v-template>
+									  <template v-for="pageIdx in getDamageRecordsPageCount">
+										<li class="page-item" :class="damageRecordPanel.currentPage == pageIdx ? 'active' : ''"><a class="page-link" href="#" @click="damageRecordPanel.currentPage = pageIdx; refreshDamageRecordPanelUI()">{{ pageIdx }}</a></li>
+									  </template>
 									  <li class="page-item" :class="damageRecordPanel.currentPage == getDamageRecordsPageCount ? 'disabled' : ''">
-										<a class="page-link" href="#" @click="damageRecordPanel.currentPage += 1">›</a>
+										<a class="page-link" href="#" @click="damageRecordPanel.currentPage += 1; refreshDamageRecordPanelUI()">›</a>
 									  </li>
 									</ul>
 								  </nav>
@@ -357,6 +357,16 @@
 							<div>
 								{{ '第 ' + ((damageRecordPanel.currentPage-1)*damageRecordPanel.pageMaxCount+1) + ' - ' 
 								+ ((damageRecordPanel.currentPage-1)*damageRecordPanel.pageMaxCount + (damageRecordPanel.currentPage == getDamageRecordsPageCount && getDamageRecords.length % damageRecordPanel.pageMaxCount > 0 ? getDamageRecords.length % damageRecordPanel.pageMaxCount : damageRecordPanel.pageMaxCount)) + ' 則' }}
+							</div>
+							<span class="verticalLine"></span>
+							<span>每頁顯示</span>
+							<div>
+								<select class="col-auto form-control wide-input form-select" v-model.number="damageRecordPanel.pageMaxCount">
+									<option value="10">10</option>
+									<option value="20">20</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+								</select>
 							</div>
 							<span class="verticalLine"></span>
 							<div>
