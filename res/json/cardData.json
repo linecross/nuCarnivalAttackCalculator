@@ -933,7 +933,7 @@
     },
     "常駐．玖夜": {
       "char": "玖夜", "fullname": null, "alias": null,
-      "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "平均型",
+      "rarity": "SSR", "class": "妨礙", "element": "闇", "potType": "平均型",
       "baseHp": 7791, "baseAtk": 2028, "coolDown": 4,
       "img": "Kuya_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "50%" }],
