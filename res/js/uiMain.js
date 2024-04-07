@@ -97,6 +97,7 @@ Vue.createApp({
 				general: {
 					charFilterDisplayStyle: 'image',
 					recordPanelCardImgSize: 'normal',
+					recordPanelPageMaxCount: 20,
 					theme: 'light',
 				}
 			},
@@ -118,6 +119,8 @@ Vue.createApp({
 				searchTeamName: '',
 				searchCard: '',
 				searchTurn: null,
+				currentPage: 1,
+				pageMaxCount: 20,
 			},
 			toastMessage: '',
 			toastStatus: '',
@@ -672,6 +675,10 @@ Vue.createApp({
 			if (['normal','big','small', 'none'].includes(recordPanelCardImgSize)) {
 				this.damageRecordPanel.cardImgSize = recordPanelCardImgSize;
 			}
+			var pageCount = this.setting['general']['recordPanelPageMaxCount'];
+			if (Number.isInteger(pageCount)) {
+				this.damageRecordPanel.pageMaxCount = pageCount;
+			}
 			var theme = this.setting['general']['theme'];
 			if (['light','dark'].includes(theme)) {
 				document.documentElement.setAttribute('data-bs-theme', theme);
@@ -901,14 +908,34 @@ Vue.createApp({
 			var json = JSON.stringify(this.getDamageRecords);
 			var blob = new Blob([json], { type: "text/plain;charset=utf-8" });
     		saveAs(blob, 'output.json');
+		},
+		refreshDamageRecordPanelUI(){
+			this.setting['general']['recordPanelPageMaxCount'] = this.damageRecordPanel.pageMaxCount;
+			var el = document.querySelector('#damageRecordModal .card-panel');
+			if (el != null){
+				el.scrollTop=0;
+			}
 		}
-
 	},
 	computed: {
 		isEditTeam(){
 			return this.damageRecordPanel.editElement.startsWith("teamName_");
 		},
+		getDamageRecordsPageCount(){
+			const list = this.getDamageRecords;
+			const pageCount = this.damageRecordPanel.pageMaxCount;
+			return Math.ceil(list.length / pageCount);
+		},
+		getDamageRecordsByPage() {
+			const list = this.getDamageRecords;
+			const pageCount = this.damageRecordPanel.pageMaxCount;
+			const page = this.damageRecordPanel.currentPage - 1;
+			return list.slice(page*pageCount, pageCount + page*pageCount);
+		},
 		getDamageRecords() {
+			this.damageRecordPanel.currentPage = 1;
+			this.refreshDamageRecordPanelUI();
+
 			var arr = [...this.damageRecords];
 			
 			var isFav = this.damageRecordPanel.searchFav;
@@ -1171,7 +1198,10 @@ Vue.createApp({
 			if (this.importJsonResult != ''){
 				this.importJsonResult = '';
 			}
+		},
+		"damageRecordPanel.pageMaxCount"(){
+			this.damageRecordPanel.currentPage = 1;
+			this.refreshDamageRecordPanelUI();
 		}
-		
 	}
 }).mount('#NuCarnivalAttackCalApp');

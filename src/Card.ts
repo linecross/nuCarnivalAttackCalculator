@@ -284,6 +284,9 @@ export class CardCenter{
 	}
 
 	static getCardData(){
+		if (Object.keys(CardCenter.userCardData).length === 0){
+			return CardCenter.cardData;
+		}
 		var fullCardData = JSON.parse(JSON.stringify(CardCenter.cardData));
 		fullCardData = CardCenter.concatData(fullCardData, CardCenter.userCardData);
 		return fullCardData;
