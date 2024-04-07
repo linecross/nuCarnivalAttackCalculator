@@ -31,18 +31,19 @@
       "baseHp": 6937, "baseAtk": 747, "coolDown": 3,
       "img": "Morvay_N_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [{"type": "獲得護盾", "value": "20%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
+      "skillLv2Rule": [{"type": "獲得護盾", "value": "30%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
+      "skillLv3Rule": [{"type": "獲得護盾", "value": "40%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
       "star3Rule": [
         {
           "type": "最大HP增加",
-          "value": "10%",
+          "value": "13%",
           "condition": { "type": "角色在場", "value": "艾斯特" }
-        }
+        },
+        { "type": "受到傷害減少", "value": "10%", "condition": {"type": "隊伍中每存在定位", "value": "守護", "minCount": 1, "operator": "少於或等於"} }
       ],
-      "star5Rule": [],
-      "pot6Rule": [],
+      "star5Rule": [{ "type": "受到傷害減少", "value": "10%" }],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "N八雲": {
@@ -305,18 +306,19 @@
       "baseHp": 8147, "baseAtk": 889, "coolDown": 3,
       "img": "Morvay_R_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [{"type": "獲得護盾", "value": "20%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
+      "skillLv2Rule": [{"type": "獲得護盾", "value": "30%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
+      "skillLv3Rule": [{"type": "獲得護盾", "value": "40%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
       "star3Rule": [
         {
           "type": "最大HP增加",
-          "value": "10%",
+          "value": "13%",
           "condition": { "type": "角色在場", "value": "艾斯特" }
-        }
+        },
+        { "type": "受到傷害減少", "value": "10%", "condition": {"type": "隊伍中每存在定位", "value": "守護", "minCount": 1, "operator": "少於或等於"} }
       ],
-      "star5Rule": [],
-      "pot6Rule": [],
+      "star5Rule": [{ "type": "受到傷害減少", "value": "10%" }],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "R八雲": {
@@ -579,18 +581,19 @@
       "baseHp": 9606, "baseAtk": 1031, "coolDown": 3,
       "img": "Morvay_SR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [{"type": "獲得護盾", "value": "20%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
+      "skillLv2Rule": [{"type": "獲得護盾", "value": "30%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
+      "skillLv3Rule": [{"type": "獲得護盾", "value": "40%", "valueBy": "HP"}, { "type": "攻擊", "value": "100%" }],
       "star3Rule": [
         {
           "type": "最大HP增加",
-          "value": "10%",
+          "value": "13%",
           "condition": { "type": "角色在場", "value": "艾斯特" }
-        }
+        },
+        { "type": "受到傷害減少", "value": "10%", "condition": {"type": "隊伍中每存在定位", "value": "守護", "minCount": 1, "operator": "少於或等於"} }
       ],
-      "star5Rule": [],
-      "pot6Rule": [],
+      "star5Rule": [{ "type": "受到傷害減少", "value": "10%" }],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "SR八雲": {
@@ -1005,10 +1008,10 @@
       "rarity": "SSR", "class": "守護", "element": "火", "potType": "ATK先行",
       "baseHp": 11314, "baseAtk": 1387, "coolDown": 4,
       "img": "Dante_SSR_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "75%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "100%" }],
+      "attackRule": [{ "type": "攻擊", "value": "75%" }, {"type": "獲得護盾", "value": "8%", "valueBy": "HP", "target": "全體"}],
+      "skillLv1Rule": [{ "type": "攻擊", "value": "100%" }, {"type": "獲得護盾", "value": "13%", "valueBy": "HP", "target": "全體"}],
+      "skillLv2Rule": [{ "type": "攻擊", "value": "100%" }, {"type": "獲得護盾", "value": "15%", "valueBy": "HP", "target": "全體"}],
+      "skillLv3Rule": [{ "type": "攻擊", "value": "100%" }, {"type": "獲得護盾", "value": "18%", "valueBy": "HP", "target": "全體"}],
       "star3Rule": [],
       "star5Rule": [],
       "pot6Rule": [],
@@ -1167,7 +1170,7 @@
         { "type": "攻擊力增加", "value": "14%" },
         { "type": "最大HP增加", "value": "14%" }
       ],
-      "pot6Rule": [],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "妖宴．玖夜": {
@@ -1521,9 +1524,9 @@
         { "type": "攻擊", "value": "50%" },
         { "type": "反擊", "value": "68%", "turn": 2, "maxCount": 99 }
       ],
-      "star3Rule": [],
-      "star5Rule": [],
-      "pot6Rule": [],
+      "star3Rule": [{ "type": "受到回復量增加", "value": "30%", "condition": {"type": "隊伍中每存在定位", "value": "守護", "minCount": 1, "operator": "少於或等於"} }],
+      "star5Rule": [{ "type": "受到傷害減少", "value": "10%" }],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "幽影．可爾": {
@@ -1841,8 +1844,8 @@
         { "type": "持續治療", "value": "12.5%", "turn": 4, "valueBy": "HP" }
       ],
       "star3Rule": [{ "type": "最大HP增加", "value": "27%" }],
-      "star5Rule": [],
-      "pot6Rule": [],
+      "star5Rule": [{ "type": "受到傷害減少", "value": "15%", "condition": { "type": "血量大於", "value": "99%" } }],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫睡眠" }]
     },
     "春林．玖夜": {
@@ -1918,18 +1921,19 @@
       "baseHp": 11741, "baseAtk": 1387, "coolDown": 4,
       "img": "Garu_SSR_04.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv1Rule": [],
-      "skillLv2Rule": [],
-      "skillLv3Rule": [],
+      "skillLv1Rule": [{"type": "獲得護盾", "value": "13%", "valueBy": "HP", "target": "全體"}],
+      "skillLv2Rule": [{"type": "獲得護盾", "value": "15%", "valueBy": "HP", "target": "全體"}],
+      "skillLv3Rule": [{"type": "獲得護盾", "value": "18%", "valueBy": "HP", "target": "全體"}],
       "star3Rule": [
         {
           "type": "最大HP增加",
           "value": "14%",
           "condition": { "type": "隊伍中有定位", "value": "輔助" }
-        }
+        },
+        { "type": "受到傷害減少", "value": "10%", "condition": {"type": "隊伍中每存在定位", "value": "守護", "minCount": 1, "operator": "少於或等於"} }
       ],
-      "star5Rule": [],
-      "pot6Rule": [],
+      "star5Rule": [{ "type": "受到傷害減少", "value": "5%", "target": "全體" }],
+      "pot6Rule": [{ "type": "受到傷害減少", "value": "2%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "軍服．布儡": {
@@ -2099,10 +2103,12 @@
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "獲得護盾", "value": "30%", "valueBy": "HP"},
         { "type": "反擊", "value": "173%" }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "獲得護盾", "value": "40%", "valueBy": "HP"},
         { "type": "反擊", "value": "216%" }
       ],
       "star3Rule": [
@@ -2111,13 +2117,19 @@
       ],
       "star5Rule": [
         {
+          "type": "受到傷害減少",
+          "value": "4%",
+          "maxCount": 3,
+          "condition": { "type": "隊伍中每存在角色", "value": "歛" }
+        },
+        {
           "type": "造成傷害增加",
           "value": "9%",
           "maxCount": 3,
           "condition": { "type": "隊伍中每存在角色", "value": "歛" }
         }
       ],
-      "pot6Rule": [],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "沙漠．艾德蒙特": {
@@ -2758,21 +2770,23 @@
       "img": "Olivine_SSR_07.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
-        { "type": "攻擊", "value": "100%" }
+        { "type": "攻擊", "value": "100%" }, {"type": "獲得護盾", "value": "13%", "valueBy": "HP", "target": "全體"}
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
-        }
+        },
+        {"type": "獲得護盾", "value": "15%", "valueBy": "HP", "target": "全體"}
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
-        }
+        },
+        {"type": "獲得護盾", "value": "18%", "valueBy": "HP", "target": "全體"}
       ],
       "star3Rule": [],
       "star5Rule": [
@@ -2782,9 +2796,10 @@
           "turn": 3,
           "target": "全體",
           "condition": { "type": "攻擊方式", "value": "必殺技" }
-        }
+        },
+        { "type": "受到傷害減少", "value": "5%", "condition": {"type": "隊伍中每存在定位", "value": "守護", "minCount": 1, "operator": "少於或等於"} }
       ],
-      "pot6Rule": [],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "迷夢．玖夜": {

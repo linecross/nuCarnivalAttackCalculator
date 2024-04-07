@@ -416,7 +416,8 @@ export class Battle{
 	}
 
 	private filterBuffsForLog(rules: Rule[], isEnemy:boolean = false) : Rule[]{
-		var filtered = rules.filter(r=> Battle.OUTPUT_TYPES.has(r.type) || Battle.TEAM_BUFF_TYPES.has(r.type) || Battle.ENEMY_BUFF_TYPES.has(r.type));
+		var filtered = rules.filter(r=> Battle.OUTPUT_TYPES.has(r.type) || Battle.TEAM_BUFF_TYPES.has(r.type) || Battle.ENEMY_BUFF_TYPES.has(r.type) 
+						|| Battle.LOG_ONLY_RULE_TYPES);
 		filtered = filtered.filter(r=> isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
 		filtered = filtered.filter(r=>!(r.isBeforeRoundRule() || r.isPreAttackRule() || r.isPostAttackRule()));
 		return filtered;
@@ -456,7 +457,7 @@ export class Battle{
 	static LOG_EXCLUDE_TURNACTIONTYPE : Set<TurnActionType> = new Set([TurnActionType.beforeAction, TurnActionType.beforeTurn, TurnActionType.atTurnEnd]);
 
 	private addBuffToTargets(rule: Rule, card: Card, attackType: AttackType){
-		if (!(Battle.TEAM_BUFF_TYPES.has(rule.type) || Battle.ENEMY_BUFF_TYPES.has(rule.type))){
+		if (!(Battle.TEAM_BUFF_TYPES.has(rule.type) || Battle.ENEMY_BUFF_TYPES.has(rule.type) || Battle.LOG_ONLY_RULE_TYPES.has(rule.type))){
 			return;
 		}
 		if (!rule.isConditionsFulfilled(card, this.team, this.currentTurnAction, attackType, this.currentTurn)){
@@ -469,7 +470,7 @@ export class Battle{
 			newRule.target = null;
 			newRule.condition = null;
 			// 各種buff （普攻/必殺/造傷/下毒/治療/持續治療增加）
-			if (Battle.TEAM_BUFF_TYPES.has(rule.type)){
+			if (Battle.TEAM_BUFF_TYPES.has(rule.type) || Battle.LOG_ONLY_RULE_TYPES.has(rule.type)){
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				if (isRuleAdded && targetName == card.name && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
 					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
@@ -808,6 +809,11 @@ export class Battle{
 		if (!RuleHelper.hasTriggerAttack(rules)){
 			acceptTypes.delete(RuleType.triggerAtkUp);
 			acceptTypes.delete(RuleType.enemyTriggerAtkUp);
+		}
+
+		// Always add log only types
+		for (var logType of Battle.LOG_ONLY_RULE_TYPES){
+			acceptTypes.add(logType);
 		}
 
 		rules = rules.filter(function(rule : Rule){
