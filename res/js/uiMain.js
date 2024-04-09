@@ -154,6 +154,14 @@ Vue.createApp({
 		})
 		.then(json => {
 			CardCenter.setMainCardData(json);
+			var urlParam=new URLSearchParams(window.location.search);
+			if (urlParam.has('cards')){
+				var cards = urlParam.get('cards').split(',');
+				for (var i=0; i<cards.length; i++){
+					this.userInput.cardname[i] = cards[i];
+				}
+			}
+
 			this.loadCards();
 		});
 		this.loadSettingFromStorage();
@@ -1103,6 +1111,15 @@ Vue.createApp({
 				}
 			}
 			return result.sort().join(';');
+		},
+		teamShareURL(){
+			var url = window.location.host + window.location.pathname;
+			if (this.userInput.cardname.filter(e=>e.length>0).length == 0){
+				return url;
+			}
+			var p = new URLSearchParams();
+			p.set("cards", this.userInput.cardname.join(","));
+			return url + "?" + p.toString();
 		},
 	},
 	watch:{
