@@ -54,7 +54,6 @@ Vue.createApp({
 		return{
 			tab: 'CAL',
 			userInput: {
-				char: ['', '', '', '', ''],
 				cardname: ['', '', '', '', ''],
 				cardActionOrder: [1, 2, 3, 4, 5],
 				cardActionPattern: [ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately],
@@ -276,7 +275,6 @@ Vue.createApp({
 		},
 		removeCard(idx){
 			if (idx >= 0 && idx <=5){
-				this.userInput.char[idx] = '';
 				this.userInput.cardname[idx] = '';
 				this.cards[idx] = null;
 				this.setupBattle();
@@ -459,7 +457,6 @@ Vue.createApp({
 			return output;
 		},
 		swapCard(i, j){
-			[this.userInput.char[i], this.userInput.char[j]] = [this.userInput.char[j], this.userInput.char[i]];
 			[this.userInput.cardname[i], this.userInput.cardname[j]] = [this.userInput.cardname[j], this.userInput.cardname[i]];
 			[this.userInput.cardActionPattern[i], this.userInput.cardActionPattern[j]] = [this.userInput.cardActionPattern[j], this.userInput.cardActionPattern[i]];
 			[this.userInput.cardManualAction[i], this.userInput.cardManualAction[j]] = [this.userInput.cardManualAction[j], this.userInput.cardManualAction[i]];
@@ -703,7 +700,6 @@ Vue.createApp({
 			var cardDmgDataArr = record.cards;
 
 			this.teamName = record.teamName;
-			this.userInput.char = ['', '', '', '', ''];
 			this.userInput.cardname = ['', '', '', '', ''];
 			this.cards = [null, null, null, null, null];
 			for (var i=0; i<5; i++){
@@ -712,7 +708,6 @@ Vue.createApp({
 					var card = CardCenter.loadCard(cardDmgData.name);
 					card.star = cardDmgData.star;
 					this.userInput.cardname[i] = cardDmgData.name;
-					this.userInput.char[i] = card.char;
 					this.cards[i] = card;
 				}
 			}
@@ -1191,7 +1186,6 @@ Vue.createApp({
 		'cardFilter.selectCardName'(newCardName, oldVal){
 			if (newCardName != null && newCardName.length > 0){
 				this.userInput.cardname[this.cardFilter.currentIdx] = newCardName;
-				this.userInput.char[this.cardFilter.currentIdx] = CardCenter.getCardData()[newCardName].char;
 			}
 		},
 		inputJson(){
