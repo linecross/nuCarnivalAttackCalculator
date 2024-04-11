@@ -335,7 +335,7 @@ export class Battle {
         var filtered = rules.filter(r => isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
         filtered = filtered.filter(r => Battle.ACTION_ACCEPT_BUFFS[ruleType].includes(r.type));
         filtered = filtered.filter(r => !(r.isBeforeRoundRule() || r.isPreAttackRule() || r.isPostAttackRule()));
-        if (attackType == AttackType.BasicAttack) {
+        if (attackType == AttackType.BasicAttack && !atkRule.isTriggerSkill(attackType)) {
             filtered = filtered.filter(r => r.type != RuleType.skillAtkUp && r.type != RuleType.enemySkillAtkUp);
         }
         else if (attackType == AttackType.SkillAttack) {
