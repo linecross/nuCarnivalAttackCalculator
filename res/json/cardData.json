@@ -2983,6 +2983,138 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "監獄．崑西": {
+      "char": "崑西", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
+      "baseHp": 7436, "baseAtk": 2205, "coolDown": 3,
+      "img": "Quincy_SSR_07.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "125%" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "78%",
+            "turn": 3,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "5%", "turn": 3, "condition": {"type": "被屬性攻擊", "value": "火"} }
+        },
+        { "type": "攻擊", "value": "125%" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "109%",
+            "turn": 3,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "5%", "turn": 3, "condition": {"type": "被屬性攻擊", "value": "火"} }
+        },
+        { "type": "攻擊", "value": "125%" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "139%",
+            "turn": 3,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "觸發技效果增加",
+          "value": "36%",
+          "condition": { "type": "隊伍中每存在屬性", "value": "火", "minCount": 2 }
+        },
+        {
+          "type": "造成傷害增加",
+          "value": "9%",
+          "condition": { "type": "隊伍中有定位", "value": "守護" }
+        },
+        {
+          "type": "造成傷害增加",
+          "value": "9%",
+          "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 }
+        }
+      ],
+      "star5Rule": [{ "type": "觸發技效果增加", "value": "54%" }],
+      "pot6Rule": [{ "type": "觸發技效果增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "監獄．艾德蒙特": {
+      "char": "艾德蒙特", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "火", "potType": "平均型",
+      "baseHp": 7613, "baseAtk": 2170, "coolDown": 3,
+      "img": "Edmond_SSR_08.jpg",
+      "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
+      "skillLv1Rule": [
+        { "type": "輔助", "value": "16%", "target": "全體", "turn": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "23%",
+            "turn": 3,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        }
+      ],
+      "skillLv2Rule": [
+        { "type": "輔助", "value": "19%", "target": "全體", "turn": 3 },
+        { "type": "觸發技效果增加", "value": "27%", "target": "全體", "turn": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "28%",
+            "turn": 3,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        }
+      ],
+      "skillLv3Rule": [
+        { "type": "輔助", "value": "21%", "target": "全體", "turn": 3 },
+        { "type": "觸發技效果增加", "value": "27%", "target": "全體", "turn": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "32%",
+            "turn": 3,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "9%", "target": "全體" },
+        { "type": "觸發技效果增加", "value": "18%", "target": "全體" }
+      ],
+      "star5Rule": [{ "type": "觸發技效果增加", "value": "27%" }],
+      "pot6Rule": [{ "type": "觸發技效果增加", "value": "6%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   

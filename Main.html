@@ -481,7 +481,7 @@
 					<div class="row">
 						<h5>隊伍設定</h5>
 						<div id="charInputList" class="row" :key="userInput.updateKey">
-							<div class="col charItem" v-for="(name, idx) in userInput.char" :data-id="idx" style="vertical-align: top;">
+							<div class="col charItem" v-for="(cardname, idx) in userInput.cardname" :data-id="idx" style="vertical-align: top;">
 								<div class="row mt-2 mb-2 form-group">
 									<div class="drag-handler">
 										<div class="drag-bar-container">
@@ -492,10 +492,10 @@
 											<label>第 {{ idx+1 }} 位</label>
 										</div>
 									</div>
-									<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+									<button v-if="cardname == ''" class="btn btn-outline-primary" type="button" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 										選擇角色...
 									</button>
-									<span v-else class="card-block" :data-cardname="userInput.cardname[idx]" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
+									<span v-else class="card-block" :data-cardname="cardname" data-bs-target="#cardSelector" aria-controls="cardSelector" @click="openCardSelector(idx)">
 										<div class="card-image-div">
 											<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
 											<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
@@ -506,7 +506,7 @@
 												</template>
 											</div>
 											<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
-											<span class="fa-stack card-icon-btn card-icon-info-btn" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click.stop="showCardDetail(userInput.cardname[idx])">
+											<span class="fa-stack card-icon-btn card-icon-info-btn" data-bs-target="#cardDetailPanel" aria-controls="cardDetailPanel" @click.stop="showCardDetail(cardname)">
 												<i class="fa-solid fa-square fa-stack-2x"></i>
 												<i class="fa-solid fa-info fa-stack-1x" ></i>
 											</span>
@@ -515,7 +515,7 @@
 												<i class="fa-solid fa-xmark fa-stack-1x" ></i>
 											</span>
 										</div>
-										<div class="card-name">{{userInput.cardname[idx]}}</div>
+										<div class="card-name">{{cardname}}</div>
 									</span>
 								</div>
 
@@ -572,6 +572,12 @@
 								</div>
 							</div>
 						</div>
+
+						<!-- <div class="row">
+							複製連結
+							<input type="text" class="col-6" disabled :value="teamShareURL">
+							<span class="col-auto">
+						</div> -->
 					</div>
 					
 					<hr>
