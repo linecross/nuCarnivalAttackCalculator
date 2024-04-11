@@ -338,7 +338,7 @@ export class Battle {
         if (attackType == AttackType.BasicAttack && !atkRule.isTriggerSkill(attackType)) {
             filtered = filtered.filter(r => r.type != RuleType.skillAtkUp && r.type != RuleType.enemySkillAtkUp);
         }
-        else if (attackType == AttackType.SkillAttack) {
+        else if (attackType == AttackType.SkillAttack || atkRule.isTriggerSkill(attackType)) {
             filtered = filtered.filter(r => r.type != RuleType.basicAtkUp && r.type != RuleType.enemyBasicAtkUp);
         }
         if (!atkRule.isTriggerSkill(attackType)) {
