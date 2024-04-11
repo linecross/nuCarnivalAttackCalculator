@@ -1,4 +1,4 @@
-import { RuleType, TargetType} from './Constants.js';
+import { RuleType, SkillType, TargetType} from './Constants.js';
 import { Rule } from './CardRule.js';
 
 export class LogRule extends Rule{
@@ -24,6 +24,9 @@ export class LogRule extends Rule{
 		}
 		else if (type == RuleType.attack && this.isFollowUpAttack){
 			type = RuleType.basicAtkFollowup;
+		}
+		if (this.skillType == SkillType.trigger){
+			type += '（'+this.skillType+'）';
 		}
 		s += type + '：' + this.value;
 		if (this.maxCount > 1 || this.applyCount > 1){
