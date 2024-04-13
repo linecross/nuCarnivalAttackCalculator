@@ -1514,15 +1514,15 @@
       "attackRule": [{ "type": "攻擊", "value": "50%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "50" },
-        { "type": "反擊", "value": "51%", "turn": 2, "maxCount": 99 }
+        { "type": "反擊", "value": "51%", "turn": 2, "maxCount": 99, "valueBy": "基礎攻擊力" }
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "50%" },
-        { "type": "反擊", "value": "60%", "turn": 2, "maxCount": 99 }
+        { "type": "反擊", "value": "60%", "turn": 2, "maxCount": 99, "valueBy": "基礎攻擊力" }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "50%" },
-        { "type": "反擊", "value": "68%", "turn": 2, "maxCount": 99 }
+        { "type": "反擊", "value": "68%", "turn": 2, "maxCount": 99, "valueBy": "基礎攻擊力" }
       ],
       "star3Rule": [{ "type": "受到回復量增加", "value": "30%", "condition": {"type": "隊伍中每存在定位", "value": "守護", "minCount": 1, "operator": "少於或等於"} }],
       "star5Rule": [{ "type": "受到傷害減少", "value": "10%" }],
