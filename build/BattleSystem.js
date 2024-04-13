@@ -512,13 +512,20 @@ export class Battle {
         }
         var hitCount = rule.maxCount || 1;
         var outputVal = 0;
+        // 計算攻擊力 x 輸出倍率
         if (rule.valueBy == RuleValueByType.hp) {
             outputVal = Math.floor((Math.floor(hp * (1 + Battle.getNumber(buffs[RuleType.hpUp])))) * Battle.getNumber(rule.value));
         }
         else {
-            outputVal = Math.floor((Math.floor(atk * (1 + Battle.getNumber(buffs[RuleType.atkUp]))) + supportBuff) * Battle.getNumber(rule.value));
+            var atkVal = Math.floor(atk * (1 + Battle.getNumber(buffs[RuleType.atkUp]))) + supportBuff;
+            // 只用基礎攻擊力計算
+            // 註：如果是輔助rule，filterBuffs會過濾掉所有ATK加成，所以輔助無須特別指定是「基礎攻擊力」
+            if (rule.valueBy == RuleValueByType.baseAtk) {
+                atkVal = Math.floor(atk);
+            }
+            outputVal = Math.floor(atkVal * Battle.getNumber(rule.value));
         }
-        // Support
+        // 輔助rule - 幫全隊加攻擊力增加buff
         if (rule.type == RuleType.support) {
             var targetNames = rule.getRuleApplyTarget(this.team, card);
             for (var targetName of targetNames) {
