@@ -81,7 +81,7 @@ export const RuleType = {
 } as const;
 export type RuleType = typeof RuleType[keyof typeof RuleType];
 
-export const RuleValueByType= {atk: 'ATK', hp : 'HP'} as const;
+export const RuleValueByType= {atk: 'ATK', hp : 'HP', baseAtk: '基礎攻擊力'} as const;
 export type RuleValueByType = typeof RuleValueByType[keyof typeof RuleValueByType];
 
 export const AttackType= {BasicAttack : '普攻', SkillAttack : '必殺技', Guard: '防禦', None: 'NONE'} as const;
