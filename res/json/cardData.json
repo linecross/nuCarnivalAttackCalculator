@@ -3041,7 +3041,7 @@
         {
           "type": "觸發技效果增加",
           "value": "36%",
-          "condition": { "type": "隊伍中每存在屬性", "value": "火", "minCount": 2 }
+          "condition": { "type": "隊伍中有屬性", "value": "火", "minCount": 2 }
         },
         {
           "type": "造成傷害增加",

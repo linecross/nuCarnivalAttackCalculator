@@ -251,7 +251,7 @@ export class Battle{
 			var hasAttackEnemy = false;
 			if (Battle.OUTPUT_TYPES.has(rule.type)){
 				this.attack(attackType, rule, card);
-				if (rule.type == RuleType.attack){
+				if (rule.type == RuleType.attack && !rule.isTriggerSkill()){
 					hasAttackEnemy = true;
 				}
 				
@@ -280,7 +280,9 @@ export class Battle{
 							this.attack(attackType, postRule, card);
 							if (postRule.type == RuleType.attack){
 								this.currentTurnAction = TurnActionType.afterAttack;
-								hasAttackEnemy = true;
+								if (!postRule.isTriggerSkill()){
+									hasAttackEnemy = true;
+								}
 							}
 						}
 					}
@@ -564,8 +566,8 @@ export class Battle{
 
 			// 觸發技：跟必殺技屬於同一乘區
 			var buffType = buff.type;
-			if (buffType == RuleType.triggerAtkUp){
-				buffType = RuleType.skillAtkUp;
+			if (buffType == RuleType.enemyTriggerAtkUp){
+				buffType = RuleType.enemySkillAtkUp;
 			}
 
 			debuffs[buffType] = (debuffs[buffType] || 0) + (Battle.getNumber(buff.value as string) * applyCount);
