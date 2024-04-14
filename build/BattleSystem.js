@@ -199,8 +199,8 @@ export class Battle {
         for (var rule of attackRule) {
             var hasAttackEnemy = false;
             if (Battle.OUTPUT_TYPES.has(rule.type)) {
-                this.attack(attackType, rule, card);
-                if (rule.type == RuleType.attack && !rule.isTriggerSkill()) {
+                var hasActionDone = this.attack(attackType, rule, card);
+                if (hasActionDone && rule.type == RuleType.attack && !rule.isTriggerSkill()) {
                     hasAttackEnemy = true;
                 }
                 // skip post attack rules
@@ -219,15 +219,17 @@ export class Battle {
                             atkFollowupRule.turn = 1;
                             atkFollowupRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
                             atkFollowupRule.isFollowUpAttack = true;
-                            this.attack(attackType, atkFollowupRule, card);
+                            hasActionDone = this.attack(attackType, atkFollowupRule, card);
                             this.currentTurnAction = TurnActionType.afterAttack;
-                            hasAttackEnemy = true;
+                            if (hasActionDone) {
+                                hasAttackEnemy = true;
+                            }
                         }
                         else if (Battle.OUTPUT_TYPES.has(postRule.type)) {
-                            this.attack(attackType, postRule, card);
+                            hasActionDone = this.attack(attackType, postRule, card);
                             if (postRule.type == RuleType.attack) {
                                 this.currentTurnAction = TurnActionType.afterAttack;
-                                if (!postRule.isTriggerSkill()) {
+                                if (hasActionDone && !postRule.isTriggerSkill()) {
                                     hasAttackEnemy = true;
                                 }
                             }
@@ -448,7 +450,7 @@ export class Battle {
     attack(attackType, rule, card) {
         var currentTurn = this.currentTurn;
         if (!rule.isConditionsFulfilled(card, this.team, this.currentTurnAction, attackType, currentTurn)) {
-            return;
+            return false;
         }
         // var isAddRuleLog = this.currentTurnAction == TurnActionType.beforeAction;
         // Calculate
@@ -575,6 +577,7 @@ export class Battle {
             this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
             this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
         }
+        return true;
     }
     getTurnValue(cardname, turn) {
         var card = this.team.getCard(cardname);
