@@ -323,7 +323,7 @@ Vue.createApp({
 				if (this.isCardInBattle(card)){
 					this.battle.setActionPattern(card.name, this.userInput.cardActionPattern[i]);
 
-					if (this.userInput.cardActionPattern[i] == ActionPattern.Manual){
+					if (this.userInput.cardActionPattern[i] == ActionPattern.Manual || this.userInput.cardActionPattern[i] == ActionPattern.BruteForce){
 						var skillArr = this.getManualAttackTypeArr(this.userInput.cardManualAction[i], 'S');
 						var guardArr = this.getManualAttackTypeArr(this.userInput.cardManualAction[i], 'G');
 						this.battle.setManualActionPattern(card.name, skillArr, guardArr);
@@ -441,7 +441,7 @@ Vue.createApp({
 			}
 			var idx = this.getIndexByCardname(card.name);
 			var actionPattern = this.userInput.cardActionPattern[idx];
-			if (actionPattern != ActionPattern.Manual){
+			if (actionPattern != ActionPattern.Manual && actionPattern != ActionPattern.BruteForce){
 				return;
 			}
 
@@ -937,7 +937,7 @@ Vue.createApp({
 		},
 		getDamageRecords() {
 			this.damageRecordPanel.currentPage = 1;
-			this.refreshDamageRecordPanelUI();
+			// this.refreshDamageRecordPanelUI();
 
 			var arr = [...this.damageRecords];
 			
@@ -1154,9 +1154,15 @@ Vue.createApp({
 			var newPattern = newVal.split(',');
 			var oldPattern = oldVal.split(',');
 			for (var i=0; i<this.userInput.cardActionPattern.length; i++){
-				if (newPattern[i] != ActionPattern.Manual && oldPattern[i] == ActionPattern.Manual){
+				if (newPattern[i] != ActionPattern.Manual && newPattern[i] != ActionPattern.BruteForce 
+					&& (oldPattern[i] == ActionPattern.Manual || oldPattern[i] == ActionPattern.BruteForce)){
 					this.userInput.cardManualAction[i] = [];
 				}
+				// if (newPattern[i] != ActionPattern.BruteForce 
+				// 	&& (oldPattern[i] == ActionPattern.Manual || oldPattern[i] == ActionPattern.BruteForce)){
+				// 	this.userInput.cardManualAction[i] = [];
+				// }
+
 			}
 			this.updateBattle();
 		},
@@ -1209,6 +1215,22 @@ Vue.createApp({
 			if (this.importJsonResult != ''){
 				this.importJsonResult = '';
 			}
+		},
+		"damageRecordPanel.searchFav"(){
+			this.damageRecordPanel.currentPage = 1;
+			this.refreshDamageRecordPanelUI();
+		},
+		"damageRecordPanel.searchTeamName"(){
+			this.damageRecordPanel.currentPage = 1;
+			this.refreshDamageRecordPanelUI();
+		},
+		"damageRecordPanel.searchCard"(){
+			this.damageRecordPanel.currentPage = 1;
+			this.refreshDamageRecordPanelUI();
+		},
+		"damageRecordPanel.searchTurn"(){
+			this.damageRecordPanel.currentPage = 1;
+			this.refreshDamageRecordPanelUI();
 		},
 		"damageRecordPanel.pageMaxCount"(){
 			this.damageRecordPanel.currentPage = 1;
