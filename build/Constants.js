@@ -109,7 +109,8 @@ export const ActionPattern = {
     AddCD3: 'CD+3',
     AddCD1Delay1Turn: 'CD+1及延遲1回合',
     AddCD2Ahead1Turn: 'CD+2及提早1回合',
-    Manual: '手動設置'
+    Manual: '手動設置',
+    BruteForce: '暴力設置（無視CD）'
 };
 export const TurnActionType = {
     beforeTurn: "beforeTurn",

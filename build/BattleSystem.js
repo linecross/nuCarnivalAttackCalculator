@@ -949,12 +949,15 @@ export class BattleTurn {
         return currentTurn - (lastTurn + cooldown);
     }
     isGuard(currentTurn, cooldown) {
-        if (this.actionPattern == ActionPattern.Manual) {
+        if (this.actionPattern == ActionPattern.Manual || this.actionPattern == ActionPattern.BruteForce) {
             return this.action[currentTurn] == AttackType.Guard;
         }
         return false;
     }
     isReleaseSkill(currentTurn, cooldown) {
+        if (this.actionPattern == ActionPattern.BruteForce) {
+            return this.action[currentTurn] == AttackType.SkillAttack;
+        }
         if (!this.isSkillAvailable()) {
             return false;
         }
