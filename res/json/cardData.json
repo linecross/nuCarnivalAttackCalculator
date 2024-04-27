@@ -2718,7 +2718,7 @@
           "condition": { "type": "第n回合", "value": 1 }
         }
       ],
-      "star5Rule": [{ "type": "攻擊力增加", "value": "12%", "turn": 99, "maxCount": 3, "target": "全體", "condition": {"type": "隊伍中每存在定位", "value": "攻擊"} } ],
+      "star5Rule": [{ "type": "攻擊力增加", "value": "6%", "turn": 99, "maxCount": 3, "target": "全體", "condition": {"type": "隊伍中每存在定位", "value": "攻擊"} } ],
       "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
     },
