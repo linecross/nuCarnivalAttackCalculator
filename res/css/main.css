@@ -3,6 +3,9 @@
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out;
 } */
+body{
+    font-family: 'Roboto', 'Noto Sans TC', '微軟正黑體', 'Arial', sans-serif;
+}
 
 .btn-check:checked + .btn, .btn.show{
     background-color: #2a7fff;
