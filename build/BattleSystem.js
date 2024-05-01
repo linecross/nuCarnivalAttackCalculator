@@ -579,12 +579,15 @@ export class Battle {
         }
         return true;
     }
-    getTurnValue(cardname, turn) {
+    getTurnValue(cardname, turn, outputOption) {
         var card = this.team.getCard(cardname);
         var battleTurn = this.battleTurns[cardname];
         var output = 0;
+        if (outputOption == null) {
+            outputOption = this.printOutputOption;
+        }
         var ruleType = [];
-        if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ALL) {
+        if (outputOption == Battle.PRINT_OUTPUT_OPTION.ALL) {
             if (card.class == Class.Striker || card.class == Class.Guardian || card.class == Class.Saboteur) {
                 ruleType.push(RuleType.attack);
                 ruleType.push(RuleType.poisonAttack);
@@ -597,20 +600,20 @@ export class Battle {
                 ruleType.push(RuleType.support);
             }
         }
-        else if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_ATTACK) {
+        else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_ATTACK) {
             ruleType.push(RuleType.attack);
         }
-        else if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_POISON) {
+        else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_POISON) {
             ruleType.push(RuleType.poisonAttack);
         }
-        else if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL) {
+        else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL) {
             ruleType.push(RuleType.heal);
             ruleType.push(RuleType.continueHeal);
         }
-        else if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_SUPPORT) {
+        else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_SUPPORT) {
             ruleType.push(RuleType.support);
         }
-        else if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE) {
+        else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE) {
             ruleType.push(RuleType.attack);
             ruleType.push(RuleType.poisonAttack);
         }
