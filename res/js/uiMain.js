@@ -356,7 +356,7 @@ Vue.createApp({
 			var damageChart = Chart.getChart("damageChart");
 			
 			
-			var displayMode = this.setting.general.damageChartDisplay;
+			var displayMode = this.setting.general.damageChartDisplay || 'cardDamage';
 			var chartType = config.CHART.types[displayMode].chartType;
 
 			var datasets = [];
