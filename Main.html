@@ -11,6 +11,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/dexie@4.0.1/dist/dexie.min.js" integrity="sha256-9M8EwPnRsCJkXKCyI02T3KQjZ+T2g/p9GTBTAaDVUTg=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js" integrity="sha256-xoh0y6ov0WULfXcLMoaA6nZfszdgI8w2CEJ/3k8NBIE=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet" >
 
@@ -744,6 +745,30 @@
 									</tr>
 								</tfoot>
 							</table>
+						</div>
+					</div>
+
+					<div v-show="battle != null" >
+						<div class="form-group mb-3 col-lg-11">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-damageChartMode1" value="none" v-model="setting.general.damageChartDisplay" />
+								<label class="form-check-label no-select" for="input-damageChartMode1">無圖表</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-damageChartMode2" value="cardDamage" v-model="setting.general.damageChartDisplay" />
+								<label class="form-check-label no-select" for="input-damageChartMode2">個人輸出表</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-damageChartMode3" value="cardDamageTotal" v-model="setting.general.damageChartDisplay" />
+								<label class="form-check-label no-select" for="input-damageChartMode3">個人輸出累積表</label>
+							</div>
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" id="input-damageChartMode4" value="damagePie" v-model="setting.general.damageChartDisplay" />
+								<label class="form-check-label no-select" for="input-damageChartMode4">輸出佔比圖</label>
+							</div>
+						</div>
+						<div v-show="setting.general.damageChartDisplay != 'none'" class="row justify-content-center mb-2" style="width: 100%; max-height:640px">
+							<canvas id="damageChart"></canvas>
 						</div>
 					</div>
 

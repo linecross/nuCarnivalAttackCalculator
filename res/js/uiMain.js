@@ -46,6 +46,19 @@ var config = {
 			'布儡': 'blade', '啖天': 'dante', '歛': 'rei',
 			'艾斯特': 'aster', '墨菲': 'morvay', '伊得': 'eiden'
 		}
+	},
+	CHART:{
+		FONT_SIZE: 16,
+		FONT_FAMILY: "'Roboto', 'Noto Sans TC', '微軟正黑體', 'Arial', sans-serif",
+		TEXT_COLOR: {light: '#000', dark: '#fff'},
+		BORDER_COLOR: {light: 'rgba(0, 0, 0, 0.1)', dark: 'rgba(255, 255, 255, 0.2)'},
+		CHART_COLOR: ['rgba(75, 192, 192, 0.8)','rgba(255, 99, 132, 0.8)','rgba(54, 162, 235, 0.8)','rgba(255, 159, 64, 0.8)','rgba(153, 102, 255, 0.8)'],
+		types: {
+			'none': { name: '無圖表', chartType: '' },
+			'cardDamage': { name: '個人輸出表', chartType: 'bar' },
+			'cardDamageTotal': { name: '個人輸出累積表', chartType: 'line' },
+			'damagePie': { name: '輸出佔比圖', chartType: 'pie' },
+		},
 	}
 };
 
@@ -98,6 +111,7 @@ Vue.createApp({
 					recordPanelCardImgSize: 'normal',
 					recordPanelPageMaxCount: 20,
 					theme: 'light',
+					damageChartDisplay: 'cardDamage',
 				}
 			},
 			cardJsonLastModified: '',
@@ -202,6 +216,7 @@ Vue.createApp({
 			this.setting.general.theme = theme;
 			document.documentElement.setAttribute('data-bs-theme', theme);
 			document.documentElement.classList = 'theme-'+theme;
+			this.updateChart(true);
 		},
 		createSortable(){
 			var el = document.getElementById("charInputList");
@@ -332,6 +347,106 @@ Vue.createApp({
 			}
 
 			this.battle.startBattle();
+			this.updateChart();
+		},
+		updateChart(requireRedraw = false){
+			if (this.battle == null || this.setting.general.damageChartDisplay == 'none'){
+				return;
+			}
+			var damageChart = Chart.getChart("damageChart");
+			
+			
+			var displayMode = this.setting.general.damageChartDisplay;
+			var chartType = config.CHART.types[displayMode].chartType;
+
+			var datasets = [];
+			var outputOption = this.userInput.printOutputMode;
+			if (outputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
+				outputOption = Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE;
+			}
+			for (var i =0; i<this.cards.length; i++){
+				var card = this.cards[i];
+				if (card != null && this.userInput.isCardEnabled[i]){
+					var cardDamageArr = [];
+					for (var turn=1; turn<=this.userInput.turns; turn++){
+						cardDamageArr.push(this.battle.getTurnValue(card.name, turn, outputOption));
+					}
+					if (displayMode == 'cardDamageTotal'){
+						var sum = 0;
+						cardDamageArr = cardDamageArr.map(val => sum += val);
+					}
+					datasets.push({
+						label: card.name,
+						data: cardDamageArr,
+						backgroundColor: config.CHART.CHART_COLOR[i],
+						borderColor: config.CHART.CHART_COLOR[i]
+					});
+				}
+			}
+
+			var labels = [ ...Array(this.userInput.turns).keys() ].map( i => i+1);
+			var footer = (tooltipItems) => {
+				return null;
+			};
+			if (displayMode == 'damagePie'){
+				var data = datasets.flatMap(e=>e.data.reduce((sum, a) => sum + a, 0));
+				labels = datasets.flatMap(e=>e.label);
+				datasets = [{
+					data: data,
+					backgroundColor: config.CHART.CHART_COLOR,
+				}];
+				footer = (tooltipItems) => {
+					let total = tooltipItems[0].dataset.data.reduce((sum, a) => sum + a, 0);
+					let value = tooltipItems[0].raw;
+					let percentage = Math.round(value / total * 10000) / 100;
+					return percentage + '%';
+				};
+			}
+
+			if (requireRedraw){
+				if (damageChart != null){
+					damageChart.destroy();
+				}
+			}
+			if (damageChart == null || requireRedraw){
+				damageChart = new Chart(
+					document.getElementById('damageChart'),
+					{
+						type: chartType,
+						options: {
+							interaction: {
+								intersect: false,
+								mode: 'nearest'
+							},
+							plugins: {
+								title: {
+									display: true,
+								},
+								tooltip: {
+									position: 'nearest',
+									callbacks: {
+										footer: footer,
+									}
+								}
+							}
+						}
+					}
+				);
+
+				var theme = this.setting.general.theme;
+				Chart.defaults.font.size = config.CHART.FONT_SIZE;
+				Chart.defaults.font.family = config.CHART.FONT_FAMILY;
+				Chart.defaults.color = config.CHART.TEXT_COLOR[theme];
+				Chart.defaults.borderColor = config.CHART.BORDER_COLOR[theme];
+			}
+
+			damageChart.options.plugins.title.text = config.CHART.types[displayMode].name;
+			damageChart.data = {
+				labels: labels,
+				datasets: datasets,
+			};
+			damageChart.resize();
+			damageChart.update();
 		},
 		getBattleTurnValue(cardname, turn){
 			return this.battle.getTurnValue(cardname, turn);
@@ -694,7 +809,7 @@ Vue.createApp({
 			let map = {};
 			map['setting'] = this.setting;
 			localStorage.setItem("nuAttackCalculator", JSON.stringify(map));
-			this.loadSetting();
+			// this.loadSetting();
 		},
 		loadDamageRecord(record){
 			this.userInput.cardActionOrder = record.cardActionOrder;
@@ -1235,6 +1350,9 @@ Vue.createApp({
 		"damageRecordPanel.pageMaxCount"(){
 			this.damageRecordPanel.currentPage = 1;
 			this.refreshDamageRecordPanelUI();
+		},
+		"setting.general.damageChartDisplay"(){
+			this.updateChart(true);
 		}
 	}
 }).mount('#NuCarnivalAttackCalApp');
