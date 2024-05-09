@@ -354,17 +354,17 @@ export class Condition {
         }
         else if (this.type == ConditionType.enemyIsAttackByChar) {
             if (turnAction == TurnActionType.attack) {
-                return this.value == card.char;
+                return [...this.value].includes(card.char);
             }
         }
         else if (this.type == ConditionType.enemyIsAttackByClass) {
             if (turnAction == TurnActionType.attack) {
-                return this.value == card.class;
+                return [...this.value].includes(card.class);
             }
         }
         else if (this.type == ConditionType.enemyIsAttackByElement) {
             if (turnAction == TurnActionType.attack) {
-                return this.value == card.element;
+                return [...this.value].includes(card.element);
             }
         }
         return false;
