@@ -413,17 +413,17 @@ export class Condition{
 		}
 		else if (this.type == ConditionType.enemyIsAttackByChar){
 			if (turnAction == TurnActionType.attack){
-				return (this.value as string) == card.char;
+				return [...(this.value as string)].includes(card.char);
 			}
 		}
 		else if (this.type == ConditionType.enemyIsAttackByClass){
 			if (turnAction == TurnActionType.attack){
-				return (this.value as string) == card.class;
+				return [...(this.value as string)].includes(card.class);
 			}
 		}
 		else if (this.type == ConditionType.enemyIsAttackByElement){
 			if (turnAction == TurnActionType.attack){
-				return (this.value as string) == card.element;
+				return [...(this.value as string)].includes(card.element);
 			}
 		}
 		return false;
