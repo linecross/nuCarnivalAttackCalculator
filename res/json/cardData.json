@@ -3115,6 +3115,155 @@
       "star5Rule": [{ "type": "觸發技效果增加", "value": "27%" }],
       "pot6Rule": [{ "type": "觸發技效果增加", "value": "6%" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "偵探．布儡": {
+      "char": "布儡", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
+      "baseHp": 7187, "baseAtk": 2277, "coolDown": 3,
+      "img": "Blade_SSR_06.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "125%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "敵方受到傷害增加", "value": "27%", "turn": 3 },
+        { "type": "攻擊", "value": "214%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方受到傷害增加", "value": "27%", "turn": 3 },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "12%", "turn": 3, "condition": {"type": "被屬性攻擊", "value": ["光", "闇", "火", "水", "木"]} }
+        },
+        { "type": "攻擊", "value": "252%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方受到傷害增加", "value": "10%", "turn": 3 },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "12%", "turn": 3, "condition": {"type": "被屬性攻擊", "value": ["光", "闇", "火", "水", "木"]} }
+        },
+        { "type": "攻擊", "value": "290%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "減少冷卻回合",
+          "value": 3,
+          "turn": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        },
+        { "type": "攻擊力增加", "value": "18%" }
+      ],
+      "star5Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "5%",
+          "turn": 3,
+          "condition": "攻擊時"
+        },
+        { "type": "必殺技傷害增加", "value": "21%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "偵探．歛": {
+      "char": "歛", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
+      "baseHp": 7471, "baseAtk": 2205, "coolDown": 4,
+      "img": "Rei_SSR_05.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "125%" }
+      ],
+      "skillLv1Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "9%", "turn": 2, "condition": {"type": "被屬性攻擊", "value": "光"} }
+        },
+        { "type": "必殺技傷害增加", "value": "21%", "target": "全體", "turn": 2 },
+        { "type": "攻擊", "value": "291%" }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "9%", "turn": 2, "condition": {"type": "被屬性攻擊", "value": "光"} }
+        },
+        { "type": "必殺技傷害增加", "value": "21%", "target": "全體", "turn": 2 },
+        { "type": "攻擊", "value": "355%" },
+        { "type": "持續治療", "value": "10%", "valueBy": "HP", "turn": 2 }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "9%", "turn": 2, "condition": {"type": "被屬性攻擊", "value": "光"} }
+        },
+        { "type": "必殺技傷害增加", "value": "21%", "target": "全體", "turn": 2 },
+        { "type": "攻擊", "value": "419%" },
+        { "type": "持續治療", "value": "10%", "valueBy": "HP", "turn": 2 }
+      ],
+      "star3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "必殺技傷害增加",
+            "value": "30%",
+            "condition": { "type": "血量大於", "value": "50%" },
+            "turn": 99
+          },
+          "target": { "type": "全體" }
+        }
+      ],
+      "star5Rule": [{ "type": "攻擊力增加", "value": "27%" }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "咖啡．八雲": {
+      "char": "八雲", "fullname": null, "alias": null,
+      "rarity": "SR", "class": "守護", "element": "光", "potType": "ATK先行",
+      "baseHp": 9641, "baseAtk": 1316, "coolDown": 4,
+      "img": "Yakumo_SR_02.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "反擊被動",
+            "value": "24%",
+            "turn": 1,
+            "maxCount": 99
+          },
+          "target": { "type": "全體" }
+        }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "100%" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "反擊被動",
+            "value": "48%",
+            "turn": 1,
+            "maxCount": 99
+          },
+          "target": { "type": "全體" }
+        }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "100%" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "反擊被動",
+            "value": "73%",
+            "turn": 1,
+            "maxCount": 99
+          },
+          "target": { "type": "全體" }
+        }
+      ],
+      "star3Rule": [],
+      "star5Rule": [],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     }
 }
   
