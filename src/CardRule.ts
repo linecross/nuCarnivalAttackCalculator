@@ -426,8 +426,6 @@ export class Condition{
 		else if (this.type == ConditionType.enemyIsAttackByElement){
 			if (turnAction == TurnActionType.attack){
 				let valArr: string[] = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
-				console.info(valArr.join() + ' - ' + card.element);
-				console.info('includes? ' + valArr.includes(card.element));
 				return valArr.includes(card.element);
 			}
 		}
