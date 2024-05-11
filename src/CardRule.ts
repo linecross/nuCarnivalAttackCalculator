@@ -413,17 +413,22 @@ export class Condition{
 		}
 		else if (this.type == ConditionType.enemyIsAttackByChar){
 			if (turnAction == TurnActionType.attack){
-				return [...(this.value as string)].includes(card.char);
+				let valArr: string[] = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
+				return valArr.includes(card.char);
 			}
 		}
 		else if (this.type == ConditionType.enemyIsAttackByClass){
 			if (turnAction == TurnActionType.attack){
-				return [...(this.value as string)].includes(card.class);
+				let valArr: string[] = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
+				return valArr.includes(card.class);
 			}
 		}
 		else if (this.type == ConditionType.enemyIsAttackByElement){
 			if (turnAction == TurnActionType.attack){
-				return [...(this.value as string)].includes(card.element);
+				let valArr: string[] = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
+				console.info(valArr.join() + ' - ' + card.element);
+				console.info('includes? ' + valArr.includes(card.element));
+				return valArr.includes(card.element);
 			}
 		}
 		return false;
