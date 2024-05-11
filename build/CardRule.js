@@ -354,17 +354,20 @@ export class Condition {
         }
         else if (this.type == ConditionType.enemyIsAttackByChar) {
             if (turnAction == TurnActionType.attack) {
-                return [...this.value].includes(card.char);
+                let valArr = Array.isArray(this.value) ? this.value : [this.value];
+                return valArr.includes(card.char);
             }
         }
         else if (this.type == ConditionType.enemyIsAttackByClass) {
             if (turnAction == TurnActionType.attack) {
-                return [...this.value].includes(card.class);
+                let valArr = Array.isArray(this.value) ? this.value : [this.value];
+                return valArr.includes(card.class);
             }
         }
         else if (this.type == ConditionType.enemyIsAttackByElement) {
             if (turnAction == TurnActionType.attack) {
-                return [...this.value].includes(card.element);
+                let valArr = Array.isArray(this.value) ? this.value : [this.value];
+                return valArr.includes(card.element);
             }
         }
         return false;
