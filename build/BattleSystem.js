@@ -548,7 +548,7 @@ export class Battle {
         }
         // Poison
         if (rule.type == RuleType.poisonAttack) {
-            var newRule = new Rule({ type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal, turn: rule.turn });
+            var newRule = new Rule({ type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal, turn: rule.poisonTurn });
             this.enemyBattleTurn.addRule(newRule);
         }
         // Cont. Heal
@@ -567,7 +567,12 @@ export class Battle {
                 this.battleTurns[card.name].addRuleLog(currentTurn + i, rule);
             }
         }
-        else if (rule.type == RuleType.poisonAttack || rule.type == RuleType.continueHeal) {
+        else if (rule.type == RuleType.poisonAttack) {
+            for (var i = 0; i < rule.poisonTurn; i++) {
+                this.battleTurns[card.name].addRuleLog(currentTurn + i, rule);
+            }
+        }
+        else if (rule.type == RuleType.continueHeal) {
             for (var i = 0; i < rule.turn; i++) {
                 this.battleTurns[card.name].addRuleLog(currentTurn + i, rule);
             }
