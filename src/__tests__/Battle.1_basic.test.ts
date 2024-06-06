@@ -81,8 +81,8 @@ describe('攻擊手＞基本單人測試：ATK=1000', () => {
         test('持續傷害（無被動）', () => {
             cardData = `{
                 "coolDown": 3,
-                "attackRule": [ {"type": "持續傷害", "value": "50%", "turn": 4 } ],
-                "skillLv3Rule": [ {"type": "持續傷害", "value": "200%", "turn": 3} ]
+                "attackRule": [ {"type": "持續傷害", "value": "50%", "poisonTurn": 4 } ],
+                "skillLv3Rule": [ {"type": "持續傷害", "value": "200%", "poisonTurn": 3} ]
             }`;
             skillTurns = [4, 7, 10];
             setupBattle();
@@ -99,8 +99,8 @@ describe('攻擊手＞基本單人測試：ATK=1000', () => {
         test('持續傷害（持續傷害增加）', () => {
             cardData = `{
                 "coolDown": 3,
-                "attackRule": [ {"type": "持續傷害", "value": "50%", "turn": 4 } ],
-                "skillLv3Rule": [ {"type": "持續傷害", "value": "200%", "turn": 3} ],
+                "attackRule": [ {"type": "持續傷害", "value": "50%", "poisonTurn": 4 } ],
+                "skillLv3Rule": [ {"type": "持續傷害", "value": "200%", "poisonTurn": 3} ],
                 "pot6Rule": [ {"type": "持續傷害增加", "value": "15%"} ]
             }`;
             skillTurns = [4, 7, 10];

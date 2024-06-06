@@ -1092,15 +1092,15 @@
       "attackRule": [{ "type": "攻擊", "value": "63%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "64%" },
-        { "type": "持續傷害", "value": "21%", "turn": 3 }
+        { "type": "持續傷害", "value": "21%", "poisonTurn": 3 }
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "77%" },
-        { "type": "持續傷害", "value": "26%", "turn": 3 }
+        { "type": "持續傷害", "value": "26%", "poisonTurn": 3 }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "90%" },
-        { "type": "持續傷害", "value": "30%", "turn": 3 }
+        { "type": "持續傷害", "value": "30%", "poisonTurn": 3 }
       ],
       "star3Rule": [
         {
@@ -1178,9 +1178,9 @@
       "rarity": "SSR", "class": "妨礙", "element": "火", "potType": "平均型",
       "baseHp": 8076, "baseAtk": 1956, "coolDown": 3,
       "img": "Kuya_SSR_02.jpg",
-      "attackRule": [{ "type": "持續傷害", "value": "50%", "turn": 4 }],
+      "attackRule": [{ "type": "持續傷害", "value": "50%", "poisonTurn": 4 }],
       "skillLv1Rule": [
-        { "type": "持續傷害", "value": "136%", "turn": 3 },
+        { "type": "持續傷害", "value": "136%", "poisonTurn": 3 },
         {
           "type": "敵方受到持續傷害增加",
           "value": "10%",
@@ -1189,7 +1189,7 @@
         }
       ],
       "skillLv2Rule": [
-        { "type": "持續傷害", "value": "159%", "turn": 3 },
+        { "type": "持續傷害", "value": "159%", "poisonTurn": 3 },
         {
           "type": "敵方受到持續傷害增加",
           "value": "10%",
@@ -1198,7 +1198,7 @@
         }
       ],
       "skillLv3Rule": [
-        { "type": "持續傷害", "value": "182%", "turn": 3 },
+        { "type": "持續傷害", "value": "182%", "poisonTurn": 3 },
         {
           "type": "敵方受到持續傷害增加",
           "value": "10%",
@@ -1855,7 +1855,7 @@
       "img": "Kuya_SSR_04.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "100%" },
-        { "type": "持續傷害", "value": "20%", "turn": 2 }
+        { "type": "持續傷害", "value": "20%", "poisonTurn": 2 }
       ],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "15%", "turn": 2 },
@@ -2200,11 +2200,11 @@
       "img": "Kuya_SSR_05.jpg",
       "attackRule": [
         { "type": "攻擊", "value": "63%" },
-        { "type": "持續傷害", "value": "50%", "turn": 2 }
+        { "type": "持續傷害", "value": "50%", "poisonTurn": 2 }
       ],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "247%" },
-        { "type": "持續傷害", "value": "62%", "turn": 4 }
+        { "type": "持續傷害", "value": "62%", "poisonTurn": 4 }
       ],
       "skillLv2Rule": [
         {
@@ -2214,7 +2214,7 @@
           "turn": 99
         },
         { "type": "攻擊", "value": "296%" },
-        { "type": "持續傷害", "value": "74%", "turn": 4 }
+        { "type": "持續傷害", "value": "74%", "poisonTurn": 4 }
       ],
       "skillLv3Rule": [
         {
@@ -2223,8 +2223,8 @@
           "maxCount": 2,
           "turn": 99
         },
-        { "type": "攻擊", "value": "296%" },
-        { "type": "持續傷害", "value": "74%", "turn": 4 }
+        { "type": "攻擊", "value": "345%" },
+        { "type": "持續傷害", "value": "86%", "poisonTurn": 4 }
       ],
       "star3Rule": [
         { "type": "攻擊力增加", "value": "18%" },
@@ -2579,19 +2579,19 @@
       "skillLv1Rule": [
         { "type": "治療", "value": "100%" },
         { "type": "持續治療", "value": "29%", "turn": 4 },
-        { "type": "持續傷害", "value": "67%", "turn": 3 }
+        { "type": "持續傷害", "value": "67%", "poisonTurn": 3 }
       ],
       "skillLv2Rule": [
         { "type": "攻擊力增加", "value": "13.5%", "turn": 3 },
         { "type": "治療", "value": "100%" },
         { "type": "持續治療", "value": "40%", "turn": 4 },
-        { "type": "持續傷害", "value": "67%", "turn": 3 }
+        { "type": "持續傷害", "value": "67%", "poisonTurn": 3 }
       ],
       "skillLv3Rule": [
         { "type": "攻擊力增加", "value": "13.5%", "turn": 3 },
         { "type": "治療", "value": "100%" },
         { "type": "持續治療", "value": "51%", "turn": 4 },
-        { "type": "持續傷害", "value": "67%", "turn": 3 }
+        { "type": "持續傷害", "value": "67%", "poisonTurn": 3 }
       ],
       "star3Rule": [
         { "type": "攻擊力增加", "value": "18%" },
@@ -3264,6 +3264,142 @@
       "star5Rule": [],
       "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "極樂．奧利文": {
+      "char": "奧利文", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "木", "potType": "HP先行",
+      "baseHp": 7364, "baseAtk": 2241, "coolDown": 4,
+      "img": "Olivine_SSR_08.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "125%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "125%" },
+        { "type": "持續傷害", "value": "82%", "poisonTurn": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "34%",
+            "poisonTurn": 3,
+            "condition": "攻擊時"
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方受到傷害增加",
+          "value": "13.5%",
+          "maxCount": 2,
+          "turn": 99
+        },
+        { "type": "攻擊", "value": "125%" },
+        { "type": "持續傷害", "value": "114%", "poisonTurn": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "34%",
+            "poisonTurn": 3,
+            "condition": "攻擊時"
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方受到傷害增加",
+          "value": "13.5%",
+          "maxCount": 2,
+          "turn": 99
+        },
+        { "type": "攻擊", "value": "125%" },
+        { "type": "持續傷害", "value": "147%", "poisonTurn": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "34%",
+            "poisonTurn": 3,
+            "condition": "攻擊時"
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "72%",
+          "turn": 99,
+          "maxCount": 1,
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        }
+      ],
+      "star5Rule": [
+        { "type": "攻擊力增加", "value": "27%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "極樂．玖夜": {
+      "char": "玖夜", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "光", "potType": "平均型",
+      "baseHp": 7934, "baseAtk": 2063, "coolDown": 3,
+      "img": "Kuya_SSR_07.jpg",
+      "attackRule": [
+        { "type": "輔助", "value": "30%", "target": "全體" },
+        { "type": "持續傷害", "value": "50%", "poisonTurn": 2 }
+      ],
+      "skillLv1Rule": [
+        { "type": "輔助", "value": "51%", "turn": 2, "target": "全體" },
+        { "type": "持續傷害", "value": "50%", "poisonTurn": 2 }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "30%",
+          "turn": 99,
+          "maxCount": 1
+        },
+        { "type": "輔助", "value": "55%", "turn": 2, "target": "全體" },
+        { "type": "持續傷害", "value": "50%", "poisonTurn": 2 }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "30%",
+          "turn": 99,
+          "maxCount": 1
+        },
+        { "type": "輔助", "value": "69%", "turn": 2, "target": "全體" },
+        { "type": "持續傷害", "value": "50%", "poisonTurn": 2 }
+      ],
+      "star3Rule":[
+        {
+          "type": "攻擊力增加",
+          "value": "6%",
+          "target": "全體",
+          "condition": { "type": "隊伍中有屬性", "value": "光", "minCount": 2 }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "6%",
+          "target": "全體",
+          "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "6%",
+          "target": "全體",
+          "condition": { "type": "隊伍中有定位", "value": "妨礙" }
+        }
+      ],
+      "star5Rule": [
+        { "type": "持續傷害增加", "value": "27%", "target": "全體" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   

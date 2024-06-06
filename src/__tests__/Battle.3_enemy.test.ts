@@ -154,8 +154,8 @@ describe('攻擊手＞單人對敵測試：ATK=1000', () => {
         test('敵方受到持續傷害增加 10%', () => {
             cardData = `{
                 "coolDown": 3,
-                "attackRule": [ {"type": "持續傷害", "value": "50%", "turn": 4 } ],
-                "skillLv3Rule": [ {"type": "敵方受到持續傷害增加", "value": "10%", "turn": 99, "maxCount": 3}, {"type": "持續傷害", "value": "200%", "turn": 3} ]
+                "attackRule": [ {"type": "持續傷害", "value": "50%", "poisonTurn": 4 } ],
+                "skillLv3Rule": [ {"type": "敵方受到持續傷害增加", "value": "10%", "turn": 99, "maxCount": 3}, {"type": "持續傷害", "value": "200%", "poisonTurn": 3} ]
             }`;
             skillTurns = [4, 7, 10, 13];
             setupBattle();
