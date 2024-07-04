@@ -2072,7 +2072,7 @@
         {
           "type": "必殺技傷害增加",
           "value": "37.5%",
-          "target": { "type": "全體", "except": "自己" }
+          "target": { "type": "全體", "exceptType": "自己" }
         },
         { "type": "治療", "value": "150%" },
         { "type": "普攻傷害增加", "value": "70%", "turn": 3 }
@@ -2081,7 +2081,7 @@
         {
           "type": "必殺技傷害增加",
           "value": "37.5%",
-          "target": { "type": "全體", "except": "自己" }
+          "target": { "type": "全體", "exceptType": "自己" }
         },
         { "type": "治療", "value": "150%" },
         { "type": "普攻傷害增加", "value": "90%", "turn": 3 }
@@ -3399,6 +3399,166 @@
         { "type": "持續傷害增加", "value": "27%", "target": "全體" }
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "海浪．崑西": {
+      "char": "崑西", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "光", "potType": "HP先行",
+      "baseHp": 7436, "baseAtk": 2312, "coolDown": 4,
+      "img": "Quincy_SSR_08.jpg",
+      "attackRule": [
+        { "type": "造成傷害增加", "value": "3%", "turn": 5, "target": "全體" },
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "15%", "maxCount": 2 },
+        { "type": "攻擊", "value": "247%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "必殺技傷害增加", "value": "30%" },
+        { "type": "攻擊", "value": "20%", "maxCount": 2 },
+        { "type": "攻擊", "value": "296%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "必殺技傷害增加", "value": "30%" },
+        { "type": "攻擊", "value": "25%", "maxCount": 2 },
+        { "type": "攻擊", "value": "345%" }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "23%" },
+        { 
+          "type": "造成傷害增加", 
+          "value": "12%", 
+          "target": "全體", 
+          "condition": { "type": "攻擊方式", "value": "必殺技" } 
+        }
+      ],
+      "star5Rule": [
+        { "type": "必殺技傷害增加", "value": "45%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "海浪．可爾": {
+      "char": "可爾", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "治療", "element": "火", "potType": "平均型",
+      "baseHp": 7649, "baseAtk": 2277, "coolDown": 4,
+      "img": "Garu_SSR_08.jpg",
+      "attackRule": [{ "type": "治療", "value": "75%" }],
+      "skillLv1Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "28%",
+          "turn": 2,
+          "target": "全體"
+        },
+        { "type": "治療", "value": "150%" },
+        { "type": "持續治療", "value": "34%", "turn": 2 }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "必殺技傷害增加",
+          "value": "37.5%",
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "28%",
+          "turn": 2,
+          "target": "全體"
+        },
+        { "type": "治療", "value": "150%" },
+        { "type": "持續治療", "value": "55%", "turn": 2 }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "必殺技傷害增加",
+          "value": "37.5%",
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "28%",
+          "turn": 2,
+          "target": "全體"
+        },
+        { "type": "治療", "value": "150%" },
+        { "type": "持續治療", "value": "77%", "turn": 2 }
+      ],
+      "star3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "造成傷害增加",
+            "value": "24%",
+            "condition": { "type": "血量大於", "value": "75%" },
+            "turn": 99
+          },
+          "target": { "type": "全體" }
+        },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方受到治療增加",
+            "value": "24%",
+            "condition": { "type": "血量少於", "value": "25%" },
+            "turn": 99
+          },
+          "target": { "type": "全體" }
+        }
+      ],
+      "star5Rule": [
+        { "type": "最大HP增加", "value": "6%", "target": "全體" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方受到治療增加",
+            "value": "14%",
+            "turn": 99
+          },
+          "target": { "type": "全體" }
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "海浪．啖天": {
+      "char": "啖天", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "木", "potType": "HP先行",
+      "baseHp": 7329, "baseAtk": 2348, "coolDown": 4,
+      "img": "Dante_SSR_07.jpg",
+      "attackRule": [
+        { "type": "敵方受到傷害增加", "value": "3%", "turn": 4 },
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "敵方受到傷害增加", "value": "30%" },
+        { "type": "攻擊", "value": "247%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方受到傷害增加", "value": "30%" },
+        { "type": "攻擊力增加", "value": "30%", "turn": 4 },
+        { "type": "攻擊", "value": "296%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方受到傷害增加", "value": "30%" },
+        { "type": "攻擊力增加", "value": "30%", "turn": 4 },
+        { "type": "攻擊", "value": "345%" }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "23%" },
+        { 
+          "type": "必殺技傷害增加", 
+          "value": "4%", 
+          "turn": 4,
+          "target": "全體", 
+          "condition": "攻擊時"
+        }
+      ],
+      "star5Rule": [
+        { "type": "造成傷害增加", "value": "30%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
