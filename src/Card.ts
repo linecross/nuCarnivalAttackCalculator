@@ -16,6 +16,7 @@ export class Card{
 
 	hp: number;
 	atk: number;
+	currentHp: number = 100; // percentage
 
 	level: number = 60
 	star: number = 5;

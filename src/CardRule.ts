@@ -1,5 +1,6 @@
-import { Class, RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType } from './Constants.js';
+import { Class, RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType, ConditionHPStatus } from './Constants.js';
 import { Card, Team } from './Card.js';
+import { Util } from './util/Util.js';
 
 
 export class Rule{
@@ -343,7 +344,7 @@ export class Condition{
 	// can only check after battle start
 	static CHECK_IN_BATTLE_LIST : ConditionType[] = [ConditionType.isAttackType, ConditionType.isAttack, ConditionType.everyTurn, ConditionType.atTurn];
 
-	static IS_HP_FULFILL : boolean = true;
+	static HP_STATUS : ConditionHPStatus = ConditionHPStatus.fulfill;
 
 	constructor(type: ConditionType, value: number | number[] | string | Class | AttackType, operator: OperatorType = null, minCount: number = 1){
 		this.type = type;
@@ -389,7 +390,22 @@ export class Condition{
 			}
 		}
 		else if (this.type == ConditionType.hpHigher || this.type == ConditionType.hpLower){
-			return Condition.IS_HP_FULFILL;
+			if (Condition.HP_STATUS == ConditionHPStatus.fulfill){
+				return true;
+			}
+			if (Condition.HP_STATUS == ConditionHPStatus.notFulfill){
+				return false;
+			}
+			var condHpPercent = Util.getPercentNumber(this.value.toString());
+			console.info(condHpPercent);
+			if (this.type == ConditionType.hpHigher && card.currentHp > condHpPercent){
+				return true;
+			}
+			if (this.type == ConditionType.hpLower && card.currentHp < condHpPercent){
+				return true;
+			}
+
+			return false;
 		}
 		else if (this.type == ConditionType.isAttackType){
 			return (this.value as AttackType) == charAttackType;
