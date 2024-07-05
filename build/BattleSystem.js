@@ -154,6 +154,8 @@ export class Battle {
     startRoundPerCard(attackType, card) {
         this.currentTurnAction = TurnActionType.beforeTurn;
         this.isRuleLogAddedPerTurn = false;
+        var postRuleToProcess = [];
+        var enemyPostRuleToProcess = [];
         // ---------------------------每個人攻擊前------------------------------------
         var preAttackRules = this.battleTurns[card.name].rules.filter((e) => e.isPreAttackRule());
         for (var rule of preAttackRules) {
@@ -196,6 +198,7 @@ export class Battle {
             attackRule = [].concat(card.skillRule);
         }
         var hasProcessedEnemyPostAttack = false;
+        var hasAttackEnemyAction = false;
         for (var rule of attackRule) {
             var hasAttackEnemy = false;
             if (Battle.OUTPUT_TYPES.has(rule.type)) {
@@ -237,10 +240,14 @@ export class Battle {
                     }
                     // 我方「攻擊時」「普攻時」「必殺時」被動
                     for (var postRule of postAttackRules) {
-                        this.addRuleToTargets(postRule, card, attackType);
-                        this.processRule(postRule, card, attackType);
-                        this.addBuffToTargets(postRule, card, attackType);
+                        postRuleToProcess.push(postRule);
+                        // this.addRuleToTargets(postRule, card, attackType);
+                        // this.processRule(postRule, card, attackType);
+                        // this.addBuffToTargets(postRule, card, attackType);
                     }
+                }
+                if (hasAttackEnemy) {
+                    hasAttackEnemyAction = true;
                 }
                 if (hasAttackEnemy && !hasProcessedEnemyPostAttack) {
                     // 敵方「被攻擊時」被動
@@ -248,8 +255,9 @@ export class Battle {
                     postAttackRules = this.enemyBattleTurn.rules
                         .filter((e) => e.isPostAttackRule());
                     for (var postRule of postAttackRules) {
-                        this.addRuleToTargets(postRule, card, attackType);
-                        this.addBuffToTargets(postRule, card, attackType);
+                        enemyPostRuleToProcess.push(postRule);
+                        // this.addRuleToTargets(postRule, card, attackType);
+                        // this.addBuffToTargets(postRule, card, attackType);
                     }
                     hasProcessedEnemyPostAttack = true;
                 }
@@ -260,6 +268,17 @@ export class Battle {
                 this.processRule(rule, card, attackType);
                 this.addBuffToTargets(rule, card, attackType);
             }
+        }
+        // 移動結束才會執行「攻擊時」「必殺時」「普攻時」的rules
+        this.currentTurnAction = hasAttackEnemyAction ? TurnActionType.afterAttack : TurnActionType.afterAction;
+        for (var postRule of postRuleToProcess) {
+            this.addRuleToTargets(postRule, card, attackType);
+            this.processRule(postRule, card, attackType);
+            this.addBuffToTargets(postRule, card, attackType);
+        }
+        for (var postRule of enemyPostRuleToProcess) {
+            this.addRuleToTargets(postRule, card, attackType);
+            this.addBuffToTargets(postRule, card, attackType);
         }
         this.battleTurns[card.name].action[this.currentTurn] = attackType;
         return attackType;
