@@ -126,6 +126,7 @@ export const TurnActionType = {
     none: "none"
 };
 export const CounterAttackMode = { firstTurnOnly: '僅第一回合', everyTurn: '每回合' };
+export const ConditionHPStatus = { fulfill: '符合所有血量條件', notFulfill: '不符合所有血量條件', hpPercent: '按照當前血量' };
 export const GAME_CONFIG = {
     MAX_LEVEL: 60,
     POTTYPE: {

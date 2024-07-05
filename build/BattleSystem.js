@@ -2,6 +2,7 @@ import { Class, Element, RuleType, AttackType, ConditionType, ActionPattern, Rul
 import { Rule, RuleTarget, Condition } from './CardRule.js';
 import { RuleHelper } from './util/RuleHelper.js';
 import { LogRule } from './LogRule.js';
+import { Util } from './util/Util.js';
 export class Battle {
     constructor(team, turns = 13) {
         this.turns = 13;
@@ -305,7 +306,7 @@ export class Battle {
             // ---------------------------回合結束------------------------------------
             // 持續傷害
             var poisonRules = this.enemyBattleTurn.rules.filter((e) => e.type == RuleType.poisonAttackState && e.parentCardName == card.name);
-            var poisonVal = poisonRules.reduce((sum, e) => sum + Battle.getNumber(e.value), 0);
+            var poisonVal = poisonRules.reduce((sum, e) => sum + Util.getNumber(e.value), 0);
             if (poisonVal != null && poisonVal > 0) {
                 var enemyRules = this.enemyBattleTurn.rules
                     .filter((r) => r.isConditionsFulfilled(card, this.team, this.currentTurnAction, attackType, this.currentTurn));
@@ -318,19 +319,19 @@ export class Battle {
                         buffType = RuleType.enemyAllAtkUp;
                     }
                     var applyCount = buff.getConditionFulfillTimes(card, this.team, this.currentTurnAction, attackType, this.currentTurn);
-                    debuffs[buffType] = (debuffs[buffType] || 0) + (Battle.getNumber(buff.value) * applyCount);
+                    debuffs[buffType] = (debuffs[buffType] || 0) + (Util.getNumber(buff.value) * applyCount);
                 }
                 var outputVal = poisonVal;
                 var enemyDamageVal = outputVal;
                 for (var key of Object.keys(debuffs)) {
-                    enemyDamageVal = Math.floor(enemyDamageVal * (1 + Battle.getNumber(debuffs[key])));
+                    enemyDamageVal = Math.floor(enemyDamageVal * (1 + Util.getNumber(debuffs[key])));
                 }
                 this.battleTurns[card.name].outputs[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].outputs[RuleType.poisonAttack][this.currentTurn] || 0) + outputVal;
                 this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] || 0) + enemyDamageVal;
             }
             // 持續治療
             var contHealRules = this.battleTurns[card.name].rules.filter((e) => e.type == RuleType.continueHealState && e.parentCardName == card.name);
-            var contHealVal = contHealRules.reduce((sum, e) => sum + Battle.getNumber(e.value), 0);
+            var contHealVal = contHealRules.reduce((sum, e) => sum + Util.getNumber(e.value), 0);
             if (contHealVal != null && contHealVal > 0) {
                 var cardRules = this.battleTurns[card.name].rules
                     .filter((r) => r.isConditionsFulfilled(card, this.team, this.currentTurnAction, attackType, this.currentTurn));
@@ -343,11 +344,11 @@ export class Battle {
                         buffType = RuleType.partyAllHealUp;
                     }
                     var applyCount = buff.getConditionFulfillTimes(card, this.team, this.currentTurnAction, attackType, this.currentTurn);
-                    buffs[buffType] = (buffs[buffType] || 0) + (Battle.getNumber(buff.value) * applyCount);
+                    buffs[buffType] = (buffs[buffType] || 0) + (Util.getNumber(buff.value) * applyCount);
                 }
                 var outputVal = contHealVal;
                 for (var key of Object.keys(buffs)) {
-                    outputVal = Math.floor(outputVal * (1 + Battle.getNumber(buffs[key])));
+                    outputVal = Math.floor(outputVal * (1 + Util.getNumber(buffs[key])));
                 }
                 this.battleTurns[card.name].outputs[RuleType.continueHeal][this.currentTurn] = (this.battleTurns[card.name].outputs[RuleType.continueHeal][this.currentTurn] || 0) + outputVal;
                 this.battleTurns[card.name].enemyDamage[RuleType.continueHeal][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.continueHeal][this.currentTurn] || 0) + outputVal;
@@ -386,7 +387,7 @@ export class Battle {
         for (var targetName of targetNames) {
             // 減CD
             if (rule.type == RuleType.cdMinus) {
-                var cooldownCount = Battle.getNumber(rule.value);
+                var cooldownCount = Util.getNumber(rule.value);
                 var targetSkillCD = this.battleTurns[targetName].skillCD - cooldownCount;
                 this.battleTurns[targetName].skillCD = targetSkillCD > 0 ? targetSkillCD : 0;
             }
@@ -501,10 +502,10 @@ export class Battle {
                 buffType = RuleType.skillAtkUp;
             }
             if (buff.value.endsWith("%")) {
-                buffs[buffType] = (buffs[buffType] || 0) + (Battle.getNumber(buff.value) * applyCount);
+                buffs[buffType] = (buffs[buffType] || 0) + (Util.getNumber(buff.value) * applyCount);
             }
             else {
-                supportBuff += (Battle.getNumber(buff.value) * applyCount);
+                supportBuff += (Util.getNumber(buff.value) * applyCount);
             }
         }
         for (var buff of enemyBuffs) {
@@ -514,7 +515,7 @@ export class Battle {
             if (buffType == RuleType.enemyTriggerAtkUp) {
                 buffType = RuleType.enemySkillAtkUp;
             }
-            debuffs[buffType] = (debuffs[buffType] || 0) + (Battle.getNumber(buff.value) * applyCount);
+            debuffs[buffType] = (debuffs[buffType] || 0) + (Util.getNumber(buff.value) * applyCount);
         }
         if (!this.isRuleLogAddedPerTurn) {
             var logRules = this.filterBuffsForLog(cardRules);
@@ -537,16 +538,16 @@ export class Battle {
         var outputVal = 0;
         // 計算攻擊力 x 輸出倍率
         if (rule.valueBy == RuleValueByType.hp) {
-            outputVal = Math.floor((Math.floor(hp * (1 + Battle.getNumber(buffs[RuleType.hpUp])))) * Battle.getNumber(rule.value));
+            outputVal = Math.floor((Math.floor(hp * (1 + Util.getNumber(buffs[RuleType.hpUp])))) * Util.getNumber(rule.value));
         }
         else {
-            var atkVal = Math.floor(atk * (1 + Battle.getNumber(buffs[RuleType.atkUp]))) + supportBuff;
+            var atkVal = Math.floor(atk * (1 + Util.getNumber(buffs[RuleType.atkUp]))) + supportBuff;
             // 只用基礎攻擊力計算
             // 註：如果是輔助rule，filterBuffs會過濾掉所有ATK加成，所以輔助無須特別指定是「基礎攻擊力」
             if (rule.valueBy == RuleValueByType.baseAtk) {
                 atkVal = Math.floor(atk);
             }
-            outputVal = Math.floor(atkVal * Battle.getNumber(rule.value));
+            outputVal = Math.floor(atkVal * Util.getNumber(rule.value));
         }
         // 輔助rule - 幫全隊加攻擊力增加buff
         if (rule.type == RuleType.support) {
@@ -562,7 +563,7 @@ export class Battle {
         }
         for (var key of Object.keys(buffs)) {
             if (key != RuleType.atkUp) {
-                outputVal = Math.floor(outputVal * (1 + Battle.getNumber(buffs[key])));
+                outputVal = Math.floor(outputVal * (1 + Util.getNumber(buffs[key])));
             }
         }
         // Poison
@@ -577,7 +578,7 @@ export class Battle {
         }
         var enemyDamageVal = outputVal;
         for (var key of Object.keys(debuffs)) {
-            enemyDamageVal = Math.floor(enemyDamageVal * (1 + Battle.getNumber(debuffs[key])));
+            enemyDamageVal = Math.floor(enemyDamageVal * (1 + Util.getNumber(debuffs[key])));
         }
         if (rule.type == RuleType.support) {
             for (var i = 0; i < rule.turn; i++) {
@@ -856,17 +857,6 @@ export class Battle {
         }
         console.info(summary);
         console.info('隊伍總數\t' + this.getTeamTotalValue());
-    }
-    static getNumber(val) {
-        var num = 0;
-        if (typeof val == 'string' && val.endsWith("%")) {
-            val = val.substring(0, val.indexOf("%"));
-            num = +val.trim() / 100;
-        }
-        else if (typeof val == 'string' || typeof val == 'number') {
-            num = +val;
-        }
-        return num;
     }
 }
 Battle.PRINT_OUTPUT_OPTION = { ALL: 'All', ONLY_DAMAGE: 'OnlyDamage', ONLY_ATTACK: 'OnlyAttack', ONLY_SUPPORT: 'OnlySupport', ONLY_HEAL: 'OnlyHeal', ONLY_POISON: 'OnlyPoison' };

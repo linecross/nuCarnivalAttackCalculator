@@ -1,4 +1,5 @@
-import { RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType } from './Constants.js';
+import { RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType, ConditionHPStatus } from './Constants.js';
+import { Util } from './util/Util.js';
 export class Rule {
     static createId() {
         return Rule.idCounter++;
@@ -329,7 +330,21 @@ export class Condition {
             }
         }
         else if (this.type == ConditionType.hpHigher || this.type == ConditionType.hpLower) {
-            return Condition.IS_HP_FULFILL;
+            if (Condition.HP_STATUS == ConditionHPStatus.fulfill) {
+                return true;
+            }
+            if (Condition.HP_STATUS == ConditionHPStatus.notFulfill) {
+                return false;
+            }
+            var condHpPercent = Util.getPercentNumber(this.value.toString());
+            console.info(condHpPercent);
+            if (this.type == ConditionType.hpHigher && card.currentHp > condHpPercent) {
+                return true;
+            }
+            if (this.type == ConditionType.hpLower && card.currentHp < condHpPercent) {
+                return true;
+            }
+            return false;
         }
         else if (this.type == ConditionType.isAttackType) {
             return this.value == charAttackType;
@@ -431,5 +446,5 @@ export class Condition {
 }
 // can only check after battle start
 Condition.CHECK_IN_BATTLE_LIST = [ConditionType.isAttackType, ConditionType.isAttack, ConditionType.everyTurn, ConditionType.atTurn];
-Condition.IS_HP_FULFILL = true;
+Condition.HP_STATUS = ConditionHPStatus.fulfill;
 //# sourceMappingURL=CardRule.js.map

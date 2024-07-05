@@ -2,6 +2,7 @@ import { Rarity, PotentialType, GAME_CONFIG } from './Constants.js';
 import { Rule } from './CardRule.js';
 export class Card {
     constructor(name, char, rarity) {
+        this.currentHp = 100; // percentage
         this.level = 60;
         this.star = 5;
         this.bond = 5;
