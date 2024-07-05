@@ -1,4 +1,4 @@
-import { Character, Rarity, Class, Element, AttackType, ActionPattern, CounterAttackMode } from './../../build/Constants.js';
+import { Character, Rarity, Class, Element, AttackType, ActionPattern, CounterAttackMode, ConditionHPStatus } from './../../build/Constants.js';
 import { Battle } from './../../build/BattleSystem.js';
 import { Team, Card, CardCenter } from './../../build/Card.js';
 import { Condition } from './../../build/CardRule.js';
@@ -79,7 +79,7 @@ Vue.createApp({
 				isShowTurns: true,
 				maxCounterAttack: 1,
 				counterAttackMode: CounterAttackMode.everyTurn,
-				isAllowHpCond: Condition.IS_HP_FULFILL,
+				isAllowHpCond: Condition.HP_STATUS,
 				isModifyCardVal: false,
 				defaultStar: 'SSR3',
 				enemyElement: Element.NA,
@@ -151,6 +151,7 @@ Vue.createApp({
 		this.DEFAULT_STAR = config.DEFAULT_STAR;
 		this.COUNTER_ATTACK_MODE = CounterAttackMode;
 		this.FILTERS = config.FILTERS;
+		this.HP_STATUS = ConditionHPStatus;
 
 		this.db = new Dexie('nuAttackCalculatorDB');
 		this.db.version(2).stores({
@@ -862,6 +863,7 @@ Vue.createApp({
 						name: card.name, 
 						star: card.star,
 						potential: card.potential,
+						currentHp: card.currentHp
 					};
 					if (this.userInput.isCardEnabled[i]){
 						cardDmgData['dmg'] = this.getBattleTotalValue(card.name);
@@ -1222,7 +1224,7 @@ Vue.createApp({
 			var result = [];
 			for (var card of this.cards){
 				if (card != null){
-					result.push(card.name + ',' + card.star + ',' + card.level + ',' + card.potential + ',' + card.atk);
+					result.push(card.name + ',' + card.star + ',' + card.level + ',' + card.potential + ',' + card.atk + ',' + card.currentHp);
 				}
 			}
 			return result.sort().join(';');
@@ -1305,7 +1307,7 @@ Vue.createApp({
 			this.updateBattle();
 		},
 		'userInput.isAllowHpCond'(newVal, oldVal){
-			Condition.IS_HP_FULFILL = newVal;
+			Condition.HP_STATUS = newVal;
 			this.updateBattle();
 		},
 		'userInput.isModifyCardVal'(isModify, oldVal){

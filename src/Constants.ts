@@ -165,6 +165,8 @@ export type TurnActionType = typeof TurnActionType[keyof typeof TurnActionType];
 export const CounterAttackMode = {firstTurnOnly: '僅第一回合', everyTurn : '每回合'} as const;
 export type CounterAttackMode = typeof CounterAttackMode[keyof typeof CounterAttackMode];
 
+export const ConditionHPStatus = {fulfill: '符合所有血量條件', notFulfill: '不符合所有血量條件', hpPercent : '按照當前血量'} as const;
+export type ConditionHPStatus = typeof ConditionHPStatus[keyof typeof ConditionHPStatus];
 
 
 export const GAME_CONFIG = {

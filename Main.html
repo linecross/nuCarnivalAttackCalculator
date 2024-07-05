@@ -554,7 +554,6 @@
 										<label class="col-auto">HP</label>
 										<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].hp" ></input>
 										<input v-else type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getHp()" disabled="true"></input>
-										
 									</div>
 									<div v-if="userInput.isAdvanceMode" class="row">
 										<label class="col-auto">ATK</label>
@@ -564,6 +563,13 @@
 									<div v-if="userInput.isAdvanceMode" class="row">
 										<label class="col-auto">戰力值</label>
 										<input type="text" inputmode="numeric" class="col-auto form-control" :value="cards[idx].getBp()" disabled="true"></input>
+									</div>
+
+									<div class="row">
+										<label class="col-auto" :for="'inputCard-currentHp-'+(idx+1)">當前血量</label>
+										<select :id="'inputCard-currentHp-'+(idx+1)" class="col-auto form-control" v-model="cards[idx].currentHp" :disabled="userInput.isAllowHpCond!=HP_STATUS.hpPercent">
+											<option v-for="j in 10" :value="j*10">{{ j*10 }}%</option>
+										</select>
 									</div>
 
 									<div class="row">
@@ -607,8 +613,11 @@
 							<span class="verticalLine"></span>
 
 							<span v-if="userInput.isAdvanceMode" class="form-check-inline">
-								<label for="inputIsAllowHpCond">允許血量條件</label><br/>
-								<input class="form-check-input" type="checkbox" id="inputIsAllowHpCond" :checked="userInput.isAllowHpCond" v-model="userInput.isAllowHpCond">
+								<label for="inputIsAllowHpCond">血量條件</label><br/>
+								<select id="inputEnemyEle" class="form-select" v-model="userInput.isAllowHpCond">
+									<option v-for="hpCondition in HP_STATUS" :value="hpCondition">{{ hpCondition }}</option>
+								</select>
+								<!-- <input class="form-check-input" type="checkbox" id="inputIsAllowHpCond" :checked="userInput.isAllowHpCond" v-model="userInput.isAllowHpCond"> -->
 							</span>
 
 							<span class="verticalLine"></span>
@@ -907,6 +916,7 @@
 						<textarea rows="8">
 [20240705]
 更正「攻擊時」「必殺時」「普攻時」條件觸發的順序
+改善血量條件：可以選擇允許、不允許或按照角色血量執行
 
 [20240511]
 修正條件部份程式錯誤導致計算數值出錯
