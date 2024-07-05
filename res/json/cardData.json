@@ -3430,6 +3430,7 @@
           "type": "造成傷害增加", 
           "value": "12%", 
           "target": "全體", 
+          "turn": 1,
           "condition": { "type": "攻擊方式", "value": "必殺技" } 
         }
       ],
