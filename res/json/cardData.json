@@ -3624,7 +3624,7 @@
           "value": 4,
           "target": { "type": "位置", "value": 5 }
         },
-        { "type": "輔助", "value": "31%", "turn": 4, "target": "全體" },
+        { "type": "輔助", "value": "31%", "turn": 4, "maxCount": 1, "target": "全體" },
         { "type": "治療", "value": "100%" }
       ],
       "skillLv2Rule": [
@@ -3638,7 +3638,7 @@
           "value": "34%",
           "target": { "type": "位置", "value": 5 }
         },
-        { "type": "輔助", "value": "37%", "turn": 4, "target": "全體" },
+        { "type": "輔助", "value": "37%", "turn": 4, "maxCount": 1, "target": "全體" },
         { "type": "治療", "value": "100%" }
       ],
       "skillLv3Rule": [
@@ -3652,7 +3652,7 @@
           "value": "34%",
           "target": { "type": "位置", "value": 5 }
         },
-        { "type": "輔助", "value": "44%", "turn": 4, "target": "全體" },
+        { "type": "輔助", "value": "44%", "turn": 4, "maxCount": 1, "target": "全體" },
         { "type": "治療", "value": "100%" }
       ],
       "star3Rule": [
@@ -3664,7 +3664,16 @@
           "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
         }
       ],
-      "star5Rule": [{ "type": "造成傷害增加", "value": "9%", "target": "全體" }],
+      "star5Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "34%",
+          "turn": 4,
+          "maxCount": 1,
+          "target": { "type": "位置", "value": 5 },
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        }
+      ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
     }
