@@ -3561,6 +3561,112 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "流星．艾德蒙特": {
+      "char": "艾德蒙特", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "木", "potType": "平均型",
+      "baseHp": 7827, "baseAtk": 2205, "coolDown": 3,
+      "img": "Edmond_SSR_09.jpg",
+      "attackRule": [
+        { "type": "敵方受到傷害增加", "value": "12%" },
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "持續傷害增加", "value": "18%", "target": "全體", "turn": 3 },
+        { "type": "攻擊", "value": "204%" }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方受到傷害增加",
+          "value": "17%",
+          "turn": 3
+        },
+        { "type": "持續傷害增加", "value": "18%", "target": "全體", "turn": 3 },
+        { "type": "攻擊", "value": "238%" }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方受到傷害增加",
+          "value": "17%",
+          "turn": 3
+        },
+        { "type": "持續傷害增加", "value": "18%", "target": "全體", "turn": 3 },
+        { "type": "攻擊", "value": "273%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "敵方受到傷害增加",
+          "value": "22.5%",
+          "turn": 3,
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        }
+      ],
+      "star5Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "51%",
+          "turn": 1,
+          "condition": "攻擊時"
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "流星．布儡": {
+      "char": "布儡", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "闇", "potType": "平均型",
+      "baseHp": 8112, "baseAtk": 2134, "coolDown": 4,
+      "img": "Blade_SSR_07.jpg",
+      "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
+      "skillLv1Rule": [
+        {
+          "type": "減少冷卻回合",
+          "value": 4,
+          "target": { "type": "位置", "value": 5 }
+        },
+        { "type": "輔助", "value": "31%", "turn": 4, "target": "全體" },
+        { "type": "治療", "value": "100%" }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "減少冷卻回合",
+          "value": 4,
+          "target": { "type": "位置", "value": 5 }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "34%",
+          "target": { "type": "位置", "value": 5 }
+        },
+        { "type": "輔助", "value": "37%", "turn": 4, "target": "全體" },
+        { "type": "治療", "value": "100%" }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "減少冷卻回合",
+          "value": 4,
+          "target": { "type": "位置", "value": 5 }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "34%",
+          "target": { "type": "位置", "value": 5 }
+        },
+        { "type": "輔助", "value": "44%", "turn": 4, "target": "全體" },
+        { "type": "治療", "value": "100%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "必殺技傷害增加",
+          "value": "18%",
+          "maxCount": 3,
+          "target": { "type": "定位", "value": ["攻擊", "守護", "妨礙"] },
+          "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
+        }
+      ],
+      "star5Rule": [{ "type": "造成傷害增加", "value": "9%", "target": "全體" }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   
