@@ -3660,7 +3660,6 @@
           "type": "必殺技傷害增加",
           "value": "12%",
           "maxCount": 3,
-          "target": { "type": "定位", "value": ["攻擊", "守護", "妨礙"] },
           "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
         }
       ],
