@@ -3660,6 +3660,7 @@
           "type": "必殺技傷害增加",
           "value": "12%",
           "maxCount": 3,
+          "target": "全體",
           "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
         }
       ],
