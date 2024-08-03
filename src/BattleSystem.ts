@@ -357,7 +357,7 @@ export class Battle{
 					var newRule = rule.cloneSimple();
 					newRule.type = RuleType.attack;
 					newRule.turn = 1;
-					newRule.maxCount = Math.min(this.counterAttackCount, rule.maxCount);
+					newRule.maxCount = Math.min(this.counterAttackCount, rule.getMaxCount());
 					newRule.isCounterAttack = true;
 					this.attack(AttackType.SkillAttack, newRule, card);
 					
@@ -552,6 +552,7 @@ export class Battle{
 		// var isAddRuleLog = this.currentTurnAction == TurnActionType.beforeAction;
 
 		// Calculate
+		var isAttackSuccess = true;
 		var atk : number = card.getAtk();
 		var hp : number = card.getHp();
 		var action = null;
@@ -615,7 +616,7 @@ export class Battle{
 			this.isRuleLogAddedPerTurn = true;
 		}
 
-		var hitCount = rule.maxCount || 1;
+		var hitCount = rule.getMaxCount();
 		var outputVal = 0;
 		// 計算攻擊力 x 輸出倍率
 		if (rule.valueBy == RuleValueByType.hp){
@@ -639,7 +640,7 @@ export class Battle{
 				newRule.value = outputVal.toString();
 				newRule.condition = null;
 				newRule.target = null;
-				this.battleTurns[targetName].addRule(newRule);
+				isAttackSuccess = this.battleTurns[targetName].addRule(newRule);
 			}
 		}
 		
@@ -651,12 +652,12 @@ export class Battle{
 		// Poison
 		if (rule.type == RuleType.poisonAttack){
 			var newRule = new Rule({type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal, turn: rule.poisonTurn});
-			this.enemyBattleTurn.addRule(newRule);
+			isAttackSuccess = this.enemyBattleTurn.addRule(newRule);
 		}
 		// Cont. Heal
 		else if (rule.type == RuleType.continueHeal){
 			var newRule = new Rule({type: RuleType.continueHealState, parentCardName: card.name, value: outputVal, turn: rule.turn});
-			this.battleTurns[card.name].addRule(newRule);
+			isAttackSuccess = this.battleTurns[card.name].addRule(newRule);
 		}
 
 		var enemyDamageVal = outputVal;
@@ -665,10 +666,13 @@ export class Battle{
 		}
 
 		if (rule.type == RuleType.support){
-			for (var i = 0; i < rule.turn; i++){
-				this.battleTurns[card.name].outputs[rule.type][currentTurn+i] = (this.battleTurns[card.name].outputs[rule.type][currentTurn+i] || 0) + outputVal;
-				this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] || 0) + outputVal;
-				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule);
+			// NOTE: fix support first, may still need too add "isAttackSuccess" to attack/heal/poison
+			if (isAttackSuccess){
+				for (var i = 0; i < rule.turn; i++){
+					this.battleTurns[card.name].outputs[rule.type][currentTurn+i] = (this.battleTurns[card.name].outputs[rule.type][currentTurn+i] || 0) + outputVal;
+					this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] || 0) + outputVal;
+					this.battleTurns[card.name].addRuleLog(currentTurn+i, rule);
+				}
 			}
 		}
 		else if (rule.type == RuleType.poisonAttack){
@@ -993,17 +997,8 @@ export class BattleTurn{
 		this.ruleLog = [];
 	}
 
-	addRule(newRule : Rule) : boolean{
-		// Always effective rule: check max count allowed
-		if (newRule.turn == Rule.ALWAYS_EFFECTIVE){
-			var currentCount = this.rules.filter(rule=>rule.id == newRule.id).length;
-			if (currentCount < newRule.maxCount){
-				this.rules.push(newRule);
-				return true;
-			}
-		}
-		// Rule will be consumed over time
-		else{
+	addRule(newRule : Rule) : boolean{ 
+		if (!RuleHelper.isRuleExceedMaxCount(newRule, this.rules)){
 			this.rules.push(newRule);
 			return true;
 		}

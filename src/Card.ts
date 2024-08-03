@@ -202,12 +202,20 @@ export class Team{
 		this.actionOrder = [];
 	}
 
-	addCard(card : Card){
-		if (card != null){
-			this.cards.push(card);
+	addCard(card : Card, pos: number){
+		if (card == null){
+			return;
 		}
-		this.position[this.cards.length] = card.name;
+		
+		this.cards.push(card);
 		this.actionOrder[this.cards.length-1] = card.name;
+
+		if (pos != null){
+            this.position[pos] = card.name;
+        }
+        else{
+            this.position[this.cards.length] = card.name;
+        }
 	}
 
 	updateActionOrder(names : string[]){
@@ -222,7 +230,7 @@ export class Team{
 	getCardByPos(posArr: number[]) : Card[]{
 		var cards : Card[] = [];
 		for (var pos of posArr){
-			if (this.cards.length >= pos){
+			if (this.position.length >= pos){
 				cards.push(this.getCard(this.position[pos]));
 			}
 		}
