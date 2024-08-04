@@ -14,7 +14,7 @@ export class Rule{
 	valueBy: RuleValueByType;
 	turn: number ;
 	poisonTurn: number;
-	maxCount: number;
+	maxCount: number | null = null;
 	target: RuleTarget | null = null;
 	condition: Condition[] | null = null ;
 	isCounterAttack: boolean = false;
@@ -31,7 +31,7 @@ export class Rule{
 	}
 
 	constructor({id = null, parentCardName = "", isPassive=false, type=RuleType.attack as RuleType as string, value, 
-		valueBy = RuleValueByType.atk as RuleValueByType, turn=50, poisonTurn=1, maxCount=1, skillType=SkillType.none as SkillType, 
+		valueBy = RuleValueByType.atk as RuleValueByType, turn=50, poisonTurn=1, maxCount=null, skillType=SkillType.none as SkillType, 
 		condition=null, target=null, isCounterAttack=false, isFollowUpAttack=false}){
 
 		this.id = id == null ? Rule.createId() : id;
@@ -95,6 +95,11 @@ export class Rule{
 		var cloneRule = this.clone();
 		cloneRule.isPassive = false;
 		return cloneRule;
+	}
+
+	getMaxCount(){
+		if (this.maxCount == null) return 1;
+		return this.maxCount;
 	}
 
 	isConditionsFulfilled(card: Card, team: Team, turnAction: TurnActionType, attackType : AttackType, turn: number) : boolean{
@@ -185,6 +190,10 @@ export class Rule{
 		return false;
 	}
 
+	isNoOverlayRule(){
+		return this.turn != Rule.ALWAYS_EFFECTIVE && this.maxCount != null;
+	}
+
 	getRuleApplyTarget(team: Team, card: Card) : string[] {
 		var cardNames = [];
 		if (this.target == null){
@@ -196,7 +205,7 @@ export class Rule{
 		return cardNames;
 	}
 
-	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=null, poisonTurn=1, maxCount=1, skillType=SkillType.none as SkillType, condition=null, target=null}, isPermRule = false) : Rule{
+	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=null, poisonTurn=1, maxCount=null, skillType=SkillType.none as SkillType, condition=null, target=null}, isPermRule = false) : Rule{
 		// Default values setup
 		if (isPermRule) {
 			isPassive = true;

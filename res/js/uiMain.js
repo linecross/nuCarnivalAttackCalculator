@@ -309,7 +309,7 @@ Vue.createApp({
 			for (var i =0; i<this.userInput.cardname.length; i++){
 				var card = this.cards[i];
 				if (card != null && this.userInput.isCardEnabled[i]){
-					team.addCard(card);
+					team.addCard(card, i+1);
 				}
 			}
 			

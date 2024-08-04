@@ -228,7 +228,7 @@
       "rarity": "N", "class": "攻擊", "element": "光", "potType": "NR卡",
       "baseHp": 4482, "baseAtk": 1174, "coolDown": 3,
       "img": "Dante_N_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
@@ -503,7 +503,7 @@
       "rarity": "R", "class": "攻擊", "element": "闇", "potType": "NR卡",
       "baseHp": 5230, "baseAtk": 1387, "coolDown": 3,
       "img": "Dante_R_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
@@ -778,7 +778,7 @@
       "rarity": "SR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 6190, "baseAtk": 1601, "coolDown": 3,
       "img": "Dante_SR_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
