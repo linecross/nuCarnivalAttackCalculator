@@ -190,6 +190,10 @@ export class Rule{
 		return false;
 	}
 
+	isNoOverlayRule(){
+		return this.turn != Rule.ALWAYS_EFFECTIVE && this.maxCount != null;
+	}
+
 	getRuleApplyTarget(team: Team, card: Card) : string[] {
 		var cardNames = [];
 		if (this.target == null){

@@ -631,9 +631,21 @@ export class Battle{
 			}
 			outputVal = Math.floor(atkVal * Util.getNumber(rule.value));
 		}
+
+		var outputStartTurn = 0;
 		// 輔助rule - 幫全隊加攻擊力增加buff
 		if (rule.type == RuleType.support){
 			var targetNames = rule.getRuleApplyTarget(this.team, card);
+
+			// ugly hardcode for 不可疊加
+			if (rule.isNoOverlayRule() && targetNames.length > 0){
+				var newRule = rule.cloneSimpleChild();
+				var existRule = this.battleTurns[targetNames[0]].rules.find(r => r.id == newRule.id);
+				if (existRule != null){
+					outputStartTurn = existRule.turn;
+				}
+			}
+
 			for (var targetName of targetNames){
 				var newRule = rule.cloneSimpleChild();
 				newRule.type = RuleType.atkUp;
@@ -668,7 +680,7 @@ export class Battle{
 		if (rule.type == RuleType.support){
 			// NOTE: fix support first, may still need too add "isAttackSuccess" to attack/heal/poison
 			if (isAttackSuccess){
-				for (var i = 0; i < rule.turn; i++){
+				for (var i = outputStartTurn; i < rule.turn; i++){
 					this.battleTurns[card.name].outputs[rule.type][currentTurn+i] = (this.battleTurns[card.name].outputs[rule.type][currentTurn+i] || 0) + outputVal;
 					this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] || 0) + outputVal;
 					this.battleTurns[card.name].addRuleLog(currentTurn+i, rule);
@@ -999,6 +1011,12 @@ export class BattleTurn{
 
 	addRule(newRule : Rule) : boolean{ 
 		if (!RuleHelper.isRuleExceedMaxCount(newRule, this.rules)){
+			this.rules.push(newRule);
+			return true;
+		}
+		// 不可疊加 - Repush rule
+		else if (newRule.isNoOverlayRule()){
+			this.rules = this.rules.filter(r => r.id != newRule.id);
 			this.rules.push(newRule);
 			return true;
 		}
