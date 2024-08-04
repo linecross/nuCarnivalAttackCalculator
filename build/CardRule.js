@@ -4,8 +4,9 @@ export class Rule {
     static createId() {
         return Rule.idCounter++;
     }
-    constructor({ id = null, parentCardName = "", isPassive = false, type = RuleType.attack, value, valueBy = RuleValueByType.atk, turn = 50, poisonTurn = 1, maxCount = 1, skillType = SkillType.none, condition = null, target = null, isCounterAttack = false, isFollowUpAttack = false }) {
+    constructor({ id = null, parentCardName = "", isPassive = false, type = RuleType.attack, value, valueBy = RuleValueByType.atk, turn = 50, poisonTurn = 1, maxCount = null, skillType = SkillType.none, condition = null, target = null, isCounterAttack = false, isFollowUpAttack = false }) {
         this.skillType = SkillType.none;
+        this.maxCount = null;
         this.target = null;
         this.condition = null;
         this.isCounterAttack = false;
@@ -67,6 +68,11 @@ export class Rule {
         var cloneRule = this.clone();
         cloneRule.isPassive = false;
         return cloneRule;
+    }
+    getMaxCount() {
+        if (this.maxCount == null)
+            return 1;
+        return this.maxCount;
     }
     isConditionsFulfilled(card, team, turnAction, attackType, turn) {
         if (this.condition == null || this.condition.length == 0) {
@@ -149,6 +155,9 @@ export class Rule {
         }
         return false;
     }
+    isNoOverlayRule() {
+        return this.turn != Rule.ALWAYS_EFFECTIVE && this.maxCount != null;
+    }
     getRuleApplyTarget(team, card) {
         var cardNames = [];
         if (this.target == null) {
@@ -159,7 +168,7 @@ export class Rule {
         }
         return cardNames;
     }
-    static loadRule({ isPassive = false, type = RuleType.attack, value, valueBy = RuleValueByType.atk, turn = null, poisonTurn = 1, maxCount = 1, skillType = SkillType.none, condition = null, target = null }, isPermRule = false) {
+    static loadRule({ isPassive = false, type = RuleType.attack, value, valueBy = RuleValueByType.atk, turn = null, poisonTurn = 1, maxCount = null, skillType = SkillType.none, condition = null, target = null }, isPermRule = false) {
         // Default values setup
         if (isPermRule) {
             isPassive = true;

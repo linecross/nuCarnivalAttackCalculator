@@ -165,12 +165,18 @@ export class Team {
         this.position = [];
         this.actionOrder = [];
     }
-    addCard(card) {
-        if (card != null) {
-            this.cards.push(card);
+    addCard(card, pos) {
+        if (card == null) {
+            return;
         }
-        this.position[this.cards.length] = card.name;
+        this.cards.push(card);
         this.actionOrder[this.cards.length - 1] = card.name;
+        if (pos != null) {
+            this.position[pos] = card.name;
+        }
+        else {
+            this.position[this.cards.length] = card.name;
+        }
     }
     updateActionOrder(names) {
         this.actionOrder = names;
@@ -182,7 +188,7 @@ export class Team {
     getCardByPos(posArr) {
         var cards = [];
         for (var pos of posArr) {
-            if (this.cards.length >= pos) {
+            if (this.position.length >= pos) {
                 cards.push(this.getCard(this.position[pos]));
             }
         }
