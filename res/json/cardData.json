@@ -3624,6 +3624,11 @@
           "value": 4,
           "target": { "type": "位置", "value": 5 }
         },
+        {
+          "type": "造成傷害增加",
+          "value": "34%",
+          "target": "全體"
+        },
         { "type": "輔助", "value": "31%", "turn": 4, "maxCount": 1, "target": "全體" },
         { "type": "治療", "value": "100%" }
       ],
@@ -3632,6 +3637,11 @@
           "type": "減少冷卻回合",
           "value": 4,
           "target": { "type": "位置", "value": 5 }
+        },
+        {
+          "type": "造成傷害增加",
+          "value": "34%",
+          "target": "全體"
         },
         {
           "type": "攻擊力增加",
@@ -3648,6 +3658,11 @@
           "target": { "type": "位置", "value": 5 }
         },
         {
+          "type": "造成傷害增加",
+          "value": "34%",
+          "target": "全體"
+        },
+        {
           "type": "攻擊力增加",
           "value": "34%",
           "target": { "type": "位置", "value": 5 }
@@ -3656,6 +3671,12 @@
         { "type": "治療", "value": "100%" }
       ],
       "star3Rule": [
+        {
+          "type": "減少冷卻回合",
+          "value": 4,
+          "turn": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        },
         {
           "type": "必殺技傷害增加",
           "value": "12%",
