@@ -15,6 +15,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js" integrity="sha512-TelkP3PCMJv+viMWynjKcvLsQzx6dJHvIGhfqzFtZKgAjKM1YPqcwzzDEoTc/BHjf43PcPzTQOjuTr4YdE8lNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js" integrity="sha512-7tWCgq9tTYS/QkGVyKrtLpqAoMV9XIUxoou+sPUypsaZx56cYR/qio84fPK9EvJJtKvJEwt7vkn6je5UVzGevw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<!-- <script src="https://cdn.jsdelivr.net/npm/dexie@4.0.1/dist/dexie.min.js" integrity="sha256-9M8EwPnRsCJkXKCyI02T3KQjZ+T2g/p9GTBTAaDVUTg=" crossorigin="anonymous"></script>
@@ -41,11 +42,11 @@
 					</span>
 					
 				</div>
-				<div class="row col-xs-16 col-md-15 col-lg-9">
+				<!-- <div class="row col-xs-16 col-md-15 col-lg-9">
 					<div class="alert alert-warning" role="alert">
 						<b>修正：流星．布儡技能追加3星被動第一回合減CD及必殺技有全體造傷34%</b>
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 			
@@ -231,7 +232,7 @@
 								</div>
 							</div>
 							<div class="card-panel row overflow-auto w-100" >
-								<table class="table resultTable">
+								<table id="damageRecordTable" class="table resultTable">
 									<thead>
 										<tr>
 											<th class="col-isFav" scope="col" @click="damageSort('isFav')">
@@ -337,6 +338,10 @@
 							</div>
 						</div>
 						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" @click="copyTableImage('damageRecordTable')">
+								表格截圖
+							</button>
+							｜
 							<div>
 								<button v-show="damageRecordPanel.manageMode == 'delete'" type="button" class="btn btn-danger mx-2" @click="showDeleteConfirmToast()" >
 									全部刪除
@@ -673,6 +678,12 @@
 								<label class="col-auto">總戰力值：{{getTeamBattlePower}}</label>
 							</div>
 							<div class="form-group mb-3 col-lg-9 text-end">
+								<template v-if="userInput.isAdvanceMode">
+									<button type="button" class="btn btn-primary" @click="copyTableImage('battleTurnTable')">
+										表格截圖
+									</button>
+									｜
+								</template>
 								<div class="form-check-inline">
 									<input class="form-control" type="text" inputmode="text" placeholder="隊伍名稱..." v-model="teamName">
 								</div>
@@ -684,7 +695,7 @@
 						</div>
 
 						<div class="table-responsive" >
-							<table class="table resultTable" :key="userInput.updateKey">
+							<table id="battleTurnTable" class="table resultTable" :key="userInput.updateKey">
 								<tbody>
 									<tr class="table-header">
 										<th scope="col" class="col-md-1">
@@ -729,11 +740,29 @@
 													</div>
 													<div class="card-name">{{userInput.cardname[idx]}}</div>
 												</div>
+												<div>
 												<div data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
 												:data-bs-content="getPassiveRuleSummary(name)">
 													<div>
 														<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
 													</div>
+												</div>
+												<div v-if="userInput.isCardEnabled[idx]" class="fa-stack card-order-icon dropdown">
+													<span data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="0,20">
+														<span class="fa fa-solid fa-flag fa-stack-2x"></span>
+														<span class="fa-stack-1x">{{ userInput.cardActionOrder[idx] }}</span>
+													</span>
+													<ul class="dropdown-menu">
+														<li><a class="dropdown-item text-center">行動順序</a></li>
+														<li><hr class="dropdown-divider"></li>
+														<li v-for="order in 5"><a class="dropdown-item text-center" @click="userInput.cardActionOrder[idx] = order">{{ order }}</a></li>
+													</ul>
+													<!-- <ul class="dropdown-menu">
+														<li><a class="dropdown-item text-center">行動模式</a></li>
+														<li><hr class="dropdown-divider"></li>
+														<li v-for="action in ACTION_PATTERN"><a class="dropdown-item text-center" @click="userInput.cardActionPattern[idx] = action">{{ action }}</a></li>
+													</ul> -->
+												</div>
 												</div>
 											</template>
 											</th>
@@ -930,6 +959,11 @@
 						<h5>功能更新</h5>
 
 						<textarea rows="8">
+[20240820]
+截圖功能：可以截取數值表格圖片到剪貼簿
+增加行動順序標誌旗子
+
+		
 [20240705]
 更正「攻擊時」「必殺時」「普攻時」條件觸發的順序
 改善血量條件：可以選擇允許、不允許或按照角色血量執行
