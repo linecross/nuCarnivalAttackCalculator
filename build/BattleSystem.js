@@ -110,9 +110,6 @@ export class Battle {
                     attackType = AttackType.Guard;
                 }
                 this.startRoundPerCard(attackType, card);
-                if (attackType == AttackType.SkillAttack) {
-                    this.battleTurns[card.name].skillCD = card.coolDown;
-                }
             }
             // Before end turn (eg. counter-attack, poison, continuos heal...)
             this.endRound(AttackType.None, this.team.getCardByActionOrder());
@@ -197,6 +194,7 @@ export class Battle {
         var attackRule = [].concat(card.attackRule);
         if (attackType == AttackType.SkillAttack) {
             attackRule = [].concat(card.skillRule);
+            this.battleTurns[card.name].skillCD = card.coolDown;
         }
         var hasProcessedEnemyPostAttack = false;
         var hasAttackEnemyAction = false;
