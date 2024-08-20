@@ -103,7 +103,7 @@ Vue.createApp({
 					turns: 14,
 					isShowTurns: true,
 					defaultStar: 'SSR3',
-					isCalcEnemyDebuff: false,
+					isCalcEnemyDebuff: true,
 					maxCounterAttack: 1,
 				},
 				general: {
@@ -1035,6 +1035,40 @@ Vue.createApp({
 			if (el != null){
 				el.scrollTop=0;
 			}
+		},
+		copyTableImage(id, retryCount = 0){
+			var table = document.getElementById(id);
+			if (table != null){
+				var vueObj = this;
+				if (retryCount == 0){
+					vueObj.showToast('截圖中...');
+				}
+				htmlToImage.toBlob(table).then(function (blob) {
+					navigator.clipboard.write([
+						new ClipboardItem({
+							'image/png': blob,
+						})
+					]).then(()=>{
+						vueObj.showToast('已複製至剪貼簿！');
+					}).catch(function (error) {
+						if (retryCount < 3){
+							vueObj.copyTableImage(id, ++retryCount);
+						}
+						else{
+							vueObj.showToast('截圖失敗，請再試一次！');
+						}
+					});
+				})
+				.catch(function (error) {
+					if (retryCount < 3){
+						vueObj.copyTableImage(id, ++retryCount);
+					}
+					else{
+						vueObj.showToast('截圖失敗，請再試一次！');
+					}
+					// console.error('Failed to copy image to clipboard!', error);
+				});
+			}
 		}
 	},
 	computed: {
@@ -1098,19 +1132,19 @@ Vue.createApp({
 
 			var sortBy = this.damageRecordPanel.sortBy;
 			if (sortBy == 'id'){
-				arr = arr.sort((e1, e2)=>e1.id > e2.id);
+				arr = arr.sort((e1, e2)=>e1.id - e2.id);
 			}
 			else if (sortBy == 'teamName'){
-				arr = arr.sort((e1, e2)=>e1.teamName > e2.teamName);
+				arr = arr.sort((e1, e2)=>e1.teamName - e2.teamName);
 			}
 			else if (sortBy == 'turns'){
-				arr = arr.sort((e1, e2)=>e1.turns > e2.turns);
+				arr = arr.sort((e1, e2)=>e1.turns - e2.turns);
 			}
 			else if (sortBy == 'totalDamage'){
-				arr = arr.sort((e1, e2)=>e1.totalDamage > e2.totalDamage);
+				arr = arr.sort((e1, e2)=>e1.totalDamage - e2.totalDamage);
 			}
 			else if (sortBy == 'isFav'){
-				arr = arr.sort((e1, e2)=>e1.isFav != e2.isFav ? e1.isFav : e1.id > e2.id);
+				arr = arr.sort((e1, e2)=>e1.isFav != e2.isFav ? e1.isFav : e1.id - e2.id);
 			}
 			else{ //sort by card name
 				var cardIdx = -1;
@@ -1126,7 +1160,7 @@ Vue.createApp({
 						if (e1.cards[cardIdx].name == e2.cards[cardIdx].name){
 							if (e1.cards[cardIdx].dmg == null) return -1;
 							else if (e2.cards[cardIdx].dmg == null) return 1;
-							else return e1.cards[cardIdx].dmg > e2.cards[cardIdx].dmg;
+							else return e1.cards[cardIdx].dmg - e2.cards[cardIdx].dmg;
 						}
 						else{
 							return e1.cards[cardIdx].name > e2.cards[cardIdx].name;
