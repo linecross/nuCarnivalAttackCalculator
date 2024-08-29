@@ -3697,6 +3697,104 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "滄鱗．八雲": {
+      "char": "八雲", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "水", "potType": "平均型",
+      "baseHp": 7507, "baseAtk": 2312, "coolDown": 4,
+      "img": "Yakumo_SSR_08.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到普攻傷害增加", "value": "51%", "condition": {"type": "被定位攻擊", "value": "妨礙"} }
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "51%", "condition": {"type": "被定位攻擊", "value": "妨礙"} }
+        },
+        { "type": "攻擊", "value": "247%" }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到普攻傷害增加", "value": "51%", "condition": {"type": "被定位攻擊", "value": "妨礙"} }
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "51%", "condition": {"type": "被定位攻擊", "value": "妨礙"} }
+        },
+        { "type": "必殺技傷害增加", "value": "31%", "target": { "type": "定位", "value": "妨礙" } },
+        { "type": "攻擊", "value": "296%" }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到普攻傷害增加", "value": "51%", "condition": {"type": "被定位攻擊", "value": "妨礙"} }
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "51%", "condition": {"type": "被定位攻擊", "value": "妨礙"} }
+        },
+        { "type": "必殺技傷害增加", "value": "31%", "target": { "type": "定位", "value": "妨礙" } },
+        { "type": "攻擊", "value": "345%" }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "23%" },
+        {
+          "type": "敵方受到必殺技傷害增加",
+          "value": "16%",
+          "turn": 1,
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        }
+      ],
+      "star5Rule": [
+        { "type": "必殺技傷害增加", "value": "25%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "滄鱗．玖夜": {
+      "char": "玖夜", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "闇", "potType": "ATK先行",
+      "baseHp": 11456, "baseAtk": 1494, "coolDown": 3,
+      "img": "Kuya_SSR_08.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "75%" }],
+      "skillLv1Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 3, "condition": {"type": "被屬性攻擊", "value": "闇"} }
+        },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "獲得護盾", "value": "20%", "valueBy": "HP"}
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 3, "condition": {"type": "被屬性攻擊", "value": "闇"} }
+        },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "獲得護盾", "value": "30%", "valueBy": "HP"},
+        { "type": "必殺技傷害增加", "value": "26%", "target": "全體" }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 3, "condition": {"type": "被屬性攻擊", "value": "闇"} }
+        },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "獲得護盾", "value": "40%", "valueBy": "HP"},
+        { "type": "必殺技傷害增加", "value": "26%", "target": "全體" }
+      ],
+      "star3Rule": [],
+      "star5Rule": [
+        {
+          "type": "最大HP增加",
+          "value": "17%"
+        }
+      ],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     }
 }
   
