@@ -560,7 +560,10 @@
 											<option v-for="pot in POT_SELECT" :value="pot">{{ pot }}</option>
 										</select>
 									</div>
-
+									<div v-if="userInput.isAdvanceMode" class="row">
+										<label class="col-auto">等級</label>
+										<input type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].level" ></input>
+									</div>
 									<div v-if="userInput.isAdvanceMode" class="row">
 										<label class="col-auto">HP</label>
 										<input v-if="this.userInput.isModifyCardVal" type="text" inputmode="numeric" class="col-auto form-control" v-model="cards[idx].hp" ></input>
