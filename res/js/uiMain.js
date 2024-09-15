@@ -72,6 +72,8 @@ Vue.createApp({
 				cardActionPattern: [ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately],
 				cardManualAction:[[],[],[],[],[]],
 				isCardEnabled: [true, true, true, true, true],
+				enemyName: '',
+				enemyCard: null,
 
 				updateKey: 0,
 				isAdvanceMode: true,
@@ -179,6 +181,16 @@ Vue.createApp({
 
 			this.loadCards();
 		});
+
+		fetch("./res/json/enemyData.json")
+		.then(resp => {
+			return resp.json();
+		})
+		.then(json => {
+			CardCenter.setEnemyData(json);
+			this.userInput.enemyName = "N/A";
+		});
+
 		this.loadSettingFromStorage();
 	},
 	mounted: function(){
@@ -261,6 +273,23 @@ Vue.createApp({
 		getCardnameByChar(char){
 			return CardCenter.getCardNameByChar(char);
 		},
+		getEnemyNames(){
+			if (this.userInput.enemyName == '' || CardCenter.getEnemyList().length == 0){
+				return ["N/A"];
+			}
+			var enemyList = CardCenter.getEnemyList();
+			enemyList.unshift("N/A");
+			return enemyList;
+		},
+		loadCurrentEnemyJson(){
+			if (this.userInput.enemyCard == null){
+				return;
+			}
+			var enemyJson = {};
+			enemyJson[this.userInput.enemyName] = CardCenter.getEnemyData()[this.userInput.enemyName];
+			this.inputJson = JSON.stringify(enemyJson);
+			this.switchTab('JSON');
+		},
 		loadCards(){
 			for (var i =0; i<this.userInput.cardname.length; i++){
 				var name = this.userInput.cardname[i];
@@ -327,12 +356,13 @@ Vue.createApp({
 			}
 			this.battle.team.updateActionOrder(this.getCardnameByActionOrder());
 
-			this.battle.init();
 			this.battle.counterAttackCount = this.userInput.maxCounterAttack;
 			this.battle.counterAttackMode = this.userInput.counterAttackMode;
+			this.battle.enemyCard = this.userInput.enemyCard;
 			this.battle.enemyElement = this.userInput.enemyElement;
 			this.battle.printEnemeyOption = this.userInput.isCalcEnemyDebuff;
 			this.battle.printOutputOption = this.userInput.printOutputMode;
+			this.battle.init();
 			
 			for (var i=0; i<this.cards.length; i++){
 				var card = this.cards[i];
@@ -747,7 +777,7 @@ Vue.createApp({
 			}
 			return false;
 		},
-		importJsonStr(){
+		importJsonStr(isEnemy = false){
 			// remove spaces and tab, convert quotes, add quotes
 			var cleanedStr = this.inputJson.replace(/[\r\n\t]/g, '').replace(/'/g, '"').replace(/(\w+):/g, '"$1":');
 			if (!cleanedStr.startsWith("{")){
@@ -759,7 +789,14 @@ Vue.createApp({
 
 			try {
 				var jsonObj = JSON.parse(cleanedStr);
-				CardCenter.addUserCardData(jsonObj);
+				if (isEnemy){
+					// var name = Object.keys(jsonObj);
+					// this.userInput.enemyCard = Card.loadCardFromJson(name, jsonObj[name]);
+					CardCenter.addUserEnemyData(jsonObj);
+				}
+				else{
+					CardCenter.addUserCardData(jsonObj);
+				}
 				this.importJsonResult = "已載入：" + Object.keys(jsonObj);
 			} catch(error){
 				this.importJsonResult = "載入失敗，請檢查格式是否正確";
@@ -1066,7 +1103,6 @@ Vue.createApp({
 					else{
 						vueObj.showToast('截圖失敗，請再試一次！');
 					}
-					// console.error('Failed to copy image to clipboard!', error);
 				});
 			}
 		}
@@ -1263,6 +1299,12 @@ Vue.createApp({
 			}
 			return result.sort().join(';');
 		},
+		enemyKilledTurn(){
+			if (this.userInput.enemyCard == null || this.battle == null){
+				return -1;
+			}
+			return this.battle.enemyKilledTurn;
+		},
 		teamShareURL(){
 			var url = window.location.host + window.location.pathname;
 			if (this.userInput.cardname.filter(e=>e.length>0).length == 0){
@@ -1332,6 +1374,23 @@ Vue.createApp({
 			this.updateBattle();
 		},
 		'userInput.enemyElement'(newVal, oldVal){
+			this.updateBattle();
+		},
+		'userInput.enemyName'(newVal, oldVal){
+			if (newVal != null && newVal.length > 0){
+				this.userInput.enemyCard = CardCenter.getEnemyCard(newVal);
+				if (this.userInput.enemyCard != null && this.userInput.enemyCard.element != null && this.userInput.enemyCard.element != Element.NA){
+					this.userInput.enemyElement = this.userInput.enemyCard.element;
+				}
+				else{
+					this.userInput.enemyCard = null;
+					this.userInput.enemyElement = Element.NA;
+				}
+			}
+			else{
+				this.userInput.enemyCard = null;
+				this.userInput.enemyElement = Element.NA;
+			}
 			this.updateBattle();
 		},
 		'userInput.isCalcEnemyDebuff'(newVal, oldVal){

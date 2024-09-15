@@ -612,7 +612,26 @@
 					
 					<hr>
 					<div class="row mt-2 mb-2">
-						<div class="form-group  mb-3 col-lg-11">
+						<div  v-if="userInput.isAdvanceMode" class="form-group mb-3 col-lg-11">
+							<span class="form-check-inline">
+								<label for="inputEnemyName">選擇敵人</label> <span class="badge text-bg-warning">實驗性功能</span> <br/>
+								<select id="inputEnemyName" class="form-select" v-model="userInput.enemyName">
+									<option v-for="enemy in getEnemyNames()" :value="enemy">{{ enemy }}</option>
+								</select>
+							</span>
+							
+							<span v-if="userInput.enemyCard != null && userInput.enemyCard.hp != null" class="form-check-inline">
+								<span class="verticalLine"></span>
+								敵人血量：{{ userInput.enemyCard.hp }}
+								
+							</span>
+							<span class="verticalLine"></span>
+							<span class="form-check-inline">
+								<button type="button" class="btn btn-primary" @click="loadCurrentEnemyJson">檢視敵人json</button>
+							</span>
+						</div>
+
+						<div class="form-group mb-3 col-lg-11">
 							<span class="form-check-inline">
 								<label for="inputIsCalcEnemyDebuff">計算敵方易傷</label><br/>
 								<input class="form-check-input" type="checkbox" id="inputIsCalcEnemyDebuff" :checked="userInput.isCalcEnemyDebuff" v-model="userInput.isCalcEnemyDebuff">
@@ -773,7 +792,15 @@
 									</tr>
 									<template v-if="userInput.isShowTurns && battle != null">
 										<tr v-for="turn in userInput.turns">
-											<td scope="row" class="col-md-1">{{ turn }}</td>
+											<td v-if="turn == enemyKilledTurn" scope="row" class="col-md-1 victoryTurn" data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
+											:data-bs-content="'【Victory】戰勝 ' + userInput.enemyCard.name + '！'">
+												{{ turn }}
+											</td>
+											<td v-else scope="row" class="col-md-1">
+												{{ turn }}
+											</td>
+											
+
 											<template v-for="card in cards" :key="card">
 												<td scope="row" :class="'col-md-2' + getTdClass(card, turn)" @click="changeAttackType(card, turn)"
 												data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-html="true" 
@@ -845,8 +872,12 @@
 								<textarea rows="10" v-model="inputJson"></textarea>
 							</div>
 							<div class="col-md-9 row mb-2 mt-2">
-								<button type="button" class="btn btn-primary" @click="importJsonStr">匯入</button>
+								<button type="button" class="btn btn-primary" @click="importJsonStr">匯入隊友</button>
 							</div>
+							<div class="col-md-9 row mb-2 mt-2">
+								<button type="button" class="btn btn-danger" @click="importJsonStr(true)">匯入敵人</button>
+							</div>
+							
 							<div v-if="importJsonResult.length > 0" class="col-md-9 row mb-2 mt-2 alert alert-info">{{ importJsonResult }}</div>
 						</div>
 					</div>
@@ -916,6 +947,9 @@
 
 						<textarea rows="8">
 [20240808]
+修正卡片資料：SR八雲－潛力類型是平均型
+
+[20240808]
 修正卡片資料：星布的3星被動－第一回合減CD，以及技能多了「全體造成傷害增加34%」
 
 [20240804]
@@ -962,6 +996,12 @@
 						<h5>功能更新</h5>
 
 						<textarea rows="8">
+[20240915]
+選擇敵人功能：可以自訂敵人及選擇敵人
+僅支援簡單功能，例：敵人的血量、屬性、第n回合的降攻/減傷能力
+尚未支援/不支援：敵人的護盾、補血、鎖血、鎖血觸發等等
+
+
 [20240820]
 截圖功能：可以截取數值表格圖片到剪貼簿
 增加行動順序標誌旗子

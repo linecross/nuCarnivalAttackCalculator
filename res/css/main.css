@@ -936,3 +936,11 @@ body{
 .theme-dark .card-order-icon .fa-stack-1x {
     color: #000;
 }
+
+td.victoryTurn{
+    font-weight: 900;
+    background-color: #ffed8b;
+}
+.theme-dark td.victoryTurn{
+    background-color: #897c36;
+}

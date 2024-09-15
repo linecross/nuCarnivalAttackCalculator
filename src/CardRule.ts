@@ -406,7 +406,6 @@ export class Condition{
 				return false;
 			}
 			var condHpPercent = Util.getPercentNumber(this.value.toString());
-			console.info(condHpPercent);
 			if (this.type == ConditionType.hpHigher && card.currentHp > condHpPercent){
 				return true;
 			}
@@ -423,7 +422,13 @@ export class Condition{
 			return charAttackType == AttackType.BasicAttack || charAttackType == AttackType.SkillAttack;
 		}
 		else if (this.type == ConditionType.everyTurn){
-			return ((currentTurn-1) % (this.value as number)) == 0;
+			if (Array.isArray(this.value)){
+				var numValArr = this.value as number[];
+				return ((currentTurn - numValArr[1]) % numValArr[0]) == 0;
+			}
+			else{
+				return ((currentTurn-1) % (this.value as number)) == 0;
+			}
 		}
 		else if (this.type == ConditionType.atTurn){
 			if (Array.isArray(this.value)){

@@ -16,6 +16,7 @@ export class Card{
 
 	hp: number;
 	atk: number;
+	remainHp: number;
 	currentHp: number = 100; // percentage
 
 	level: number = 60
@@ -277,12 +278,39 @@ export class Team{
 export class CardCenter{
 	private static cardData: {} = {};
 	private static userCardData: {} = {};
+	private static enemyCardData: {} = {};
+	private static userEnemyCardData: {} = {};
 
 	static setMainCardData(obj:{}){
 		CardCenter.cardData = obj;
 	}
 	static addUserCardData(newObj:{}){
 		CardCenter.concatData(CardCenter.userCardData, newObj);
+	}
+
+	static setEnemyData(obj:{}){
+		CardCenter.enemyCardData = obj;
+	}
+	static addUserEnemyData(newObj:{}){
+		CardCenter.concatData(CardCenter.userEnemyCardData, newObj);
+	}
+	static getEnemyData(){
+		if (Object.keys(CardCenter.userEnemyCardData).length === 0){
+			return CardCenter.enemyCardData;
+		}
+		var fullCardData = JSON.parse(JSON.stringify(CardCenter.enemyCardData));
+		fullCardData = CardCenter.concatData(fullCardData, CardCenter.userEnemyCardData);
+		return fullCardData;
+	}
+	static getEnemyList(){
+		return Object.keys(CardCenter.getEnemyData());
+	}
+	static getEnemyCard(key: string){
+		var fullEnemyData = CardCenter.getEnemyData();
+		if (fullEnemyData[key] != null){
+			return Card.loadCardFromJson(key, fullEnemyData[key]);
+		}
+		return null;
 	}
 
 	private static concatData(o1:{}, o2:{}) : {}{
