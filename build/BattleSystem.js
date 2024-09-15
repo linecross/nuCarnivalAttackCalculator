@@ -39,6 +39,15 @@ export class Battle {
             this.initBattleRules(this.team, card);
             // this.battleTurns[card.name].setActionPattern(this.turns, card);
         }
+        if (this.enemyCard != null) {
+            this.enemyCard.currentHp = 100;
+            this.enemyCard.remainHp = this.enemyCard.hp;
+            this.enemyKilledTurn = 0;
+            this.battleTurns[this.enemyCard.name] = this.enemyBattleTurn;
+            if (this.enemyCard.star3Rule.length > 0) {
+                this.initBattleRules(this.team, this.enemyCard);
+            }
+        }
     }
     setActionPattern(cardName, pattern) {
         this.battleTurns[cardName].actionPattern = pattern;
@@ -116,6 +125,9 @@ export class Battle {
             // Count down Skill CD
             for (var card of this.team.getCardByActionOrder()) {
                 this.battleTurns[card.name].countDownCDPerRound();
+            }
+            if (this.enemyCard != null && this.enemyKilledTurn <= 0 && this.enemyCard.remainHp <= 0) {
+                this.enemyKilledTurn = turn;
             }
         }
     }
@@ -326,6 +338,10 @@ export class Battle {
                 }
                 this.battleTurns[card.name].outputs[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].outputs[RuleType.poisonAttack][this.currentTurn] || 0) + outputVal;
                 this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] || 0) + enemyDamageVal;
+                if (this.enemyCard != null) {
+                    this.enemyCard.remainHp -= this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn];
+                    this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;
+                }
             }
             // 持續治療
             var contHealRules = this.battleTurns[card.name].rules.filter((e) => e.type == RuleType.continueHealState && e.parentCardName == card.name);
@@ -612,6 +628,10 @@ export class Battle {
             this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal * hitCount;
             this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
             this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
+            if (this.enemyCard != null && rule.type == RuleType.attack) {
+                this.enemyCard.remainHp -= this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
+                this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;
+            }
         }
         return true;
     }

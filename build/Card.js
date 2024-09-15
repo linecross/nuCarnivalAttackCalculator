@@ -230,6 +230,30 @@ export class CardCenter {
     static addUserCardData(newObj) {
         CardCenter.concatData(CardCenter.userCardData, newObj);
     }
+    static setEnemyData(obj) {
+        CardCenter.enemyCardData = obj;
+    }
+    static addUserEnemyData(newObj) {
+        CardCenter.concatData(CardCenter.userEnemyCardData, newObj);
+    }
+    static getEnemyData() {
+        if (Object.keys(CardCenter.userEnemyCardData).length === 0) {
+            return CardCenter.enemyCardData;
+        }
+        var fullCardData = JSON.parse(JSON.stringify(CardCenter.enemyCardData));
+        fullCardData = CardCenter.concatData(fullCardData, CardCenter.userEnemyCardData);
+        return fullCardData;
+    }
+    static getEnemyList() {
+        return Object.keys(CardCenter.getEnemyData());
+    }
+    static getEnemyCard(key) {
+        var fullEnemyData = CardCenter.getEnemyData();
+        if (fullEnemyData[key] != null) {
+            return Card.loadCardFromJson(key, fullEnemyData[key]);
+        }
+        return null;
+    }
     static concatData(o1, o2) {
         for (var key of Object.keys(o2)) {
             o1[key] = o2[key];
@@ -274,4 +298,6 @@ export class CardCenter {
 }
 CardCenter.cardData = {};
 CardCenter.userCardData = {};
+CardCenter.enemyCardData = {};
+CardCenter.userEnemyCardData = {};
 //# sourceMappingURL=Card.js.map
