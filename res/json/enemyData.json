@@ -1,0 +1,24 @@
+{
+  "【活動】人魚祭祀03．玖夜": {
+    "name": "BOSS－嘲笑譏諷　玖夜", "element": "闇", "hp": 363273,
+    "star3Rule": [
+      { "type": "敵方受到傷害增加", "value": "-75%", "condition": { "type": "每n回合", "value": [6, 4] }, "turn": 3 }
+    ]
+  },
+  "【忘卻SP】SP4．魔王伊得": {
+    "name": "BOSS－詭秘之力(?) 伊得", "element": "闇", "hp": 938626,
+    "star3Rule": [
+      {
+        "type": "我方獲得技能",
+        "value": {
+          "type": "攻擊力增加",
+          "value": "-1.5%",
+          "condition": "攻擊時",
+          "maxCount": 50,
+          "turn": 99
+        },
+        "condition": { "type": "第n回合", "value": 1 }
+      }
+    ]
+  }
+}

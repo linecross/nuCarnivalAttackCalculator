@@ -598,7 +598,7 @@
     },
     "SR八雲": {
       "char": "八雲", "fullname": null, "alias": null,
-      "rarity": "SR", "class": "治療", "element": "火", "potType": "ATK先行",
+      "rarity": "SR", "class": "治療", "element": "火", "potType": "平均型",
       "baseHp": 6155, "baseAtk": 1636, "coolDown": 3,
       "img": "Yakumo_SR_01.jpg",
       "attackRule": [{ "type": "治療", "value": "75%" }],
