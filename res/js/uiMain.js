@@ -287,7 +287,7 @@ Vue.createApp({
 			}
 			var enemyJson = {};
 			enemyJson[this.userInput.enemyName] = CardCenter.getEnemyData()[this.userInput.enemyName];
-			this.inputJson = JSON.stringify(enemyJson);
+			this.inputJson = JSON.stringify(enemyJson, null, 2);
 			this.switchTab('JSON');
 		},
 		loadCards(){
@@ -535,6 +535,35 @@ Vue.createApp({
 				}
 			}
 			return title+summary.join('<br />');
+		},
+		getTurnPopMessage(turn){
+			var msgList = [];
+			if (this.userInput.enemyCard == null || this.battle == null){
+				return '';
+			}
+			msgList.push('<span class="info-title"><b><u>'+this.userInput.enemyCard.name+'(T'+turn+')</u></b></span>');
+			msgList.push('血量：'+this.battle.getEnemyTurnHpValue(turn)+'（'+this.battle.getEnemyTurnHpPercent(turn)+'%）');
+			if (turn == this.battle.enemyKilledTurn){
+				msgList.push('<span class="info-attack">Victory - 戰勝 ' + this.userInput.enemyCard.name + '！</span>');
+			}
+			return msgList.join('<br />');
+		},
+		getTurnClass(turn){
+			if (this.userInput.enemyCard == null || this.battle == null){
+				return '';
+			}
+			if (turn == this.battle.enemyKilledTurn){
+				return 'victoryTurn';
+			}
+			
+			if (this.userInput.enemyCard.hpLock != null){
+				var currentHpPercent = this.battle.getEnemyTurnHpPercent(turn)+'%';
+				var prevHpPercent = this.battle.getEnemyTurnHpPercent(turn-1)+'%';
+				if (currentHpPercent != prevHpPercent && this.userInput.enemyCard.hpLock.includes(currentHpPercent)){
+					return 'hpLockTurn';
+				}
+			}
+			return '';
 		},
 		isCardInBattle(card){
 			if (card == null){
@@ -1298,12 +1327,6 @@ Vue.createApp({
 				}
 			}
 			return result.sort().join(';');
-		},
-		enemyKilledTurn(){
-			if (this.userInput.enemyCard == null || this.battle == null){
-				return -1;
-			}
-			return this.battle.enemyKilledTurn;
 		},
 		teamShareURL(){
 			var url = window.location.host + window.location.pathname;

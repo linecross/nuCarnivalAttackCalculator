@@ -623,12 +623,15 @@
 							<span v-if="userInput.enemyCard != null && userInput.enemyCard.hp != null" class="form-check-inline">
 								<span class="verticalLine"></span>
 								敵人血量：{{ userInput.enemyCard.hp }}
-								
 							</span>
 							<span class="verticalLine"></span>
 							<span class="form-check-inline">
 								<button type="button" class="btn btn-primary" @click="loadCurrentEnemyJson">檢視敵人json</button>
 							</span>
+							<div v-if="userInput.enemyCard != null && userInput.enemyCard.description != null" class="enemyDescription">
+								<div class="title">機制說明</div>
+								<div class="desc"><pre>{{ userInput.enemyCard.description }}</pre></div>
+							</div>
 						</div>
 
 						<div class="form-group mb-3 col-lg-11">
@@ -792,8 +795,8 @@
 									</tr>
 									<template v-if="userInput.isShowTurns && battle != null">
 										<tr v-for="turn in userInput.turns">
-											<td v-if="turn == enemyKilledTurn" scope="row" class="col-md-1 victoryTurn" data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
-											:data-bs-content="'【Victory】戰勝 ' + userInput.enemyCard.name + '！'">
+											<td v-if="userInput.enemyCard != null" scope="row" class="col-md-1" :class="getTurnClass(turn)" data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
+											:data-bs-content="getTurnPopMessage(turn)">
 												{{ turn }}
 											</td>
 											<td v-else scope="row" class="col-md-1">
