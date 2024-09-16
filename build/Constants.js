@@ -50,8 +50,9 @@ export const RuleType = {
     // 較複雜的技能規則
     appendRule: '我方獲得技能',
     enemyAppendRule: '敵方獲得技能',
-    // 不會在計算機生效的被動（純記錄）
+    // Boss專用
     getShield: '獲得護盾',
+    // 不會在計算機生效的被動（純記錄）
     takeLessDamage: '受到傷害減少',
     takeLessDamageByGuard: '防禦減傷增加',
     moreRecovery: '受到回復量增加',
@@ -60,7 +61,7 @@ export const RuleType = {
     immuneSleep: '免疫睡眠',
     immuneSilence: '免疫沈默'
 };
-export const RuleValueByType = { atk: 'ATK', hp: 'HP', baseAtk: '基礎攻擊力' };
+export const RuleValueByType = { atk: 'ATK', hp: 'HP', baseAtk: '基礎攻擊力', exactVal: '絕對數值' };
 export const AttackType = { BasicAttack: '普攻', SkillAttack: '必殺技', Guard: '防禦', None: 'NONE' };
 export const ConditionType = {
     hasChar: '角色在場',
@@ -79,7 +80,8 @@ export const ConditionType = {
     enemyIsAttacked: '被攻擊時',
     enemyIsAttackByChar: '被角色攻擊',
     enemyIsAttackByClass: '被定位攻擊',
-    enemyIsAttackByElement: '被屬性攻擊'
+    enemyIsAttackByElement: '被屬性攻擊',
+    enemyHpTrigger: '血量機制'
 };
 export const TargetType = {
     self: '自己',

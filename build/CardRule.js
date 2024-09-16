@@ -400,6 +400,20 @@ export class Condition {
                 return valArr.includes(card.element);
             }
         }
+        else if (this.type == ConditionType.enemyHpTrigger) { // Boss專用：血量機制
+            if (!card.isEnemy)
+                return false;
+            var condHpPercentArr = Array.isArray(this.value) ? this.value : [this.value];
+            if (condHpPercentArr.length == 1) {
+                condHpPercentArr.unshift("0%");
+            }
+            var condLowerHp = Util.getPercentNumber(condHpPercentArr[0]);
+            var condUpperHp = Util.getPercentNumber(condHpPercentArr[1]);
+            if (condLowerHp < card.currentHp * 100 && card.currentHp * 100 <= condUpperHp) {
+                return true;
+            }
+            return false;
+        }
         return false;
     }
     getFulfillTimes(card, team, turnAction, charAttackType, currentTurn) {

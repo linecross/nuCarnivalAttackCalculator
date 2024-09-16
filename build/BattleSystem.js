@@ -40,9 +40,17 @@ export class Battle {
             // this.battleTurns[card.name].setActionPattern(this.turns, card);
         }
         if (this.enemyCard != null) {
-            this.enemyCard.currentHp = 100;
+            this.enemyCard.isEnemy = true;
+            this.enemyCard.currentHp = 1;
             this.enemyCard.remainHp = this.enemyCard.hp;
             this.enemyKilledTurn = 0;
+            this.enemyCard.hpLock.sort(function (a, b) {
+                return a.localeCompare(b, undefined, {
+                    numeric: true,
+                    sensitivity: 'base'
+                });
+            }).reverse();
+            this.enemyCard.battleHpLock = [...this.enemyCard.hpLock];
             this.battleTurns[this.enemyCard.name] = this.enemyBattleTurn;
             if (this.enemyCard.star3Rule.length > 0) {
                 this.initBattleRules(this.team, this.enemyCard);
@@ -368,6 +376,40 @@ export class Battle {
                 this.battleTurns[card.name].enemyDamage[RuleType.continueHeal][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.continueHeal][this.currentTurn] || 0) + outputVal;
             }
         }
+        if (this.enemyCard != null) {
+            // Calculate Enemy HP - Lock HP
+            if (this.enemyCard.battleHpLock.length > 0) {
+                var nextLockHpPercent = Util.getNumber(this.enemyCard.battleHpLock[0]);
+                var nextLockHpVal = Math.floor(this.enemyCard.hp * nextLockHpPercent);
+                if (this.enemyCard.currentHp <= nextLockHpPercent) {
+                    this.enemyCard.battleHpLock.shift();
+                    this.enemyCard.currentHp = nextLockHpPercent;
+                    this.enemyCard.remainHp = nextLockHpVal;
+                }
+            }
+            // Calculate Enemy HP - 0%
+            if (this.enemyCard.remainHp <= 0) {
+                this.enemyCard.currentHp = 0;
+                this.enemyCard.remainHp = 0;
+            }
+            // Enemy action
+            if (this.enemyCard.remainHp > 0) {
+                var card = this.enemyCard;
+                var attackRule = [].concat(card.attackRule);
+                attackRule = attackRule.filter((r) => r.isConditionsFulfilled(card, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn));
+                for (var rule of attackRule) {
+                    if (Battle.OUTPUT_TYPES.has(rule.type)) {
+                        this.attack(attackType, rule, card);
+                    }
+                    else {
+                        this.addRuleToTargets(rule, card, attackType);
+                        this.processRule(rule, card, attackType);
+                        this.addBuffToTargets(rule, card, attackType);
+                    }
+                }
+            }
+            this.enemyBattleTurn.hp[this.currentTurn] = this.enemyCard.remainHp;
+        }
     }
     filterBuffs(rules, atkRule, ruleType, attackType, isEnemy = false) {
         var filtered = rules.filter(r => isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
@@ -552,7 +594,10 @@ export class Battle {
         var hitCount = rule.getMaxCount();
         var outputVal = 0;
         // 計算攻擊力 x 輸出倍率
-        if (rule.valueBy == RuleValueByType.hp) {
+        if (rule.valueBy == RuleValueByType.exactVal) {
+            outputVal = Math.floor(Util.getNumber(rule.value));
+        }
+        else if (rule.valueBy == RuleValueByType.hp) {
             outputVal = Math.floor((Math.floor(hp * (1 + Util.getNumber(buffs[RuleType.hpUp])))) * Util.getNumber(rule.value));
         }
         else {
@@ -625,15 +670,38 @@ export class Battle {
             }
         }
         else {
-            this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal * hitCount;
-            this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
-            this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
+            if (!card.isEnemy) {
+                this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal * hitCount;
+                this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
+                this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
+            }
             if (this.enemyCard != null && rule.type == RuleType.attack) {
-                this.enemyCard.remainHp -= this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
+                this.enemyCard.remainHp -= card.isEnemy ? (enemyDamageVal * hitCount) : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
+                if (this.enemyCard.remainHp < 0)
+                    this.enemyCard.remainHp = 0;
+                this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;
+            }
+            if (card.isEnemy && rule.type == RuleType.heal) {
+                this.enemyCard.remainHp += (enemyDamageVal * hitCount);
+                if (this.enemyCard.remainHp > this.enemyCard.hp)
+                    this.enemyCard.remainHp = this.enemyCard.hp;
                 this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;
             }
         }
         return true;
+    }
+    getEnemyTurnHpValue(turn) {
+        if (this.enemyCard == null || this.enemyCard.hp == null) {
+            return null;
+        }
+        return this.enemyBattleTurn.hp[turn];
+    }
+    getEnemyTurnHpPercent(turn) {
+        if (this.enemyCard == null || this.enemyCard.hp == null) {
+            return null;
+        }
+        var remainHp = this.enemyBattleTurn.hp[turn];
+        return Math.round(remainHp / this.enemyCard.hp * 10000) / 100;
     }
     getTurnValue(cardname, turn, outputOption) {
         var card = this.team.getCard(cardname);
@@ -911,6 +979,7 @@ Battle.LOG_EXCLUDE_TURNACTIONTYPE = new Set([TurnActionType.beforeAction, TurnAc
 export class BattleTurn {
     constructor(cardName) {
         this.cardName = cardName;
+        this.hp = [];
         this.skillCD = 0;
         this.action = [];
         this.actionPattern = ActionPattern.Immediately;

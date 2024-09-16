@@ -2,7 +2,11 @@ import { Rarity, PotentialType, GAME_CONFIG } from './Constants.js';
 import { Rule } from './CardRule.js';
 export class Card {
     constructor(name, char, rarity) {
+        this.isEnemy = false;
+        this.hpLock = [];
+        this.battleHpLock = [];
         this.currentHp = 100; // percentage
+        this.shield = 0;
         this.level = 60;
         this.star = 5;
         this.bond = 5;
@@ -80,11 +84,17 @@ export class Card {
         if (this.atk != null) {
             return Math.floor(this.atk);
         }
+        if (this.baseAtk == null) {
+            return 0;
+        }
         return this.getCardVal(this.baseAtk, this.getAtkPotential());
     }
     getHp() {
         if (this.hp != null) {
             return Math.floor(this.hp);
+        }
+        if (this.baseHp == null) {
+            return 0;
         }
         return this.getCardVal(this.baseHp, this.getHpPotential());
     }
