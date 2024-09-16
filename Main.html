@@ -614,7 +614,7 @@
 					<div class="row mt-2 mb-2">
 						<div  v-if="userInput.isAdvanceMode" class="form-group mb-3 col-lg-11">
 							<span class="form-check-inline">
-								<label for="inputEnemyName">選擇敵人</label> <span class="badge text-bg-warning">實驗性功能</span> <br/>
+								<h5><label for="inputEnemyName">選擇敵人</label> <span class="badge text-bg-warning">實驗性功能</span> </h5><br/>
 								<select id="inputEnemyName" class="form-select" v-model="userInput.enemyName">
 									<option v-for="enemy in getEnemyNames()" :value="enemy">{{ enemy }}</option>
 								</select>
