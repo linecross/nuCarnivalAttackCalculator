@@ -796,10 +796,10 @@
 									<template v-if="userInput.isShowTurns && battle != null">
 										<tr v-for="turn in userInput.turns">
 											<td v-if="userInput.enemyCard != null" scope="row" class="col-md-1" :class="getTurnClass(turn)" data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
-											:data-bs-content="getTurnPopMessage(turn)">
+											:data-bs-content="getTurnPopMessage(turn)" @click="changeAllAttackType(turn)">
 												{{ turn }}
 											</td>
-											<td v-else scope="row" class="col-md-1">
+											<td v-else scope="row" class="col-md-1" @click="changeAllAttackType(turn)">
 												{{ turn }}
 											</td>
 											
