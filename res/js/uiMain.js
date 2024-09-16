@@ -610,6 +610,38 @@ Vue.createApp({
 				return ' guard';
 			}
 		},
+		changeAllAttackType(turn){
+			var targetAction = null;
+			var hasChanged = false;
+			for (var idx=0; idx<5; idx++){
+				var card = this.cards[idx];
+				var actionPattern = this.userInput.cardActionPattern[idx];
+				if (card == null || (actionPattern != ActionPattern.Manual && actionPattern != ActionPattern.BruteForce)){
+					continue;
+				}
+				var actionArr = this.userInput.cardManualAction[idx];
+				var action = actionArr[turn] == null ? 'A' : actionArr[turn];
+				if (action == 'A') targetAction = 'S';
+				else if (action == 'S') targetAction = 'G';
+				else if (action == 'G') targetAction = 'A';
+				break;
+			}
+			for (var card of this.cards){
+				if (card != null){
+					var idx = this.getIndexByCardname(card.name);
+					var actionPattern = this.userInput.cardActionPattern[idx];
+					if (actionPattern != ActionPattern.Manual && actionPattern != ActionPattern.BruteForce){
+						return;
+					}
+					var actionArr = this.userInput.cardManualAction[idx];
+					actionArr[turn] = targetAction;
+					hasChanged = true;
+				}
+			}
+			if (hasChanged){
+				this.setupBattle();
+			}
+		},
 		changeAttackType(card, turn){
 			if (card == null){
 				return;
