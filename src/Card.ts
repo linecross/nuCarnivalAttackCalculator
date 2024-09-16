@@ -11,6 +11,10 @@ export class Card{
 	element: Element;
 	potType: PotentialType;
 
+	isEnemy: boolean = false;
+	hpLock: string[] = [];
+	battleHpLock: string[] = [];
+
 	baseHp: number ;
 	baseAtk: number ;
 
@@ -18,8 +22,9 @@ export class Card{
 	atk: number;
 	remainHp: number;
 	currentHp: number = 100; // percentage
+	shield: number = 0;
 
-	level: number = 60
+	level: number = 60;
 	star: number = 5;
 	bond: number = 5;
 	potential: number = 12;
@@ -107,12 +112,18 @@ export class Card{
 		if (this.atk != null){
 			return Math.floor(this.atk);
 		}
+		if (this.baseAtk == null){
+			return 0;
+		}
 		return this.getCardVal(this.baseAtk, this.getAtkPotential());
 	}
 
 	getHp() : number{
 		if (this.hp != null){
 			return Math.floor(this.hp);
+		}
+		if (this.baseHp == null){
+			return 0;
 		}
 		return this.getCardVal(this.baseHp, this.getHpPotential());
 	}

@@ -944,3 +944,28 @@ td.victoryTurn{
 .theme-dark td.victoryTurn{
     background-color: #897c36;
 }
+td.hpLockTurn{
+    font-weight: 900;
+    background-color: #c1cdff;
+}
+.theme-dark td.hpLockTurn{
+    background-color: #496aab;
+}
+
+
+.enemyDescription{
+    border-top: 1px solid #8d8d8d98;
+    border-bottom: 1px solid #8d8d8d98;
+    margin: 5px 0;
+    padding: 0.8rem;
+}
+.enemyDescription .title{
+    font-weight: 900;
+    text-decoration: underline;
+    margin-bottom: 0.5rem;
+}
+.enemyDescription pre{
+    margin: 0;
+    font-size: 1rem;
+    font-family: 'Roboto', 'Noto Sans TC', '微軟正黑體', 'Arial', sans-serif;
+}
