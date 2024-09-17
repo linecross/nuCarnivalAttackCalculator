@@ -32,7 +32,8 @@ export class Battle{
 	static UNUSED_RULE_TYPES : Set<RuleType> = new Set([RuleType.immuneParalysis, RuleType.immuneSilence, RuleType.immuneSleep, 
 		RuleType.takeLessDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery, 
 		RuleType.enemyLessDamage]);
-	static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set([RuleType.getShield]);
+	// static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set([RuleType.getShield]);
+	static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set();
 
 	static ACTION_ACCEPT_BUFFS = {
 		[RuleType.attack]: [RuleType.atkUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, 
@@ -193,6 +194,34 @@ export class Battle{
 		var attackRules = rules.filter(r=>!r.isPostAttackRule());
 		return attackRules;
 	}
+
+	damageToEnemy(damage: number, isPoison = false){
+		if (this.enemyCard == null || this.enemyCard.remainHp <= 0){
+			return;
+		}
+		// TODO: 防禦狀態
+
+		// 護盾
+		if (RuleHelper.hasShield(this.enemyBattleTurn.rules)){
+			var shields = RuleHelper.getShieldRules(this.enemyBattleTurn.rules);
+			for (var shield of shields){
+				var shieldVal = Util.getNumber(shield.value);
+				if (shieldVal > damage){
+					shield.value = '' + (shieldVal - damage);
+					damage = 0;
+					break;
+				}
+				else{
+					damage = damage - shieldVal;
+					shield.value = '0';
+				}
+			}
+		}
+		if (damage > 0){
+			this.enemyCard.minusRemainHp(damage);
+		}
+	}
+
 
 	beforeRound(attackType: AttackType, cards: Card[]){
 		this.currentTurnAction = TurnActionType.beforeTurn;
@@ -372,6 +401,48 @@ export class Battle{
 	endRound(attackType: AttackType, cards: Card[]){
 		this.currentTurnAction = TurnActionType.atTurnEnd;
 
+		// ---------------------------敵人行動------------------------------------
+		if (this.enemyCard != null){
+			// Enemy action
+			if (this.enemyCard.remainHp > 0){
+				var enemy = this.enemyCard;
+
+				// Remove Enemy HP lock
+				if (this.enemyCard.battleHpLock.length > 0){
+					var nextLockHpPercent = Util.getNumber(this.enemyCard.battleHpLock[0]);
+					if (this.enemyCard.currentHp <= nextLockHpPercent){
+						this.enemyCard.battleHpLock.shift();
+					}
+				}
+
+				// Pre-attack
+				var preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn));
+				for (var rule of preAttackRules){
+					this.addRuleToTargets(rule, enemy, AttackType.BasicAttack);
+				}
+				preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn) );
+				for (var rule of preAttackRules){
+					this.processRule(rule, enemy, AttackType.BasicAttack);
+					this.addBuffToTargets(rule, enemy, AttackType.BasicAttack);
+				}
+
+				// attack
+				var attackRule : Rule[] = [].concat(enemy.attackRule);
+				attackRule = attackRule.filter((r:Rule)=>r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn));
+				for (var rule of attackRule){
+					if (Battle.OUTPUT_TYPES.has(rule.type)){
+						this.attack(AttackType.BasicAttack, rule, enemy);
+					}
+					else{
+						this.addRuleToTargets(rule, enemy, AttackType.BasicAttack);
+						this.processRule(rule, enemy, AttackType.BasicAttack);
+						this.addBuffToTargets(rule, enemy, AttackType.BasicAttack);
+					}
+				}
+				// console.info(this.currentTurn + ":" + this.enemyCard.phase);
+			}
+		}
+
 		for (var card of cards){
 			// ---------------------------敵方攻擊------------------------------------
 			// 反擊
@@ -419,8 +490,7 @@ export class Battle{
 				this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] || 0) + enemyDamageVal;
 
 				if (this.enemyCard != null){
-					this.enemyCard.remainHp -= this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn];
-					this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;
+					this.damageToEnemy(this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn], true);
 				}
 			}
 
@@ -452,55 +522,10 @@ export class Battle{
 		}
 
 		if (this.enemyCard != null){
-			// Calculate Enemy HP - Lock HP
-			if (this.enemyCard.battleHpLock.length > 0){
-				var nextLockHpPercent = Util.getNumber(this.enemyCard.battleHpLock[0]);
-				var nextLockHpVal = Math.floor(this.enemyCard.hp * nextLockHpPercent);
-				if (this.enemyCard.currentHp <= nextLockHpPercent){
-					this.enemyCard.battleHpLock.shift();
-					this.enemyCard.currentHp = nextLockHpPercent;
-					this.enemyCard.remainHp = nextLockHpVal;
-				}
-			}
-			// Calculate Enemy HP - 0%
-			if (this.enemyCard.remainHp <= 0){
-				this.enemyCard.currentHp = 0;
-				this.enemyCard.remainHp = 0;
-			}
-			
-			// Enemy action
-			if (this.enemyCard.remainHp > 0){
-				var enemy = this.enemyCard;
-
-				// Pre-attack
-				var preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn));
-				for (var rule of preAttackRules){
-					this.addRuleToTargets(rule, enemy, AttackType.BasicAttack);
-				}
-				preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn) );
-				for (var rule of preAttackRules){
-					this.processRule(rule, enemy, AttackType.BasicAttack);
-					this.addBuffToTargets(rule, enemy, AttackType.BasicAttack);
-				}
-
-				// attack
-				var attackRule : Rule[] = [].concat(enemy.attackRule);
-				attackRule = attackRule.filter((r:Rule)=>r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn));
-				for (var rule of attackRule){
-					if (Battle.OUTPUT_TYPES.has(rule.type)){
-						this.attack(AttackType.BasicAttack, rule, enemy);
-					}
-					else{
-						this.addRuleToTargets(rule, enemy, AttackType.BasicAttack);
-						this.processRule(rule, enemy, AttackType.BasicAttack);
-						this.addBuffToTargets(rule, enemy, AttackType.BasicAttack);
-					}
-				}
-				console.info(this.currentTurn + ":" + this.enemyCard.phase);
-			}
-
 			this.enemyBattleTurn.hp[this.currentTurn] = this.enemyCard.remainHp;
+			this.enemyBattleTurn.shield[this.currentTurn] = RuleHelper.getShieldValue(this.enemyBattleTurn.rules);
 		}
+
 	}
 
 	private filterBuffs(rules: Rule[], atkRule: Rule, ruleType: RuleType, attackType: AttackType, isEnemy:boolean = false) : Rule[]{
@@ -565,6 +590,15 @@ export class Battle{
 			else if (rule.type == RuleType.setEnemyPhase){
 				var phases = rule.value as unknown as string[] || rule.value as unknown as string;
 				this.enemyCard.setPhase(phases);
+			}
+			// 獲得護盾
+			else if (rule.type == RuleType.getShield){
+				// var shieldVal = Util.getNumber(rule.value);
+				var newRule = rule.cloneSimple();
+				newRule.type = RuleType.shieldState;
+				newRule.condition = null;
+				newRule.target = null;
+				this.battleTurns[targetName].addRule(newRule);
 			}
 		}
 	}
@@ -797,19 +831,22 @@ export class Battle{
 			}
 			
 			if (this.enemyCard != null && rule.type == RuleType.attack){
-				this.enemyCard.remainHp -= (card instanceof EnemyCard) ? (enemyDamageVal * hitCount) : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
-				if (this.enemyCard.remainHp < 0) this.enemyCard.remainHp = 0;
-				this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;
+				this.damageToEnemy((card instanceof EnemyCard) ? (enemyDamageVal * hitCount) : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn]);
 			}
 
 			if ((card instanceof EnemyCard) && rule.type == RuleType.heal){
-				this.enemyCard.remainHp += (enemyDamageVal * hitCount);
-				if (this.enemyCard.remainHp > this.enemyCard.hp) this.enemyCard.remainHp = this.enemyCard.hp;
-				this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;
+				this.enemyCard.addRemainHp(enemyDamageVal * hitCount);
 			}
 		}
 
 		return true;
+	}
+
+	getEnemyTurnShieldValue(turn: number) : number{
+		if (this.enemyCard == null || this.enemyCard.hp == null){
+			return null;
+		}
+		return this.enemyBattleTurn.shield[turn];
 	}
 
 	getEnemyTurnHpValue(turn: number) : number{
@@ -1117,12 +1154,14 @@ export class BattleTurn{
 	outputs: number[][];
 	enemyDamage: number[][];
 	hp: number[];
+	shield: number[];
 	rules: Rule[];
 	ruleLog: Rule[][];
 
 	constructor(cardName: string){
 		this.cardName = cardName;
 		this.hp = [];
+		this.shield = [];
 		this.skillCD = 0;
 		this.action = [];
 		this.actionPattern = ActionPattern.Immediately;

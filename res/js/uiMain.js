@@ -543,6 +543,10 @@ Vue.createApp({
 			}
 			msgList.push('<span class="info-title"><b><u>'+this.userInput.enemyCard.name+'(T'+turn+')</u></b></span>');
 			msgList.push('血量：'+this.battle.getEnemyTurnHpValue(turn)+'（'+this.battle.getEnemyTurnHpPercent(turn)+'%）');
+			var shieldVal = this.battle.getEnemyTurnShieldValue(turn);
+			if (shieldVal >= 0){
+				msgList.push('護盾：'+this.battle.getEnemyTurnShieldValue(turn));
+			}
 			if (turn == this.battle.enemyKilledTurn){
 				msgList.push('<span class="info-attack">Victory - 戰勝 ' + this.userInput.enemyCard.name + '！</span>');
 			}

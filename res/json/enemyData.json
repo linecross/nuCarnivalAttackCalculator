@@ -10,7 +10,17 @@
       { "type": "敵方受到傷害增加", "value": "-75%", "condition": { "type": "每n回合", "value": [6, 4] }, "turn": 3 }
     ]
   },
-  "【忘卻SP】SP4．魔王伊得": {
+  "【檢定S13】SP3．肌肉托帕": {
+    "name": "BOSS－守衛森林　托帕", "element": "光", "hp": 772210,
+    "hpLock": ["50%", "25%"],
+    "description": "僅支援以下機制\n．每6回合，托帕有護盾",
+    "attackRule": [
+      { "type": "獲得護盾", "value": "193052", "valueBy": "絕對數值", "condition": [{ "type": "每n回合", "value": [6, 6] }, { "type": "血量機制", "value": ["50%", "100%"] }], "turn": 2 },
+      { "type": "獲得護盾", "value": "241315", "valueBy": "絕對數值", "condition": [{ "type": "每n回合", "value": [6, 6] }, { "type": "血量機制", "value": ["25%", "50%"] }], "turn": 2 },
+      { "type": "獲得護盾", "value": "289578", "valueBy": "絕對數值", "condition": [{ "type": "每n回合", "value": [6, 6] }, { "type": "血量機制", "value": ["0%", "25%"] }], "turn": 2 }
+    ]
+  },
+  "【忘卻S11】SP4．魔王伊得": {
     "name": "BOSS－詭秘之力(?) 伊得", "element": "闇", "hp": 938626,
     "hpLock": ["75%", "75%", "50%", "50%", "25%", "25%"],
     "description": "僅支援以下機制\n．75%、50%、25%鎖血\n．開場時，我方角色有「攻擊時，攻擊力減少1.5%」",

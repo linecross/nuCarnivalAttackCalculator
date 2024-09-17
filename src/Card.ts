@@ -1,5 +1,6 @@
 import { Class, Element, Rarity, PotentialType, GAME_CONFIG } from './Constants.js';
 import { Rule } from './CardRule.js';
+import { Util } from './util/Util.js';
 
 export class Card{
 	name: string;
@@ -421,5 +422,34 @@ export class EnemyCard extends Card{
 			}
 		}
 		return card;
+	}
+
+	addRemainHp(val: number){
+		if (this.remainHp + val >= this.hp){
+			this.remainHp = this.hp;
+			this.currentHp = 1;
+		}
+		else{
+			this.remainHp += val;
+			this.currentHp = this.remainHp / this.hp;
+		}
+	}
+	minusRemainHp(val: number){
+		var nextLockHpVal = 0;
+		var nextLockHpPercent = 0;
+
+		if (this.battleHpLock.length > 0){
+			nextLockHpPercent = Util.getNumber(this.battleHpLock[0]);
+			nextLockHpVal = Math.floor(this.hp * nextLockHpPercent);
+		}
+
+		if (this.remainHp - val <= nextLockHpVal){
+			this.remainHp = nextLockHpVal;
+			this.currentHp = nextLockHpPercent;
+		}
+		else{
+			this.remainHp -= val;
+			this.currentHp = this.remainHp / this.hp;
+		}
 	}
 }
