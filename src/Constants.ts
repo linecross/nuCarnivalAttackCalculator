@@ -75,6 +75,8 @@ export const RuleType = {
 
 	// Boss專用
 	getShield: '獲得護盾',
+	shieldState: '護盾',
+	guardMode: '防禦狀態',
 
 	// 不會在計算機生效的被動（純記錄）
 	takeLessDamage: '受到傷害減少',
