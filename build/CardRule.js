@@ -1,4 +1,5 @@
 import { RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType, ConditionHPStatus } from './Constants.js';
+import { EnemyCard } from './Card.js';
 import { Util } from './util/Util.js';
 export class Rule {
     static createId() {
@@ -135,6 +136,13 @@ export class Rule {
         if (this.condition == null || this.condition.length == 0) {
             if (this.type == RuleType.appendRule || this.type == RuleType.enemyAppendRule) {
                 return true;
+            }
+        }
+        else {
+            for (var condition of this.condition) {
+                if (condition.type == ConditionType.enemyHpTrigger) {
+                    return true;
+                }
             }
         }
         return false;
@@ -305,6 +313,13 @@ export class Condition {
         }
     }
     isFulfilled(card, team, turnAction, charAttackType, currentTurn) {
+        var result = this.isCondFulfilled(card, team, turnAction, charAttackType, currentTurn);
+        if (this.operator == OperatorType.not) {
+            result = !result;
+        }
+        return result;
+    }
+    isCondFulfilled(card, team, turnAction, charAttackType, currentTurn) {
         if (this.type == ConditionType.hasChar) {
             return team.getCharCount(this.value.toString()) >= this.minCount;
         }
@@ -401,7 +416,7 @@ export class Condition {
             }
         }
         else if (this.type == ConditionType.enemyHpTrigger) { // Boss專用：血量機制
-            if (!card.isEnemy)
+            if (!(card instanceof EnemyCard))
                 return false;
             var condHpPercentArr = Array.isArray(this.value) ? this.value : [this.value];
             if (condHpPercentArr.length == 1) {
@@ -413,6 +428,10 @@ export class Condition {
                 return true;
             }
             return false;
+        }
+        else if (this.type == ConditionType.hasPhase) {
+            var targetPhases = Array.isArray(this.value) ? this.value : [this.value];
+            return card.hasPhase(targetPhases);
         }
         return false;
     }

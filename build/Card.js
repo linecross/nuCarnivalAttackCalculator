@@ -1,12 +1,10 @@
 import { Rarity, PotentialType, GAME_CONFIG } from './Constants.js';
 import { Rule } from './CardRule.js';
+import { Util } from './util/Util.js';
 export class Card {
     constructor(name, char, rarity) {
-        this.isEnemy = false;
-        this.hpLock = [];
-        this.battleHpLock = [];
+        this.phase = [];
         this.currentHp = 100; // percentage
-        this.shield = 0;
         this.level = 60;
         this.star = 5;
         this.bond = 5;
@@ -23,6 +21,21 @@ export class Card {
         this.name = name;
         this.char = char;
         this.rarity = rarity;
+    }
+    hasPhase(phase) {
+        var phaseArr = Array.isArray(phase) ? phase : [phase];
+        return phaseArr.every(p => this.phase.includes(p));
+    }
+    setPhase(phase) {
+        var phaseArr = Array.isArray(phase) ? phase : [phase];
+        this.phase = [];
+        phaseArr.forEach(p => this.phase.push(p));
+    }
+    addPhase(phase) {
+        this.phase.push(phase);
+    }
+    removePhase(phase) {
+        this.phase = this.phase.filter(e => e != phase);
     }
     initSkill() {
         if (this.star >= 4)
@@ -260,7 +273,7 @@ export class CardCenter {
     static getEnemyCard(key) {
         var fullEnemyData = CardCenter.getEnemyData();
         if (fullEnemyData[key] != null) {
-            return Card.loadCardFromJson(key, fullEnemyData[key]);
+            return EnemyCard.loadCardFromJson(key, fullEnemyData[key]);
         }
         return null;
     }
@@ -310,4 +323,66 @@ CardCenter.cardData = {};
 CardCenter.userCardData = {};
 CardCenter.enemyCardData = {};
 CardCenter.userEnemyCardData = {};
+export class EnemyCard extends Card {
+    constructor() {
+        super(...arguments);
+        this.hpLock = [];
+        this.battleHpLock = [];
+        this.shield = 0;
+    }
+    static loadCardFromJson(name, data) {
+        var card = new EnemyCard();
+        card.name = name;
+        card = EnemyCard.updateCard(card, data);
+        return card;
+    }
+    updateCard(data) {
+        return EnemyCard.updateCard(this, data);
+    }
+    static updateCard(card, data) {
+        var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
+        var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
+        for (var key of Object.keys(data)) {
+            if (simpleRules.includes(key) || permRules.includes(key)) {
+                var isPermRule = permRules.includes(key);
+                card[key] = [];
+                for (var ruleItem of data[key]) {
+                    var rule = Rule.loadRule(ruleItem, isPermRule);
+                    rule.parentCardName = card.name;
+                    card[key].push(rule);
+                }
+            }
+            else {
+                card[key] = data[key];
+            }
+        }
+        return card;
+    }
+    addRemainHp(val) {
+        if (this.remainHp + val >= this.hp) {
+            this.remainHp = this.hp;
+            this.currentHp = 1;
+        }
+        else {
+            this.remainHp += val;
+            this.currentHp = this.remainHp / this.hp;
+        }
+    }
+    minusRemainHp(val) {
+        var nextLockHpVal = 0;
+        var nextLockHpPercent = 0;
+        if (this.battleHpLock.length > 0) {
+            nextLockHpPercent = Util.getNumber(this.battleHpLock[0]);
+            nextLockHpVal = Math.floor(this.hp * nextLockHpPercent);
+        }
+        if (this.remainHp - val <= nextLockHpVal) {
+            this.remainHp = nextLockHpVal;
+            this.currentHp = nextLockHpPercent;
+        }
+        else {
+            this.remainHp -= val;
+            this.currentHp = this.remainHp / this.hp;
+        }
+    }
+}
 //# sourceMappingURL=Card.js.map
