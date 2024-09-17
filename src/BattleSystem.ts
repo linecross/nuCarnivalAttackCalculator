@@ -1,5 +1,5 @@
 import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, SkillType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
-import { Card, Team } from './Card.js';
+import { Card, Team, EnemyCard } from './Card.js';
 import { Rule, RuleTarget, Condition } from './CardRule.js';
 import { RuleHelper } from './util/RuleHelper.js';
 import { LogRule } from './LogRule.js';
@@ -12,7 +12,7 @@ export class Battle{
 	currentTurnAction: TurnActionType;
 	team: Team;
 	battleTurns : BattleTurn[] = [];
-	enemyCard: Card;
+	enemyCard: EnemyCard;
 	enemyElement : Element = Element.NA;
 	enemyBattleTurn : BattleTurn;
 	enemyKilledTurn: number;
@@ -59,6 +59,7 @@ export class Battle{
 
 		for (var card of this.team.cards){
 			card.initSkill();
+			card.phase = [];
 			this.battleTurns[card.name] = new BattleTurn(card.name);
 			this.battleTurns[card.name].skillCD = card.coolDown;
 			for (var key of Battle.OUTPUT_TYPES){
@@ -76,9 +77,9 @@ export class Battle{
 		}
 
 		if (this.enemyCard != null){
-			this.enemyCard.isEnemy = true;
 			this.enemyCard.currentHp = 1;
 			this.enemyCard.remainHp = this.enemyCard.hp;
+			this.enemyCard.phase = [];
 			this.enemyKilledTurn = 0;
 			this.enemyCard.hpLock.sort(function(a, b) {
 				return a.localeCompare(b, undefined, {
@@ -469,19 +470,33 @@ export class Battle{
 			
 			// Enemy action
 			if (this.enemyCard.remainHp > 0){
-				var card = this.enemyCard;
-				var attackRule : Rule[] = [].concat(card.attackRule);
-				attackRule = attackRule.filter((r:Rule)=>r.isConditionsFulfilled(card, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn));
+				var enemy = this.enemyCard;
+
+				// Pre-attack
+				var preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn));
+				for (var rule of preAttackRules){
+					this.addRuleToTargets(rule, enemy, AttackType.BasicAttack);
+				}
+				preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn) );
+				for (var rule of preAttackRules){
+					this.processRule(rule, enemy, AttackType.BasicAttack);
+					this.addBuffToTargets(rule, enemy, AttackType.BasicAttack);
+				}
+
+				// attack
+				var attackRule : Rule[] = [].concat(enemy.attackRule);
+				attackRule = attackRule.filter((r:Rule)=>r.isConditionsFulfilled(enemy, this.team, TurnActionType.attack, AttackType.BasicAttack, this.currentTurn));
 				for (var rule of attackRule){
 					if (Battle.OUTPUT_TYPES.has(rule.type)){
-						this.attack(attackType, rule, card);
+						this.attack(AttackType.BasicAttack, rule, enemy);
 					}
 					else{
-						this.addRuleToTargets(rule, card, attackType);
-						this.processRule(rule, card, attackType);
-						this.addBuffToTargets(rule, card, attackType);
+						this.addRuleToTargets(rule, enemy, AttackType.BasicAttack);
+						this.processRule(rule, enemy, AttackType.BasicAttack);
+						this.addBuffToTargets(rule, enemy, AttackType.BasicAttack);
 					}
 				}
+				console.info(this.currentTurn + ":" + this.enemyCard.phase);
 			}
 
 			this.enemyBattleTurn.hp[this.currentTurn] = this.enemyCard.remainHp;
@@ -541,6 +556,15 @@ export class Battle{
 				newRule.condition = null;
 				newRule.target = null;
 				this.battleTurns[targetName].addRule(newRule);
+			}
+			// 設定階段
+			else if (rule.type == RuleType.setPhase){
+				var phases = rule.value as unknown as string[] || rule.value as unknown as string;
+				card.setPhase(phases);
+			}
+			else if (rule.type == RuleType.setEnemyPhase){
+				var phases = rule.value as unknown as string[] || rule.value as unknown as string;
+				this.enemyCard.setPhase(phases);
 			}
 		}
 	}
@@ -766,19 +790,19 @@ export class Battle{
 			}
 		}
 		else{
-			if (!card.isEnemy){
+			if (!(card instanceof EnemyCard)){
 				this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal * hitCount;
 				this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
 				this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
 			}
 			
 			if (this.enemyCard != null && rule.type == RuleType.attack){
-				this.enemyCard.remainHp -= card.isEnemy ? (enemyDamageVal * hitCount) : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
+				this.enemyCard.remainHp -= (card instanceof EnemyCard) ? (enemyDamageVal * hitCount) : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
 				if (this.enemyCard.remainHp < 0) this.enemyCard.remainHp = 0;
 				this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;
 			}
 
-			if (card.isEnemy && rule.type == RuleType.heal){
+			if ((card instanceof EnemyCard) && rule.type == RuleType.heal){
 				this.enemyCard.remainHp += (enemyDamageVal * hitCount);
 				if (this.enemyCard.remainHp > this.enemyCard.hp) this.enemyCard.remainHp = this.enemyCard.hp;
 				this.enemyCard.currentHp = this.enemyCard.remainHp / this.enemyCard.hp;

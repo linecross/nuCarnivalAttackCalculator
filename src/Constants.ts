@@ -66,6 +66,12 @@ export const RuleType = {
 	// 較複雜的技能規則
 	appendRule: '我方獲得技能',
 	enemyAppendRule: '敵方獲得技能',
+	setPhase: '我方設定階段',
+	addPhase: '我方新增階段',
+	removePhase: '我方刪除階段',
+	setEnemyPhase: '敵方設定階段',
+	addEnemyPhase: '敵方新增階段',
+	removeEnemyPhase: '敵方刪除階段',
 
 	// Boss專用
 	getShield: '獲得護盾',
@@ -101,6 +107,7 @@ export const ConditionType = {
 	isAttack : '攻擊時',
 	everyTurn: '每n回合',
 	atTurn: '第n回合',
+	hasPhase: '階段',
 	// 敵方專用
 	enemyIsAttacked: '被攻擊時',
 	enemyIsAttackByChar: '被角色攻擊',

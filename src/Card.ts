@@ -1,7 +1,6 @@
 import { Class, Element, Rarity, PotentialType, GAME_CONFIG } from './Constants.js';
 import { Rule } from './CardRule.js';
 
-
 export class Card{
 	name: string;
 	fullname: string;
@@ -11,18 +10,14 @@ export class Card{
 	element: Element;
 	potType: PotentialType;
 
-	isEnemy: boolean = false;
-	hpLock: string[] = [];
-	battleHpLock: string[] = [];
+	phase: string[] = [];
 
 	baseHp: number ;
 	baseAtk: number ;
 
 	hp: number;
 	atk: number;
-	remainHp: number;
 	currentHp: number = 100; // percentage
-	shield: number = 0;
 
 	level: number = 60;
 	star: number = 5;
@@ -49,6 +44,22 @@ export class Card{
 		this.name = name;
 		this.char = char;
 		this.rarity = rarity;
+	}
+
+	hasPhase(phase: string | string[]) : boolean{
+		var phaseArr = Array.isArray(phase) ? phase : [phase];
+		return phaseArr.every( p => this.phase.includes(p));
+	}
+	setPhase(phase: string | string[]){
+		var phaseArr = Array.isArray(phase) ? phase : [phase];
+		this.phase = [];
+		phaseArr.forEach( p => this.phase.push(p));
+	}
+	addPhase(phase: string){
+		this.phase.push(phase);
+	}
+	removePhase(phase: string){
+		this.phase = this.phase.filter(e=>e != phase);
 	}
 
 	initSkill(){
@@ -319,7 +330,7 @@ export class CardCenter{
 	static getEnemyCard(key: string){
 		var fullEnemyData = CardCenter.getEnemyData();
 		if (fullEnemyData[key] != null){
-			return Card.loadCardFromJson(key, fullEnemyData[key]);
+			return EnemyCard.loadCardFromJson(key, fullEnemyData[key]);
 		}
 		return null;
 	}
@@ -368,5 +379,47 @@ export class CardCenter{
 		}
 		arr = arr.reverse();
 		return arr;
+	}
+}
+
+export class EnemyCard extends Card{
+	remainHp: number;
+
+	hpLock: string[] = [];
+	battleHpLock: string[] = [];
+
+	shield: number = 0;
+	isGuard: false;
+	guardPercent: 50;
+
+	static loadCardFromJson(name: string, data:Object) : EnemyCard {
+		var card = new EnemyCard();
+		card.name = name;
+		card = EnemyCard.updateCard(card, data);
+		return card;
+	}
+
+	updateCard(data: Object) : EnemyCard{
+		return EnemyCard.updateCard(this, data);
+	}
+
+	static updateCard(card: EnemyCard, data:Object) : EnemyCard {
+		var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
+		var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
+		for (var key of Object.keys(data)) {
+			if (simpleRules.includes(key) || permRules.includes(key)){
+				var isPermRule = permRules.includes(key);
+				card[key] = [];
+				for (var ruleItem of data[key]){
+					var rule = Rule.loadRule(ruleItem, isPermRule);
+					rule.parentCardName = card.name;
+					card[key].push(rule);
+				}
+			}
+			else{
+				card[key] = data[key];
+			}
+		}
+		return card;
 	}
 }
