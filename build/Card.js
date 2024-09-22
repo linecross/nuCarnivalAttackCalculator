@@ -268,7 +268,13 @@ export class CardCenter {
         return fullCardData;
     }
     static getEnemyList() {
-        return Object.keys(CardCenter.getEnemyData());
+        var activeEnemyNames = [];
+        for (const [name, data] of Object.entries(CardCenter.getEnemyData())) {
+            if (data['active'] === 'true') {
+                activeEnemyNames.push(name);
+            }
+        }
+        return activeEnemyNames;
     }
     static getEnemyCard(key) {
         var fullEnemyData = CardCenter.getEnemyData();
@@ -326,6 +332,7 @@ CardCenter.userEnemyCardData = {};
 export class EnemyCard extends Card {
     constructor() {
         super(...arguments);
+        this.active = false;
         this.hpLock = [];
         this.battleHpLock = [];
         this.shield = 0;
