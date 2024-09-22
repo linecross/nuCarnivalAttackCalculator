@@ -1,11 +1,14 @@
 {
   "【檢定S15】SP3．泳裝崑西": {
     "name": "BOSS－激起的好勝心　崑西", "element": "光", "hp": 2294932, "active": "true",
-    "hpLock": ["1%"],
-    "description": "僅支援以下機制\n．T9n+9 泳崑有「治療22949（1%HP）」\n．1%血量會離場",
+    "hpLock": ["25%", "1%"],
+    "description": "僅支援以下機制\n．T9n+9 泳崑有「治療22949（1%HP）」\n．25%、1%的鎖血機制，1%血量會離場\n．25%血量開始每回合受到傷害減少6.5%",
     "attackRule": [
       { "type": "治療", "value": "22949", "valueBy": "絕對數值", "condition": { "type": "第n回合", "value": [9,10,11,12, 18,19,20,21, 27,28,29,30] } },
       { "type": "攻擊", "value": "1000000", "valueBy": "絕對數值", "condition": { "type": "血量機制", "value": "1%" } }
+    ],
+    "star3Rule": [
+      { "type": "敵方受到傷害增加", "value": "-6.5%", "condition": [{ "type": "每n回合", "value": 1 }, { "type": "血量機制", "value": "25%" }], "maxCount": 30 }
     ]
   },
   "【檢定S15】SP1．牛仔可爾": {
