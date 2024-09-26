@@ -3795,6 +3795,118 @@
       ],
       "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "女僕．啖天": {
+      "char": "啖天", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "水", "potType": "ATK先行",
+      "baseHp": 11207, "baseAtk": 1529, "coolDown": 3,
+      "img": "Dante_SSR_08.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "治療", "value": "15%", "valueBy": "HP" }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "造成傷害增加", "value": "17%", "target": "全體", "turn": 3 },
+        { "type": "治療", "value": "17%", "valueBy": "HP" }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "造成傷害增加", "value": "17%", "target": "全體", "turn": 3 },
+        { "type": "治療", "value": "20%", "valueBy": "HP" }
+      ],
+      "star3Rule": [],
+      "star5Rule": [
+        { "type": "必殺技傷害增加", "value": "51%" }
+      ],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "女僕．歛": {
+      "char": "歛", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "火", "potType": "HP先行",
+      "baseHp": 7685, "baseAtk": 2241, "coolDown": 4,
+      "img": "Rei_SSR_06.jpg",
+      "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
+      "skillLv1Rule": [
+        { "type": "輔助", "value": "124%", "target": "全體" },
+        {
+          "type": "我方受到治療增加",
+          "value": "17%",
+          "turn": 4,
+          "target": "全體"
+        }
+      ],
+      "skillLv2Rule": [
+        { "type": "輔助", "value": "148%", "target": "全體" },
+        {
+          "type": "我方受到治療增加",
+          "value": "17%",
+          "turn": 4,
+          "target": "全體"
+        },
+        { "type": "造成傷害增加", "value": "21%", "target": { "type": "定位", "value": "妨礙" } }
+      ],
+      "skillLv3Rule": [
+        { "type": "輔助", "value": "173%", "target": "全體" },
+        {
+          "type": "我方受到治療增加",
+          "value": "17%",
+          "turn": 4,
+          "target": "全體"
+        },
+        { "type": "造成傷害增加", "value": "21%", "target": { "type": "定位", "value": "妨礙" } }
+      ],
+      "star3Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "12%",
+          "target": "全體",
+          "condition": { "type": "隊伍中有定位", "value": "妨礙", "minCount": 2 }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "12%",
+          "target": "全體",
+          "condition": { "type": "隊伍中有定位", "value": "守護" }
+        }
+      ],
+      "star5Rule": [{ "type": "攻擊力增加", "value": "19%", "target": { "type": "定位", "value": ["攻擊", "守護", "妨礙"] } }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "女僕．奧利文": {
+      "char": "奧利文", "fullname": null, "alias": null,
+      "rarity": "SR", "class": "治療", "element": "闇", "potType": "平均型",
+      "baseHp": 6937, "baseAtk": 1814, "coolDown": 4,
+      "img": "Olivine_SR_02.jpg",
+      "attackRule": [
+        { "type": "治療", "value": "25%" },
+        { "type": "持續治療", "value": "25%", "turn": 2 }
+      ],
+      "skillLv1Rule": [
+        { "type": "治療", "value": "100%" },
+        { "type": "持續治療", "value": "38%", "turn": 4 }
+      ],
+      "skillLv2Rule": [
+        { "type": "治療", "value": "100%" },
+        { "type": "持續治療", "value": "51%", "turn": 4 }
+      ],
+      "skillLv3Rule": [
+        { "type": "治療", "value": "100%" },
+        { "type": "持續治療", "value": "64%", "turn": 4 }
+      ],
+      "star3Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "25%",
+          "condition": { "type": "隊伍中有定位", "value": "守護" }
+        }
+      ],
+      "star5Rule": [{ "type": "最大HP增加", "value": "6%", "target": "全體" }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     }
 }
   
