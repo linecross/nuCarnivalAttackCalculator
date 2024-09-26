@@ -15,10 +15,10 @@ var chartConfig = {
 		'SSR':{
 			'無': 0,
 			'1房': 5,
-			'2房': 10,
-			'3房': 20,
-			'4房': 35,
-			'5房': 60
+			'2房': 15,
+			'3房': 30,
+			'4房': 45,
+			'5房': 70
 		},
 	},
 	potentials:{
@@ -313,7 +313,6 @@ var NuCarnivalCharChartApp = Vue.createApp({
 			if (this.currentChar != null && this.currentChar.rarity == 'SSR'){
 				roomPercent = this.roomPercents['SSR'][room];
 			}
-			console.info('room='+room+', percentage='+roomPercent);
 			return roomPercent;
 		},
 		getPotBoxType(tierBoxIdx){

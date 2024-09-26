@@ -182,6 +182,10 @@ export type ConditionHPStatus = typeof ConditionHPStatus[keyof typeof ConditionH
 
 export const GAME_CONFIG = {
 	MAX_LEVEL: 60,
+	ROOM:{
+		'SSR': [5, 10, 15, 15, 25],
+		'DEFAULT': [5, 5, 10, 10, 20]
+	},
 	POTTYPE:{
 		'A': {
 			hp: [
