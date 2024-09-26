@@ -727,8 +727,11 @@ export class Battle {
                 this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
                 this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
             }
+            // Enemy Damage
             if (this.enemyCard != null && rule.type == RuleType.attack) {
-                this.damageToEnemy((card instanceof EnemyCard) ? (enemyDamageVal * hitCount) : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn]);
+                var enemyDamage = (card instanceof EnemyCard) ? (enemyDamageVal * hitCount) : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
+                enemyDamage = Math.floor(enemyDamage * Battle.getElementalBuff(card.element, this.enemyElement));
+                this.damageToEnemy(enemyDamage);
             }
             if ((card instanceof EnemyCard) && rule.type == RuleType.heal) {
                 this.enemyCard.addRemainHp(enemyDamageVal * hitCount);

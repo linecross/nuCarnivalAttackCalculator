@@ -81,14 +81,11 @@ export class Card {
         val = Math.ceil(baseVal / Math.pow(1.05, 59)) * (0.5 + (0.1 * this.star));
         var bondVal = 0;
         if (this.bond > 0) {
+            var bondVals = GAME_CONFIG.ROOM.DEFAULT;
             if (this.rarity == Rarity.SSR) {
-                var bondVals = [5, 10, 20, 35, 60];
-                bondVal = bondVals[this.bond - 1];
+                bondVals = GAME_CONFIG.ROOM.SSR;
             }
-            else if (this.rarity == Rarity.SR || this.rarity == Rarity.R) {
-                var bondVals = [5, 10, 20, 30, 50];
-                bondVal = bondVals[this.bond - 1];
-            }
+            bondVal = bondVals.slice(0, this.bond).reduce((sum, e) => sum + e, 0);
         }
         val = Math.floor(val * Math.pow(1.05, this.level - 1) * (1 + bondVal / 100) * (1 + potential / 100));
         return val;

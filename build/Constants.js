@@ -140,6 +140,10 @@ export const CounterAttackMode = { firstTurnOnly: '僅第一回合', everyTurn: 
 export const ConditionHPStatus = { fulfill: '符合所有血量條件', notFulfill: '不符合所有血量條件', hpPercent: '按照當前血量' };
 export const GAME_CONFIG = {
     MAX_LEVEL: 60,
+    ROOM: {
+        'SSR': [5, 10, 15, 15, 25],
+        'DEFAULT': [5, 5, 10, 10, 20]
+    },
     POTTYPE: {
         'A': {
             hp: [
