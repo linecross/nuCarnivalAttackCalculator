@@ -9,7 +9,9 @@ export class Battle {
         this.turns = 13;
         this.currentTurn = 0;
         this.battleTurns = [];
+        this.cardHpUp = [];
         this.enemyElement = Element.NA;
+        this.enemylockHpTurn = [];
         this.isRuleLogAddedPerTurn = false;
         this.counterAttackCount = 0;
         this.counterAttackMode = CounterAttackMode.everyTurn;
@@ -24,6 +26,7 @@ export class Battle {
     }
     init() {
         this.enemyBattleTurn = new BattleTurn('Boss');
+        this.enemylockHpTurn = [];
         for (var card of this.team.cards) {
             card.initSkill();
             card.phase = [];
@@ -40,6 +43,12 @@ export class Battle {
         for (var card of this.team.cards) {
             this.initBattleRules(this.team, card);
             // this.battleTurns[card.name].setActionPattern(this.turns, card);
+        }
+        for (var card of this.team.cards) {
+            var hpUp = this.battleTurns[card.name].rules.filter((r) => r.type == RuleType.hpUp)
+                .map((r) => Util.getPercentNumber(r.value))
+                .reduce((sum, e) => sum + e, 0);
+            this.cardHpUp[card.name] = hpUp;
         }
         if (this.enemyCard != null) {
             this.enemyCard.currentHp = 1;
@@ -58,6 +67,14 @@ export class Battle {
                 this.initBattleRules(this.team, this.enemyCard);
             }
         }
+    }
+    getCardHpUp(cardname) {
+        return this.cardHpUp[cardname];
+    }
+    getCardActualHp(cardname) {
+        var hpUp = this.cardHpUp[cardname];
+        var card = this.team.cards.filter(e => e.name == cardname)[0];
+        return Math.floor(card.getHp() * (1 + hpUp / 100));
     }
     setActionPattern(cardName, pattern) {
         this.battleTurns[cardName].actionPattern = pattern;
@@ -148,6 +165,9 @@ export class Battle {
     getPreAttackRules(rules) {
         var attackRules = rules.filter(r => !r.isPostAttackRule());
         return attackRules;
+    }
+    isEnemyHpLockTurn(turn) {
+        return this.enemylockHpTurn.includes(turn);
     }
     damageToEnemy(damage, isPoison = false) {
         if (this.enemyCard == null || this.enemyCard.remainHp <= 0) {
@@ -341,6 +361,7 @@ export class Battle {
                     var nextLockHpPercent = Util.getNumber(this.enemyCard.battleHpLock[0]);
                     if (this.enemyCard.currentHp <= nextLockHpPercent) {
                         this.enemyCard.battleHpLock.shift();
+                        this.enemylockHpTurn.push(this.currentTurn);
                     }
                 }
                 // Pre-attack
