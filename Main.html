@@ -42,11 +42,11 @@
 					</span>
 					
 				</div>
-				<div class="row col-xs-16 col-md-15 col-lg-9">
+				<!-- <div class="row col-xs-16 col-md-15 col-lg-9">
 					<div class="alert alert-warning" role="alert">
 						<b>SSR蜜話加成已更新至70%（5%、10%、15%、15%、25%）</b><br/>
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 			
@@ -769,6 +769,7 @@
 												<div data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="top" data-bs-html="true" 
 												:data-bs-content="getPassiveRuleSummary(name)">
 													<div>
+														<div v-if="userInput.isCardEnabled[idx]" class="cardHp">{{ getCardActualHp(userInput.cardname[idx]) }} <template v-if="getCardHpUp(userInput.cardname[idx]) > 0">（+{{getCardHpUp(userInput.cardname[idx])}}%）</template></div>
 														<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
 													</div>
 												</div>
@@ -999,10 +1000,15 @@
 						<h5>功能更新</h5>
 
 						<textarea rows="8">
+[20241001]
+實戰HP功能：顯示實戰的最大HP與HP加成
+修正：敵人鎖血的回合
+
+
 [20240915]
 選擇敵人功能：可以自訂敵人及選擇敵人
-僅支援簡單功能，例：敵人的血量、屬性、第n回合的降攻/減傷能力
-尚未支援/不支援：敵人的護盾、補血、鎖血、鎖血觸發等等
+僅支援簡單功能，例：敵人的血量、屬性、第n回合的降攻/減傷能力、補血
+尚未支援/不支援：敵人的護盾、吸血、完善的鎖血機制等等
 
 
 [20240820]

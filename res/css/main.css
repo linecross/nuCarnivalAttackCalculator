@@ -969,3 +969,13 @@ td.hpLockTurn{
     font-size: 1rem;
     font-family: 'Roboto', 'Noto Sans TC', '微軟正黑體', 'Arial', sans-serif;
 }
+
+.cardHp::before {
+    content: "HP";
+    color: #a4370d;
+    font-size: 90%;
+    margin: 0px 3px;
+}
+.cardHp{
+    margin: 3px 0px;
+}

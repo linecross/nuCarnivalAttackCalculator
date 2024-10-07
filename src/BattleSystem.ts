@@ -12,10 +12,13 @@ export class Battle{
 	currentTurnAction: TurnActionType;
 	team: Team;
 	battleTurns : BattleTurn[] = [];
+	cardHpUp: number[] = [];
+
 	enemyCard: EnemyCard;
 	enemyElement : Element = Element.NA;
 	enemyBattleTurn : BattleTurn;
 	enemyKilledTurn: number;
+	enemylockHpTurn: number[] = [];
 
 	isRuleLogAddedPerTurn: boolean = false;
 
@@ -57,6 +60,7 @@ export class Battle{
 
 	init(){
 		this.enemyBattleTurn = new BattleTurn('Boss');
+		this.enemylockHpTurn = [];
 
 		for (var card of this.team.cards){
 			card.initSkill();
@@ -77,6 +81,13 @@ export class Battle{
 			// this.battleTurns[card.name].setActionPattern(this.turns, card);
 		}
 
+		for (var card of this.team.cards){
+			var hpUp = this.battleTurns[card.name].rules.filter((r:Rule) =>r.type == RuleType.hpUp)
+				.map((r:Rule) => Util.getPercentNumber(r.value))
+				.reduce((sum, e) => sum + e, 0);
+			this.cardHpUp[card.name] = hpUp;
+		}
+
 		if (this.enemyCard != null){
 			this.enemyCard.currentHp = 1;
 			this.enemyCard.remainHp = this.enemyCard.hp;
@@ -95,6 +106,16 @@ export class Battle{
 				this.initBattleRules(this.team, this.enemyCard);
 			}
 		}
+	}
+
+	getCardHpUp(cardname: string){
+		return this.cardHpUp[cardname];
+	}
+
+	getCardActualHp(cardname : string){
+		var hpUp = this.cardHpUp[cardname];
+		var card = this.team.cards.filter(e=>e.name == cardname)[0];
+		return Math.floor(card.getHp() * (1+hpUp/100));
 	}
 	
 	setActionPattern(cardName: string, pattern: ActionPattern){
@@ -193,6 +214,10 @@ export class Battle{
 	getPreAttackRules(rules : Rule[]) : Rule[]{
 		var attackRules = rules.filter(r=>!r.isPostAttackRule());
 		return attackRules;
+	}
+
+	isEnemyHpLockTurn(turn: number){
+		return this.enemylockHpTurn.includes(turn);
 	}
 
 	damageToEnemy(damage: number, isPoison = false){
@@ -412,6 +437,7 @@ export class Battle{
 					var nextLockHpPercent = Util.getNumber(this.enemyCard.battleHpLock[0]);
 					if (this.enemyCard.currentHp <= nextLockHpPercent){
 						this.enemyCard.battleHpLock.shift();
+						this.enemylockHpTurn.push(this.currentTurn);
 					}
 				}
 

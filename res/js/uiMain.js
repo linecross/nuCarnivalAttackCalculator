@@ -560,12 +560,8 @@ Vue.createApp({
 				return 'victoryTurn';
 			}
 			
-			if (this.userInput.enemyCard.hpLock != null){
-				var currentHpPercent = this.battle.getEnemyTurnHpPercent(turn)+'%';
-				var prevHpPercent = this.battle.getEnemyTurnHpPercent(turn-1)+'%';
-				if (currentHpPercent != prevHpPercent && this.userInput.enemyCard.hpLock.includes(currentHpPercent)){
-					return 'hpLockTurn';
-				}
+			if (this.userInput.enemyCard.hpLock != null && this.battle.isEnemyHpLockTurn(turn)){
+				return 'hpLockTurn';
 			}
 			return '';
 		},
@@ -1170,6 +1166,18 @@ Vue.createApp({
 					}
 				});
 			}
+		},
+		getCardHpUp(cardname){
+			if (this.battle != null){
+				return this.battle.getCardHpUp(cardname);
+			}
+			return '';
+		},
+		getCardActualHp(cardname){
+			if (this.battle != null){
+				return this.battle.getCardActualHp(cardname);
+			}
+			return '';
 		}
 	},
 	computed: {

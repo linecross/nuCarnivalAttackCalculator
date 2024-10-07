@@ -2635,7 +2635,7 @@
         {
           "type": "攻擊力增加",
           "value": "18%",
-          "target": { "type": "定位", "value": "補師" }
+          "target": { "type": "定位", "value": "治療" }
         },
         { "type": "攻擊力增加", "value": "9%", "target": "全體" }
       ],
@@ -2979,6 +2979,7 @@
         }
       ],
       "star5Rule": [
+        { "type": "最大HP增加", "value": "6%", "target": "全體" },
 		    { "type": "我方受到治療增加", "value": "14%", "target": "全體" }
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
@@ -3816,7 +3817,7 @@
         { "type": "造成傷害增加", "value": "17%", "target": "全體", "turn": 3 },
         { "type": "治療", "value": "20%", "valueBy": "HP" }
       ],
-      "star3Rule": [],
+      "star3Rule": [{ "type": "最大HP增加", "value": "23%" }],
       "star5Rule": [
         { "type": "必殺技傷害增加", "value": "51%" }
       ],
