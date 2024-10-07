@@ -83,6 +83,7 @@ export class Battle{
 
 		for (var card of this.team.cards){
 			var hpUp = this.battleTurns[card.name].rules.filter((r:Rule) =>r.type == RuleType.hpUp)
+				.filter((r:Rule) =>r.isConditionsFulfilled(card, this.team, TurnActionType.none, AttackType.None, 0))
 				.map((r:Rule) => Util.getPercentNumber(r.value))
 				.reduce((sum, e) => sum + e, 0);
 			this.cardHpUp[card.name] = hpUp;
