@@ -177,7 +177,7 @@ export class Battle {
         // TODO: 防禦狀態
         // 護盾
         if (RuleHelper.hasShield(this.enemyBattleTurn.rules)) {
-            var shields = RuleHelper.getShieldRules(this.enemyBattleTurn.rules);
+            var shields = RuleHelper.getBuffRules(this.enemyBattleTurn.rules, RuleType.shieldState);
             for (var shield of shields) {
                 var shieldVal = Util.getNumber(shield.value);
                 if (shieldVal > damage) {
@@ -464,7 +464,7 @@ export class Battle {
         }
         if (this.enemyCard != null) {
             this.enemyBattleTurn.hp[this.currentTurn] = this.enemyCard.remainHp;
-            this.enemyBattleTurn.shield[this.currentTurn] = RuleHelper.getShieldValue(this.enemyBattleTurn.rules);
+            this.enemyBattleTurn.shield[this.currentTurn] = RuleHelper.getBuffTotalValue(this.enemyBattleTurn.rules, RuleType.shieldState);
         }
     }
     filterBuffs(rules, atkRule, ruleType, attackType, isEnemy = false) {
@@ -756,7 +756,8 @@ export class Battle {
                 this.damageToEnemy(enemyDamage);
             }
             if ((card instanceof EnemyCard) && rule.type == RuleType.heal) {
-                this.enemyCard.addRemainHp(enemyDamageVal * hitCount);
+                var healUp = 1 + RuleHelper.getBuffTotalValue(cardRules, RuleType.enemyHealUp);
+                this.enemyCard.addRemainHp(Math.floor(enemyDamageVal * hitCount * healUp));
             }
         }
         return true;
@@ -1038,7 +1039,7 @@ export class Battle {
 Battle.PRINT_OUTPUT_OPTION = { ALL: 'All', ONLY_DAMAGE: 'OnlyDamage', ONLY_ATTACK: 'OnlyAttack', ONLY_SUPPORT: 'OnlySupport', ONLY_HEAL: 'OnlyHeal', ONLY_POISON: 'OnlyPoison' };
 Battle.OUTPUT_TYPES = new Set([RuleType.attack, RuleType.poisonAttack, RuleType.heal, RuleType.continueHeal, RuleType.support]);
 Battle.TEAM_BUFF_TYPES = new Set([RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp, RuleType.partyAllHealUp]);
-Battle.ENEMY_BUFF_TYPES = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp]);
+Battle.ENEMY_BUFF_TYPES = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyHealUp]);
 Battle.UNUSED_RULE_TYPES = new Set([RuleType.immuneParalysis, RuleType.immuneSilence, RuleType.immuneSleep,
     RuleType.takeLessDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery,
     RuleType.enemyLessDamage]);
