@@ -22,17 +22,20 @@ export class RuleHelper{
 		
 		return true;
 	}
-	static getShieldRules(rules: Rule[]) : Rule[]{
-		return rules.filter(e=>e.type == RuleType.shieldState);
-	}
 	static hasShield(rules: Rule[]) : boolean{
 		return rules.filter(e=>e.type == RuleType.shieldState).length > 0;
 	}
-	static getShieldValue(rules: Rule[]) : number{
-		var shieldRules = rules.filter(e=>e.type == RuleType.shieldState);
-		if (shieldRules.length == 0) return -1;
+	static getBuffRules(rules: Rule[], ruleType: RuleType) : Rule[]{
+		return rules.filter(e=>e.type == ruleType);
+	}
+	static hasBuff(rules: Rule[], ruleType: RuleType) : boolean{
+		return rules.filter(e=>e.type == ruleType).length > 0;
+	}
+	static getBuffTotalValue(rules: Rule[], ruleType: RuleType) : number{
+		var targetRules = rules.filter(e=>e.type == ruleType);
+		if (targetRules.length == 0) return 0;
 		var result = 0;
-		for (var r of shieldRules){
+		for (var r of targetRules){
 			result += Util.getNumber(r.value);
 		}
 		return result;

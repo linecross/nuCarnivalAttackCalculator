@@ -31,7 +31,7 @@ export class Battle{
 
 	static OUTPUT_TYPES : Set<RuleType> = new Set([RuleType.attack, RuleType.poisonAttack, RuleType.heal, RuleType.continueHeal, RuleType.support]);
 	static TEAM_BUFF_TYPES : Set<RuleType> = new Set([RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp, RuleType.partyAllHealUp]);
-	static ENEMY_BUFF_TYPES : Set<RuleType> = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp]);
+	static ENEMY_BUFF_TYPES : Set<RuleType> = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyHealUp]);
 	static UNUSED_RULE_TYPES : Set<RuleType> = new Set([RuleType.immuneParalysis, RuleType.immuneSilence, RuleType.immuneSleep, 
 		RuleType.takeLessDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery, 
 		RuleType.enemyLessDamage]);
@@ -229,7 +229,7 @@ export class Battle{
 
 		// 護盾
 		if (RuleHelper.hasShield(this.enemyBattleTurn.rules)){
-			var shields = RuleHelper.getShieldRules(this.enemyBattleTurn.rules);
+			var shields = RuleHelper.getBuffRules(this.enemyBattleTurn.rules, RuleType.shieldState);
 			for (var shield of shields){
 				var shieldVal = Util.getNumber(shield.value);
 				if (shieldVal > damage){
@@ -550,7 +550,7 @@ export class Battle{
 
 		if (this.enemyCard != null){
 			this.enemyBattleTurn.hp[this.currentTurn] = this.enemyCard.remainHp;
-			this.enemyBattleTurn.shield[this.currentTurn] = RuleHelper.getShieldValue(this.enemyBattleTurn.rules);
+			this.enemyBattleTurn.shield[this.currentTurn] = RuleHelper.getBuffTotalValue(this.enemyBattleTurn.rules, RuleType.shieldState);
 		}
 
 	}
@@ -866,7 +866,8 @@ export class Battle{
 			}
 
 			if ((card instanceof EnemyCard) && rule.type == RuleType.heal){
-				this.enemyCard.addRemainHp(enemyDamageVal * hitCount);
+				var healUp = 1 + RuleHelper.getBuffTotalValue(cardRules, RuleType.enemyHealUp);
+				this.enemyCard.addRemainHp(Math.floor(enemyDamageVal * hitCount * healUp));
 			}
 		}
 

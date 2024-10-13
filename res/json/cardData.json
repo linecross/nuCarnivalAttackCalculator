@@ -145,10 +145,10 @@
       "rarity": "N", "class": "妨礙", "element": "木", "potType": "NR卡",
       "baseHp": 4660, "baseAtk": 1102, "coolDown": 4,
       "img": "Kuya_N_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "345%" }],
+      "attackRule": [{ "type": "攻擊", "value": "100%" }, {"type": "敵方回復量增加", "value": "-50%"} ],
+      "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
+      "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
+      "skillLv3Rule": [{ "type": "攻擊", "value": "345%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
       "star3Rule": [
         {
           "type": "攻擊力增加",
@@ -420,10 +420,10 @@
       "rarity": "R", "class": "妨礙", "element": "火", "potType": "NR卡",
       "baseHp": 5514, "baseAtk": 1316, "coolDown": 4,
       "img": "Kuya_R_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "345%" }],
+      "attackRule": [{ "type": "攻擊", "value": "100%" }, {"type": "敵方回復量增加", "value": "-50%"} ],
+      "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
+      "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
+      "skillLv3Rule": [{ "type": "攻擊", "value": "345%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
       "star3Rule": [
         {
           "type": "攻擊力增加",
@@ -695,10 +695,10 @@
       "rarity": "SR", "class": "妨礙", "element": "闇", "potType": "ATK先行",
       "baseHp": 6439, "baseAtk": 1565, "coolDown": 4,
       "img": "Kuya_SR_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "345%" }],
+      "attackRule": [{ "type": "攻擊", "value": "100%" }, {"type": "敵方回復量增加", "value": "-50%"} ],
+      "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
+      "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
+      "skillLv3Rule": [{ "type": "攻擊", "value": "345%" }, {"type": "敵方回復量增加", "value": "-100%", "turn": 2}],
       "star3Rule": [
         {
           "type": "攻擊力增加",
@@ -936,7 +936,7 @@
       "rarity": "SSR", "class": "妨礙", "element": "闇", "potType": "平均型",
       "baseHp": 7791, "baseAtk": 2028, "coolDown": 4,
       "img": "Kuya_SSR_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "50%" }],
+      "attackRule": [{ "type": "攻擊", "value": "50%" }, {"type": "敵方回復量增加", "value": "-50%", "turn": 2}],
       "skillLv1Rule": [{ "type": "攻擊", "value": "124%" }],
       "skillLv2Rule": [{ "type": "攻擊", "value": "148%" }],
       "skillLv3Rule": [{ "type": "攻擊", "value": "173%" }],
@@ -2495,9 +2495,9 @@
       "baseHp": 6653, "baseAtk": 1921, "coolDown": 3,
       "img": "Kuya_SR_02.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
-      "skillLv1Rule": [{ "type": "輔助", "value": "112%", "target": "全體" }],
-      "skillLv2Rule": [{ "type": "輔助", "value": "133%", "target": "全體" }],
-      "skillLv3Rule": [{ "type": "輔助", "value": "154%", "target": "全體" }],
+      "skillLv1Rule": [{"type": "敵方回復量增加", "value": "-100%", "turn": 3}, { "type": "輔助", "value": "112%", "target": "全體" }],
+      "skillLv2Rule": [{"type": "敵方回復量增加", "value": "-100%", "turn": 3}, { "type": "輔助", "value": "133%", "target": "全體" }],
+      "skillLv3Rule": [{"type": "敵方回復量增加", "value": "-100%", "turn": 3}, { "type": "輔助", "value": "154%", "target": "全體" }],
       "star3Rule": [
         { "type": "必殺技傷害增加", "value": "20%", "target": "全體" }
       ],
