@@ -1,4 +1,28 @@
 {
+  "【忘卻S12】SP4．晶霜凱爾": {
+    "name": "BOSS－協助練習　凱爾", "element": "水", "hp": 1213720, "active": "true",
+    "hpLock": ["75%", "50%", "25%"],
+    "description": "僅支援以下機制\n．75%、50%、25%鎖血\n．每經過1回合，我方全體受到治療量減少3%\n．25%後回復50%血，並每回合治療8%",
+    "attackRule": [
+      { "type": "治療", "value": "303430", "valueBy": "絕對數值", "condition": [{ "type": "血量機制", "value": "25%" }, { "type": "階段", "value": "血量25%", "operator": "不" }] },
+      { "type": "治療", "value": "97097", "valueBy": "絕對數值", "condition": { "type": "血量機制", "value": "25%" } },
+      { "type": "敵方設定階段", "value": "血量25%", "condition": { "type": "血量機制", "value": "25%" } }
+    ],
+    "star3Rule": [
+      {
+        "type": "我方獲得技能",
+        "value": {
+          "type": "我方受到治療增加",
+          "value": "-3%",
+          "maxCount": 50,
+          "turn": 99,
+          "target": "全體",
+          "condition": { "type": "每n回合", "value": 1 }
+        },
+        "condition": { "type": "第n回合", "value": 2 }
+      }
+    ]
+  },
   "【活動】女僕檢定03．可可": {
     "name": "BOSS－無敵女僕　可可", "element": "光", "hp": 202018, "active": "true",
     "hpLock": ["50%", "1%"],
@@ -47,8 +71,8 @@
       { "type": "獲得護盾", "value": "289578", "valueBy": "絕對數值", "condition": [{ "type": "每n回合", "value": [6, 6] }, { "type": "血量機制", "value": ["0%", "25%"] }], "turn": 2 }
     ]
   },
-  "【忘卻S11】SP4．魔王伊得": {
-    "name": "BOSS－詭秘之力(?) 伊得", "element": "闇", "hp": 938626, "active": "true",
+  "【忘卻S12】SP3．魔王伊得": {
+    "name": "BOSS－詭秘之力(?) 伊得", "element": "闇", "hp": 851362, "active": "true",
     "hpLock": ["75%", "75%", "50%", "50%", "25%", "25%"],
     "description": "僅支援以下機制\n．75%、50%、25%鎖血\n．開場時，我方角色有「攻擊時，攻擊力減少1.5%」",
     "star3Rule": [
