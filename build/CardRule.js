@@ -75,23 +75,23 @@ export class Rule {
             return 1;
         return this.maxCount;
     }
-    isConditionsFulfilled(card, team, turnAction, attackType, turn) {
+    isConditionsFulfilled(card, battle, turnAction, charAttackType) {
         if (this.condition == null || this.condition.length == 0) {
             return true;
         }
         var isFulfilled = true;
         for (var condition of this.condition) {
-            isFulfilled = isFulfilled && condition.isFulfilled(card, team, turnAction, attackType, turn);
+            isFulfilled = isFulfilled && condition.isFulfilled(card, battle, turnAction, charAttackType);
         }
         return isFulfilled;
     }
-    getConditionFulfillTimes(card, team, turnAction, attackType, turn) {
+    getConditionFulfillTimes(card, battle, turnAction, attackType) {
         if (this.condition == null || this.condition.length == 0 || this.maxCount == null) {
             return 1;
         }
         var count = this.maxCount;
         for (var condition of this.condition) {
-            count = Math.min(count, condition.getFulfillTimes(card, team, turnAction, attackType, turn));
+            count = Math.min(count, condition.getFulfillTimes(card, battle, turnAction, attackType));
         }
         return count;
     }
@@ -312,14 +312,16 @@ export class Condition {
             this.minCount = minCount;
         }
     }
-    isFulfilled(card, team, turnAction, charAttackType, currentTurn) {
-        var result = this.isCondFulfilled(card, team, turnAction, charAttackType, currentTurn);
+    isFulfilled(card, battle, turnAction, charAttackType) {
+        var result = this.isCondFulfilled(card, battle, turnAction, charAttackType);
         if (this.operator == OperatorType.not) {
             result = !result;
         }
         return result;
     }
-    isCondFulfilled(card, team, turnAction, charAttackType, currentTurn) {
+    isCondFulfilled(card, battle, turnAction, charAttackType) {
+        var team = battle.team;
+        var currentTurn = battle.currentTurn;
         if (this.type == ConditionType.hasChar) {
             return team.getCharCount(this.value.toString()) >= this.minCount;
         }
@@ -424,7 +426,8 @@ export class Condition {
             }
             var condLowerHp = Util.getPercentNumber(condHpPercentArr[0]);
             var condUpperHp = Util.getPercentNumber(condHpPercentArr[1]);
-            if (condLowerHp < card.currentHp * 100 && card.currentHp * 100 <= condUpperHp) {
+            var cardLowestHpPercent = (card.lowestHp / card.hp) * 100;
+            if (condLowerHp < cardLowestHpPercent && cardLowestHpPercent <= condUpperHp) {
                 return true;
             }
             return false;
@@ -435,7 +438,8 @@ export class Condition {
         }
         return false;
     }
-    getFulfillTimes(card, team, turnAction, charAttackType, currentTurn) {
+    getFulfillTimes(card, battle, turnAction, charAttackType) {
+        var team = battle.team;
         if (this.type == ConditionType.charCount && (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more)) {
             return team.getCharCount(this.value.toString());
         }
@@ -445,7 +449,7 @@ export class Condition {
         else if (this.type == ConditionType.elementCount && (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more)) {
             return team.getElementCount(this.value.toString());
         }
-        else if (this.isFulfilled(card, team, turnAction, charAttackType, currentTurn)) {
+        else if (this.isFulfilled(card, battle, turnAction, charAttackType)) {
             return 1;
         }
         return 0;

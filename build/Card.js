@@ -24,7 +24,7 @@ export class Card {
     }
     hasPhase(phase) {
         var phaseArr = Array.isArray(phase) ? phase : [phase];
-        return phaseArr.every(p => this.phase.includes(p));
+        return phaseArr.findIndex(p => this.phase.includes(p)) != -1;
     }
     setPhase(phase) {
         var phaseArr = Array.isArray(phase) ? phase : [phase];
@@ -387,6 +387,7 @@ export class EnemyCard extends Card {
             this.remainHp -= val;
             this.currentHp = this.remainHp / this.hp;
         }
+        this.lowestHp = this.remainHp;
     }
 }
 //# sourceMappingURL=Card.js.map
