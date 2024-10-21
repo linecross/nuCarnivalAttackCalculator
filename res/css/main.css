@@ -7,6 +7,14 @@ body{
     font-family: 'Roboto', 'Noto Sans TC', '微軟正黑體', 'Arial', sans-serif;
 }
 
+.title-link{
+    color: #000;
+    text-decoration: none;
+}
+.theme-dark .title-link{
+    color: #fff;
+}
+
 .btn-check:checked + .btn, .btn.show{
     background-color: #2a7fff;
     border-color: #2a7fff;
