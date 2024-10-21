@@ -16,6 +16,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js" integrity="sha512-TelkP3PCMJv+viMWynjKcvLsQzx6dJHvIGhfqzFtZKgAjKM1YPqcwzzDEoTc/BHjf43PcPzTQOjuTr4YdE8lNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js" integrity="sha512-7tWCgq9tTYS/QkGVyKrtLpqAoMV9XIUxoou+sPUypsaZx56cYR/qio84fPK9EvJJtKvJEwt7vkn6je5UVzGevw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js" integrity="sha512-qtX0GLM3qX8rxJN1gyDfcnMFFrKvixfoEOwbBib9VafR5vbChV5LeE5wSI/x+IlCkTY5ZFddFDCCfaVJJNnuKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 	<!-- <script src="https://cdn.jsdelivr.net/npm/dexie@4.0.1/dist/dexie.min.js" integrity="sha256-9M8EwPnRsCJkXKCyI02T3KQjZ+T2g/p9GTBTAaDVUTg=" crossorigin="anonymous"></script>
@@ -602,12 +603,6 @@
 								</div>
 							</div>
 						</div>
-
-						<!-- <div class="row">
-							複製連結
-							<input type="text" class="col-6" disabled :value="teamShareURL">
-							<span class="col-auto">
-						</div> -->
 					</div>
 					
 					<hr>
@@ -704,6 +699,7 @@
 							</div>
 							<div class="form-group mb-3 col-lg-9 text-end">
 								<template v-if="userInput.isAdvanceMode">
+									<button type="button" class="btn btn-primary" @click="copyUrlToClipboard(teamShareURL)">複製網址</button>｜
 									<button type="button" class="btn btn-primary" @click="copyTableImage('battleTurnTable')">
 										表格截圖
 									</button>
@@ -1000,14 +996,15 @@
 						<h5>功能更新</h5>
 
 						<textarea rows="8">
+[20241021]
+網址功能：提供複製網址功能，並利用網址queryString直接觀看隊伍
+
 [20241013]
 修正：選擇能補血的敵人後，降療技能可以發揮實戰作用
-
 
 [20241001]
 實戰HP功能：顯示實戰的最大HP與HP加成
 修正：敵人鎖血的回合
-
 
 [20240915]
 選擇敵人功能：可以自訂敵人及選擇敵人
