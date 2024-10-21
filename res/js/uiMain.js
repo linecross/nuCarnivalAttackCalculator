@@ -1217,6 +1217,9 @@ Vue.createApp({
 		}
 	},
 	computed: {
+		homeUrl(){
+			return location.protocol + '//' + window.location.host + window.location.pathname;
+		},
 		isEditTeam(){
 			return this.damageRecordPanel.editElement.startsWith("teamName_");
 		},
