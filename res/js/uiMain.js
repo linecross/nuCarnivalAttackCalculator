@@ -171,29 +171,30 @@ Vue.createApp({
 		})
 		.then(json => {
 			CardCenter.setMainCardData(json);
-			var urlParam=new URLSearchParams(window.location.search);
-			// if (urlParam.has('cards')){
-			// 	var cards = urlParam.get('cards').split(',');
-			// 	for (var i=0; i<cards.length; i++){
-			// 		this.userInput.cardname[i] = cards[i];
-			// 	}
-			// }
-			if (urlParam.has('q')){
-				var queryStr = LZString.decompressFromEncodedURIComponent(urlParam.get('q'));
-				var damageRecord = JSON.parse(queryStr);
-				this.loadDamageRecord(damageRecord);
-			}
 
-			this.loadCards();
-		});
+			// quick dirty code, fix later
+			fetch("./res/json/enemyData.json")
+			.then(resp => {
+				return resp.json();
+			})
+			.then(json => {
+				CardCenter.setEnemyData(json);
+				this.userInput.enemyName = "N/A";
 
-		fetch("./res/json/enemyData.json")
-		.then(resp => {
-			return resp.json();
-		})
-		.then(json => {
-			CardCenter.setEnemyData(json);
-			this.userInput.enemyName = "N/A";
+				var urlParam=new URLSearchParams(window.location.search);
+				if (urlParam.has('q')){
+					var queryStr = LZString.decompressFromEncodedURIComponent(urlParam.get('q'));
+					var damageRecord = JSON.parse(queryStr);
+					if (damageRecord.enemyName != null && damageRecord.enemyName != '' && damageRecord.enemyName != 'N/A'){
+						if (this.getEnemyNames().includes(damageRecord.enemyName)){
+							this.userInput.enemyName = damageRecord.enemyName;
+						}
+					}
+					this.loadDamageRecord(damageRecord);
+				}
+				});
+
+				this.loadCards();
 		});
 
 		this.loadSettingFromStorage();
@@ -989,6 +990,7 @@ Vue.createApp({
 					cardActionPattern: [...this.userInput.cardActionPattern],
 					cardManualAction: [...this.userInput.cardManualAction],
 					cards: cardDmgDataArr,
+					enemyName: this.userInput.enemyName
 				};
 			else{
 				record = {
