@@ -49,7 +49,7 @@ export class Card{
 
 	hasPhase(phase: string | string[]) : boolean{
 		var phaseArr = Array.isArray(phase) ? phase : [phase];
-		return phaseArr.every( p => this.phase.includes(p));
+		return phaseArr.findIndex( p => this.phase.includes(p)) != -1;
 	}
 	setPhase(phase: string | string[]){
 		var phaseArr = Array.isArray(phase) ? phase : [phase];
@@ -389,6 +389,7 @@ export class CardCenter{
 export class EnemyCard extends Card{
 	active: boolean = false;
 	remainHp: number;
+	lowestHp: number; // For record the lowest HP interval (Eg. remain HP can higher after heal)
 
 	hpLock: string[] = [];
 	battleHpLock: string[] = [];
@@ -455,5 +456,7 @@ export class EnemyCard extends Card{
 			this.remainHp -= val;
 			this.currentHp = this.remainHp / this.hp;
 		}
+
+		this.lowestHp = this.remainHp;
 	}
 }

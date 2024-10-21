@@ -172,11 +172,16 @@ Vue.createApp({
 		.then(json => {
 			CardCenter.setMainCardData(json);
 			var urlParam=new URLSearchParams(window.location.search);
-			if (urlParam.has('cards')){
-				var cards = urlParam.get('cards').split(',');
-				for (var i=0; i<cards.length; i++){
-					this.userInput.cardname[i] = cards[i];
-				}
+			// if (urlParam.has('cards')){
+			// 	var cards = urlParam.get('cards').split(',');
+			// 	for (var i=0; i<cards.length; i++){
+			// 		this.userInput.cardname[i] = cards[i];
+			// 	}
+			// }
+			if (urlParam.has('q')){
+				var queryStr = LZString.decompressFromEncodedURIComponent(urlParam.get('q'));
+				var damageRecord = JSON.parse(queryStr);
+				this.loadDamageRecord(damageRecord);
 			}
 
 			this.loadCards();
@@ -947,7 +952,7 @@ Vue.createApp({
 			var toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEle);
 			toastBootstrap.show();
 		},
-		addDamageRecord(){
+		generateDamageRecord(forShare = false){
 			if (this.battle == null){
 				this.showToast('請先加入一張卡片', 'text-bg-danger');
 				return;
@@ -963,27 +968,47 @@ Vue.createApp({
 						potential: card.potential,
 						currentHp: card.currentHp
 					};
-					if (this.userInput.isCardEnabled[i]){
-						cardDmgData['dmg'] = this.getBattleTotalValue(card.name);
+					if (!forShare){
+						if (this.userInput.isCardEnabled[i]){
+							cardDmgData['dmg'] = this.getBattleTotalValue(card.name);
+						}
 					}
 				}
 				cardDmgDataArr.push(cardDmgData);
 			}
 			var teamTotalDamage = this.getBattleTeamTotalValue();
 
-			var record = {
-				teamName: this.teamName,
-				turns: this.userInput.turns,
-				cardname: [...this.userInput.cardname],
-				isCardEnabled: [...this.userInput.isCardEnabled],
-				cardActionOrder: [...this.userInput.cardActionOrder],
-				cardActionPattern: [...this.userInput.cardActionPattern],
-				cardManualAction: [...this.userInput.cardManualAction],
-				cards: cardDmgDataArr,
-				totalDamage: teamTotalDamage,
-				isFav: false,
-			};
+			var record = {};
+			if (forShare)
+				record = {
+					teamName: this.teamName,
+					turns: this.userInput.turns,
+					cardname: [...this.userInput.cardname],
+					isCardEnabled: [...this.userInput.isCardEnabled],
+					cardActionOrder: [...this.userInput.cardActionOrder],
+					cardActionPattern: [...this.userInput.cardActionPattern],
+					cardManualAction: [...this.userInput.cardManualAction],
+					cards: cardDmgDataArr,
+				};
+			else{
+				record = {
+					teamName: this.teamName,
+					turns: this.userInput.turns,
+					cardname: [...this.userInput.cardname],
+					isCardEnabled: [...this.userInput.isCardEnabled],
+					cardActionOrder: [...this.userInput.cardActionOrder],
+					cardActionPattern: [...this.userInput.cardActionPattern],
+					cardManualAction: [...this.userInput.cardManualAction],
+					cards: cardDmgDataArr,
+					totalDamage: teamTotalDamage,
+					isFav: false,
+				};
+			}
 
+			return record;
+		},
+		addDamageRecord(){
+			var record = this.generateDamageRecord();
 			var vueObj = this;
 			var teamNameTitle = record.teamName.split('\n')[0];
 			this.getExistsDamageRecord(record).then(existRecord=>{
@@ -1178,6 +1203,15 @@ Vue.createApp({
 				return this.battle.getCardActualHp(cardname);
 			}
 			return '';
+		},
+		copyUrlToClipboard(text){
+			try {
+				navigator.clipboard.writeText(text);
+				this.showToast('已複製網址！');
+			} catch (err) {
+				this.showToast('複製網址失敗！');
+				console.error('Failed to copy url: ', err);
+			}
 		}
 	},
 	computed: {
@@ -1378,7 +1412,11 @@ Vue.createApp({
 				return url;
 			}
 			var p = new URLSearchParams();
-			p.set("cards", this.userInput.cardname.join(","));
+			// p.set("cards", this.userInput.cardname.join(","));
+			var record = this.generateDamageRecord(true);
+			var queryStr = LZString.compressToEncodedURIComponent(JSON.stringify(record));
+			p.set("q", queryStr);
+			
 			return url + "?" + p.toString();
 		},
 	},

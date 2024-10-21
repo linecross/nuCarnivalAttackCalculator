@@ -1,6 +1,7 @@
 import { Class, RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType, ConditionHPStatus } from './Constants.js';
 import { Card, EnemyCard, Team } from './Card.js';
 import { Util } from './util/Util.js';
+import { Battle } from './BattleSystem.js';
 
 
 export class Rule{
@@ -102,24 +103,24 @@ export class Rule{
 		return this.maxCount;
 	}
 
-	isConditionsFulfilled(card: Card, team: Team, turnAction: TurnActionType, attackType : AttackType, turn: number) : boolean{
+	isConditionsFulfilled(card: Card, battle: Battle, turnAction: TurnActionType, charAttackType : AttackType) : boolean{
 		if (this.condition == null || this.condition.length == 0){
 			return true;
 		}
 		var isFulfilled = true;
 		for (var condition of this.condition){
-			isFulfilled = isFulfilled && condition.isFulfilled(card, team, turnAction, attackType, turn);
+			isFulfilled = isFulfilled && condition.isFulfilled(card, battle, turnAction, charAttackType);
 		}
 		return isFulfilled;
 	}
 
-	getConditionFulfillTimes(card: Card, team: Team, turnAction: TurnActionType, attackType : AttackType, turn: number){
+	getConditionFulfillTimes(card: Card, battle: Battle, turnAction: TurnActionType, attackType : AttackType){
 		if (this.condition == null || this.condition.length == 0 || this.maxCount == null){
 			return 1;
 		}
 		var count = this.maxCount;
 		for (var condition of this.condition){
-			count = Math.min(count, condition.getFulfillTimes(card, team, turnAction, attackType, turn));
+			count = Math.min(count, condition.getFulfillTimes(card, battle, turnAction, attackType));
 		}
 		return count;
 	}
@@ -371,15 +372,17 @@ export class Condition{
 		}
 	}
 
-	isFulfilled(card: Card, team: Team, turnAction: TurnActionType, charAttackType : AttackType, currentTurn: number) : boolean{
-		var result = this.isCondFulfilled(card, team, turnAction, charAttackType, currentTurn);
+	isFulfilled(card: Card, battle: Battle, turnAction: TurnActionType, charAttackType : AttackType) : boolean{
+		var result = this.isCondFulfilled(card, battle, turnAction, charAttackType);
 		if (this.operator == OperatorType.not){
 			result = !result;
 		}
 		return result;
 	}
 	
-	isCondFulfilled(card: Card, team: Team, turnAction: TurnActionType, charAttackType : AttackType, currentTurn: number) : boolean{
+	isCondFulfilled(card: Card, battle: Battle, turnAction: TurnActionType, charAttackType : AttackType) : boolean{
+		var team = battle.team;
+		var currentTurn = battle.currentTurn;
 		if (this.type == ConditionType.hasChar){
 			return team.getCharCount(this.value.toString()) >= this.minCount;
 		}
@@ -484,7 +487,8 @@ export class Condition{
 			}
 			var condLowerHp = Util.getPercentNumber(condHpPercentArr[0]);
 			var condUpperHp = Util.getPercentNumber(condHpPercentArr[1]);
-			if (condLowerHp < card.currentHp*100 && card.currentHp*100 <= condUpperHp){
+			var cardLowestHpPercent = (card.lowestHp / card.hp) * 100;
+			if (condLowerHp < cardLowestHpPercent && cardLowestHpPercent <= condUpperHp){
 				return true;
 			}
 			return false;
@@ -496,7 +500,8 @@ export class Condition{
 		return false;
 	}
 
-	getFulfillTimes(card: Card, team: Team, turnAction: TurnActionType, charAttackType : AttackType, currentTurn: number): number{
+	getFulfillTimes(card: Card, battle: Battle, turnAction: TurnActionType, charAttackType : AttackType): number{
+		var team = battle.team;
 		if (this.type == ConditionType.charCount && (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more)){
 			return team.getCharCount(this.value.toString());
 		}
@@ -506,7 +511,7 @@ export class Condition{
 		else if (this.type == ConditionType.elementCount && (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more)){
 			return team.getElementCount(this.value.toString());
 		}
-		else if (this.isFulfilled(card, team, turnAction, charAttackType, currentTurn)){
+		else if (this.isFulfilled(card, battle, turnAction, charAttackType)){
 			return 1;
 		}
 		return 0;
