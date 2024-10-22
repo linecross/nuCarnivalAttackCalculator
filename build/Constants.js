@@ -70,7 +70,7 @@ export const RuleType = {
     immuneSleep: '免疫睡眠',
     immuneSilence: '免疫沈默'
 };
-export const RuleValueByType = { atk: 'ATK', hp: 'HP', baseAtk: '基礎攻擊力', exactVal: '絕對數值' };
+export const RuleValueByType = { atk: 'ATK', hp: 'HP', baseAtk: '基礎攻擊力', exactVal: '絕對數值', exactHp: '絕對HP', exactAtk: '絕對ATK' };
 export const AttackType = { BasicAttack: '普攻', SkillAttack: '必殺技', Guard: '防禦', None: 'NONE' };
 export const ConditionType = {
     hasChar: '角色在場',
