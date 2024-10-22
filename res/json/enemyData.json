@@ -4,8 +4,8 @@
     "hpLock": ["75%", "50%", "25%"],
     "description": "僅支援以下機制\n．75%、50%、25%鎖血\n．每經過1回合，我方全體受到治療量減少3%\n．25%後回復50%血，並每回合治療8%",
     "attackRule": [
-      { "type": "治療", "value": "303430", "valueBy": "絕對數值", "condition": [{ "type": "血量機制", "value": "25%" }, { "type": "階段", "value": "血量25%", "operator": "不" }] },
-      { "type": "治療", "value": "97097", "valueBy": "絕對數值", "condition": { "type": "血量機制", "value": "25%" } },
+      { "type": "治療", "value": "25%", "valueBy": "絕對HP", "condition": [{ "type": "血量機制", "value": "25%" }, { "type": "階段", "value": "血量25%", "operator": "不" }] },
+      { "type": "治療", "value": "8%", "valueBy": "HP", "condition": { "type": "血量機制", "value": "25%" } },
       { "type": "敵方設定階段", "value": "血量25%", "condition": { "type": "血量機制", "value": "25%" } }
     ],
     "star3Rule": [
@@ -28,7 +28,7 @@
     "hpLock": ["50%", "1%"],
     "description": "僅支援以下機制\n．每3回合可可補血10%\n每5回合可可群攻，我方攻擊手和妨礙必殺技傷害減少25%\n．1%血量會離場",
     "attackRule": [
-      { "type": "治療", "value": "20201", "valueBy": "絕對數值", "condition": { "type": "第n回合", "value": [3,6,9,12,15,18,21,24,27] } },
+      { "type": "治療", "value": "10%", "valueBy": "HP", "condition": { "type": "第n回合", "value": [3,6,9,12,15,18,21,24,27] } },
       { "type": "攻擊", "value": "1000000", "valueBy": "絕對數值", "condition": { "type": "血量機制", "value": "1%" } }
     ],
     "star3Rule": [
@@ -38,9 +38,9 @@
   "【檢定S15】SP3．泳裝崑西": {
     "name": "BOSS－激起的好勝心　崑西", "element": "光", "hp": 2294932, "active": "true",
     "hpLock": ["25%", "1%"],
-    "description": "僅支援以下機制\n．T9n+9 泳崑有「治療22949（1%HP）」\n．25%、1%的鎖血機制，1%血量會離場\n．25%血量開始每回合受到傷害減少6.5%",
+    "description": "僅支援以下機制\n．T9n+9 泳崑有「治療（1%HP）」\n．25%、1%的鎖血機制，1%血量會離場\n．25%血量開始每回合受到傷害減少6.5%",
     "attackRule": [
-      { "type": "治療", "value": "22949", "valueBy": "絕對數值", "condition": { "type": "第n回合", "value": [9,10,11,12, 18,19,20,21, 27,28,29,30] } },
+      { "type": "治療", "value": "1%", "valueBy": "HP", "condition": { "type": "第n回合", "value": [9,10,11,12, 18,19,20,21, 27,28,29,30] } },
       { "type": "攻擊", "value": "1000000", "valueBy": "絕對數值", "condition": { "type": "血量機制", "value": "1%" } }
     ],
     "star3Rule": [

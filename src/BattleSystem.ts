@@ -773,7 +773,7 @@ export class Battle{
 		if (rule.valueBy == RuleValueByType.exactVal){
 			outputVal = Math.floor(Util.getNumber(rule.value));
 		}
-		else if (rule.valueBy == RuleValueByType.hp){
+		else if (rule.valueBy == RuleValueByType.hp || rule.valueBy == RuleValueByType.exactHp){
 			outputVal = Math.floor((Math.floor(hp * (1 + Util.getNumber(buffs[RuleType.hpUp])))) * Util.getNumber(rule.value));
 		}
 		else{
@@ -810,9 +810,12 @@ export class Battle{
 			}
 		}
 		
-		for (var key of Object.keys(buffs)){
-			if (key != RuleType.atkUp){
-				outputVal = Math.floor(outputVal * (1 + Util.getNumber(buffs[key])));
+		// Buffs
+		if (rule.valueBy != RuleValueByType.exactVal && rule.valueBy != RuleValueByType.exactHp && rule.valueBy != RuleValueByType.exactAtk){
+			for (var key of Object.keys(buffs)){
+				if (key != RuleType.atkUp){
+					outputVal = Math.floor(outputVal * (1 + Util.getNumber(buffs[key])));
+				}
 			}
 		}
 		// Poison
@@ -867,7 +870,10 @@ export class Battle{
 			}
 
 			if ((card instanceof EnemyCard) && rule.type == RuleType.heal){
-				var healUp = 1 + RuleHelper.getBuffTotalValue(cardRules, RuleType.enemyHealUp);
+				var healUp = 1;
+				if (rule.valueBy != RuleValueByType.exactVal && rule.valueBy != RuleValueByType.exactHp && rule.valueBy != RuleValueByType.exactAtk){
+					healUp = 1 + RuleHelper.getBuffTotalValue(cardRules, RuleType.enemyHealUp);
+				}
 				this.enemyCard.addRemainHp(Math.floor(enemyDamageVal * hitCount * healUp));
 			}
 		}
