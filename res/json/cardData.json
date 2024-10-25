@@ -1441,7 +1441,7 @@
           "condition": { "type": "隊伍中每存在角色", "value": "啖天" }
         }
       ],
-      "star5Rule": [{ "type": "敵方受到必殺技傷害增加", "value": "19%" }],
+      "star5Rule": [{ "type": "敵方受到必殺技傷害增加", "value": "19%", "condition": { "type": "第n回合", "value": 1 } }],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫沈默" }]
     },
@@ -3908,6 +3908,95 @@
       "star5Rule": [{ "type": "最大HP增加", "value": "6%", "target": "全體" }],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "醫生．崑西": {
+      "char": "崑西", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
+      "baseHp": 6902, "baseAtk": 2490, "coolDown": 6,
+      "img": "Quincy_SSR_09.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "造成傷害增加", "value": "17%", "turn": 4 },
+        { "type": "攻擊", "value": "434%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "造成傷害增加", "value": "34%", "turn": 4 },
+        { "type": "攻擊", "value": "546%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "造成傷害增加", "value": "34%", "turn": 4 },
+        { "type": "攻擊", "value": "657%" }
+      ],
+      "star3Rule": [ {"type": "造成傷害增加", "value": "45%"} ],
+      "star5Rule": [{ "type": "攻擊力增加", "value": "34%" }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "護士．可爾": {
+      "char": "可爾", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "水", "potType": "平均型",
+      "baseHp": 7151, "baseAtk": 2419, "coolDown": 3,
+      "img": "Garu_SSR_09.jpg",
+      "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
+      "skillLv1Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "60%",
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { "type": "輔助", "value": "30%", "target": "全體" }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "觸發技效果增加",
+          "value": "34%",
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "80%",
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { "type": "輔助", "value": "30%", "target": "全體" }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "觸發技效果增加",
+          "value": "34%",
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "99%",
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { "type": "輔助", "value": "30%", "target": "全體" }
+      ],
+      "star3Rule": [
+        { "type": "造成傷害增加", "value": "14%", "target": { "type": "定位", "value": ["攻擊", "妨礙", "守護"] } },
+        { "type": "攻擊力增加", "value": "12%", "target": "全體" }
+      ],
+      "star5Rule": [
+        { "type": "敵方受到觸發技傷害增加", "value": "26%", "condition": { "type": "第n回合", "value": 1 } },
+        { "type": "攻擊力增加", "value": "11%", "maxCount": 2, "target": { "type": "定位", "value": "守護" }, "condition": { "type": "第n回合", "value": [1,2] } }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   
