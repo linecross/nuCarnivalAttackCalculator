@@ -3,6 +3,7 @@ import { Rule } from './CardRule.js';
 
 export class LogRule extends Rule{
 	applyCount: number = 1;
+	extraInfo: string = null;
 
 	constructor(rule: Rule){
 		super(rule);
@@ -37,6 +38,9 @@ export class LogRule extends Rule{
 				s += '（'+this.applyCount+'層）'
 			}
 		}
+		// if (this.extraInfo != null && this.extraInfo.length > 0){
+		// 	s += '（' + this.extraInfo + '）'
+		// }
 		return s;
 	}
 	

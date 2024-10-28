@@ -223,7 +223,7 @@ export class Team{
 		this.actionOrder = [];
 	}
 
-	addCard(card : Card, pos: number){
+	addCard(card : Card, pos: number = null){
 		if (card == null){
 			return;
 		}

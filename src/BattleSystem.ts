@@ -278,7 +278,8 @@ export class Battle{
 	startRoundPerCard(attackType: AttackType, card: Card) : AttackType{
 		this.currentTurnAction = TurnActionType.beforeTurn;
 		this.isRuleLogAddedPerTurn = false;
-		var postRuleToProcess = [];
+		var postFollowRuleToProcess = [];
+		var postTriggerRuleToProcess = [];
 		var enemyPostRuleToProcess = [];
 
 		// ---------------------------每個人攻擊前------------------------------------
@@ -329,77 +330,21 @@ export class Battle{
 			this.battleTurns[card.name].skillCD = card.coolDown;
 		}
 
-		var hasProcessedEnemyPostAttack = false;
-		var hasAttackEnemyAction = false;
+		// Get all postAttackRules
+		var postAttackRules = this.battleTurns[card.name].rules
+			.filter((e: Rule)=>e.isPostAttackRule() && e.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
+
+		// 1. 普攻 / 大招
+		var hasAttackEnemy = false;
 		for (var rule of attackRule){
-			var hasAttackEnemy = false;
 			if (Battle.OUTPUT_TYPES.has(rule.type)){
 				var hasActionDone = this.attack(attackType, rule, card);
-				if (hasActionDone && rule.type == RuleType.attack && !rule.isTriggerSkill()){
+				if (hasActionDone && rule.type == RuleType.attack){
 					hasAttackEnemy = true;
 				}
-				
-				// skip post attack rules
-				if (this.currentTurnAction != TurnActionType.afterAction){
-					// Run post attack rules after attack
-					if (rule.type == RuleType.attack){
-						this.currentTurnAction = TurnActionType.afterAttack;
-					}
-					var postAttackRules = this.battleTurns[card.name].rules
-						.filter((e: Rule)=>e.isPostAttackRule() && e.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
-
-					// 追擊
-					for (var postRule of postAttackRules){
-						if (postRule.type == RuleType.basicAtkFollowupSkill){
-							var atkFollowupRule = postRule.cloneSimple();
-							atkFollowupRule.type = RuleType.attack;
-							atkFollowupRule.turn = 1;
-							atkFollowupRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
-							atkFollowupRule.isFollowUpAttack = true;
-							hasActionDone = this.attack(attackType, atkFollowupRule, card);
-							this.currentTurnAction = TurnActionType.afterAttack;
-							if (hasActionDone){
-								hasAttackEnemy = true;
-							}
-						}
-						else if (Battle.OUTPUT_TYPES.has(postRule.type)){
-							hasActionDone = this.attack(attackType, postRule, card);
-							if (postRule.type == RuleType.attack){
-								this.currentTurnAction = TurnActionType.afterAttack;
-								if (hasActionDone && !postRule.isTriggerSkill()){
-									hasAttackEnemy = true;
-								}
-							}
-						}
-					}
-
-					// 我方「攻擊時」「普攻時」「必殺時」被動
-					for (var postRule of postAttackRules){
-						postRuleToProcess.push(postRule);
-						// this.addRuleToTargets(postRule, card, attackType);
-						// this.processRule(postRule, card, attackType);
-						// this.addBuffToTargets(postRule, card, attackType);
-					}
-				}
-
-				if (hasAttackEnemy){
-					hasAttackEnemyAction = true;
-				}
-
-				if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
-					// 敵方「被攻擊時」被動
-					this.currentTurnAction = TurnActionType.afterAttack;
-					postAttackRules = this.enemyBattleTurn.rules
-						.filter((e: Rule)=>e.isPostAttackRule());
-					for (var postRule of postAttackRules){
-						enemyPostRuleToProcess.push(postRule);
-						// this.addRuleToTargets(postRule, card, attackType);
-						// this.addBuffToTargets(postRule, card, attackType);
-					}
-					hasProcessedEnemyPostAttack = true;
-				}
-				
-				this.currentTurnAction = TurnActionType.afterAction;
+				// Refresh to get all postAttackRules
+				postAttackRules = this.battleTurns[card.name].rules
+					.filter((e: Rule)=>e.isPostAttackRule() && e.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
 			}
 			else{
 				this.addRuleToTargets(rule, card, attackType);
@@ -408,16 +353,64 @@ export class Battle{
 			}
 		}
 
-		// 移動結束才會執行「攻擊時」「必殺時」「普攻時」的rules
-		this.currentTurnAction = hasAttackEnemyAction ? TurnActionType.afterAttack : TurnActionType.afterAction;
-		for (var postRule of postRuleToProcess){
-			this.addRuleToTargets(postRule, card, attackType);
-			this.processRule(postRule, card, attackType);
-			this.addBuffToTargets(postRule, card, attackType);
+		this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
+		var hasProcessedEnemyPostAttack = false;
+		
+		postFollowRuleToProcess = postAttackRules.filter((r: Rule)=>r.type == RuleType.basicAtkFollowupSkill);
+		postTriggerRuleToProcess = postAttackRules.filter((r: Rule)=>r.type !== RuleType.basicAtkFollowupSkill);
+		enemyPostRuleToProcess = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPostAttackRule());
+
+		// 2. 執行敵方身上的「被攻擊時」Rules
+		if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
+			for (var postRule of enemyPostRuleToProcess){
+				this.addRuleToTargets(postRule, card, attackType);
+				this.addBuffToTargets(postRule, card, attackType);
+			}
+			hasProcessedEnemyPostAttack = true;
 		}
-		for (var postRule of enemyPostRuleToProcess){
-			this.addRuleToTargets(postRule, card, attackType);
-			this.addBuffToTargets(postRule, card, attackType);
+
+		// 3. 執行追擊Rules + 敵方身上的「被攻擊時」Rules
+		for (var postRule of postFollowRuleToProcess){
+			var atkFollowupRule = postRule.cloneSimple();
+			atkFollowupRule.type = RuleType.attack;
+			atkFollowupRule.turn = 1;
+			atkFollowupRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
+			atkFollowupRule.isFollowUpAttack = true;
+			var hasActionDone = this.attack(attackType, atkFollowupRule, card);
+			if (hasActionDone){
+				hasAttackEnemy = true;
+			}
+		}
+		this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
+		if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
+			for (var postRule of enemyPostRuleToProcess){
+				this.addRuleToTargets(postRule, card, attackType);
+				this.addBuffToTargets(postRule, card, attackType);
+			}
+			hasProcessedEnemyPostAttack = true;
+		}
+
+		// 4. 執行觸發Rules + 敵方身上的「被攻擊時」Rules
+		for (var postRule of postTriggerRuleToProcess){
+			if (Battle.OUTPUT_TYPES.has(postRule.type)){
+				var hasActionDone = this.attack(attackType, postRule, card);
+				if (hasActionDone && postRule.type == RuleType.attack){
+					hasAttackEnemy = true;
+				}
+			}
+			else{
+				this.addRuleToTargets(postRule, card, attackType);
+				this.processRule(postRule, card, attackType);
+				this.addBuffToTargets(postRule, card, attackType);
+			}
+		}
+		this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
+		if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
+			for (var postRule of enemyPostRuleToProcess){
+				this.addRuleToTargets(postRule, card, attackType);
+				this.addBuffToTargets(postRule, card, attackType);
+			}
+			hasProcessedEnemyPostAttack = true;
 		}
 
 		this.battleTurns[card.name].action[this.currentTurn] = attackType;
@@ -649,8 +642,9 @@ export class Battle{
 			// 各種buff （普攻/必殺/造傷/下毒/治療/持續治療增加）
 			if (Battle.TEAM_BUFF_TYPES.has(rule.type) || Battle.LOG_ONLY_RULE_TYPES.has(rule.type)){
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
-				if (isRuleAdded && targetName == card.name && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
+				// if (isRuleAdded && targetName == card.name && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
+				// 	&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
+				if (isRuleAdded && targetName == card.name){
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -840,25 +834,25 @@ export class Battle{
 				for (var i = outputStartTurn; i < rule.turn; i++){
 					this.battleTurns[card.name].outputs[rule.type][currentTurn+i] = (this.battleTurns[card.name].outputs[rule.type][currentTurn+i] || 0) + outputVal;
 					this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] || 0) + outputVal;
-					this.battleTurns[card.name].addRuleLog(currentTurn+i, rule);
+					this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, 1, outputVal);
 				}
 			}
 		}
 		else if (rule.type == RuleType.poisonAttack){
 			for (var i = 0; i < rule.poisonTurn; i++){
-				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule);
+				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, 1, outputVal.toString());
 			}
 		}
 		else if (rule.type == RuleType.continueHeal){
 			for (var i = 0; i < rule.turn; i++){
-				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule);
+				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, 1);
 			}
 		}
 		else{
 			if (!(card instanceof EnemyCard)){
 				this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal * hitCount;
 				this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
-				this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount);
+				this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount, (enemyDamageVal * hitCount).toString());
 			}
 			
 
@@ -1234,7 +1228,7 @@ export class BattleTurn{
 		this.rules = this.rules.filter(rule=>rule.turn > 0);
 	}
 
-	addRuleLog(turn: number, rule : Rule, applyCount = 1){
+	addRuleLog(turn: number, rule : Rule, applyCount = 1, extraInfo : string = null){
 		if (turn >= this.ruleLog.length){
 			return;
 		}
@@ -1254,6 +1248,7 @@ export class BattleTurn{
 			logRule.condition = null;
 			logRule.target = null;
 			logRule.applyCount = applyCount;
+			logRule.extraInfo = extraInfo;
 			this.ruleLog[turn].push(logRule);
 		}
 	}
