@@ -212,10 +212,10 @@ var NuCarnivalCharChartApp = Vue.createApp({
 			}
 		},
 		getBaseValue(star, val){
-			return Math.ceil(val / Math.pow(1.05, 59)) * (0.5 + (0.1 * star));
+			return Math.ceil(val / Math.pow(Math.fround(1.05), 59)) * (0.5 + (0.1 * star));
 		},
 		calculateValue(star, level, roomPercent, potentialPercent, val, extra){
-			var result = Math.floor(this.getBaseValue(star, val) * Math.pow(1.05, level-1) * (1+roomPercent/100) * (1+potentialPercent/100));
+			var result = Math.floor(this.getBaseValue(star, val) * Math.pow(Math.fround(1.05), level-1) * Math.fround(1+roomPercent/100) * Math.fround(1+potentialPercent/100));
 			if (extra != null){
 				result = Math.floor(result * (1 + extra/100));
 			}
