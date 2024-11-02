@@ -78,7 +78,7 @@ export class Card {
     }
     getCardVal(baseVal, potential) {
         var val = 0;
-        val = Math.ceil(baseVal / Math.pow(1.05, 59)) * (0.5 + (0.1 * this.star));
+        val = Math.ceil(baseVal / Math.pow(Math.fround(1.05), 59)) * (0.5 + (0.1 * this.star));
         var bondVal = 0;
         if (this.bond > 0) {
             var bondVals = GAME_CONFIG.ROOM.DEFAULT;
@@ -87,7 +87,7 @@ export class Card {
             }
             bondVal = bondVals.slice(0, this.bond).reduce((sum, e) => sum + e, 0);
         }
-        val = Math.floor(val * Math.pow(1.05, this.level - 1) * (1 + bondVal / 100) * (1 + potential / 100));
+        val = Math.floor(val * Math.pow(Math.fround(1.05), this.level - 1) * Math.fround(1 + bondVal / 100) * Math.fround(1 + potential / 100));
         return val;
     }
     getAtk() {
@@ -185,7 +185,7 @@ export class Team {
         this.position = [];
         this.actionOrder = [];
     }
-    addCard(card, pos) {
+    addCard(card, pos = null) {
         if (card == null) {
             return;
         }

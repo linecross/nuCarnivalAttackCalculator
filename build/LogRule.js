@@ -4,6 +4,7 @@ export class LogRule extends Rule {
     constructor(rule) {
         super(rule);
         this.applyCount = 1;
+        this.extraInfo = null;
         if (rule.type == RuleType.attack) {
             this.applyCount = rule.maxCount;
         }
@@ -32,6 +33,9 @@ export class LogRule extends Rule {
                 s += '（' + this.applyCount + '層）';
             }
         }
+        // if (this.extraInfo != null && this.extraInfo.length > 0){
+        // 	s += '（' + this.extraInfo + '）'
+        // }
         return s;
     }
     getFullSkillInfo() {
