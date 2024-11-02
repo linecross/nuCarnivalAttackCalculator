@@ -1209,7 +1209,7 @@
       "star3Rule": [
         {
           "type": "攻擊力增加",
-          "value": "25%",
+          "value": "27%",
           "condition": { "type": "血量大於", "value": "75%" }
         }
       ],
@@ -3138,7 +3138,7 @@
         { "type": "攻擊", "value": "252%" }
       ],
       "skillLv3Rule": [
-        { "type": "敵方受到傷害增加", "value": "10%", "turn": 3 },
+        { "type": "敵方受到傷害增加", "value": "27%", "turn": 3 },
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "12%", "turn": 3, "condition": {"type": "被屬性攻擊", "value": ["光", "闇", "火", "水", "木"]} }
