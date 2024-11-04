@@ -141,6 +141,51 @@ describe('實際測試', () => {
             expect(battle.getTotalValue('SR艾斯特')).toBeAround(328275);
         });
 
+        test('極玖+極奧+星副+火狐+沙狐', () => {
+            cards = ['極樂．玖夜', '極樂．奧利文', '流星．艾德蒙特', '妖宴．玖夜', '沙漠．玖夜']
+            setupBattle();
+
+            expect(battle.getTurnValue(cards[1], 14)).toBeAround(71153);
+            expect(battle.getTurnValue(cards[2], 14)).toBeAround(39542);
+            expect(battle.getTurnValue(cards[3], 14)).toBeAround(168253);
+            expect(battle.getTurnValue(cards[4], 14)).toBeAround(125329);
+            
+            expect(battle.getTotalValue(cards[1])).toBeAround(628426);
+            expect(battle.getTotalValue(cards[2])).toBeAround(435645);
+            expect(battle.getTotalValue(cards[3])).toBeAround(1540389);
+            expect(battle.getTotalValue(cards[4])).toBeAround(1479503);
+        });
+
+        test('霜崑+鱗八+夢歛+浪啖+偵歛', () => {
+            cards = ['晶霜．崑西', '滄鱗．八雲', '迷夢．歛', '海浪．啖天', '偵探．歛']
+            setupBattle();
+
+            expect(battle.getTurnValue(cards[1], 13)).toBeAround(164798);
+            expect(battle.getTurnValue(cards[2], 13)).toBeAround(271917);
+            expect(battle.getTurnValue(cards[3], 13)).toBeAround(200096);
+            expect(battle.getTurnValue(cards[4], 13)).toBeAround(246390);
+            
+            expect(battle.getTotalValue(cards[1])).toBeAround(649990);
+            expect(battle.getTotalValue(cards[2])).toBeAround(953935);
+            expect(battle.getTotalValue(cards[3])).toBeAround(744945);
+            expect(battle.getTotalValue(cards[4])).toBeAround(876638);
+        });
+
+        test('星布+偵布+魔伊+夢八+醫崑', () => {
+            cards = ['流星．布儡', '偵探．布儡', '魔王．伊得', '迷夢．八雲', '醫生．崑西']
+            setupBattle();
+
+            expect(battle.getTurnValue(cards[1], 13)).toBeAround(26604);
+            expect(battle.getTurnValue(cards[2], 13)).toBeAround(79645);
+            expect(battle.getTurnValue(cards[3], 13)).toBeAround(127350);
+            expect(battle.getTurnValue(cards[4], 13)).toBeAround(393084);
+            
+            expect(battle.getTotalValue(cards[1])).toBeAround(797364);
+            expect(battle.getTotalValue(cards[2])).toBeAround(643818);
+            expect(battle.getTotalValue(cards[3])).toBeAround(1050579);
+            expect(battle.getTotalValue(cards[4])).toBeAround(2267346);
+        });
+
     });
 
 });

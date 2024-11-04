@@ -1,3 +1,5 @@
+import { Float32 } from './Float32.js';
+
 export class Util{
     static getPercentNumber(val: any) : number{
         var num : number = 0;
@@ -23,5 +25,15 @@ export class Util{
 		}
 		
 		return num;
+	}
+
+	static getFloat32(val: any) : Float32{
+		if (typeof val == 'number'){
+			return new Float32(val);
+		}
+		if (val instanceof Float32){
+			return new Float32(val.getValue());
+		}
+		return new Float32(Util.getNumber(val));
 	}
 }
