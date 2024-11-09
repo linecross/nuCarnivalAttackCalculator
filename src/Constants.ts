@@ -81,9 +81,15 @@ export const RuleType = {
 
 	// 不會在計算機生效的被動（純記錄）
 	takeLessDamage: '受到傷害減少',
+	takeLessBasicDamage: '受到普攻傷害減少',
+	takeLessSkillDamage: '受到必殺技傷害減少',
 	takeLessDamageByGuard: '防禦減傷增加',
 	moreRecovery: '受到回復量增加',
+	enemyLessAtk: '敵方攻擊力減少',
 	enemyLessDamage: '敵方造成傷害減少',
+	enemyLessBasicDamage: '敵方普攻傷害減少',
+	enemyLessSkillDamage: '敵方必殺技傷害減少',
+	enemyRemoveGuard: '破解防禦',
 
 	immuneParalysis: '免疫麻痺',
 	immuneSleep: '免疫睡眠',

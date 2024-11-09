@@ -34,8 +34,10 @@ export class Battle{
 	static TEAM_BUFF_TYPES : Set<RuleType> = new Set([RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp, RuleType.partyAllHealUp]);
 	static ENEMY_BUFF_TYPES : Set<RuleType> = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyHealUp]);
 	static UNUSED_RULE_TYPES : Set<RuleType> = new Set([RuleType.immuneParalysis, RuleType.immuneSilence, RuleType.immuneSleep, 
-		RuleType.takeLessDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery, 
-		RuleType.enemyLessDamage]);
+		RuleType.takeLessDamage, RuleType.takeLessBasicDamage, RuleType.takeLessSkillDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery, 
+		RuleType.enemyLessAtk, RuleType.enemyLessDamage, RuleType.enemyLessBasicDamage, RuleType.enemyLessSkillDamage, 
+		RuleType.enemyRemoveGuard
+	]);
 	// static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set([RuleType.getShield]);
 	static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set();
 

@@ -163,6 +163,24 @@
 										</span>
 									</template>
 								</div>
+								<div class="py-1">
+									<h5>減傷能力</h5>
+									<template v-for="lessDamageSkill in FILTERS.lessDamageSkill">
+										<span>
+											<input type="checkbox" class="btn-check" name="cardFilter-lessDamageSkill" :id="'cardFilter-'+lessDamageSkill" :value="lessDamageSkill" @click="addToFilterSearch(lessDamageSkill)" :checked="isFilterChecked(lessDamageSkill)">
+											<label class="btn btn-outline-primary col-1 mx-2 my-1 w-auto" :for="'cardFilter-'+lessDamageSkill">{{lessDamageSkill}}</label>
+										</span>
+									</template>
+								</div>
+								<div class="py-1">
+									<h5>其他能力</h5>
+									<template v-for="otherSkill in FILTERS.otherSkill">
+										<span>
+											<input type="checkbox" class="btn-check" name="cardFilter-otherSkill" :id="'cardFilter-'+otherSkill" :value="otherSkill" @click="addToFilterSearch(otherSkill)" :checked="isFilterChecked(otherSkill)">
+											<label class="btn btn-outline-primary col-1 mx-2 my-1 w-auto" :for="'cardFilter-'+otherSkill">{{otherSkill}}</label>
+										</span>
+									</template>
+								</div>
 							</div>
 						
 							<div class="card-panel col overflow-auto w-100" >

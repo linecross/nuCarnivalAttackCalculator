@@ -49,6 +49,10 @@ export class LogRule extends Rule{
 		if (this.value == null){
 			s = this.type;
 		}
+		if (this.type == RuleType.appendRule || this.type == RuleType.enemyAppendRule){
+			// s = this.type + '「' + new LogRule(this.value as Rule).getFullSkillInfo() + '」';
+			s = this.type + '「' + this.value + '」';
+		}
 		if (this.target != null && this.target.type != TargetType.self){
 			s = this.target + s;
 		}
