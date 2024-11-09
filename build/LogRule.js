@@ -33,9 +33,9 @@ export class LogRule extends Rule {
                 s += '（' + this.applyCount + '層）';
             }
         }
-        // if (this.extraInfo != null && this.extraInfo.length > 0){
-        // 	s += '（' + this.extraInfo + '）'
-        // }
+        if (this.extraInfo != null && this.extraInfo.length > 0) {
+            s += '（' + this.extraInfo + '）';
+        }
         return s;
     }
     getFullSkillInfo() {
