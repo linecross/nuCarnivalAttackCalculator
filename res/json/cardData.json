@@ -125,9 +125,9 @@
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
       ],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "409%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "531%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "616%" }],
+      "skillLv1Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "409%" }],
+      "skillLv2Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "531%" }],
+      "skillLv3Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "616%" }],
       "star3Rule": [
         {
           "type": "必殺技傷害增加",
@@ -228,7 +228,7 @@
       "rarity": "N", "class": "攻擊", "element": "光", "potType": "NR卡",
       "baseHp": 4482, "baseAtk": 1174, "coolDown": 3,
       "img": "Dante_N_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "attackRule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
@@ -400,9 +400,9 @@
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
       ],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "409%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "531%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "616%" }],
+      "skillLv1Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "409%" }],
+      "skillLv2Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "531%" }],
+      "skillLv3Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "616%" }],
       "star3Rule": [
         {
           "type": "必殺技傷害增加",
@@ -503,7 +503,7 @@
       "rarity": "R", "class": "攻擊", "element": "闇", "potType": "NR卡",
       "baseHp": 5230, "baseAtk": 1387, "coolDown": 3,
       "img": "Dante_R_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "attackRule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
@@ -675,9 +675,9 @@
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
       ],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "409%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "531%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "616%" }],
+      "skillLv1Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "409%" }],
+      "skillLv2Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "531%" }],
+      "skillLv3Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "616%" }],
       "star3Rule": [
         {
           "type": "必殺技傷害增加",
@@ -778,7 +778,7 @@
       "rarity": "SR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 6190, "baseAtk": 1601, "coolDown": 3,
       "img": "Dante_SR_01.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "attackRule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
@@ -1143,14 +1143,17 @@
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
         { "type": "反擊", "value": "62%", "turn": 2, "maxCount": 99 }
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
         { "type": "反擊", "value": "74%", "turn": 2, "maxCount": 99 }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
         { "type": "反擊", "value": "87%", "turn": 2, "maxCount": 99 }
       ],
       "star3Rule": [
@@ -1174,7 +1177,7 @@
       "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "妖宴．玖夜": {
-      "char": "玖夜", "fullname": null, "alias": null,
+      "char": "玖夜", "fullname": null, "alias": "火狐",
       "rarity": "SSR", "class": "妨礙", "element": "火", "potType": "平均型",
       "baseHp": 8076, "baseAtk": 1956, "coolDown": 3,
       "img": "Kuya_SSR_02.jpg",
@@ -1186,7 +1189,8 @@
           "value": "10%",
           "turn": 99,
           "maxCount": 3
-        }
+        },
+        { "type": "敵方必殺技傷害減少", "value": "10%", "turn": 2 }
       ],
       "skillLv2Rule": [
         { "type": "持續傷害", "value": "159%", "poisonTurn": 3 },
@@ -1195,7 +1199,8 @@
           "value": "10%",
           "turn": 99,
           "maxCount": 3
-        }
+        },
+        { "type": "敵方必殺技傷害減少", "value": "10%", "turn": 2 }
       ],
       "skillLv3Rule": [
         { "type": "持續傷害", "value": "182%", "poisonTurn": 3 },
@@ -1204,7 +1209,8 @@
           "value": "10%",
           "turn": 99,
           "maxCount": 3
-        }
+        },
+        { "type": "敵方必殺技傷害減少", "value": "10%", "turn": 2 }
       ],
       "star3Rule": [
         {
@@ -1213,7 +1219,9 @@
           "condition": { "type": "血量大於", "value": "75%" }
         }
       ],
-      "star5Rule": [],
+      "star5Rule": [
+        { "type": "敵方攻擊力減少", "value": "10%", "turn": 3, "condition": { "type": "攻擊方式", "value": "必殺技" } }
+      ],
       "pot6Rule": [{ "type": "持續傷害增加", "value": "15%" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
     },
@@ -1422,14 +1430,17 @@
       "img": "Dante_SSR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
+        { "type": "破解防禦" }, 
         { "type": "敵方受到必殺技傷害增加", "value": "27%" },
         { "type": "攻擊", "value": "204%" }
       ],
       "skillLv2Rule": [
+        { "type": "破解防禦" }, 
         { "type": "敵方受到必殺技傷害增加", "value": "27%" },
         { "type": "攻擊", "value": "238%" }
       ],
       "skillLv3Rule": [
+        { "type": "破解防禦" }, 
         { "type": "敵方受到必殺技傷害增加", "value": "27%" },
         { "type": "攻擊", "value": "273%" }
       ],
@@ -1822,7 +1833,11 @@
         }
       ],
       "star5Rule": [{ "type": "造成傷害增加", "value": "9%", "target": "全體" }],
-      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }],
+      "pot6Rule": [
+        { "type": "造成傷害增加", "value": "2%", "target": "全體" }, 
+        { "type": "我方受到治療增加", "value": "5%", "target": "全體" },
+        { "type": "受到傷害減少", "value": "2%", "target": "全體" }
+      ],
       "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "春林．艾德蒙特": {
@@ -1921,9 +1936,18 @@
       "baseHp": 11741, "baseAtk": 1387, "coolDown": 4,
       "img": "Garu_SSR_04.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
-      "skillLv1Rule": [{"type": "獲得護盾", "value": "13%", "valueBy": "HP", "target": "全體"}],
-      "skillLv2Rule": [{"type": "獲得護盾", "value": "15%", "valueBy": "HP", "target": "全體"}],
-      "skillLv3Rule": [{"type": "獲得護盾", "value": "18%", "valueBy": "HP", "target": "全體"}],
+      "skillLv1Rule": [
+        {"type": "受到必殺技傷害減少", "value": "15%", "turn": 2, "target": "全體"},
+        {"type": "獲得護盾", "value": "13%", "valueBy": "HP", "target": "全體"}
+      ],
+      "skillLv2Rule": [
+        {"type": "受到必殺技傷害減少", "value": "15%", "turn": 2, "target": "全體"},
+        {"type": "獲得護盾", "value": "15%", "valueBy": "HP", "target": "全體"}
+      ],
+      "skillLv3Rule": [
+        {"type": "受到必殺技傷害減少", "value": "15%", "turn": 2, "target": "全體"},
+        {"type": "獲得護盾", "value": "18%", "valueBy": "HP", "target": "全體"}
+      ],
       "star3Rule": [
         {
           "type": "最大HP增加",
@@ -1941,16 +1965,19 @@
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 7044, "baseAtk": 2348, "coolDown": 4,
       "img": "Blade_SSR_04.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "50%" }],
+      "attackRule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "50%" }],
       "skillLv1Rule": [
+        { "type": "破解防禦" }, 
         { "type": "攻擊", "value": "60%", "maxCount": 3 },
         { "type": "攻擊", "value": "284%" }
       ],
       "skillLv2Rule": [
+        { "type": "破解防禦" }, 
         { "type": "攻擊", "value": "60%", "maxCount": 3 },
         { "type": "攻擊", "value": "345%" }
       ],
       "skillLv3Rule": [
+        { "type": "破解防禦" }, 
         { "type": "攻擊", "value": "60%", "maxCount": 3 },
         { "type": "攻擊", "value": "406%" }
       ],
@@ -1980,9 +2007,9 @@
       "baseHp": 6546, "baseAtk": 1921, "coolDown": 4,
       "img": "Quincy_SR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "345%" }],
+      "skillLv1Rule": [{ "type": "攻擊", "value": "247%" }, { "type": "敵方攻擊力減少", "value": "15%", "turn": 2 }],
+      "skillLv2Rule": [{ "type": "攻擊", "value": "296%" }, { "type": "敵方攻擊力減少", "value": "15%", "turn": 2 }],
+      "skillLv3Rule": [{ "type": "攻擊", "value": "345%" }, { "type": "敵方攻擊力減少", "value": "15%", "turn": 2 }],
       "star3Rule": [
         {
           "type": "攻擊力增加",
@@ -2293,9 +2320,9 @@
       "baseHp": 7009, "baseAtk": 2348, "coolDown": 4,
       "img": "Aster_SSR_01.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "269%" }],
-      "skillLv2Rule": [{ "type": "攻擊", "value": "325%" }],
-      "skillLv3Rule": [{ "type": "攻擊", "value": "382%" }],
+      "skillLv1Rule": [{ "type": "攻擊", "value": "269%" }, { "type": "敵方造成傷害減少", "value": "15%", "turn": 2 }],
+      "skillLv2Rule": [{ "type": "攻擊", "value": "325%" }, { "type": "敵方造成傷害減少", "value": "15%", "turn": 2 }],
+      "skillLv3Rule": [{ "type": "攻擊", "value": "382%" }, { "type": "敵方造成傷害減少", "value": "15%", "turn": 2 }],
       "star3Rule": [
         {
           "type": "攻擊力增加",
@@ -2434,12 +2461,17 @@
       "baseHp": 7080, "baseAtk": 2312, "coolDown": 4,
       "img": "Blade_SSR_05.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "284%" }],
+      "skillLv1Rule": [
+        { "type": "敵方造成傷害減少", "value": "8%", "turn": 4 },
+        { "type": "攻擊", "value": "284%" }
+      ],
       "skillLv2Rule": [
+        { "type": "敵方造成傷害減少", "value": "8%", "turn": 4 },
         { "type": "攻擊", "value": "345%" },
         { "type": "持續治療", "value": "10%", "turn": 4, "valueBy": "HP" }
       ],
       "skillLv3Rule": [
+        { "type": "敵方造成傷害減少", "value": "8%", "turn": 4 },
         { "type": "攻擊", "value": "406%" },
         { "type": "持續治療", "value": "10%", "turn": 4, "valueBy": "HP" }
       ],
@@ -2548,13 +2580,20 @@
         { "type": "攻擊", "value": "45%", "maxCount": 3 },
         { "type": "敵方受到傷害增加", "value": "7.5%" }
       ],
-      "skillLv1Rule": [{ "type": "攻擊", "value": "43%", "maxCount": 6 }],
+      "skillLv1Rule": [
+        { "type": "破解防禦" }, 
+        { "type": "攻擊", "value": "43%", "maxCount": 6 }
+      ],
       "skillLv2Rule": [
+        { "type": "破解防禦" }, 
         { "type": "敵方受到傷害增加", "value": "14%", "turn": 3 },
+        { "type": "敵方普攻傷害減少", "value": "14%", "turn": 3 },
         { "type": "攻擊", "value": "51%", "maxCount": 6 }
       ],
       "skillLv3Rule": [
+        { "type": "破解防禦" }, 
         { "type": "敵方受到傷害增加", "value": "14%", "turn": 3 },
+        { "type": "敵方普攻傷害減少", "value": "14%", "turn": 3 },
         { "type": "攻擊", "value": "60%", "maxCount": 6 }
       ],
       "star3Rule": [
@@ -2612,8 +2651,12 @@
       "baseHp": 7187, "baseAtk": 2277, "coolDown": 4,
       "img": "Quincy_SSR_06.jpg",
       "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
-      "skillLv1Rule": [{ "type": "輔助", "value": "124%", "target": "全體" }],
+      "skillLv1Rule": [
+        { "type": "受到傷害減少", "value": "12.5%", "turn": 2, "target": "全體" },
+        { "type": "輔助", "value": "124%", "target": "全體" }
+      ],
       "skillLv2Rule": [
+        { "type": "受到傷害減少", "value": "12.5%", "turn": 2, "target": "全體" },
         {
           "type": "我方受到持續治療增加",
           "value": "27%",
@@ -2623,6 +2666,7 @@
         { "type": "輔助", "value": "148%", "target": "全體" }
       ],
       "skillLv3Rule": [
+        { "type": "受到傷害減少", "value": "12.5%", "turn": 2, "target": "全體" },
         {
           "type": "我方受到持續治療增加",
           "value": "27%",
@@ -2719,7 +2763,11 @@
         }
       ],
       "star5Rule": [{ "type": "攻擊力增加", "value": "6%", "turn": 99, "maxCount": 3, "target": "全體", "condition": {"type": "隊伍中每存在定位", "value": "攻擊"} } ],
-      "pot6Rule": [{ "type": "造成傷害增加", "value": "2%", "target": "全體" }, { "type": "我方受到治療增加", "value": "5%", "target": "全體" }],
+      "pot6Rule": [
+        { "type": "造成傷害增加", "value": "2%", "target": "全體" }, 
+        { "type": "我方受到治療增加", "value": "5%", "target": "全體" },
+        { "type": "受到傷害減少", "value": "2%", "target": "全體" }
+      ],
       "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "迷夢．八雲": {
@@ -2770,7 +2818,9 @@
       "img": "Olivine_SSR_07.jpg",
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
-        { "type": "攻擊", "value": "100%" }, {"type": "獲得護盾", "value": "13%", "valueBy": "HP", "target": "全體"}
+        { "type": "攻擊", "value": "100%" }, 
+        {"type": "獲得護盾", "value": "13%", "valueBy": "HP", "target": "全體"},
+        {"type": "受到傷害減少", "value": "15%", "turn": 3}
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
@@ -2778,6 +2828,7 @@
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
         },
+        {"type": "受到傷害減少", "value": "15%", "turn": 3},
         {"type": "獲得護盾", "value": "15%", "valueBy": "HP", "target": "全體"}
       ],
       "skillLv3Rule": [
@@ -2786,6 +2837,7 @@
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "水"} }
         },
+        {"type": "受到傷害減少", "value": "15%", "turn": 3},
         {"type": "獲得護盾", "value": "18%", "valueBy": "HP", "target": "全體"}
       ],
       "star3Rule": [],
@@ -2809,6 +2861,7 @@
       "img": "Kuya_SSR_06.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
+        { "type": "破解防禦" }, 
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
@@ -2816,6 +2869,7 @@
         { "type": "攻擊", "value": "247%" }
       ],
       "skillLv2Rule": [
+        { "type": "破解防禦" }, 
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
@@ -2824,6 +2878,7 @@
         { "type": "攻擊", "value": "296%" }
       ],
       "skillLv3Rule": [
+        { "type": "破解防禦" }, 
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
@@ -3224,6 +3279,7 @@
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到傷害減少", "value": "5%", "target": "全體" },
         {
           "type": "我方獲得技能",
           "value": {
@@ -3237,6 +3293,7 @@
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到傷害減少", "value": "7%", "target": "全體" },
         {
           "type": "我方獲得技能",
           "value": {
@@ -3250,6 +3307,7 @@
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到傷害減少", "value": "9%", "target": "全體" },
         {
           "type": "我方獲得技能",
           "value": {
@@ -3261,8 +3319,13 @@
           "target": { "type": "全體" }
         }
       ],
-      "star3Rule": [],
-      "star5Rule": [],
+      "star3Rule": [
+        { "type": "受到傷害減少", "value": "2%", "target": "全體" },
+        { "type": "防禦減傷增加", "value": "10%", "condition": { "type": "隊伍中有屬性", "value": "光", "minCount": 2 } }
+      ],
+      "star5Rule": [
+        { "type": "受到傷害減少", "value": "5%", "target": "全體" }
+      ],
       "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫沈默" }]
     },
@@ -3412,15 +3475,18 @@
         { "type": "攻擊", "value": "100%" }
       ],
       "skillLv1Rule": [
+        { "type": "敵方造成傷害減少", "value": "10%", "turn": 3 },
         { "type": "攻擊", "value": "15%", "maxCount": 2 },
         { "type": "攻擊", "value": "247%" }
       ],
       "skillLv2Rule": [
+        { "type": "敵方造成傷害減少", "value": "10%", "turn": 3 },
         { "type": "必殺技傷害增加", "value": "30%" },
         { "type": "攻擊", "value": "20%", "maxCount": 2 },
         { "type": "攻擊", "value": "296%" }
       ],
       "skillLv3Rule": [
+        { "type": "敵方造成傷害減少", "value": "10%", "turn": 3 },
         { "type": "必殺技傷害增加", "value": "30%" },
         { "type": "攻擊", "value": "25%", "maxCount": 2 },
         { "type": "攻擊", "value": "345%" }
@@ -3760,7 +3826,10 @@
       "rarity": "SSR", "class": "守護", "element": "闇", "potType": "ATK先行",
       "baseHp": 11456, "baseAtk": 1494, "coolDown": 3,
       "img": "Kuya_SSR_08.jpg",
-      "attackRule": [{ "type": "攻擊", "value": "75%" }],
+      "attackRule": [
+        { "type": "受到傷害減少", "value": "5%", "target": "全體" },
+        { "type": "攻擊", "value": "75%" }
+      ],
       "skillLv1Rule": [
         {
           "type": "敵方獲得技能",
@@ -3787,7 +3856,15 @@
         { "type": "獲得護盾", "value": "40%", "valueBy": "HP"},
         { "type": "必殺技傷害增加", "value": "26%", "target": "全體" }
       ],
-      "star3Rule": [],
+      "star3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "受到傷害減少", "value": "8%", "condition": {"type": "血量大於", "value": "99%"}
+          },
+          "target": "全體"
+        }
+      ],
       "star5Rule": [
         {
           "type": "最大HP增加",
@@ -3805,19 +3882,25 @@
       "attackRule": [{ "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到傷害減少", "value": "28%" },
         { "type": "治療", "value": "15%", "valueBy": "HP" }
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到傷害減少", "value": "28%" },
         { "type": "造成傷害增加", "value": "17%", "target": "全體", "turn": 3 },
         { "type": "治療", "value": "17%", "valueBy": "HP" }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
+        { "type": "受到傷害減少", "value": "28%" },
         { "type": "造成傷害增加", "value": "17%", "target": "全體", "turn": 3 },
         { "type": "治療", "value": "20%", "valueBy": "HP" }
       ],
-      "star3Rule": [{ "type": "最大HP增加", "value": "23%" }],
+      "star3Rule": [
+        { "type": "防禦減傷增加", "value": "10%" },
+        { "type": "最大HP增加", "value": "23%" }
+      ],
       "star5Rule": [
         { "type": "必殺技傷害增加", "value": "51%" }
       ],
@@ -3888,15 +3971,18 @@
       ],
       "skillLv1Rule": [
         { "type": "治療", "value": "100%" },
-        { "type": "持續治療", "value": "38%", "turn": 4 }
+        { "type": "持續治療", "value": "38%", "turn": 4 },
+        { "type": "受到必殺技傷害減少", "value": "10%", "turn": 4, "target": { "type": "定位", "value": "守護" } }
       ],
       "skillLv2Rule": [
         { "type": "治療", "value": "100%" },
-        { "type": "持續治療", "value": "51%", "turn": 4 }
+        { "type": "持續治療", "value": "51%", "turn": 4 },
+        { "type": "受到必殺技傷害減少", "value": "10%", "turn": 4, "target": { "type": "定位", "value": "守護" } }
       ],
       "skillLv3Rule": [
         { "type": "治療", "value": "100%" },
-        { "type": "持續治療", "value": "64%", "turn": 4 }
+        { "type": "持續治療", "value": "64%", "turn": 4 },
+        { "type": "受到必殺技傷害減少", "value": "10%", "turn": 4, "target": { "type": "定位", "value": "守護" } }
       ],
       "star3Rule": [
         {
@@ -3937,8 +4023,9 @@
       "rarity": "SSR", "class": "輔助", "element": "水", "potType": "平均型",
       "baseHp": 7151, "baseAtk": 2419, "coolDown": 3,
       "img": "Garu_SSR_09.jpg",
-      "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
+      "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }, {"type": "受到傷害減少", "value": "8%", "target": { "type": "定位", "value": "守護" }}],
       "skillLv1Rule": [
+        {"type": "受到必殺技傷害減少", "value": "27%", "target": { "type": "定位", "value": "守護" }},
         {
           "type": "我方獲得技能",
           "value": {
@@ -3952,6 +4039,7 @@
         { "type": "輔助", "value": "30%", "target": "全體" }
       ],
       "skillLv2Rule": [
+        {"type": "受到必殺技傷害減少", "value": "27%", "target": { "type": "定位", "value": "守護" }},
         {
           "type": "觸發技效果增加",
           "value": "34%",
@@ -3970,6 +4058,7 @@
         { "type": "輔助", "value": "30%", "target": "全體" }
       ],
       "skillLv3Rule": [
+        {"type": "受到必殺技傷害減少", "value": "27%", "target": { "type": "定位", "value": "守護" }},
         {
           "type": "觸發技效果增加",
           "value": "34%",

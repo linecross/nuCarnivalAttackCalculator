@@ -538,7 +538,7 @@ export class Condition{
 			return type.replace('定位', minCount+'定位'+value.toString()) + '時';
 		}
 		else if (type == ConditionType.hasElement){
-			return type.replace('屬性', minCount+'屬性'+value.toString()) + '時';
+			return type.replace('屬性', minCount+value.toString()+'屬性') + '時';
 		}
 		else if (type == ConditionType.atTurn){
 			return type.replace('n', value.toString()) + '時';
@@ -554,6 +554,18 @@ export class Condition{
 		}
 		else if (type == ConditionType.hpHigher || type == ConditionType.hpLower){
 			return '當前' + type + value + '時';
+		}
+		else if (type == ConditionType.enemyIsAttacked){
+			return '敵方' + type;
+		}
+		else if (type == ConditionType.enemyIsAttackByChar){
+			return '敵方' + type.replace('角色', value.toString()) + '時';
+		}
+		else if (type == ConditionType.enemyIsAttackByClass){
+			return '敵方' + type.replace('定位', '定位'+value.toString()) + '時';
+		}
+		else if (type == ConditionType.enemyIsAttackByElement){
+			return '敵方' + type.replace('屬性', value.toString()+'屬性') + '時';
 		}
 		
 		return type + value;
