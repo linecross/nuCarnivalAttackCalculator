@@ -125,9 +125,9 @@
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
       ],
-      "skillLv1Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "409%" }],
-      "skillLv2Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "531%" }],
-      "skillLv3Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "616%" }],
+      "skillLv1Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "409%" }],
+      "skillLv2Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "531%" }],
+      "skillLv3Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "616%" }],
       "star3Rule": [
         {
           "type": "必殺技傷害增加",
@@ -228,7 +228,7 @@
       "rarity": "N", "class": "攻擊", "element": "光", "potType": "NR卡",
       "baseHp": 4482, "baseAtk": 1174, "coolDown": 3,
       "img": "Dante_N_01.jpg",
-      "attackRule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "100%" }],
+      "attackRule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
@@ -400,9 +400,9 @@
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
       ],
-      "skillLv1Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "409%" }],
-      "skillLv2Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "531%" }],
-      "skillLv3Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "616%" }],
+      "skillLv1Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "409%" }],
+      "skillLv2Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "531%" }],
+      "skillLv3Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "616%" }],
       "star3Rule": [
         {
           "type": "必殺技傷害增加",
@@ -503,7 +503,7 @@
       "rarity": "R", "class": "攻擊", "element": "闇", "potType": "NR卡",
       "baseHp": 5230, "baseAtk": 1387, "coolDown": 3,
       "img": "Dante_R_01.jpg",
-      "attackRule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "100%" }],
+      "attackRule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
@@ -675,9 +675,9 @@
         { "type": "攻擊", "value": "100%" },
         { "type": "攻擊力增加", "value": "5%", "turn": 6 }
       ],
-      "skillLv1Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "409%" }],
-      "skillLv2Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "531%" }],
-      "skillLv3Rule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "616%" }],
+      "skillLv1Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "409%" }],
+      "skillLv2Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "531%" }],
+      "skillLv3Rule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "616%" }],
       "star3Rule": [
         {
           "type": "必殺技傷害增加",
@@ -778,7 +778,7 @@
       "rarity": "SR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 6190, "baseAtk": 1601, "coolDown": 3,
       "img": "Dante_SR_01.jpg",
-      "attackRule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "100%" }],
+      "attackRule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "100%" }],
       "skillLv1Rule": [
         { "type": "敵方受到傷害增加", "value": "12%", "turn": 2 },
         { "type": "攻擊", "value": "204%" }
@@ -1430,17 +1430,17 @@
       "img": "Dante_SSR_02.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "敵方受到必殺技傷害增加", "value": "27%" },
         { "type": "攻擊", "value": "204%" }
       ],
       "skillLv2Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "敵方受到必殺技傷害增加", "value": "27%" },
         { "type": "攻擊", "value": "238%" }
       ],
       "skillLv3Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "敵方受到必殺技傷害增加", "value": "27%" },
         { "type": "攻擊", "value": "273%" }
       ],
@@ -1965,19 +1965,19 @@
       "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
       "baseHp": 7044, "baseAtk": 2348, "coolDown": 4,
       "img": "Blade_SSR_04.jpg",
-      "attackRule": [{ "type": "破解防禦" }, { "type": "攻擊", "value": "50%" }],
+      "attackRule": [{ "type": "解除防禦" }, { "type": "攻擊", "value": "50%" }],
       "skillLv1Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "攻擊", "value": "60%", "maxCount": 3 },
         { "type": "攻擊", "value": "284%" }
       ],
       "skillLv2Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "攻擊", "value": "60%", "maxCount": 3 },
         { "type": "攻擊", "value": "345%" }
       ],
       "skillLv3Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "攻擊", "value": "60%", "maxCount": 3 },
         { "type": "攻擊", "value": "406%" }
       ],
@@ -2581,17 +2581,17 @@
         { "type": "敵方受到傷害增加", "value": "7.5%" }
       ],
       "skillLv1Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "攻擊", "value": "43%", "maxCount": 6 }
       ],
       "skillLv2Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "敵方受到傷害增加", "value": "14%", "turn": 3 },
         { "type": "敵方普攻傷害減少", "value": "14%", "turn": 3 },
         { "type": "攻擊", "value": "51%", "maxCount": 6 }
       ],
       "skillLv3Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         { "type": "敵方受到傷害增加", "value": "14%", "turn": 3 },
         { "type": "敵方普攻傷害減少", "value": "14%", "turn": 3 },
         { "type": "攻擊", "value": "60%", "maxCount": 6 }
@@ -2861,7 +2861,7 @@
       "img": "Kuya_SSR_06.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
@@ -2869,7 +2869,7 @@
         { "type": "攻擊", "value": "247%" }
       ],
       "skillLv2Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
@@ -2878,7 +2878,7 @@
         { "type": "攻擊", "value": "296%" }
       ],
       "skillLv3Rule": [
-        { "type": "破解防禦" }, 
+        { "type": "解除防禦" }, 
         {
           "type": "敵方獲得技能",
           "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "木"} }
