@@ -1,3 +1,4 @@
+import { Float32 } from './Float32.js';
 export class Util {
     static getPercentNumber(val) {
         var num = 0;
@@ -20,6 +21,15 @@ export class Util {
             num = +val;
         }
         return num;
+    }
+    static getFloat32(val) {
+        if (typeof val == 'number') {
+            return new Float32(val);
+        }
+        if (val instanceof Float32) {
+            return new Float32(val.getValue());
+        }
+        return new Float32(Util.getNumber(val));
     }
 }
 //# sourceMappingURL=Util.js.map

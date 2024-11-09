@@ -1,5 +1,6 @@
 import { Rule } from '../CardRule.js';
 import { RuleType } from '../Constants.js';
+import { Float32 } from './Float32.js';
 import { Util } from './Util.js';
 export class RuleHelper {
     static hasCounterAttack(rules) {
@@ -33,11 +34,11 @@ export class RuleHelper {
         var targetRules = rules.filter(e => e.type == ruleType);
         if (targetRules.length == 0)
             return 0;
-        var result = 0;
+        var result = new Float32(0);
         for (var r of targetRules) {
-            result += Util.getNumber(r.value);
+            result.add(Util.getFloat32(r.value));
         }
-        return result;
+        return result.getValue();
     }
 }
 //# sourceMappingURL=RuleHelper.js.map

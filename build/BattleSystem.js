@@ -4,6 +4,7 @@ import { Rule, RuleTarget, Condition } from './CardRule.js';
 import { RuleHelper } from './util/RuleHelper.js';
 import { LogRule } from './LogRule.js';
 import { Util } from './util/Util.js';
+import { Float32 } from './util/Float32.js';
 export class Battle {
     constructor(team, turns = 13) {
         this.turns = 13;
@@ -419,15 +420,16 @@ export class Battle {
                         buffType = RuleType.enemyAllAtkUp;
                     }
                     var applyCount = buff.getConditionFulfillTimes(card, this, this.currentTurnAction, attackType);
-                    debuffs[buffType] = (debuffs[buffType] || 0) + (Util.getNumber(buff.value) * applyCount);
+                    debuffs[buffType] = Util.getFloat32(debuffs[buffType] || 0).add(Util.getFloat32(buff.value).multiply(applyCount));
                 }
-                var outputVal = poisonVal;
-                var enemyDamageVal = outputVal;
+                var outputVal = Util.getFloat32(poisonVal);
+                var enemyDamageVal = Util.getFloat32(outputVal);
                 for (var key of Object.keys(debuffs)) {
-                    enemyDamageVal = Math.floor(enemyDamageVal * (1 + Util.getNumber(debuffs[key])));
+                    enemyDamageVal = enemyDamageVal.multiply(debuffs[key].add(1));
                 }
-                this.battleTurns[card.name].outputs[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].outputs[RuleType.poisonAttack][this.currentTurn] || 0) + outputVal;
-                this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] || 0) + enemyDamageVal;
+                enemyDamageVal = enemyDamageVal.floor();
+                this.battleTurns[card.name].outputs[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].outputs[RuleType.poisonAttack][this.currentTurn] || 0) + outputVal.getValue();
+                this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn] || 0) + enemyDamageVal.getValue();
                 if (this.enemyCard != null) {
                     this.damageToEnemy(this.battleTurns[card.name].enemyDamage[RuleType.poisonAttack][this.currentTurn], true);
                 }
@@ -447,14 +449,15 @@ export class Battle {
                         buffType = RuleType.partyAllHealUp;
                     }
                     var applyCount = buff.getConditionFulfillTimes(card, this, this.currentTurnAction, attackType);
-                    buffs[buffType] = (buffs[buffType] || 0) + (Util.getNumber(buff.value) * applyCount);
+                    buffs[buffType] = Util.getFloat32(buffs[buffType] || 0).add(Util.getFloat32(buff.value).multiply(applyCount));
                 }
-                var outputVal = contHealVal;
+                var outputVal = Util.getFloat32(contHealVal);
                 for (var key of Object.keys(buffs)) {
-                    outputVal = Math.floor(outputVal * (1 + Util.getNumber(buffs[key])));
+                    outputVal = outputVal.multiply(Util.getFloat32(buffs[key]).add(1));
                 }
-                this.battleTurns[card.name].outputs[RuleType.continueHeal][this.currentTurn] = (this.battleTurns[card.name].outputs[RuleType.continueHeal][this.currentTurn] || 0) + outputVal;
-                this.battleTurns[card.name].enemyDamage[RuleType.continueHeal][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.continueHeal][this.currentTurn] || 0) + outputVal;
+                outputVal = outputVal.floor();
+                this.battleTurns[card.name].outputs[RuleType.continueHeal][this.currentTurn] = (this.battleTurns[card.name].outputs[RuleType.continueHeal][this.currentTurn] || 0) + outputVal.getValue();
+                this.battleTurns[card.name].enemyDamage[RuleType.continueHeal][this.currentTurn] = (this.battleTurns[card.name].enemyDamage[RuleType.continueHeal][this.currentTurn] || 0) + outputVal.getValue();
             }
         }
         if (this.enemyCard != null) {
@@ -662,26 +665,28 @@ export class Battle {
             this.isRuleLogAddedPerTurn = true;
         }
         var hitCount = rule.getMaxCount();
-        var outputVal = 0;
+        var outputVal = new Float32(0);
         // 計算攻擊力 x 輸出倍率
         if (rule.valueBy == RuleValueByType.exactVal) {
-            outputVal = Math.floor(Util.getNumber(rule.value));
+            outputVal = Util.getFloat32(rule.value).floor();
         }
         else if (rule.valueBy == RuleValueByType.hp || rule.valueBy == RuleValueByType.exactHp) {
-            outputVal = Math.floor((Math.floor(hp * (1 + Util.getNumber(buffs[RuleType.hpUp])))) * Util.getNumber(rule.value));
+            outputVal = Util.getFloat32(hp).multiply(Util.getFloat32(buffs[RuleType.hpUp]).add(1)).floor().multiply(Util.getFloat32(rule.value)).floor();
         }
         else {
-            var atkVal = Math.floor(atk * (1 + Util.getNumber(buffs[RuleType.atkUp]))) + supportBuff;
+            var atkVal = Util.getFloat32(atk).multiply(Util.getFloat32(buffs[RuleType.atkUp]).add(1)).floor();
+            atkVal = atkVal.add(supportBuff);
             // 只用基礎攻擊力計算
             // 註：如果是輔助rule，filterBuffs會過濾掉所有ATK加成，所以輔助無須特別指定是「基礎攻擊力」
             if (rule.valueBy == RuleValueByType.baseAtk) {
-                atkVal = Math.floor(atk);
+                atkVal = Util.getFloat32(atk).floor();
             }
-            outputVal = Math.floor(atkVal * Util.getNumber(rule.value));
+            outputVal = atkVal.multiply(Util.getFloat32(rule.value));
         }
         var outputStartTurn = 0;
         // 輔助rule - 幫全隊加攻擊力增加buff
         if (rule.type == RuleType.support) {
+            outputVal = outputVal.floor();
             var targetNames = rule.getRuleApplyTarget(this.team, card);
             // ugly hardcode for 不可疊加
             if (rule.isNoOverlayRule() && targetNames.length > 0) {
@@ -704,31 +709,36 @@ export class Battle {
         if (rule.valueBy != RuleValueByType.exactVal && rule.valueBy != RuleValueByType.exactHp && rule.valueBy != RuleValueByType.exactAtk) {
             for (var key of Object.keys(buffs)) {
                 if (key != RuleType.atkUp) {
-                    outputVal = Math.floor(outputVal * (1 + Util.getNumber(buffs[key])));
+                    outputVal = outputVal.multiply(Util.getFloat32(buffs[key]).add(1));
                 }
             }
         }
+        if (this.enemyElement != Element.NA && rule.type == RuleType.attack) {
+            outputVal = outputVal.multiply(Battle.getElementalBuff(card.element, this.enemyElement));
+        }
+        outputVal = outputVal.floor();
         // Poison
         if (rule.type == RuleType.poisonAttack) {
-            var newRule = new Rule({ type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal, turn: rule.poisonTurn });
+            var newRule = new Rule({ type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.poisonTurn });
             isAttackSuccess = this.enemyBattleTurn.addRule(newRule);
         }
         // Cont. Heal
         else if (rule.type == RuleType.continueHeal) {
-            var newRule = new Rule({ type: RuleType.continueHealState, parentCardName: card.name, value: outputVal, turn: rule.turn });
+            var newRule = new Rule({ type: RuleType.continueHealState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.turn });
             isAttackSuccess = this.battleTurns[card.name].addRule(newRule);
         }
-        var enemyDamageVal = outputVal;
+        var enemyDamageVal = new Float32(outputVal.getValue());
         for (var key of Object.keys(debuffs)) {
-            enemyDamageVal = Math.floor(enemyDamageVal * (1 + Util.getNumber(debuffs[key])));
+            enemyDamageVal = enemyDamageVal.multiply(Util.getFloat32(debuffs[key]).add(1));
         }
+        enemyDamageVal = enemyDamageVal.floor();
         if (rule.type == RuleType.support) {
             // NOTE: fix support first, may still need too add "isAttackSuccess" to attack/heal/poison
             if (isAttackSuccess) {
                 for (var i = outputStartTurn; i < rule.turn; i++) {
-                    this.battleTurns[card.name].outputs[rule.type][currentTurn + i] = (this.battleTurns[card.name].outputs[rule.type][currentTurn + i] || 0) + outputVal;
-                    this.battleTurns[card.name].enemyDamage[rule.type][currentTurn + i] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn + i] || 0) + outputVal;
-                    this.battleTurns[card.name].addRuleLog(currentTurn + i, rule, 1, outputVal);
+                    this.battleTurns[card.name].outputs[rule.type][currentTurn + i] = (this.battleTurns[card.name].outputs[rule.type][currentTurn + i] || 0) + outputVal.getValue();
+                    this.battleTurns[card.name].enemyDamage[rule.type][currentTurn + i] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn + i] || 0) + outputVal.getValue();
+                    this.battleTurns[card.name].addRuleLog(currentTurn + i, rule, 1, outputVal.getValue());
                 }
             }
         }
@@ -744,22 +754,22 @@ export class Battle {
         }
         else {
             if (!(card instanceof EnemyCard)) {
-                this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal * hitCount;
-                this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal * hitCount;
-                this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount, (enemyDamageVal * hitCount).toString());
+                this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal.multiply(hitCount).getValue();
+                this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal.multiply(hitCount).getValue();
+                this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount, enemyDamageVal.toString());
             }
             // Enemy Damage
             if (this.enemyCard != null && rule.type == RuleType.attack) {
-                var enemyDamage = (card instanceof EnemyCard) ? (enemyDamageVal * hitCount) : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
-                enemyDamage = Math.floor(enemyDamage * Battle.getElementalBuff(card.element, this.enemyElement));
-                this.damageToEnemy(enemyDamage);
+                var enemyDamage = (card instanceof EnemyCard) ? enemyDamageVal.multiply(hitCount).getValue() : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
+                enemyDamage = Util.getFloat32(enemyDamage).multiply(Battle.getElementalBuff(card.element, this.enemyElement)).floor();
+                this.damageToEnemy(enemyDamage.getValue());
             }
             if ((card instanceof EnemyCard) && rule.type == RuleType.heal) {
-                var healUp = 1;
+                var healUp = Util.getFloat32(1);
                 if (rule.valueBy != RuleValueByType.exactVal && rule.valueBy != RuleValueByType.exactHp && rule.valueBy != RuleValueByType.exactAtk) {
-                    healUp = 1 + RuleHelper.getBuffTotalValue(cardRules, RuleType.enemyHealUp);
+                    healUp = Util.getFloat32(RuleHelper.getBuffTotalValue(cardRules, RuleType.enemyHealUp)).add(1);
                 }
-                this.enemyCard.addRemainHp(Math.floor(enemyDamageVal * hitCount * healUp));
+                this.enemyCard.addRemainHp(enemyDamageVal.multiply(hitCount).multiply(healUp).floor().getValue());
             }
         }
         return true;
@@ -824,9 +834,6 @@ export class Battle {
         for (var type of ruleType) {
             if (this.printEnemeyOption && (type == RuleType.attack || type == RuleType.poisonAttack)) {
                 var enemyDamage = battleTurn.enemyDamage[type][turn] | 0;
-                if (this.enemyElement != Element.NA && type == RuleType.attack) {
-                    enemyDamage = Math.floor(enemyDamage * Battle.getElementalBuff(card.element, this.enemyElement));
-                }
                 output += enemyDamage;
             }
             else {
@@ -877,9 +884,9 @@ export class Battle {
             for (var type of ruleType) {
                 if (this.printEnemeyOption && (type == RuleType.attack || type == RuleType.poisonAttack)) {
                     var enemyDamage = battleTurn.enemyDamage[type][turn] | 0;
-                    if (this.enemyElement != Element.NA && type == RuleType.attack) {
-                        enemyDamage = Math.floor(enemyDamage * Battle.getElementalBuff(card.element, this.enemyElement));
-                    }
+                    // if (this.enemyElement != Element.NA && type == RuleType.attack){
+                    // 	enemyDamage = Math.floor(enemyDamage * Battle.getElementalBuff(card.element, this.enemyElement));
+                    // }
                     output += enemyDamage;
                 }
                 else {
@@ -1043,8 +1050,10 @@ Battle.OUTPUT_TYPES = new Set([RuleType.attack, RuleType.poisonAttack, RuleType.
 Battle.TEAM_BUFF_TYPES = new Set([RuleType.atkUp, RuleType.hpUp, RuleType.basicAtkUp, RuleType.skillAtkUp, RuleType.triggerAtkUp, RuleType.allAtkUp, RuleType.poisonAtkUp, RuleType.healUp, RuleType.continueHealUp, RuleType.partyHealUp, RuleType.partyContinueHealUp, RuleType.partyAllHealUp]);
 Battle.ENEMY_BUFF_TYPES = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkillAtkUp, RuleType.enemyElementAtkUp, RuleType.enemyTriggerAtkUp, RuleType.enemyAllAtkUp, RuleType.enemyPoisonAtkUp, RuleType.enemyHealUp]);
 Battle.UNUSED_RULE_TYPES = new Set([RuleType.immuneParalysis, RuleType.immuneSilence, RuleType.immuneSleep,
-    RuleType.takeLessDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery,
-    RuleType.enemyLessDamage]);
+    RuleType.takeLessDamage, RuleType.takeLessBasicDamage, RuleType.takeLessSkillDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery,
+    RuleType.enemyLessAtk, RuleType.enemyLessDamage, RuleType.enemyLessBasicDamage, RuleType.enemyLessSkillDamage,
+    RuleType.enemyRemoveGuard
+]);
 // static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set([RuleType.getShield]);
 Battle.LOG_ONLY_RULE_TYPES = new Set();
 Battle.ACTION_ACCEPT_BUFFS = {
