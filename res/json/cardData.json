@@ -2971,11 +2971,13 @@
       "skillLv2Rule": [
         { "type": "攻擊", "value": "219%" },
         { "type": "敵方受到觸發技傷害增加", "value": "27%", "turn": 3 },
+        { "type": "敵方造成傷害減少", "value": "10%"},
         { "type": "反擊", "value": "55%", "turn": 2, "maxCount": 99 }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "253%" },
         { "type": "敵方受到觸發技傷害增加", "value": "27%", "turn": 3 },
+        { "type": "敵方造成傷害減少", "value": "10%"},
         { "type": "反擊", "value": "64%", "turn": 2, "maxCount": 99 }
       ],
       "star3Rule": [
