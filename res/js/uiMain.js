@@ -58,6 +58,7 @@ var config = {
 		CHART_COLOR: ['rgba(75, 192, 192, 0.8)','rgba(255, 99, 132, 0.8)','rgba(54, 162, 235, 0.8)','rgba(255, 159, 64, 0.8)','rgba(153, 102, 255, 0.8)'],
 		types: {
 			'none': { name: '無圖表', chartType: '' },
+			'teamTurnDamage': { name: '隊伍回合輸出表', chartType: 'bar' },
 			'cardDamage': { name: '個人輸出表', chartType: 'bar' },
 			'cardDamageTotal': { name: '個人輸出累積表', chartType: 'line' },
 			'damagePie': { name: '輸出佔比圖', chartType: 'pie' },
@@ -82,6 +83,7 @@ Vue.createApp({
 				isAdvanceMode: true,
 				turns: 14,
 				isShowTurns: true,
+				isDisplayTurnTotal: true,
 				maxCounterAttack: 1,
 				counterAttackMode: CounterAttackMode.everyTurn,
 				isAllowHpCond: Condition.HP_STATUS,
@@ -109,6 +111,7 @@ Vue.createApp({
 					isShowTurns: true,
 					defaultStar: 'SSR3',
 					isCalcEnemyDebuff: true,
+					isDisplayTurnTotal: true,
 					maxCounterAttack: 1,
 				},
 				general: {
@@ -404,23 +407,38 @@ Vue.createApp({
 			if (outputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
 				outputOption = Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE;
 			}
-			for (var i =0; i<this.cards.length; i++){
-				var card = this.cards[i];
-				if (card != null && this.userInput.isCardEnabled[i]){
-					var cardDamageArr = [];
-					for (var turn=1; turn<=this.userInput.turns; turn++){
-						cardDamageArr.push(this.battle.getTurnValue(card.name, turn, outputOption));
+
+			if (displayMode == 'teamTurnDamage'){
+				var cardDamageArr = [];
+				for (var turn=1; turn<=this.userInput.turns; turn++){
+					cardDamageArr.push(this.battle.getTeamTurnValue(turn, outputOption));
+				}
+				datasets.push({
+					label: '隊伍',
+					data: cardDamageArr,
+					backgroundColor: config.CHART.CHART_COLOR[1],
+					borderColor: config.CHART.CHART_COLOR[1]
+				});
+			}
+			else{
+				for (var i =0; i<this.cards.length; i++){
+					var card = this.cards[i];
+					if (card != null && this.userInput.isCardEnabled[i]){
+						var cardDamageArr = [];
+						for (var turn=1; turn<=this.userInput.turns; turn++){
+							cardDamageArr.push(this.battle.getTurnValue(card.name, turn, outputOption));
+						}
+						if (displayMode == 'cardDamageTotal'){
+							var sum = 0;
+							cardDamageArr = cardDamageArr.map(val => sum += val);
+						}
+						datasets.push({
+							label: card.name,
+							data: cardDamageArr,
+							backgroundColor: config.CHART.CHART_COLOR[i],
+							borderColor: config.CHART.CHART_COLOR[i]
+						});
 					}
-					if (displayMode == 'cardDamageTotal'){
-						var sum = 0;
-						cardDamageArr = cardDamageArr.map(val => sum += val);
-					}
-					datasets.push({
-						label: card.name,
-						data: cardDamageArr,
-						backgroundColor: config.CHART.CHART_COLOR[i],
-						borderColor: config.CHART.CHART_COLOR[i]
-					});
 				}
 			}
 
@@ -490,6 +508,9 @@ Vue.createApp({
 		},
 		getBattleTurnValue(cardname, turn){
 			return this.battle.getTurnValue(cardname, turn);
+		},
+		getBattleTeamTurnValue(turn){
+			return this.battle.getTeamTurnValue(turn);
 		},
 		getBattleTotalValue(cardname){
 			return this.battle.getTotalValue(cardname);

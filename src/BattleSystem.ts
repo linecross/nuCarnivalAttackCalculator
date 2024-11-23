@@ -961,6 +961,18 @@ export class Battle{
 		return output;
 	}
 
+	getTeamTurnValue(turn: number) : number{
+		var output = 0;
+		var printOutputOption = this.printOutputOption;
+		if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
+			printOutputOption = Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE;
+		}
+		for (var card of this.team.cards){
+			output += this.getTurnValue(card.name, turn, printOutputOption);
+		}
+		return output;
+	}
+
 	getTotalValue(cardname: string, outputOption? : string) : number{
 		var card: Card = this.team.getCard(cardname);
 		var battleTurn = this.battleTurns[cardname];
