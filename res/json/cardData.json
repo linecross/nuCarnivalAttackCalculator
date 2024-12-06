@@ -4088,6 +4088,213 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "遊樂園．奧利文": {
+      "char": "奧利文", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
+      "baseHp": 7578, "baseAtk": 2277, "coolDown": 4,
+      "img": "Olivine_SSR_09.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "125%" },
+        { "type": "攻擊力增加", "value": "34%", "turn": 4 },
+        {
+          "type": "普攻追擊",
+          "value": "41%",
+          "turn": 4
+        }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "125%" },
+        { "type": "攻擊力增加", "value": "34%", "turn": 4 },
+        {
+          "type": "普攻傷害增加",
+          "value": "34%",
+          "turn": 4,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        {
+          "type": "普攻追擊",
+          "value": "57%",
+          "turn": 4
+        }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "125%" },
+        { "type": "攻擊力增加", "value": "34%", "turn": 4 },
+        {
+          "type": "普攻傷害增加",
+          "value": "34%",
+          "turn": 4,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        {
+          "type": "普攻追擊",
+          "value": "73%",
+          "turn": 4
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "普攻傷害增加",
+          "value": "15%",
+          "target": "全體",
+          "maxCount": 3,
+          "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
+        },
+        {
+          "type": "普攻傷害增加",
+          "value": "15%",
+          "target": "全體",
+          "maxCount": 3,
+          "condition": { "type": "隊伍中每存在定位", "value": "妨礙" }
+        }
+      ],
+      "star5Rule": [
+        { "type": "普攻傷害增加", "value": "68%" }
+      ],
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "遊樂園．玖夜": {
+      "char": "玖夜", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "水", "potType": "HP先行",
+      "baseHp": 7756, "baseAtk": 2241, "coolDown": 3,
+      "img": "Kuya_SSR_09.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "敵方回復量增加", "value": "-100%", "turn": 3 },
+        { "type": "攻擊", "value": "50%" },
+        {
+          "type": "普攻追擊",
+          "value": "87%",
+          "turn": 3
+        },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "治療",
+            "value": "25%",
+            "turn": 3,
+            "condition": {"type": "攻擊方式", "value": "普攻"},
+            "skillType": "追加"
+          }
+        }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方回復量增加", "value": "-100%", "turn": 3 },
+        { "type": "敵方受到普攻傷害增加", "value": "34%", "turn": 99 },
+        { "type": "攻擊", "value": "50%" },
+        {
+          "type": "普攻追擊",
+          "value": "108%",
+          "turn": 3
+        },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "治療",
+            "value": "25%",
+            "turn": 3,
+            "condition": {"type": "攻擊方式", "value": "普攻"},
+            "skillType": "追加"
+          }
+        }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方回復量增加", "value": "-100%", "turn": 3 },
+        { "type": "敵方受到普攻傷害增加", "value": "34%", "turn": 99 },
+        { "type": "攻擊", "value": "50%" },
+        { "type": "攻擊力增加", "value": "34%", "turn": 4 },
+        {
+          "type": "普攻追擊",
+          "value": "129%",
+          "turn": 3
+        },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "治療",
+            "value": "25%",
+            "turn": 3,
+            "condition": {"type": "攻擊方式", "value": "普攻"},
+            "skillType": "追加"
+          }
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "23%",
+          "condition": { "type": "隊伍中有定位", "value": "攻擊" }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "23%",
+          "condition": { "type": "隊伍中有定位", "value": "妨礙" }
+        }
+      ],
+      "star5Rule": [
+        { 
+          "type": "敵方受到普攻傷害增加", 
+          "value": "34%",
+          "condition": "攻擊時",
+          "turn": 1
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "遊樂園．布儡": {
+      "char": "布儡", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "治療", "element": "光", "potType": "平均型",
+      "baseHp": 7969, "baseAtk": 2170, "coolDown": 6,
+      "img": "Blade_SSR_08.jpg",
+      "attackRule": [
+        { "type": "治療", "value": "25%" },
+        { "type": "持續治療", "value": "25%", "turn": 2 }
+      ],
+      "skillLv1Rule": [
+        { "type": "輔助", "value": "70%", "target": "全體" },
+        { "type": "治療", "value": "25%" },
+        { "type": "持續治療", "value": "36%", "turn": 6 }
+      ],
+      "skillLv2Rule": [
+        { "type": "輔助", "value": "87%", "target": "全體" },
+        {
+          "type": "我方受到治療增加",
+          "value": "34%",
+          "turn": 6,
+          "target": "全體"
+        },
+        { "type": "治療", "value": "25%" },
+        { "type": "持續治療", "value": "46%", "turn": 6 }
+      ],
+      "skillLv3Rule": [
+        { "type": "輔助", "value": "105%", "target": "全體" },
+        {
+          "type": "我方受到治療增加",
+          "value": "34%",
+          "turn": 6,
+          "target": "全體"
+        },
+        { "type": "治療", "value": "25%" },
+        { "type": "持續治療", "value": "56%", "turn": 6 }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "23%", "target": "全體" },
+        {
+          "type": "減少冷卻回合",
+          "value": 6,
+          "turn": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        }
+      ],
+      "star5Rule": [
+        { "type": "最大HP增加", "value": "15%", "target": "全體" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   
