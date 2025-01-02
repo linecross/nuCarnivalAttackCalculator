@@ -4294,6 +4294,49 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "兔耳．伊得": {
+      "char": "伊得", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "光", "potType": "ATK先行",
+      "baseHp": 12203, "baseAtk": 1423, "coolDown": 3,
+      "img": "Eiden_SSR_03.jpg",
+      "attackRule": [
+        { "type": "攻擊力增加", "value": "25%", "target": "全體" },
+        { "type": "攻擊", "value": "50%" }
+      ],
+      "skillLv1Rule": [
+        {"type": "輔助", "value": "57%", "target": "全體", "turn": 2 },
+        {"type": "攻擊", "value": "50%" },
+        {"type": "獲得護盾", "value": "20%", "valueBy": "HP"}
+      ],
+      "skillLv2Rule": [
+        {"type": "輔助", "value": "69%", "target": "全體", "turn": 2 },
+        {"type": "攻擊", "value": "50%" },
+        {"type": "獲得護盾", "value": "30%", "valueBy": "HP"}
+      ],
+      "skillLv3Rule": [
+        {"type": "輔助", "value": "81%", "target": "全體", "turn": 2 },
+        {"type": "攻擊", "value": "50%" },
+        {"type": "獲得護盾", "value": "40%", "valueBy": "HP"}
+      ],
+      "star3Rule": [
+        {
+          "type": "造成傷害增加",
+          "value": "12%",
+          "target": "全體"
+        },
+        { "type": "防禦減傷增加", "value": "10%", "condition": {"type": "隊伍中每存在定位", "value": "守護", "minCount": 1, "operator": "少於或等於"} }
+      ],
+      "star5Rule": [
+        { "type": "治療量增加", "value": "33%", "target": "全體", "condition": { "type": "血量少於", "value": "50%" } },
+        { "type": "最大HP增加", "value": "17%" }
+      ],
+      "pot6Rule": [
+        { "type": "造成傷害增加", "value": "2%", "target": "全體" }, 
+        { "type": "我方受到治療增加", "value": "5%", "target": "全體" },
+        { "type": "受到傷害減少", "value": "2%", "target": "全體" }
+      ],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     }
 }
   
