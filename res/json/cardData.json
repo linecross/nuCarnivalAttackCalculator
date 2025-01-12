@@ -981,11 +981,11 @@
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
         { "type": "造成傷害增加", "value": "12.5%", "maxCount": 2, "turn": 99 },
-        { "type": "攻擊", "value": "238%" }
+        { "type": "攻擊", "value": "204%" }
       ],
       "skillLv2Rule": [
         { "type": "造成傷害增加", "value": "12.5%", "maxCount": 2, "turn": 99 },
-        { "type": "攻擊", "value": "255%" }
+        { "type": "攻擊", "value": "238%" }
       ],
       "skillLv3Rule": [
         { "type": "造成傷害增加", "value": "12.5%", "maxCount": 2, "turn": 99 },
