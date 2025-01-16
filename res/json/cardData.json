@@ -2161,7 +2161,7 @@
     },
     "沙漠．艾德蒙特": {
       "char": "艾德蒙特", "fullname": null, "alias": null,
-      "rarity": "SSR", "class": "輔助", "element": "火", "potType": "ATK先行",
+      "rarity": "SSR", "class": "輔助", "element": "火", "potType": "平均型",
       "baseHp": 7969, "baseAtk": 2063, "coolDown": 3,
       "img": "Edmond_SSR_06.jpg",
       "attackRule": [
