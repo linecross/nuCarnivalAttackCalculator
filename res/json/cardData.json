@@ -4398,7 +4398,7 @@
         { "type": "造成傷害增加", "value": "22%", "target": { "type": "定位", "value": "妨礙" }, "turn": 4 }
       ],
       "star3Rule": [
-        { "type": "攻擊力增加", "value": "18%", "target": "全體" },
+        { "type": "攻擊力增加", "value": "12%", "target": "全體" },
         { "type": "必殺技傷害增加", "value": "17%", "target": { "type": "定位", "value": "妨礙" } }
       ],
       "star5Rule": [
