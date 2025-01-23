@@ -4337,6 +4337,76 @@
         { "type": "受到傷害減少", "value": "2%", "target": "全體" }
       ],
       "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "黯刃．崑西": {
+      "char": "崑西", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "闇", "potType": "ATK先行",
+      "baseHp": 11670, "baseAtk": 1494, "coolDown": 4,
+      "img": "Quincy_SSR_10.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
+        { "type": "反擊", "value": "62%", "turn": 2, "maxCount": 99 },
+        { "type": "獲得護盾", "value": "13%", "valueBy": "HP" }
+      ],
+      "skillLv2Rule": [
+        { "type": "造成傷害增加", "value": "2%", "target": { "type": "定位", "value": "攻擊" }, "turn": 2 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
+        { "type": "反擊", "value": "74%", "turn": 2, "maxCount": 99 },
+        { "type": "獲得護盾", "value": "15%", "valueBy": "HP" }
+      ],
+      "skillLv3Rule": [
+        { "type": "造成傷害增加", "value": "2%", "target": { "type": "定位", "value": "攻擊" }, "turn": 2 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
+        { "type": "反擊", "value": "87%", "turn": 2, "maxCount": 99 },
+        { "type": "獲得護盾", "value": "18%", "valueBy": "HP" }
+      ],
+      "star3Rule": [
+        { "type": "防禦減傷增加", "value": "10%", "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 } }
+      ],
+      "star5Rule": [
+        { "type": "攻擊力增加", "value": "14%" },
+        { "type": "最大HP增加", "value": "14%" }
+      ],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "黯刃．歛": {
+      "char": "歛", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "治療", "element": "水", "potType": "平均型",
+      "baseHp": 7613, "baseAtk": 2277, "coolDown": 4,
+      "img": "Rei_SSR_07.jpg",
+      "attackRule": [{ "type": "治療", "value": "75%" }],
+      "skillLv1Rule": [
+        { "type": "治療", "value": "100%" },
+        { "type": "持續治療", "value": "37%", "turn": 4 },
+        { "type": "造成傷害增加", "value": "22%", "target": { "type": "定位", "value": "妨礙" }, "turn": 4 }
+      ],
+      "skillLv2Rule": [
+        { "type": "受到傷害減少", "value": "12.5%", "target": "全體", "turn": 2 },
+        { "type": "治療", "value": "100%" },
+        { "type": "持續治療", "value": "51%", "turn": 4 },
+        { "type": "造成傷害增加", "value": "22%", "target": { "type": "定位", "value": "妨礙" }, "turn": 4 }
+      ],
+      "skillLv3Rule": [
+        { "type": "受到傷害減少", "value": "12.5%", "target": "全體", "turn": 2 },
+        { "type": "治療", "value": "100%" },
+        { "type": "持續治療", "value": "64%", "turn": 4 },
+        { "type": "造成傷害增加", "value": "22%", "target": { "type": "定位", "value": "妨礙" }, "turn": 4 }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "18%", "target": "全體" },
+        { "type": "必殺技傷害增加", "value": "17%", "target": { "type": "定位", "value": "妨礙" } }
+      ],
+      "star5Rule": [
+        { "type": "最大HP增加", "value": "7.5%", "target": "全體" },
+        { "type": "我方受到治療增加", "value": "17%", "target": "全體" }      
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     }
 }
   
