@@ -4348,21 +4348,21 @@
         { "type": "攻擊", "value": "100%" },
         { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
         { "type": "反擊", "value": "62%", "turn": 2, "maxCount": 99 },
-        { "type": "獲得護盾", "value": "13%", "valueBy": "HP" }
+        { "type": "獲得護盾", "value": "13%", "valueBy": "HP", "turn": 2 }
       ],
       "skillLv2Rule": [
-        { "type": "造成傷害增加", "value": "2%", "target": { "type": "定位", "value": "攻擊" }, "turn": 2 },
+        { "type": "造成傷害增加", "value": "22%", "target": { "type": "定位", "value": "攻擊" }, "turn": 2 },
         { "type": "攻擊", "value": "100%" },
         { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
         { "type": "反擊", "value": "74%", "turn": 2, "maxCount": 99 },
-        { "type": "獲得護盾", "value": "15%", "valueBy": "HP" }
+        { "type": "獲得護盾", "value": "15%", "valueBy": "HP", "turn": 2 }
       ],
       "skillLv3Rule": [
-        { "type": "造成傷害增加", "value": "2%", "target": { "type": "定位", "value": "攻擊" }, "turn": 2 },
+        { "type": "造成傷害增加", "value": "22%", "target": { "type": "定位", "value": "攻擊" }, "turn": 2 },
         { "type": "攻擊", "value": "100%" },
         { "type": "受到必殺技傷害減少", "value": "40%", "turn": 2 },
         { "type": "反擊", "value": "87%", "turn": 2, "maxCount": 99 },
-        { "type": "獲得護盾", "value": "18%", "valueBy": "HP" }
+        { "type": "獲得護盾", "value": "18%", "valueBy": "HP", "turn": 2 }
       ],
       "star3Rule": [
         { "type": "防禦減傷增加", "value": "10%", "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 } }
