@@ -981,7 +981,7 @@ td.hpLockTurn{
     width: 68px;
     height: 68px;
     display: inline-block;
-    background: url('/res/img/card-icon/image/char_icons.png');
+    background: url('../img/card-icon/image/char_icons.png');
 }
 .icon-yakumo{
     background-position: -344px -5px;
