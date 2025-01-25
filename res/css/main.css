@@ -460,26 +460,15 @@ body{
 }
 
 
-#cardSelector .cardFilter-char.image span{
-    margin-right: 0.2rem;
-}
 #cardSelector .cardFilter-char.image label{
     cursor: pointer;
     font-size: 1.3rem;
     border-radius: 1rem;
-    border: 3px solid transparent;
-    filter: brightness(0.8);
-    padding: 3px;
-    opacity: 0.7;
+    filter: brightness(0.9);
+    opacity: 0.65;
     max-width: 80px;
     transition: all .15s ease-in-out;
-}
-#cardSelector .cardFilter-char.image img{
-    /* object-fit: none;
-    object-position: 40%;
-    width: 80px;
-    height: 80px; */
-    margin-left: -25px;
+    transform: scale(0.9);
 }
 
 #cardSelector .cardFilter-char.image input:hover + label {
@@ -986,4 +975,47 @@ td.hpLockTurn{
 }
 .cardHp{
     margin: 3px 0px;
+}
+
+.filter-icon-char-image{
+    width: 68px;
+    height: 68px;
+    display: inline-block;
+    background: url('/res/img/card-icon/image/char_icons.png');
+}
+.icon-yakumo{
+    background-position: -344px -5px;
+}
+.icon-edmond{
+    background-position: -36px -83px;
+}
+.icon-olivine{
+    background-position: -138px -83px;
+}
+.icon-quincy {
+    background-position: -242px -83px;
+}
+.icon-kuya{
+    background-position: -344px -83px;
+}
+.icon-garu{
+    background-position: -33px -163px;
+}
+.icon-blade{
+    background-position: -138px -163px;
+}
+.icon-dante{
+    background-position: -242px -163px;
+}
+.icon-rei{
+    background-position: -344px -163px;
+}
+.icon-aster {
+    background-position: -138px -2px;
+}
+.icon-morvay {
+    background-position: -242px -2px;
+}
+.icon-eiden {
+    background-position: -36px -2px;
 }
