@@ -124,7 +124,8 @@
 											<template v-if="this.cardFilter.charDisplayStyle == 'image'">
 												<input type="checkbox" class="btn-check" name="cardFilter-character" :id="'cardFilter-'+char" :value="char" v-model="cardFilter.char">
 												<label class="col-1 mx-2 my-1 w-auto" :for="'cardFilter-'+char">
-													<img :src="getFilterPanalIconPath('char', char)"/>
+													<!-- <img :src="getFilterPanalIconPath('char', char)"/> -->
+													<span class="filter-icon-char-image" :class="'icon-'+getFilterPanelCode('char', char)"></span>
 												</label>
 											</template>
 											<template v-if="this.cardFilter.charDisplayStyle == 'text'">
