@@ -1,4 +1,4 @@
-import { Rarity, PotentialType, GAME_CONFIG } from './Constants.js';
+import { Rarity, PotentialType, GAME_CONFIG, RuleType } from './Constants.js';
 import { Rule } from './CardRule.js';
 import { Util } from './util/Util.js';
 export class Card {
@@ -48,23 +48,23 @@ export class Card {
     getPassiveRuleSummary() {
         var ruleArr = [];
         if (this.star >= 3)
-            ruleArr.concat(this.star3Rule);
+            ruleArr = ruleArr.concat(this.star3Rule);
         if (this.star == 5)
-            ruleArr.concat(this.star5Rule);
+            ruleArr = ruleArr.concat(this.star5Rule);
         if ((this.rarity == Rarity.SSR || this.rarity == Rarity.SR)) {
             if (this.potential >= 6) {
-                ruleArr.concat(this.pot6Rule);
+                ruleArr = ruleArr.concat(this.pot6Rule);
             }
             if (this.potential >= 12) {
-                ruleArr.concat(this.pot12Rule);
+                ruleArr = ruleArr.concat(this.pot12Rule);
             }
         }
         else {
             if (this.potential >= 3) {
-                ruleArr.concat(this.pot6Rule);
+                ruleArr = ruleArr.concat(this.pot6Rule);
             }
             if (this.potential >= 6) {
-                ruleArr.concat(this.pot12Rule);
+                ruleArr = ruleArr.concat(this.pot12Rule);
             }
         }
         return ruleArr;
@@ -72,15 +72,15 @@ export class Card {
     getAttackRuleSummary() {
         this.initSkill();
         var ruleArr = [];
-        ruleArr.concat(this.attackRule);
-        ruleArr.concat(this.skillRule);
+        ruleArr = ruleArr.concat(this.attackRule);
+        ruleArr = ruleArr.concat(this.skillRule);
         return ruleArr;
     }
     getCardVal(baseVal, potential) {
         var val = 0;
         val = Math.ceil(baseVal / Math.pow(Math.fround(1.05), 59)) * (0.5 + (0.1 * this.star));
         var bondVal = 0;
-        if (this.bond > 0) {
+        if (this.bond > 0 && this.rarity != Rarity.N) {
             var bondVals = GAME_CONFIG.ROOM.DEFAULT;
             if (this.rarity == Rarity.SSR) {
                 bondVals = GAME_CONFIG.ROOM.SSR;
@@ -107,6 +107,16 @@ export class Card {
             return 0;
         }
         return this.getCardVal(this.baseHp, this.getHpPotential());
+    }
+    getSelfHpUp() {
+        var passiveRuleArr = this.getPassiveRuleSummary();
+        var selfHpUp = passiveRuleArr.filter((r) => r.type == RuleType.hpUp)
+            .map((r) => Util.getPercentNumber(r.value))
+            .reduce((sum, e) => sum + e, 0);
+        return selfHpUp;
+    }
+    getActualHp(extraHpUp) {
+        return Math.floor(this.getHp() * (1 + (this.getSelfHpUp() + Number(extraHpUp)) / 100));
     }
     getBp() {
         return Math.floor(this.getHp() + (this.getAtk() * 5));
@@ -145,17 +155,17 @@ export class Card {
         }
         return card;
     }
-    static loadCardFromJson(name, data) {
+    static loadCardFromJson(name, data, isLoadFulldata = true) {
         var card = new Card();
         card.name = name;
-        card = Card.updateCard(card, data);
+        card = Card.updateCard(card, data, isLoadFulldata);
         return card;
     }
-    updateCard(data) {
-        return Card.updateCard(this, data);
+    updateCard(data, isLoadFulldata = true) {
+        return Card.updateCard(this, data, isLoadFulldata);
     }
-    static updateCard(card, data) {
-        var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
+    static updateCard(card, data, isLoadFulldata = true) {
+        var simpleRules = isLoadFulldata ? ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'] : [];
         var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
         for (var key of Object.keys(data)) {
             if (simpleRules.includes(key) || permRules.includes(key)) {
@@ -309,6 +319,13 @@ export class CardCenter {
             throw new Error('Card does not exists: ' + name);
         }
         return Card.loadCardFromJson(name, CardCenter.getCardData()[name]);
+    }
+    // only get basic card info
+    static loadCardBasic(name) {
+        if (CardCenter.getCardData()[name] == null) {
+            throw new Error('Card does not exists: ' + name);
+        }
+        return Card.loadCardFromJson(name, CardCenter.getCardData()[name], false);
     }
     static getCardNameByChar(char) {
         var arr = [];
