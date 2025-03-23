@@ -410,13 +410,13 @@ body{
     position: sticky;
     top: 0;
 }
-#cardSelector .cardFilter-element span, #cardSelector .cardFilter-clazz span{
+.cardFilter-element span, .cardFilter-clazz span{
     margin-right: 1rem;
 }
-#cardSelector .cardFilter-element label, #cardSelector .cardFilter-clazz label{
+.cardFilter-element label, .cardFilter-clazz label{
     cursor: pointer;
 }
-#cardSelector .cardFilter-element label img{
+.cardFilter-element label img{
     width: 35px;
     height: 35px;
     filter: drop-shadow(rgb(100, 100, 100) 0px 0px 0.2rem) drop-shadow(rgb(250, 250, 250) 0px 0px 0.2rem) brightness(0.8);
@@ -425,12 +425,12 @@ body{
     background-color: black;
     border-radius: 50%;
 }
-#cardSelector .cardFilter-element input:checked + label img{
+.cardFilter-element input:checked + label img{
     opacity: 1;
     filter: drop-shadow(rgb(35, 35, 35) 0px 0px 0.25rem) drop-shadow(rgb(250, 250, 250) 0px 0px 0.25rem) brightness(1);
 }
 
-#cardSelector .cardFilter-clazz label img{
+.cardFilter-clazz label img{
     width: 35px;
     height: 35px;
     filter: drop-shadow(rgb(100, 100, 100) 0px 0px 0.2rem) drop-shadow(rgb(250, 250, 250) 0px 0px 0.2rem) brightness(0.8);
@@ -439,7 +439,7 @@ body{
     background-color: black;
     border-radius: 50%;
 }
-#cardSelector .cardFilter-clazz input:checked + label img{
+.cardFilter-clazz input:checked + label img{
     opacity: 1;
     filter: drop-shadow(rgb(35, 35, 35) 0px 0px 0.25rem) drop-shadow(rgb(250, 250, 250) 0px 0px 0.25rem) brightness(1);
 }
@@ -460,7 +460,7 @@ body{
 }
 
 
-#cardSelector .cardFilter-char.image label{
+.cardFilter-char.image label{
     cursor: pointer;
     font-size: 1.3rem;
     border-radius: 1rem;
@@ -471,60 +471,60 @@ body{
     transform: scale(0.9);
 }
 
-#cardSelector .cardFilter-char.image input:hover + label {
+.cardFilter-char.image input:hover + label {
     opacity: 1;
     filter: brightness(1);
     font-weight: 600;
 }
 
-#cardSelector .cardFilter-char.image input:checked + label {
+.cardFilter-char.image input:checked + label {
     opacity: 1;
     font-weight: 600;
     /* filter: brightness(1); */
     /* border: 3px double #000; */
 }
 
-#cardSelector .cardFilter-char.image .filter-yakumo input:checked + label {
+.cardFilter-char.image .filter-yakumo input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--yakumo-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-edmond input:checked + label {
+.cardFilter-char.image .filter-edmond input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--edmond-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-olivine input:checked + label {
+.cardFilter-char.image .filter-olivine input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--olivine-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-quincy input:checked + label {
+.cardFilter-char.image .filter-quincy input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--quincy-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-kuya input:checked + label {
+.cardFilter-char.image .filter-kuya input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--kuya-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-garu input:checked + label {
+.cardFilter-char.image .filter-garu input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--garu-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-blade input:checked + label {
+.cardFilter-char.image .filter-blade input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--blade-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-dante input:checked + label {
+.cardFilter-char.image .filter-dante input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--dante-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-rei input:checked + label {
+.cardFilter-char.image .filter-rei input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--rei-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-aster input:checked + label {
+.cardFilter-char.image .filter-aster input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--aster-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-morvay input:checked + label {
+.cardFilter-char.image .filter-morvay input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--morvay-bg-color)) brightness(1)
 }
-#cardSelector .cardFilter-char.image .filter-eiden input:checked + label {
+.cardFilter-char.image .filter-eiden input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--eiden-bg-color)) brightness(1)
 }
 
-#cardSelector .cardFilter-char.pixel span{
+.cardFilter-char.pixel span{
     margin-right: 0.2rem;
 }
-#cardSelector .cardFilter-char.pixel label{
+.cardFilter-char.pixel label{
     cursor: pointer;
     font-size: 1.3rem;
     min-width: 60px;
@@ -533,64 +533,64 @@ body{
     padding: 3px;
     transition: all .25s ease-in-out;
 }
-#cardSelector .cardFilter-char.pixel label {
+.cardFilter-char.pixel label {
     opacity: 0.7;
 }
-#cardSelector .cardFilter-char.pixel input:checked + label {
+.cardFilter-char.pixel input:checked + label {
     opacity: 1;
     font-weight: 600;
     border: 3px double #000;
 }
-#cardSelector .cardFilter-char.pixel input:checked + label {
+.cardFilter-char.pixel input:checked + label {
     filter: drop-shadow(0 0 0.15rem #ffca86) brightness(1)
 }
 
-#cardSelector .cardFilter-char.text .btn {
+.cardFilter-char.text .btn {
     color: white;
     border: 0px;
     opacity: 0.5;
     transition: all .25s ease-in-out;
 }
-#cardSelector .cardFilter-char.text input:checked + .btn {
+.cardFilter-char.text input:checked + .btn {
     opacity: 1;
     filter: drop-shadow(0 0 0.2rem #646464) brightness(1);
     font-weight: 900;
 }
 
-#cardSelector .cardFilter-char.text .filter-yakumo .btn {
+.cardFilter-char.text .filter-yakumo .btn {
     background-color: var(--yakumo-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-edmond .btn {
+.cardFilter-char.text .filter-edmond .btn {
     background-color: var(--edmond-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-olivine .btn {
+.cardFilter-char.text .filter-olivine .btn {
     background-color: var(--olivine-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-quincy .btn {
+.cardFilter-char.text .filter-quincy .btn {
     background-color: var(--quincy-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-kuya .btn {
+.cardFilter-char.text .filter-kuya .btn {
     background-color: var(--kuya-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-garu .btn {
+.cardFilter-char.text .filter-garu .btn {
     background-color: var(--garu-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-blade .btn {
+.cardFilter-char.text .filter-blade .btn {
     background-color: var(--blade-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-dante .btn {
+.cardFilter-char.text .filter-dante .btn {
     background-color: var(--dante-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-rei .btn {
+.cardFilter-char.text .filter-rei .btn {
     background-color: var(--rei-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-aster .btn {
+.cardFilter-char.text .filter-aster .btn {
     background-color: var(--aster-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-morvay .btn {
+.cardFilter-char.text .filter-morvay .btn {
     background-color: var(--morvay-bg-color);
 }
-#cardSelector .cardFilter-char.text .filter-eiden .btn {
+.cardFilter-char.text .filter-eiden .btn {
     background-color: var(--eiden-bg-color);
 }
 
@@ -1018,4 +1018,94 @@ td.hpLockTurn{
 }
 .icon-eiden {
     background-position: -36px -2px;
+}
+
+#sortTable {
+    font-size: 1.25rem;
+}
+#sortTable th {
+    user-select: none;
+    background-color: #e8f2ff;
+}
+#sortTable td {
+    cursor: initial ;
+}
+
+.theme-dark #sortTable th {
+    background-color: #49515b;
+}
+
+#sortTable .card-image-div{
+    width: 95px;
+    height: 95px;
+}
+#sortTable .card-block.big .card-image-div{
+    width: 150px;
+    height: 150px;
+}
+#sortTable .card-block.small .card-image-div{
+    width: 60px;
+    height: 60px;
+}
+#sortTable .card-block.none .card-image-div{
+    width: 0px;
+    height: 0px;
+}
+
+
+#sortTable img.card-image, #sortTable img.card-icon-rarity{
+    width: 100%;
+    height: 100%;
+}
+#sortTable img{
+    width: 30%;
+    height: 30%;
+}
+#sortTable .card-icon-element {
+    top: 5%;
+    left: 3%;
+}
+
+#sortTable .card-block .card-icon-star-container {
+    width: 100%;
+    height: 10%;
+    filter: drop-shadow(1px 1px 1px #000000e4) drop-shadow(-1px -1px 1px #000000e4);
+}
+#sortTable .card-block .card-icon-star-container img {
+    width: auto;
+    height: 100%;
+}
+#sortTable .card-block .card-name {
+    font-size: 1rem;
+    width: max-content;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+#sortTable .card-block.big .card-name {
+    font-size: 1.3rem;
+}
+#sortTable .card-block.small .card-name {
+    font-size: 0rem;
+    display: none;
+}
+#sortTable .card-block.none .card-name {
+    background-color: #fff;
+    color: #000;
+    filter: none;
+    text-shadow: none;
+    font-weight: 800;
+}
+.theme-dark #sortTable .card-block.none .card-name {
+    background-color: #000;
+    color: #fff;
+}
+
+#sortTable .card-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+#sortTable .card-block:hover{
+    background-color: initial;
 }

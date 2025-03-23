@@ -105,6 +105,20 @@ Vue.createApp({
 				coolDown: [],
 				charDisplayStyle: 'image',
 			},
+			cardHpAtkSort:{
+				sortBy: 'actualHp', // actualHp or hp or atk
+				sortMode: 'desc', // asc or desc
+				hpPercent: 0,
+				level: 60,
+				hp: { min: 0, max: 99999 },
+				atk: { min: 0, max: 99999 },
+				rarity: [],
+				char: [],
+				clazz: [],
+				element: [],
+				coolDown: [],
+				charDisplayStyle: 'image',
+			},
 			setting: {
 				userInput: {
 					turns: 14,
@@ -225,9 +239,11 @@ Vue.createApp({
 
 		// Performance tune: clear damage records after close modal
 		const myModalEl = document.getElementById('damageRecordModal')
-		myModalEl.addEventListener('hidden.bs.modal', event => {
-			this.damageRecords = [];
-		})
+		if (myModalEl != null){
+			myModalEl.addEventListener('hidden.bs.modal', event => {
+				this.damageRecords = [];
+			})
+		}
 
 		// Add back draggable after UI changes
 		const charInputList = document.querySelector('#charInputList');
@@ -1230,6 +1246,28 @@ Vue.createApp({
 			}
 			return '';
 		},
+		sortTableSort(val){
+			if (val == this.cardHpAtkSort.sortBy){
+				this.cardHpAtkSort.sortMode = this.cardHpAtkSort.sortMode == 'asc' ? 'desc' : 'asc';
+			}
+			else{
+				this.cardHpAtkSort.sortMode = 'asc';
+			}
+			this.cardHpAtkSort.sortBy = val;
+		},
+		resetCardSort(){
+			this.cardHpAtkSort.sortBy = 'actualHp';
+			this.cardHpAtkSort.sortMode = 'desc';
+			this.cardHpAtkSort.hpPercent = 0;
+			this.cardHpAtkSort.level = 60;
+			this.cardHpAtkSort.hp = { min: 0, max: 99999 };
+			this.cardHpAtkSort.atk = { min: 0, max: 99999 };
+			this.cardHpAtkSort.rarity = [];
+			this.cardHpAtkSort.char = [];
+			this.cardHpAtkSort.clazz = [];
+			this.cardHpAtkSort.element = [];
+			this.cardHpAtkSort.coolDown = [];
+		},
 		copyUrlToClipboard(text){
 			try {
 				navigator.clipboard.writeText(text);
@@ -1363,6 +1401,76 @@ Vue.createApp({
 				return this.battle.team.getBattlePower();
 			}
 			return 0;
+		},
+		getSortCards(){
+			var cardArr = [];
+			// load cards
+			var cardDataJson = CardCenter.getCardData();
+			for (var cardData of Object.entries(cardDataJson)) {
+				var cardname = cardData[0];
+				var card = CardCenter.loadCardBasic(cardname);
+				if (this.userInput.defaultStar == 'FULL'){
+					card.star = 5;
+				}
+				if (this.userInput.defaultStar == 'SSR3'){
+					if (card.rarity == 'SSR') card.star = 3;
+					else card.star = 5;
+				}
+				else if (this.userInput.defaultStar == 'SSR1'){
+					if (card.rarity == 'SSR') card.star = 1;
+					else if (card.rarity == 'SR') card.star = 3;
+					else card.star = 5;
+				}
+				card.level = this.cardHpAtkSort.level;
+				cardArr.push(card);
+			}
+
+			// filter
+			var chars = this.cardHpAtkSort.char;
+			var rarity = this.cardHpAtkSort.rarity;
+			var clazz = this.cardHpAtkSort.clazz;
+			var element = this.cardHpAtkSort.element;
+			var coolDown = this.cardHpAtkSort.coolDown;
+			var filterHp = this.cardHpAtkSort.hp;
+			var filterAtk = this.cardHpAtkSort.atk;
+			var hpPercent = this.cardHpAtkSort.hpPercent;
+			
+			if (chars.length > 0){
+				cardArr = cardArr.filter(e=>chars.includes(e.char));
+			}
+			if (rarity.length > 0){
+				cardArr = cardArr.filter(e=>rarity.includes(e.rarity));
+			}
+			if (clazz.length > 0){
+				cardArr = cardArr.filter(e=>clazz.includes(e.class));
+			}
+			if (element.length > 0){
+				cardArr = cardArr.filter(e=>element.includes(e.element));
+			}
+			if (coolDown.length > 0){
+				cardArr = cardArr.filter(e=>coolDown.includes(e.coolDown));
+			}
+			if (filterHp.min > 0 || filterHp.max < 99999){
+				cardArr = cardArr.filter(e=>e.getActualHp(hpPercent) >= filterHp.min && e.getActualHp(hpPercent) <= filterHp.max);
+			}
+			if (filterAtk.min > 0 || filterAtk.max < 99999){
+				cardArr = cardArr.filter(e=>e.getAtk() >= filterAtk.min && e.getAtk() <= filterAtk.max);
+			}
+
+			// sort
+			if (this.cardHpAtkSort.sortBy == 'hp'){
+				cardArr.sort((o1, o2)=> o1.getHp() - o2.getHp());
+			}
+			else if (this.cardHpAtkSort.sortBy == 'actualHp'){
+				cardArr.sort((o1, o2)=> o1.getActualHp(hpPercent) - o2.getActualHp(hpPercent));
+			}
+			else{
+				cardArr.sort((o1, o2)=> o1.getAtk() - o2.getAtk());
+			}
+			if (this.cardHpAtkSort.sortMode == 'desc'){
+				cardArr = cardArr.reverse();
+			}
+			return cardArr;
 		},
 		getFilteredCards(){
 			var arr = [];

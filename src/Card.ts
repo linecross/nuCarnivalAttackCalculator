@@ -1,4 +1,4 @@
-import { Class, Element, Rarity, PotentialType, GAME_CONFIG } from './Constants.js';
+import { Class, Element, Rarity, PotentialType, GAME_CONFIG, RuleType } from './Constants.js';
 import { Rule } from './CardRule.js';
 import { Util } from './util/Util.js';
 
@@ -71,23 +71,23 @@ export class Card{
 
 	getPassiveRuleSummary(){
 		var ruleArr : Rule[] = [];
-		if (this.star >= 3) ruleArr.concat(this.star3Rule);
-		if (this.star == 5)	ruleArr.concat(this.star5Rule);
+		if (this.star >= 3) ruleArr = ruleArr.concat(this.star3Rule);
+		if (this.star == 5)	ruleArr = ruleArr.concat(this.star5Rule);
 
 		if ((this.rarity == Rarity.SSR || this.rarity == Rarity.SR)){
 			if (this.potential >= 6){
-				ruleArr.concat(this.pot6Rule);
+				ruleArr = ruleArr.concat(this.pot6Rule);
 			}
 			if (this.potential >= 12){
-				ruleArr.concat(this.pot12Rule);
+				ruleArr = ruleArr.concat(this.pot12Rule);
 			}
 		}
 		else {
 			if (this.potential >= 3){
-				ruleArr.concat(this.pot6Rule);
+				ruleArr = ruleArr.concat(this.pot6Rule);
 			}
 			if (this.potential >= 6){
-				ruleArr.concat(this.pot12Rule);
+				ruleArr = ruleArr.concat(this.pot12Rule);
 			}
 		}
 		return ruleArr;
@@ -96,8 +96,8 @@ export class Card{
 	getAttackRuleSummary(){
 		this.initSkill();
 		var ruleArr : Rule[] = [];
-		ruleArr.concat(this.attackRule);
-		ruleArr.concat(this.skillRule);
+		ruleArr = ruleArr.concat(this.attackRule);
+		ruleArr = ruleArr.concat(this.skillRule);
 		return ruleArr;
 	}
 
@@ -105,7 +105,7 @@ export class Card{
 		var val : number = 0;
 		val = Math.ceil(baseVal / Math.pow(Math.fround(1.05), 59)) * (0.5 + (0.1 * this.star));
 		var bondVal = 0;
-		if (this.bond > 0){
+		if (this.bond > 0 && this.rarity != Rarity.N) {
 			var bondVals = GAME_CONFIG.ROOM.DEFAULT;
 			if (this.rarity == Rarity.SSR){
 				bondVals = GAME_CONFIG.ROOM.SSR;
@@ -135,6 +135,18 @@ export class Card{
 			return 0;
 		}
 		return this.getCardVal(this.baseHp, this.getHpPotential());
+	}
+
+	getSelfHpUp() : number{
+		var passiveRuleArr = this.getPassiveRuleSummary();
+		var selfHpUp = passiveRuleArr.filter((r:Rule) =>r.type == RuleType.hpUp)
+			.map((r:Rule) => Util.getPercentNumber(r.value))
+			.reduce((sum, e) => sum + e, 0);
+		return selfHpUp;
+	}
+
+	getActualHp(extraHpUp: number) : number{
+		return Math.floor(this.getHp() * (1+(this.getSelfHpUp()+Number(extraHpUp))/100));
 	}
 
 	getBp() : number{
@@ -178,22 +190,22 @@ export class Card{
 		return card;
 	}
 
-	static loadCardFromJson(name: string, data:Object) : Card {
+	static loadCardFromJson(name: string, data:Object, isLoadFulldata: boolean = true) : Card {
 		var card = new Card();
 		card.name = name;
-		card = Card.updateCard(card, data);
+		card = Card.updateCard(card, data, isLoadFulldata);
 		return card;
 	}
 
-	updateCard(data: Object) : Card{
-		return Card.updateCard(this, data);
+	updateCard(data: Object, isLoadFulldata: boolean = true) : Card{
+		return Card.updateCard(this, data, isLoadFulldata);
 	}
 
-	static updateCard(card: Card, data:Object) : Card {
-		var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
+	static updateCard(card: Card, data:Object, isLoadFulldata: boolean = true) : Card {
+		var simpleRules = isLoadFulldata ? ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'] : [];
 		var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
 		for (var key of Object.keys(data)) {
-			if (simpleRules.includes(key) || permRules.includes(key)){
+			if (simpleRules.includes(key) || permRules.includes(key)) {
 				var isPermRule = permRules.includes(key);
 				card[key] = [];
 				for (var ruleItem of data[key]){
@@ -371,6 +383,14 @@ export class CardCenter{
 			throw new Error('Card does not exists: ' + name);
 		}
 		return Card.loadCardFromJson(name, CardCenter.getCardData()[name]);
+	}
+
+	// only get basic card info
+	static loadCardBasic(name: string) : Card {
+		if (CardCenter.getCardData()[name] == null){
+			throw new Error('Card does not exists: ' + name);
+		}
+		return Card.loadCardFromJson(name, CardCenter.getCardData()[name], false);
 	}
 
 	static getCardNameByChar(char: string) : string[]{
