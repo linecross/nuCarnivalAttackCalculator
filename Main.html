@@ -479,6 +479,9 @@
 							<a :class="'nav-link ' + (tab == 'CAL' ? 'active' : '')" href="#" @click="switchTab('CAL')">計算機</a>
 						</li>
 						<li class="nav-item">
+							<a :class="'nav-link ' + (tab == 'SORT' ? 'active' : '')" href="#" @click="switchTab('SORT')">排行表</a>
+						</li>
+						<li class="nav-item">
 							<a :class="'nav-link ' + (tab == 'JSON' ? 'active' : '')" href="#" @click="switchTab('JSON')">匯入Json</a>
 						</li>
 						<li class="nav-item">
@@ -894,6 +897,191 @@
 				</div>
 			</div>
 
+			<div v-if="tab == 'SORT'" class="row justify-content-center mb-2">
+				<div class="col-xs-12 col-md-12 col-lg-11">
+					<div class="filter-panel col w-100">
+						<div class="form-check-inline">
+							<label for="inputDefaultStar">預設星數</label>
+							<select id="inputDefaultStar" class="form-select" v-model="userInput.defaultStar">
+								<option v-for="(name, value) in DEFAULT_STAR" :value="value">{{ name }}</option>
+							</select>
+						</div>
+						<div class="py-1 row">
+							<div>等級</div>
+							<div class="col-3">
+								<input type="range" class="form-range" min="15" max="60" step="5" v-model="cardHpAtkSort.level">
+							</div>
+							<div class="col-1">{{cardHpAtkSort.level}}</div>
+							<div class="col-8"></div>
+						</div>
+						<div class="py-1">
+							<div>稀有度</div>
+							<template v-for="rarity in FILTERS.rarity">
+								<span>
+									<input type="checkbox" class="btn-check" name="cardHpAtkSort-rarity" autocomplete="off" :id="'cardHpAtkSort-'+rarity" :value="rarity" v-model="cardHpAtkSort.rarity">
+									<label class="btn btn-outline-primary col-1 mx-2 my-1 w-auto" :for="'cardHpAtkSort-'+rarity">{{rarity}}</label>
+								</span>
+							</template>
+						</div>
+						<div class="py-1 cardFilter-clazz">
+							<div>定位</div>
+							<template v-for="clazz in FILTERS.clazz">
+								<span>
+									<input type="checkbox" class="btn-check" name="cardHpAtkSort-clazz" :id="'cardHpAtkSort-'+clazz" :value="clazz" v-model="cardHpAtkSort.clazz">
+									<label class="col-1 mx-2 w-auto" :for="'cardHpAtkSort-'+clazz" >
+										<img :src="getFilterPanalIconPath('class', clazz)"/>
+									</label>
+								</span>
+							</template>
+						</div>
+						<div class="py-1 cardFilter-element">
+							<div>屬性</div>
+							<template v-for="element in FILTERS.element">
+								<span>
+									<input type="checkbox" class="btn-check" name="cardHpAtkSort-element" :id="'cardHpAtkSort-'+element" :value="element" v-model="cardHpAtkSort.element">
+									<label class="col-1 mx-2 w-auto" :for="'cardHpAtkSort-'+element" >
+										<img :src="getFilterPanalIconPath('element', element)"/>
+									</label>
+								</span>
+							</template>
+						</div>
+						<div class="py-1">
+							<div>CD</div>
+							<template v-for="coolDown in FILTERS.coolDown">
+								<span>
+									<input type="checkbox" class="btn-check" name="cardHpAtkSort-coolDown" autocomplete="off" :id="'cardHpAtkSort-'+coolDown" :value="coolDown" v-model="cardHpAtkSort.coolDown">
+									<label class="btn btn-outline-primary col-1 mx-2 my-1 w-auto" :for="'cardHpAtkSort-'+coolDown">{{coolDown}}</label>
+								</span>
+							</template>
+						</div>
+						<div class="py-1 cardFilter-char" :class="this.cardHpAtkSort.charDisplayStyle">
+							<div>角色</div>
+							<template v-for="char in CHARACTERS">
+								<span v-if="char != ''" :class="'filter-'+getFilterPanelCode('char', char)" >
+									<template v-if="this.cardHpAtkSort.charDisplayStyle == 'pixel'">
+										<input type="checkbox" class="btn-check" name="cardHpAtkSort-character" :id="'cardHpAtkSort-'+char" :value="char" v-model="cardHpAtkSort.char">
+										<label class="col-1 mx-2 my-1 w-auto" :for="'cardHpAtkSort-'+char">
+											<img :src="getFilterPanalIconPath('char', char)"/>
+											{{char}}
+										</label>
+									</template>
+									<template v-if="this.cardHpAtkSort.charDisplayStyle == 'image'">
+										<input type="checkbox" class="btn-check" name="cardHpAtkSort-character" :id="'cardHpAtkSort-'+char" :value="char" v-model="cardHpAtkSort.char">
+										<label class="col-1 mx-2 my-1 w-auto" :for="'cardHpAtkSort-'+char">
+											<!-- <img :src="getFilterPanalIconPath('char', char)"/> -->
+											<span class="filter-icon-char-image" :class="'icon-'+getFilterPanelCode('char', char)"></span>
+										</label>
+									</template>
+									<template v-if="this.cardHpAtkSort.charDisplayStyle == 'text'">
+										<input type="checkbox" class="btn-check" name="cardHpAtkSort-character" :id="'cardHpAtkSort-'+char" :value="char" v-model="cardHpAtkSort.char">
+										<label class="btn mx-2 my-1 w-auto" :for="'cardHpAtkSort-'+char">
+											{{char}}
+										</label>
+									</template>
+								</span>
+							</template>
+						</div>
+						<div class="py-1">
+							<div>HP</div>
+							<div class="row">
+								<div class="col-1">
+									<input type="text" inputmode="numeric" class="form-control" v-model="cardHpAtkSort.hp.min" ></input>
+								</div>
+								~
+								<div class="col-1">
+									<input type="text" inputmode="numeric" class="form-control" v-model="cardHpAtkSort.hp.max" ></input>
+								</div>
+							</div>
+						</div>
+						<div class="py-1">
+							<div>ATK</div>
+							<div class="row">
+								<div class="col-1">
+									<input type="text" inputmode="numeric" class="form-control" v-model="cardHpAtkSort.atk.min" ></input>
+								</div>
+								~
+								<div class="col-1">
+									<input type="text" inputmode="numeric" class="form-control" v-model="cardHpAtkSort.atk.max" ></input>
+								</div>
+							</div>
+						</div>
+						<br/>
+						<div class="py-1">
+							<button type="button" class="btn btn-primary" @click="resetCardSort">全部重設</button>
+						</div>
+					</div>
+					<hr>
+					<div class="py-1">
+						<div>血量加成%</div>
+						<span>
+							<input type="text" inputmode="numeric" class="col-1 w-auto form-control" v-model="cardHpAtkSort.hpPercent" ></input>
+						</span>
+					</div>
+					<br />
+					<div class="row">
+						<h5>HP/ATK排行表（角色數量：{{getSortCards.length}}）</h5>
+
+						<div class="table-responsive" >
+							<table id="sortTable" class="table resultTable">
+								<tbody>
+									<tr class="table-header">
+										<th scope="col" class="col-1">
+											<div>排名</div>
+										</th>
+										<th scope="col" class="col-1">
+											<div>卡片</div>
+										</th>
+										<th scope="col" class="col-2">
+											<div>簡稱</div>
+										</th>
+										<th scope="col" class="col-2" @click="sortTableSort('atk')">
+											<span>ATK</span>
+											<i v-show="cardHpAtkSort.sortBy=='atk'" class="fa-solid" :class="cardHpAtkSort.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+										</th>
+										<th scope="col" class="col-2" @click="sortTableSort('hp')">
+											<span>HP</span>
+											<i v-show="cardHpAtkSort.sortBy=='hp'" class="fa-solid" :class="cardHpAtkSort.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+										</th>
+										<th scope="col" class="col-2">
+											<span>HP加成</span>
+										</th>
+										<th scope="col" class="col-2" @click="sortTableSort('actualHp')">
+											<span>實戰HP</span>
+											<i v-show="cardHpAtkSort.sortBy=='actualHp'" class="fa-solid" :class="cardHpAtkSort.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
+										</th>
+									</tr>
+									<template v-for="(card, idx) in getSortCards">
+										<tr>
+											<td class="col-1">{{idx+1}}</td>
+											<td class="card-cell col-1">
+												<div class="card-block normal">
+													<div class="card-image-div">
+														<img :src="getCardImagePath(card)" @error="loadNoCardImage" class="card-image">
+														<img :src="getCardIconPath(card, 'element')" class="card-icon-element" />
+														<img :src="getCardIconPath(card, 'class')" class="card-icon-class" />
+														<div class="card-icon-star-container">
+															<template v-for="star in card.star">
+																<img :src="getCardIconPath(card, 'star')" class="card-icon-star" />
+															</template>
+														</div>
+														<img :src="getCardIconPath(card, 'rarity')" class="card-icon-rarity" />
+													</div>
+												</div>
+											</td>
+											<td class="col-2">{{card.name}}</td>
+											<td class="col-2">{{card.getAtk()}}</td>
+											<td class="col-2">{{card.getHp()}}</td>
+											<td class="col-2">{{Number(card.getSelfHpUp()) + Number(cardHpAtkSort.hpPercent)}}%</td>
+											<td class="col-2">{{card.getActualHp(cardHpAtkSort.hpPercent)}}</td>
+										</tr>
+									</template>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div v-if="tab == 'JSON'" class="row justify-content-center mb-2">
 				<div class="col-xs-12 col-md-12 col-lg-11">
 					<div class="row">
@@ -1072,6 +1260,11 @@
 						<h5>功能更新</h5>
 
 						<textarea rows="8">
+[20250323]
+排行表：卡片的HP、ATK排行表
+修正：N卡數值計算錯誤（HP/ATK公式計算了不應存在的蜜話）
+
+
 [20241123]
 增加顯示回合總輸出的功能
 
