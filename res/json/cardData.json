@@ -4368,8 +4368,7 @@
         { "type": "防禦減傷增加", "value": "10%", "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 } }
       ],
       "star5Rule": [
-        { "type": "攻擊力增加", "value": "14%" },
-        { "type": "最大HP增加", "value": "14%" }
+        { "type": "最大HP增加", "value": "34%" }
       ],
       "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫麻痺" }]

@@ -1031,7 +1031,7 @@
 										<th scope="col" class="col-1">
 											<div>卡片</div>
 										</th>
-										<th scope="col" class="col-2">
+										<th scope="col" class="col-2 d-none d-sm-table-cell">
 											<div>簡稱</div>
 										</th>
 										<th scope="col" class="col-2" @click="sortTableSort('atk')">
@@ -1042,7 +1042,7 @@
 											<span>HP</span>
 											<i v-show="cardHpAtkSort.sortBy=='hp'" class="fa-solid" :class="cardHpAtkSort.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
 										</th>
-										<th scope="col" class="col-2">
+										<th scope="col" class="col-2 d-none d-sm-table-cell">
 											<span>HP加成</span>
 										</th>
 										<th scope="col" class="col-2" @click="sortTableSort('actualHp')">
@@ -1068,10 +1068,10 @@
 													</div>
 												</div>
 											</td>
-											<td class="col-2">{{card.name}}</td>
+											<td class="col-2 d-none d-sm-table-cell">{{card.name}}</td>
 											<td class="col-2">{{card.getAtk()}}</td>
 											<td class="col-2">{{card.getHp()}}</td>
-											<td class="col-2">{{Number(card.getSelfHpUp()) + Number(cardHpAtkSort.hpPercent)}}%</td>
+											<td class="col-2 d-none d-sm-table-cell">{{Number(card.getSelfHpUp()) + Number(cardHpAtkSort.hpPercent)}}%</td>
 											<td class="col-2">{{card.getActualHp(cardHpAtkSort.hpPercent)}}</td>
 										</tr>
 									</template>
@@ -1172,6 +1172,10 @@
 						<h5>卡片修正</h5>
 
 						<textarea rows="8">
+[20250325]
+修正卡片資料：刃歛5星被動－被動是HP增加34%
+
+
 [20250124]
 修正卡片資料：刃歛3星被動－攻擊力增加倍率是12%
 刃崑技能－技能增傷的倍率是22%
