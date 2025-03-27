@@ -4573,6 +4573,117 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "馬戲團．可爾": {
+      "char": "可爾", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
+      "baseHp": 7187, "baseAtk": 2383, "coolDown": 3,
+      "img": "Garu_SSR_10.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "50%" },
+        { "type": "必殺技傷害增加", "value": "3%", "turn": 99, "maxCount": 6 }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "50%", "maxCount": 2 },
+        { "type": "攻擊", "value": "229%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "造成傷害增加", "value": "20%", "turn": 99, "maxCount": 2 },
+        { "type": "攻擊", "value": "50%", "maxCount": 2 },
+        { "type": "攻擊", "value": "273%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "造成傷害增加", "value": "20%", "turn": 99, "maxCount": 2 },
+        { "type": "攻擊", "value": "50%", "maxCount": 2 },
+        { "type": "攻擊", "value": "316%" }
+      ],
+      "star3Rule": [{ "type": "造成傷害增加", "value": "45%" }],
+      "star5Rule": [
+        {
+          "type": "攻擊",
+          "value": "129%",
+          "condition": { "type": "攻擊方式", "value": "必殺技" },
+          "skillType": "觸發"
+        }
+      ],
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "馬戲團．啖天": {
+      "char": "啖天", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "水", "potType": "HP先行",
+      "baseHp": 7685, "baseAtk": 2241, "coolDown": 3,
+      "img": "Dante_SSR_09.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "輔助", "value": "30%", "target": "全體" }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "輔助", "value": "102%", "target": "全體" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方獲得技能",
+            "turn": 1,
+            "condition": { "type": "攻擊方式", "value": "必殺技" },
+            "value": { "type": "攻擊力增加", "value": "46%", "turn": 1 },
+            "target": { "type": "全體", "exceptType": "自己" }
+          },
+          "target": { "type": "定位", "value": ["攻擊", "守護", "妨礙"] }
+        }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "必殺技傷害增加", "value": "25%", "target": "全體" },
+        { "type": "輔助", "value": "119%", "target": "全體" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方獲得技能",
+            "turn": 1,
+            "condition": { "type": "攻擊方式", "value": "必殺技" },
+            "value": { "type": "攻擊力增加", "value": "46%", "turn": 1 },
+            "target": { "type": "全體", "exceptType": "自己" }
+          },
+          "target": { "type": "定位", "value": ["攻擊", "守護", "妨礙"] }
+        }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "必殺技傷害增加", "value": "25%", "target": "全體" },
+        { "type": "輔助", "value": "137%", "target": "全體" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方獲得技能",
+            "turn": 1,
+            "condition": { "type": "攻擊方式", "value": "必殺技" },
+            "value": { "type": "攻擊力增加", "value": "46%", "turn": 1 },
+            "target": { "type": "全體", "exceptType": "自己" }
+          },
+          "target": { "type": "定位", "value": ["攻擊", "守護", "妨礙"] }
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "23%",
+          "target": "全體",
+          "condition": { "type": "隊伍中有屬性", "value": "水", "minCount": 2 }
+        }
+      ],
+      "star5Rule": [
+        {
+          "type": "必殺技傷害增加",
+          "value": "51%",
+          "turn": 1,
+          "target": "全體",
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   
