@@ -1928,7 +1928,7 @@
         }
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
-      "pot12Rule": [{ "type": "免疫睡眠" }]
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     },
     "軍服．可爾": {
       "char": "可爾", "fullname": null, "alias": null,
