@@ -1,4 +1,4 @@
-import { Rarity, PotentialType, GAME_CONFIG, RuleType } from './Constants.js';
+import { Rarity, PotentialType, GAME_CONFIG, RuleType, TargetType } from './Constants.js';
 import { Rule } from './CardRule.js';
 import { Util } from './util/Util.js';
 export class Card {
@@ -111,6 +111,7 @@ export class Card {
     getSelfHpUp() {
         var passiveRuleArr = this.getPassiveRuleSummary();
         var selfHpUp = passiveRuleArr.filter((r) => r.type == RuleType.hpUp)
+            .filter((r) => r.target == null || r.target.type.includes(TargetType.self))
             .map((r) => Util.getPercentNumber(r.value))
             .reduce((sum, e) => sum + e, 0);
         return selfHpUp;
