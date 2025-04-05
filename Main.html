@@ -1012,7 +1012,7 @@
 					</div>
 					<hr>
 					<div class="py-1">
-						<div>血量加成%</div>
+						<div>全體血量加成%</div>
 						<span>
 							<input type="text" inputmode="numeric" class="col-1 w-auto form-control" v-model="cardHpAtkSort.hpPercent" ></input>
 						</span>
@@ -1043,7 +1043,7 @@
 											<i v-show="cardHpAtkSort.sortBy=='hp'" class="fa-solid" :class="cardHpAtkSort.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
 										</th>
 										<th scope="col" class="col-2 d-none d-sm-table-cell">
-											<span>HP加成</span>
+											<span>HP加成（僅限單人）</span>
 										</th>
 										<th scope="col" class="col-2" @click="sortTableSort('actualHp')">
 											<span>實戰HP</span>
@@ -1172,6 +1172,10 @@
 						<h5>卡片修正</h5>
 
 						<textarea rows="8">
+[20250405]
+修正卡片資料：春玖潛12被動－被動是免疫麻痺
+
+
 [20250325]
 修正卡片資料：刃歛5星被動－被動是HP增加34%
 

@@ -1251,7 +1251,7 @@ Vue.createApp({
 				this.cardHpAtkSort.sortMode = this.cardHpAtkSort.sortMode == 'asc' ? 'desc' : 'asc';
 			}
 			else{
-				this.cardHpAtkSort.sortMode = 'asc';
+				this.cardHpAtkSort.sortMode = 'desc';
 			}
 			this.cardHpAtkSort.sortBy = val;
 		},
