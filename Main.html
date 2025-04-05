@@ -1012,7 +1012,7 @@
 					</div>
 					<hr>
 					<div class="py-1">
-						<div>血量加成%</div>
+						<div>全體血量加成%</div>
 						<span>
 							<input type="text" inputmode="numeric" class="col-1 w-auto form-control" v-model="cardHpAtkSort.hpPercent" ></input>
 						</span>
@@ -1043,7 +1043,7 @@
 											<i v-show="cardHpAtkSort.sortBy=='hp'" class="fa-solid" :class="cardHpAtkSort.sortMode=='asc' ? 'fa-arrow-down-short-wide' : 'fa-arrow-up-wide-short'"></i>
 										</th>
 										<th scope="col" class="col-2 d-none d-sm-table-cell">
-											<span>HP加成</span>
+											<span>HP加成（僅限單人）</span>
 										</th>
 										<th scope="col" class="col-2" @click="sortTableSort('actualHp')">
 											<span>實戰HP</span>
