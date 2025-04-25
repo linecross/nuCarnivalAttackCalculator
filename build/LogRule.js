@@ -26,7 +26,7 @@ export class LogRule extends Rule {
         }
         s += type + '：' + this.value;
         if (this.maxCount > 1 || this.applyCount > 1) {
-            if (this.type == RuleType.attack) {
+            if (this.type == RuleType.attack || this.type == RuleType.poisonAttack) {
                 s += '（' + this.applyCount + '次）';
             }
             else {
@@ -59,6 +59,9 @@ export class LogRule extends Rule {
         if (this.maxCount > 1) {
             if (this.type == RuleType.attack) {
                 s += '（' + this.applyCount + '次）';
+            }
+            else if (this.type == RuleType.poisonAttack) {
+                s += '（' + this.maxCount + '次）';
             }
             else {
                 s += '（最多' + this.maxCount + '層）';

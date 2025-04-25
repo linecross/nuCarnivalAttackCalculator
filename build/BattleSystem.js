@@ -407,7 +407,7 @@ export class Battle {
             // ---------------------------回合結束------------------------------------
             // 持續傷害
             var poisonRules = this.enemyBattleTurn.rules.filter((e) => e.type == RuleType.poisonAttackState && e.parentCardName == card.name);
-            var poisonVal = poisonRules.reduce((sum, e) => sum + Util.getNumber(e.value), 0);
+            var poisonVal = poisonRules.reduce((sum, r) => sum + Util.getNumber(r.value) * r.getMaxCount(), 0);
             if (poisonVal != null && poisonVal > 0) {
                 var enemyRules = this.enemyBattleTurn.rules
                     .filter((r) => r.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
@@ -719,7 +719,7 @@ export class Battle {
         outputVal = outputVal.floor();
         // Poison
         if (rule.type == RuleType.poisonAttack) {
-            var newRule = new Rule({ type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.poisonTurn });
+            var newRule = new Rule({ type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.poisonTurn, maxCount: rule.maxCount });
             isAttackSuccess = this.enemyBattleTurn.addRule(newRule);
         }
         // Cont. Heal
@@ -744,7 +744,7 @@ export class Battle {
         }
         else if (rule.type == RuleType.poisonAttack) {
             for (var i = 0; i < rule.poisonTurn; i++) {
-                this.battleTurns[card.name].addRuleLog(currentTurn + i, rule, 1, outputVal.toString());
+                this.battleTurns[card.name].addRuleLog(currentTurn + i, rule, hitCount, outputVal.toString());
             }
         }
         else if (rule.type == RuleType.continueHeal) {
