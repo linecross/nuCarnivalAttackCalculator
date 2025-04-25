@@ -1,3 +1,4 @@
 node_modules/
 coverage/
 res/json/enemyData_backup.json
+build/
