@@ -4684,6 +4684,107 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "魔法．玖夜": {
+      "char": "玖夜", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
+      "baseHp": 6937, "baseAtk": 2490, "coolDown": 4,
+      "img": "Kuya_SSR_10.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "23%", "maxCount": 3 },
+        { "type": "持續傷害", "value": "23%", "maxCount": 3, "poisonTurn": 2 }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "87%", "maxCount": 3 },
+        { "type": "持續傷害", "value": "22%", "maxCount": 3, "poisonTurn": 4 }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊力增加", "value": "34%", "maxCount": 1, "turn": 99 },
+        { "type": "攻擊", "value": "105%", "maxCount": 3 },
+        { "type": "持續傷害", "value": "26%", "maxCount": 3, "poisonTurn": 4 }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊力增加", "value": "34%", "maxCount": 1, "turn": 99 },
+        { "type": "攻擊", "value": "123%", "maxCount": 3 },
+        { "type": "持續傷害", "value": "31%", "maxCount": 3, "poisonTurn": 4 }
+      ],
+      "star3Rule": [
+        { "type": "持續傷害增加", "value": "45%" },
+        { "type": "敵方受到傷害增加", "value": "9%", "turn": 4, "condition": { "type": "攻擊方式", "value": "必殺技" } }
+      ],
+      "star5Rule": [
+        { "type": "攻擊力增加", "value": "34%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "魔法．布儡": {
+      "char": "布儡", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "火", "potType": "ATK先行",
+      "baseHp": 11741, "baseAtk": 1458, "coolDown": 4,
+      "img": "Blade_SSR_09.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "10%" },
+        { "type": "反擊", "value": "58%", "maxCount": 99 }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv2Rule": [
+        {"type": "觸發技效果增加", "value": "68%", "turn": 4},
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv3Rule": [
+        {"type": "觸發技效果增加", "value": "68%", "turn": 4},
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "star3Rule": [
+        {"type": "受到傷害減少", "value": "10%", "turn": 1, "condition": "攻擊時"},
+        { "type": "防禦減傷增加", "value": "10%" }
+      ],
+      "star5Rule": [
+        {
+          "type": "最大HP增加",
+          "value": "17%"
+        },
+        {"type": "觸發技效果增加", "value": "34%"}
+      ],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "魔法．可爾": {
+      "char": "可爾", "fullname": null, "alias": null,
+      "rarity": "SR", "class": "攻擊", "element": "光", "potType": "HP先行",
+      "baseHp": 6902, "baseAtk": 1814, "coolDown": 4,
+      "img": "Garu_SR_02.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "普攻傷害增加", "value": "54%", "turn": 4 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "普攻追擊", "value": "49%", "turn": 4 }
+      ],
+      "skillLv2Rule": [
+        { "type": "普攻傷害增加", "value": "54%", "turn": 4 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "普攻追擊", "value": "65%", "turn": 4 }
+      ],
+      "skillLv3Rule": [
+        { "type": "普攻傷害增加", "value": "54%", "turn": 4 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "普攻追擊", "value": "82%", "turn": 4 }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "18%" },
+        { "type": "普攻追擊被動", "value": "24%" }
+      ],
+      "star5Rule": [
+        {
+          "type": "普攻傷害增加",
+          "value": "50%"
+        }
+      ],
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     }
 }
   
