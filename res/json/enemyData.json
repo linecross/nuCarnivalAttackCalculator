@@ -1,6 +1,6 @@
 {
   "【忘卻S12】SP4．晶霜凱爾": {
-    "name": "BOSS－協助練習　凱爾", "element": "水", "hp": 1213720, "active": "true",
+    "name": "BOSS－協助練習　凱爾", "element": "水", "hp": 1213720, "active": "false",
     "hpLock": ["75%", "50%", "25%"],
     "description": "僅支援以下機制\n．75%、50%、25%鎖血\n．每經過1回合，我方全體受到治療量減少3%\n．25%後回復50%血，並每回合治療8%",
     "attackRule": [
@@ -24,7 +24,7 @@
     ]
   },
   "【活動】女僕檢定03．可可": {
-    "name": "BOSS－無敵女僕　可可", "element": "光", "hp": 202018, "active": "true",
+    "name": "BOSS－無敵女僕　可可", "element": "光", "hp": 202018, "active": "false",
     "hpLock": ["50%", "1%"],
     "description": "僅支援以下機制\n．每3回合可可補血10%\n每5回合可可群攻，我方攻擊手和妨礙必殺技傷害減少25%\n．1%血量會離場",
     "attackRule": [
@@ -36,7 +36,7 @@
     ]
   },
   "【檢定S15】SP3．泳裝崑西": {
-    "name": "BOSS－激起的好勝心　崑西", "element": "光", "hp": 2294932, "active": "true",
+    "name": "BOSS－激起的好勝心　崑西", "element": "光", "hp": 2294932, "active": "false",
     "hpLock": ["25%", "1%"],
     "description": "僅支援以下機制\n．T9n+9 泳崑有「治療（1%HP）」\n．25%、1%的鎖血機制，1%血量會離場\n．25%血量開始每回合受到傷害減少6.5%",
     "attackRule": [
@@ -48,7 +48,7 @@
     ]
   },
   "【檢定S15】SP1．牛仔可爾": {
-    "name": "BOSS－狂沙對決　可爾", "element": "火", "hp": 1819652, "active": "true"
+    "name": "BOSS－狂沙對決　可爾", "element": "火", "hp": 1819652, "active": "false"
   },
   "【活動】人魚祭祀03．玖夜": {
     "name": "BOSS－嘲笑譏諷　玖夜", "element": "闇", "hp": 363273,
@@ -72,7 +72,7 @@
     ]
   },
   "【忘卻S12】SP3．魔王伊得": {
-    "name": "BOSS－詭秘之力(?) 伊得", "element": "闇", "hp": 851362, "active": "true",
+    "name": "BOSS－詭秘之力(?) 伊得", "element": "闇", "hp": 851362, "active": "false",
     "hpLock": ["75%", "75%", "50%", "50%", "25%", "25%"],
     "description": "僅支援以下機制\n．75%、50%、25%鎖血\n．開場時，我方角色有「攻擊時，攻擊力減少1.5%」",
     "star3Rule": [

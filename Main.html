@@ -629,7 +629,7 @@
 					
 					<hr>
 					<div class="row mt-2 mb-2">
-						<div  v-if="userInput.isAdvanceMode" class="form-group mb-3 col-lg-11">
+						<div v-if="userInput.isAdvanceMode && hasActiveEnemy()" class="form-group mb-3 col-lg-11">
 							<span class="form-check-inline">
 								<h5><label for="inputEnemyName">選擇敵人</label> <span class="badge text-bg-warning">實驗性功能</span> </h5><br/>
 								<select id="inputEnemyName" class="form-select" v-model="userInput.enemyName">
@@ -717,6 +717,15 @@
 								<input class="form-check-input" type="radio" id="input-printmode6" value="OnlyHeal" v-model="userInput.printOutputMode" />
 								<label class="form-check-label no-select" for="input-printmode6">補量</label>
 							</div>
+						</div>
+
+						<div class="row">
+							<span class="form-check-inline col-3">
+								<label for="inputEnemyEle">限制等級</label>
+								<select id="inputEnemyEle" class="form-select" v-model="userInput.limitLevel">
+									<option v-for="level in LEVEL_SELECT" :value="level">{{ level == -1 ? '無限制' : level }}</option>
+								</select>
+							</span>
 						</div>
 
 						<div class="row">
@@ -1268,6 +1277,10 @@
 						<h5>功能更新</h5>
 
 						<textarea rows="8">
+[20250518]
+限制等級功能：可以直接限制隊伍等級（適用於高難關卡）
+
+
 [20250323]
 排行表：卡片的HP、ATK排行表
 修正：N卡數值計算錯誤（HP/ATK公式計算了不應存在的蜜話）
