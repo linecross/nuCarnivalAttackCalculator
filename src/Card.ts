@@ -27,6 +27,7 @@ export class Card{
 	coolDown: number;
 
 	img: string;
+	limitLevel: number = -1;
 
 	star3Rule: Rule[] = [];
 	star5Rule: Rule[] = [];
@@ -112,9 +113,16 @@ export class Card{
 			}
 			bondVal = bondVals.slice(0, this.bond).reduce((sum, e) => sum + e, 0);
 		}
-		val = Math.floor(val * Math.pow(Math.fround(1.05), this.level-1) * Math.fround(1+bondVal/100) * Math.fround(1+potential/100));
+		val = Math.floor(val * Math.pow(Math.fround(1.05), this.getLevel()-1) * Math.fround(1+bondVal/100) * Math.fround(1+potential/100));
 
 		return val;
+	}
+
+	getLevel() : number{
+		if (this.limitLevel != -1 && this.level > this.limitLevel){
+			return this.limitLevel;
+		}
+		return this.level;
 	}
 
 	getAtk() : number{

@@ -4,12 +4,14 @@ import { Team, Card, CardCenter } from './../../build/Card.js';
 import { Condition } from './../../build/CardRule.js';
 import { LogRule } from './../../build/LogRule.js';
 import { BiMap } from './../../build/util/BiMap.js';
+// import jsonCardData from './../../res/json/cardData.json' with { type: 'json' };
+// import jsonEnemyData from './../../res/json/enemyData.json' with { type: 'json' };
 
 var { NA, ...ELEMENT_MAP } = Element;
 
 var config = {
 	MAX_LEVEL: 60,
-	LEVEL_SELECT: [1,15,20,25,30,35,40,45,50,55,60],
+	LEVEL_SELECT: [-1,20,30,40,45,50,55],
 	STARS: [1,2,3,4,5],
 	POT_SELECT: [0,1,2,3,4,5,6,7,8,9,10,11,12],
 	DEFAULT_STAR: {
@@ -90,6 +92,7 @@ Vue.createApp({
 				isModifyCardVal: false,
 				defaultStar: 'SSR3',
 				enemyElement: Element.NA,
+				limitLevel: -1,
 				isCalcEnemyDebuff: true,
 				printOutputMode: Battle.PRINT_OUTPUT_OPTION.ALL,
 			},
@@ -162,7 +165,7 @@ Vue.createApp({
 			db: null,
 		}
 	},
-	created()
+	async created()
 	{
 		this.CHARACTERS = Object.assign({EMPTY: ''}, Character);
 		this.STARS = config.STARS;
@@ -180,7 +183,7 @@ Vue.createApp({
 			damageRecords: '++id, teamName, [turns+cardname]'
 		});
 
-		fetch("./res/json/cardData.json")
+		await fetch("./res/json/cardData.json")
 		.then(resp => {
 			var date = new Date(resp.headers.get("last-modified"));
 			this.cardJsonLastModified = date.getFullYear() + ' 年 ' + (date.getMonth()+1) + ' 月 ' + date.getDate() + ' 日 ' 
@@ -191,30 +194,28 @@ Vue.createApp({
 		})
 		.then(json => {
 			CardCenter.setMainCardData(json);
+			this.loadCards();
+		});
 
-			// quick dirty code, fix later
-			fetch("./res/json/enemyData.json")
-			.then(resp => {
-				return resp.json();
-			})
-			.then(json => {
-				CardCenter.setEnemyData(json);
-				this.userInput.enemyName = "N/A";
+		await fetch("./res/json/enemyData.json")
+		.then(resp => {
+			return resp.json();
+		})
+		.then(json => {
+			CardCenter.setEnemyData(json);
+			this.userInput.enemyName = "N/A";
 
-				var urlParam=new URLSearchParams(window.location.search);
-				if (urlParam.has('q')){
-					var queryStr = LZString.decompressFromEncodedURIComponent(urlParam.get('q'));
-					var damageRecord = JSON.parse(queryStr);
-					if (damageRecord.enemyName != null && damageRecord.enemyName != '' && damageRecord.enemyName != 'N/A'){
-						if (this.getEnemyNames().includes(damageRecord.enemyName)){
-							this.userInput.enemyName = damageRecord.enemyName;
-						}
+			var urlParam=new URLSearchParams(window.location.search);
+			if (urlParam.has('q')){
+				var queryStr = LZString.decompressFromEncodedURIComponent(urlParam.get('q'));
+				var damageRecord = JSON.parse(queryStr);
+				if (damageRecord.enemyName != null && damageRecord.enemyName != '' && damageRecord.enemyName != 'N/A'){
+					if (this.getEnemyNames().includes(damageRecord.enemyName)){
+						this.userInput.enemyName = damageRecord.enemyName;
 					}
-					this.loadDamageRecord(damageRecord);
 				}
-				});
-
-				this.loadCards();
+				this.loadDamageRecord(damageRecord);
+			}
 		});
 
 		this.loadSettingFromStorage();
@@ -309,6 +310,9 @@ Vue.createApp({
 			enemyList.unshift("N/A");
 			return enemyList;
 		},
+		hasActiveEnemy(){
+			return CardCenter.getEnemyList().length > 0;
+		},
 		loadCurrentEnemyJson(){
 			if (this.userInput.enemyCard == null){
 				return;
@@ -394,6 +398,11 @@ Vue.createApp({
 			
 			for (var i=0; i<this.cards.length; i++){
 				var card = this.cards[i];
+
+				if (card != null){
+					card.limitLevel = this.userInput.limitLevel;
+				}
+
 				if (this.isCardInBattle(card)){
 					this.battle.setActionPattern(card.name, this.userInput.cardActionPattern[i]);
 
@@ -1616,6 +1625,9 @@ Vue.createApp({
 			this.updateBattle();
 		},
 		'userInput.enemyElement'(newVal, oldVal){
+			this.updateBattle();
+		},
+		'userInput.limitLevel'(newVal, oldVal){
 			this.updateBattle();
 		},
 		'userInput.enemyName'(newVal, oldVal){
