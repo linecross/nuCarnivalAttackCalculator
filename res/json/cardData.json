@@ -1158,7 +1158,7 @@
       ],
       "star3Rule": [
         {
-          "type": "減少冷卻回合",
+          "type": "開場減少冷卻回合",
           "value": 4,
           "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
@@ -1627,7 +1627,7 @@
       ],
       "star5Rule": [
         {
-          "type": "減少冷卻回合",
+          "type": "開場減少冷卻回合",
           "value": 3,
           "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
@@ -1777,7 +1777,7 @@
       "star3Rule": [
         { "type": "普攻傷害增加", "value": "14%", "target": "全體" },
         {
-          "type": "減少冷卻回合",
+          "type": "開場減少冷卻回合",
           "value": 3,
           "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
@@ -2502,7 +2502,7 @@
       ],
       "star3Rule": [
         {
-          "type": "減少冷卻回合",
+          "type": "開場減少冷卻回合",
           "value": 3,
           "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
@@ -3204,7 +3204,7 @@
       ],
       "star3Rule": [
         {
-          "type": "減少冷卻回合",
+          "type": "開場減少冷卻回合",
           "value": 3,
           "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
@@ -3741,7 +3741,7 @@
       ],
       "star3Rule": [
         {
-          "type": "減少冷卻回合",
+          "type": "開場減少冷卻回合",
           "value": 4,
           "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
@@ -4283,7 +4283,7 @@
       "star3Rule": [
         { "type": "攻擊力增加", "value": "23%", "target": "全體" },
         {
-          "type": "減少冷卻回合",
+          "type": "開場減少冷卻回合",
           "value": 6,
           "turn": 1,
           "condition": { "type": "第n回合", "value": 1 }
@@ -4782,6 +4782,143 @@
           "type": "普攻傷害增加",
           "value": "50%"
         }
+      ],
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "潛影．艾德蒙特": {
+      "char": "艾德蒙特", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "水", "potType": "ATK先行",
+      "baseHp": 12025, "baseAtk": 1423, "coolDown": 4,
+      "img": "Edmond_SSR_11.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "50%" },
+        { "type": "獲得護盾", "value": "6%", "valueBy": "HP", "target": "全體" }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "獲得護盾", "value": "15%", "turn": 2, "valueBy": "HP"},
+        { "type": "獲得護盾", "value": "6%", "turn": 4, "valueBy": "HP", "target": "全體"}
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "獲得護盾", "value": "25%", "turn": 2, "valueBy": "HP"},
+        { "type": "獲得護盾", "value": "6%", "turn": 4, "valueBy": "HP", "target": "全體"},
+        { "type": "普攻傷害增加", "value": "68%", "turn": 3 }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "獲得護盾", "value": "35%", "turn": 2, "valueBy": "HP"},
+        { "type": "獲得護盾", "value": "6%", "turn": 4, "valueBy": "HP", "target": "全體"},
+        { "type": "普攻傷害增加", "value": "68%", "turn": 3 }
+      ],
+      "star3Rule": [
+        { "type": "最大HP增加", "value": "23%" },
+        {
+          "type": "受到傷害減少",
+          "value": "15%",
+          "condition": {"type": "隊伍中每存在定位", "value": "治療", "minCount": 1, "operator": "少於或等於"},
+          "target": { "type": "定位", "value": "治療"}
+        }
+      ],
+      "star5Rule": [
+        {
+          "type": "受到傷害減少",
+          "value": "7%",
+          "target": "全體"
+        }
+      ],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "潛影．崑西": {
+      "char": "崑西", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
+      "baseHp": 7471, "baseAtk": 2312, "coolDown": 4,
+      "img": "Quincy_SSR_11.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "160%" }],
+      "skillLv1Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "turn": 3,
+            "condition": "攻擊時",
+            "value": {
+              "type": "敵方受到普攻傷害增加", 
+              "value": "4.5%", 
+              "turn": 99,
+              "maxCount": 8
+            }
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { "type": "普攻追擊", "value": "49%", "turn": 4 }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "condition": "攻擊時",
+            "value": {
+              "type": "敵方受到普攻傷害增加", 
+              "value": "4.5%", 
+              "turn": 99,
+              "maxCount": 8
+            },
+            "turn": 3
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { "type": "普攻追擊", "value": "49%", "turn": 4 },
+        { "type": "普攻追擊", "value": "49%", "turn": 3 }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "condition": "攻擊時",
+            "value": {
+              "type": "敵方受到普攻傷害增加", 
+              "value": "4.5%", 
+              "turn": 99,
+              "maxCount": 8
+            },
+            "turn": 3
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { "type": "普攻追擊", "value": "49%", "turn": 4 },
+        { "type": "普攻追擊", "value": "80%", "turn": 3 }
+      ],
+      "star3Rule": [
+        {
+          "type": "開場減少冷卻回合",
+          "value": 4,
+          "turn": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        },
+        {
+          "type": "免疫冷卻回合變動",
+          "turn": 50,
+          "condition": { "type": "第n回合", "value": 1 }
+        },
+        { 
+          "type": "普攻傷害增加", 
+          "value": "45%",
+          "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 }
+        }
+      ],
+      "star5Rule": [
+        {
+          "type": "普攻傷害增加",
+          "value": "68%",
+          "turn": 3,
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        },
+        { "type": "攻擊力增加", "value": "17%" }
       ],
       "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
       "pot12Rule": [{ "type": "免疫沈默" }]
