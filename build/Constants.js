@@ -47,6 +47,8 @@ export const RuleType = {
     partyHealUp: '我方受到瞬間治療增加',
     partyContinueHealUp: '我方受到持續治療增加',
     cdMinus: '減少冷卻回合',
+    startCdMinus: '開場減少冷卻回合',
+    immuneCDChange: '免疫冷卻回合變動',
     hpUp: '最大HP增加',
     // 較複雜的技能規則
     appendRule: '我方獲得技能',

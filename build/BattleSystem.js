@@ -496,10 +496,13 @@ export class Battle {
         var targetNames = rule.getRuleApplyTarget(this.team, card);
         for (var targetName of targetNames) {
             // 減CD
-            if (rule.type == RuleType.cdMinus) {
-                var cooldownCount = Util.getNumber(rule.value);
-                var targetSkillCD = this.battleTurns[targetName].skillCD - cooldownCount;
-                this.battleTurns[targetName].skillCD = targetSkillCD > 0 ? targetSkillCD : 0;
+            if (rule.type == RuleType.cdMinus || rule.type == RuleType.startCdMinus) {
+                var hasImmuneCDChange = this.battleTurns[targetName].rules.filter(r => r.type == RuleType.immuneCDChange).length;
+                if (rule.type == RuleType.startCdMinus || !hasImmuneCDChange) {
+                    var cooldownCount = Util.getNumber(rule.value);
+                    var targetSkillCD = this.battleTurns[targetName].skillCD - cooldownCount;
+                    this.battleTurns[targetName].skillCD = targetSkillCD > 0 ? targetSkillCD : 0;
+                }
             }
             // 普攻追擊
             else if (rule.type == RuleType.basicAtkFollowup) {
