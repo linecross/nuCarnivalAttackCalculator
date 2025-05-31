@@ -875,7 +875,7 @@
 														<input class="form-check-input" type="checkbox" :id="'inputIsCardEnabled-' + idx" :checked="userInput.isCardEnabled[idx]" v-model="userInput.isCardEnabled[idx]">&nbsp;
 													</div>
 												</div>
-												<div v-if="userInput.isCardEnabled[idx]" class="fa-stack card-order-icon dropdown">
+												<div v-if="userInput.isCardEnabled[idx]" class="fa-stack card-order-icon dropdown d-inline-block">
 													<span data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="0,20">
 														<span class="fa fa-solid fa-flag fa-stack-2x"></span>
 														<span class="fa-stack-1x">{{ userInput.cardActionOrder[idx] }}</span>
