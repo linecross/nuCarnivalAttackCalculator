@@ -77,6 +77,7 @@ Vue.createApp({
 				cardActionOrder: [1, 2, 3, 4, 5],
 				cardActionPattern: [ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately, ActionPattern.Immediately],
 				cardManualAction:[[],[],[],[],[]],
+				cardCustomTurnActionOrder: [[]], // eg. order[5] = [2, 5, 1, 3, 4]
 				isCardEnabled: [true, true, true, true, true],
 				enemyName: '',
 				enemyCard: null,
@@ -279,7 +280,7 @@ Vue.createApp({
 			});
 			el.classList.add("isDraggable");
 
-			el = document.querySelector(".resultTable .table-header");
+			el = document.querySelector("#battleTurnTable.resultTable .table-header");
 			Sortable.create(el, {
 				draggable: ".charItem",
 				dataIdAttr: 'data-id',
@@ -358,6 +359,26 @@ Vue.createApp({
 			arr = arr.sort((e1, e2)=>e1.order - e2.order).map(e=>e.name);
 			return arr;
 		},
+		getCardnameByTurnActionOrder(){
+			var fullArr = [];
+			for (var turn=1; turn<=this.userInput.turns; turn++){
+				if (this.userInput.cardCustomTurnActionOrder[turn] == undefined){
+					continue;
+				}
+				var arr = [];
+				for (var i =0; i<this.userInput.cardname.length; i++){
+					var name = this.userInput.cardname[i];
+					var order = this.userInput.cardCustomTurnActionOrder[turn][i];
+					if (name != null && name != '' && this.userInput.isCardEnabled[i]){
+						arr.push({name: name, order: order});
+					}
+				}
+				arr = arr.sort((e1, e2)=>e1.order - e2.order).map(e=>e.name);
+				fullArr[turn] = arr;
+			}
+			
+			return fullArr;
+		},
 		removeCard(idx){
 			if (idx >= 0 && idx <=5){
 				this.userInput.cardname[idx] = '';
@@ -387,6 +408,9 @@ Vue.createApp({
 				return;
 			}
 			this.battle.team.updateActionOrder(this.getCardnameByActionOrder());
+			if (this.userInput.cardCustomTurnActionOrder.length > 0){
+				this.battle.team.updateActionOrderByTurn(this.getCardnameByTurnActionOrder());
+			}
 
 			this.battle.counterAttackCount = this.userInput.maxCounterAttack;
 			this.battle.counterAttackMode = this.userInput.counterAttackMode;
@@ -973,6 +997,10 @@ Vue.createApp({
 			if (record.isCardEnabled != null){
 				this.userInput.isCardEnabled = record.isCardEnabled;
 			}
+			this.userInput.cardCustomTurnActionOrder = [[]];
+			if (record.cardCustomTurnActionOrder != null){
+				this.userInput.cardCustomTurnActionOrder = record.cardCustomTurnActionOrder;
+			}
 			this.userInput.turns = parseInt(record.turns);
 			var cardDmgDataArr = record.cards;
 
@@ -1038,6 +1066,7 @@ Vue.createApp({
 					cardActionOrder: [...this.userInput.cardActionOrder],
 					cardActionPattern: [...this.userInput.cardActionPattern],
 					cardManualAction: [...this.userInput.cardManualAction],
+					cardCustomTurnActionOrder: [...this.userInput.cardCustomTurnActionOrder],
 					cards: cardDmgDataArr,
 					enemyName: this.userInput.enemyName
 				};
@@ -1050,6 +1079,7 @@ Vue.createApp({
 					cardActionOrder: [...this.userInput.cardActionOrder],
 					cardActionPattern: [...this.userInput.cardActionPattern],
 					cardManualAction: [...this.userInput.cardManualAction],
+					cardCustomTurnActionOrder: [...this.userInput.cardCustomTurnActionOrder],
 					cards: cardDmgDataArr,
 					totalDamage: teamTotalDamage,
 					isFav: false,
@@ -1088,7 +1118,9 @@ Vue.createApp({
 			for (var damageRecord of damageRecordList){
 				if (JSON.stringify(record.cardActionPattern) == JSON.stringify(damageRecord.cardActionPattern)
 					&& JSON.stringify(record.cardActionOrder) == JSON.stringify(damageRecord.cardActionOrder)
-					&& JSON.stringify(record.cardManualAction) == JSON.stringify(damageRecord.cardManualAction)){
+					&& JSON.stringify(record.cardManualAction) == JSON.stringify(damageRecord.cardManualAction)
+					&& JSON.stringify(record.cardCustomTurnActionOrder) == JSON.stringify(damageRecord.cardCustomTurnActionOrder)
+				){
 					for (var i=0; i<5; i++){
 						if (record.cards[i] != null && damageRecord.cards[i] != null){
 							if (record.cards[i].star != damageRecord.cards[i].star || record.cards[i].potential != damageRecord.cards[i].potential){
@@ -1276,6 +1308,52 @@ Vue.createApp({
 			this.cardHpAtkSort.clazz = [];
 			this.cardHpAtkSort.element = [];
 			this.cardHpAtkSort.coolDown = [];
+		},
+		openActionOrderDialog(){
+			var selector = document.getElementById('actionOrderDialog');
+			var bsModal = bootstrap.Modal.getOrCreateInstance(selector);
+			bsModal.show();
+		},
+		handleCardTurnActionOrderEvt(evt, turn, cardIdx){
+			const order = Number(evt.target.value);
+			this.setCardCustomTurnActionOrder(turn, cardIdx, order);
+		},
+		setCardCustomTurnActionOrder(turn, cardIdx, order){
+			let defaultOrder = this.userInput.cardActionOrder;
+			if (this.userInput.cardCustomTurnActionOrder[turn]){
+				this.userInput.cardCustomTurnActionOrder[turn][cardIdx] = order;
+			}
+			else{
+				let turnOrder = [];
+				for (let i=0; i<defaultOrder.length; i++){
+					turnOrder[i] = defaultOrder[i];
+				}
+				turnOrder[cardIdx] = order;
+				this.userInput.cardCustomTurnActionOrder[turn] = turnOrder;
+			}
+
+			let sameAsDefaultOrder = true;
+			for (let i=0; i<defaultOrder.length; i++){
+				if (this.userInput.cardCustomTurnActionOrder[turn][i] != defaultOrder[i]){
+					sameAsDefaultOrder = false;
+					break;
+				}
+			}
+			if (sameAsDefaultOrder){
+				delete this.userInput.cardCustomTurnActionOrder[turn];
+			}
+			this.updateBattle();
+		},
+		resetCardTurnActionOrder(){
+			this.userInput.cardCustomTurnActionOrder = [[]];
+			this.updateBattle();
+		},
+		hasCustomTurnActionOrder(turn){
+			return this.userInput.cardCustomTurnActionOrder[turn];
+		},
+		getCardTurnActionOrder(turn, cardIdx){
+			let turnOrder = this.userInput.cardCustomTurnActionOrder[turn] ? this.userInput.cardCustomTurnActionOrder[turn] : this.userInput.cardActionOrder;
+			return turnOrder[cardIdx];
 		},
 		copyUrlToClipboard(text){
 			try {
