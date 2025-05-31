@@ -176,16 +176,16 @@ export class Battle{
 			this.currentTurn = turn;
 
 			// Clear rules
-			for (var card of this.team.getCardByActionOrder()){
+			for (var card of this.team.getCardByActionOrder(turn)){
 				this.battleTurns[card.name].clearRulePerRound();
 			}
 			this.enemyBattleTurn.clearRulePerRound();
 
 			// Before round
-			this.beforeRound(AttackType.None, this.team.getCardByActionOrder());
+			this.beforeRound(AttackType.None, this.team.getCardByActionOrder(turn));
 
 			// Attack
-			for (var card of this.team.getCardByActionOrder()){
+			for (var card of this.team.getCardByActionOrder(turn)){
 				var attackType : AttackType = AttackType.BasicAttack;
 				if (this.battleTurns[card.name].isReleaseSkill(turn, card.coolDown)){
 					attackType = AttackType.SkillAttack;
@@ -198,10 +198,10 @@ export class Battle{
 			}
 
 			// Before end turn (eg. counter-attack, poison, continuos heal...)
-			this.endRound(AttackType.None, this.team.getCardByActionOrder());
+			this.endRound(AttackType.None, this.team.getCardByActionOrder(turn));
 
 			// Count down Skill CD
-			for (var card of this.team.getCardByActionOrder()){
+			for (var card of this.team.getCardByActionOrder(turn)){
 				this.battleTurns[card.name].countDownCDPerRound();
 			}
 

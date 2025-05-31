@@ -83,6 +83,9 @@ body{
     /* max-width: fit-content; */
     min-width: 3rem;
 }
+.resultTable td{
+    position: relative;
+}
 .theme-dark .resultTable tr, .theme-dark .resultTable th, .theme-dark .resultTable td{
     border: 1px solid #555;
 }
@@ -651,7 +654,7 @@ body{
     margin-right: 2px;
 }
 
-.resultTable #inputTurn{
+.resultTable .inputTurn{
     width: 4rem; font-size: 1.3rem; text-align: center;
 }
 
@@ -1108,4 +1111,42 @@ td.hpLockTurn{
 }
 #sortTable .card-block:hover{
     background-color: initial;
+}
+
+#actionOrderDialog .btn, #actionOrderDialog input, #actionOrderDialog button {
+    font-size: 1.15rem;
+}
+
+#actionOrderDialog .modal-dialog{
+    max-width: 90%;
+}
+#actionOrderDialog .modal-body{
+    display: flex; 
+    flex-direction: row;
+}
+#actionOrderDialog .card-block {
+    width: 200px;
+    height: 200px;
+}
+#actionOrderDialog select { 
+    text-align-last:center; 
+}
+#actionOrderDialog td.modified { 
+    background-color: #fff49c;
+    font-weight: 800;
+}
+.theme-dark #actionOrderDialog td.modified { 
+    background-color: rgb(141, 118, 26)
+}
+.customOrder{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border: 1px solid #000;
+    padding: 0 8px;
+    font-size: 1rem;
+    background-color: #fff49c;
+}
+.theme-dark .customOrder { 
+    background-color: rgb(141, 118, 26)
 }

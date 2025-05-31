@@ -462,6 +462,81 @@
 				</div>
 			</div>
 
+			<div class="modal fade" tabindex="-1" id="actionOrderDialog">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content w-100 h-100">
+						<div class="modal-header">
+							<h5 class="modal-title">自訂每回合行動順序</h5>
+							<button type="button" class="btn-close text-reset" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body overflow-hidden">
+							<div class="col overflow-auto w-100" >
+								<div class="table-responsive" >
+									<table id="ActionOrderTurnTable" class="table resultTable" :key="userInput.updateKey">
+										<tbody>
+											<tr class="table-header">
+												<th scope="col" class="col-1">
+													<div>
+														<input class="form-control d-inline-block inputTurn" type="text" inputmode="numeric" v-model="userInput.turns">
+													</div>
+													<div>回合</div>
+												</th>
+												<template v-for="(name, idx) in userInput.cardname" :key="name">
+													<th :data-id="name" scope="col" :class="'charItem col-1'+ getThNameClass(name) ">
+													<button v-if="userInput.cardname[idx] == ''" class="btn btn-outline-primary" type="button">
+														無
+													</button>
+													<template v-else>
+														<div :class="'card-block' + (userInput.isCardEnabled[idx] ? '' : ' disabled')" :data-cardname="userInput.cardname[idx]">
+															<div class="card-image-div">
+																<img :src="getCardImagePath(cards[idx])" @error="loadNoCardImage" class="card-image">
+																<img :src="getCardIconPath(cards[idx], 'element')" class="card-icon-element" />
+																<img :src="getCardIconPath(cards[idx], 'class')" class="card-icon-class" />
+																<div class="card-icon-star-container">
+																	<template v-for="star in cards[idx].star">
+																		<img :src="getCardIconPath(cards[idx], 'star')" class="card-icon-star" />
+																	</template>
+																</div>
+																<img :src="getCardIconPath(cards[idx], 'rarity')" class="card-icon-rarity" />
+															</div>
+															<div class="card-name">{{userInput.cardname[idx]}}</div>
+														</div>
+														<div>
+															<div v-if="userInput.isCardEnabled[idx]" class="fa-stack card-order-icon dropdown">
+																<span>
+																	<span class="fa fa-solid fa-flag fa-stack-2x"></span>
+																	<span class="fa-stack-1x">{{ userInput.cardActionOrder[idx] }}</span>
+																</span>
+															</div>
+														</div>
+													</template>
+													</th>
+												</template>
+											</tr>
+											<template v-if="battle != null">
+												<tr v-for="turn in userInput.turns" :class="hasCustomTurnActionOrder(turn) ? 'modified' : ''">
+													<td scope="row" class="col-1" :class="hasCustomTurnActionOrder(turn) ? 'modified' : ''">{{ turn }}</td>
+													<template v-for="(card, idx) in cards" :key="card">
+														<td scope="row" class="col-1">
+															<select v-if="isCardInBattle(card)" class="col-auto form-control" :value="getCardTurnActionOrder(turn, idx)" @change="e=> handleCardTurnActionOrderEvt(e, turn, idx)">
+																<option v-for="order in 5" :value="order">{{ order }}</option>
+															</select>
+														</td>
+													</template>
+												</tr>
+											</template>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" @click="resetCardTurnActionOrder()">重設所有回合</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div v-if="userInput.isAdvanceMode" class="row justify-content-center mb-2">
 				<div class="col-xs-12 col-md-12 col-lg-11">
 					<ul class="nav nav-tabs">
@@ -724,10 +799,16 @@
 							</div>
 							<div class="form-group mb-3 col-lg-9 text-end">
 								<template v-if="userInput.isAdvanceMode">
-									<button type="button" class="btn btn-primary" @click="copyUrlToClipboard(teamShareURL)">複製網址</button>｜
-									<button type="button" class="btn btn-primary" @click="copyTableImage('battleTurnTable')">
-										表格截圖
-									</button>
+									<div class="form-check-inline dropdown">
+										<button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+										更多功能
+										</button>
+										<ul class="dropdown-menu">
+										<li v-if="userInput.isShowTurns && battle != null"><a class="dropdown-item" data-bs-target="#actionOrderDialog" aria-controls="actionOrderDialog" @click="openActionOrderDialog()">自訂行動順序</a></li>
+										<li><a class="dropdown-item" @click="copyUrlToClipboard(teamShareURL)">複製網址</a></li>
+										<li><a class="dropdown-item" @click="copyTableImage('battleTurnTable')">表格截圖</a></li>
+										</ul>
+									</div>
 									｜
 								</template>
 								<div class="form-check-inline">
@@ -746,7 +827,7 @@
 									<tr class="table-header">
 										<th scope="col" class="col-1">
 											<div>
-												<input class="form-control d-inline-block" type="text" inputmode="numeric" id="inputTurn" v-model="userInput.turns">
+												<input class="form-control d-inline-block inputTurn" type="text" inputmode="numeric" id="inputTurn" v-model="userInput.turns">
 											</div>
 											<div>回合</div>
 											<div>
@@ -826,12 +907,12 @@
 												{{ turn }}
 											</td>
 											
-
-											<template v-for="card in cards" :key="card">
+											<template v-for="(card, idx) in cards" :key="card">
 												<td scope="row" :class="'col-1' + getTdClass(card, turn)" @click="changeAttackType(card, turn)"
 												data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-placement="right" data-bs-html="true" 
 												:data-bs-content="isCardInBattle(card) ? getBattleTurnRuleLogStr(card.name, turn) : ''">
 													<div v-if="isCardInBattle(card)">{{ getBattleTurnValue(card.name, turn) }}</div>
+													<div v-if="isCardInBattle(card) && hasCustomTurnActionOrder(turn)" class="customOrder">{{ getCardTurnActionOrder(turn, idx) }}</div>
 												</td>
 											</template>
 

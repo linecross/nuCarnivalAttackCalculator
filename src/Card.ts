@@ -236,6 +236,7 @@ export class Team{
 	cards: Card[] = [];
 	position: string[] = [];
 	actionOrder: string[] = [];
+	actionOrderByTurn: string[][] = [];
     team: any;
 
 	reset(){
@@ -260,8 +261,12 @@ export class Team{
         }
 	}
 
-	updateActionOrder(names : string[]){
-		this.actionOrder = names;
+	updateActionOrder(name : string[]){
+		this.actionOrder = name;
+	}
+
+	updateActionOrderByTurn(name : string[][]){
+		this.actionOrderByTurn = name;
 	}
 
 	getCard(name: string) : Card | null {
@@ -279,9 +284,10 @@ export class Team{
 		return cards;
 	}
 
-	getCardByActionOrder() : Card[]{
+	getCardByActionOrder(turn: number) : Card[]{
 		var cards : Card[] = [];
-		for (var name of this.actionOrder){
+		let turnOrder = this.actionOrderByTurn[turn] ? this.actionOrderByTurn[turn] : this.actionOrder;
+		for (var name of turnOrder){
 			cards.push(this.getCard(name));
 		}
 		return cards;
