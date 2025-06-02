@@ -56,6 +56,28 @@ export default function appData() {
 			coolDown: [],
 			charDisplayStyle: 'image',
 		},
+		tierList: {
+			tiers: [
+				{ id: 'S', name: 'S', color: '#f64e4e', cards: [], order: 1 },
+				{ id: 'A', name: 'A', color: '#ff8f64', cards: [], order: 2 },
+				{ id: 'B', name: 'B', color: '#ffcc7b', cards: [], order: 3 },
+				{ id: 'C', name: 'C', color: '#bbef7b', cards: [], order: 4 },
+				{ id: 'D', name: 'D', color: '#67f6e9', cards: [], order: 5 }
+			],
+			// unrankedCards: Array.from({ length: 20 }, (_, index) => ({
+			// 	id: index + 1,
+			// 	name: `Card ${index + 1}`,
+			// 	image: `https://via.placeholder.com/100?text=Card${index + 1}`
+			// })),
+			unrankedCards: [],
+			rarity: [],
+			char: [],
+			clazz: [],
+			element: [],
+			coolDown: [],
+			draggedTierIndex: null,
+			draggedCardId: null
+		},
 		setting: {
 			userInput: {
 				turns: 14,

@@ -547,6 +547,9 @@
 							<a :class="'nav-link ' + (tab == 'SORT' ? 'active' : '')" href="#" @click="switchTab('SORT')">排行表</a>
 						</li>
 						<li class="nav-item">
+							<a :class="'nav-link ' + (tab == 'TIER' ? 'active' : '')" href="#" @click="switchTab('TIER')">自訂TIER</a>
+						</li>
+						<li class="nav-item">
 							<a :class="'nav-link ' + (tab == 'JSON' ? 'active' : '')" href="#" @click="switchTab('JSON')">匯入Json</a>
 						</li>
 						<li class="nav-item">
@@ -556,6 +559,125 @@
 							<a :class="'nav-link ' + (tab == 'LOGS' ? 'active' : '')" href="#" @click="switchTab('LOGS')">已知問題</a>
 						</li>
 					</ul>
+				</div>
+			</div>
+			<div v-if="tab == 'TIER'" class="row justify-content-center mb-2">
+				<div class="col-xs-12 col-md-12 col-lg-12">
+					<div class="row tier-list-container">
+					<h5>Tier List Maker</h5>
+					<div class="filter-panel col w-100">
+						<div class="py-1">
+							<div>稀有度</div>
+							<template v-for="rarity in FILTERS.rarity">
+								<span>
+									<input type="checkbox" class="btn-check" name="tierList-rarity" autocomplete="off" :id="'tierList-'+rarity" :value="rarity" v-model="tierList.rarity">
+									<label class="btn btn-outline-primary col-1 mx-2 my-1 w-auto" :for="'tierList-'+rarity">{{rarity}}</label>
+								</span>
+							</template>
+						</div>
+						<div class="py-1 cardFilter-clazz">
+							<div>定位</div>
+							<template v-for="clazz in FILTERS.clazz">
+								<span>
+									<input type="checkbox" class="btn-check" name="tierList-clazz" :id="'tierList-'+clazz" :value="clazz" v-model="tierList.clazz">
+									<label class="col-1 mx-2 w-auto" :for="'tierList-'+clazz" >
+										<img :src="getFilterPanalIconPath('class', clazz)"/>
+									</label>
+								</span>
+							</template>
+						</div>
+						<div class="py-1 cardFilter-element">
+							<div>屬性</div>
+							<template v-for="element in FILTERS.element">
+								<span>
+									<input type="checkbox" class="btn-check" name="tierList-element" :id="'tierList-'+element" :value="element" v-model="tierList.element">
+									<label class="col-1 mx-2 w-auto" :for="'tierList-'+element" >
+										<img :src="getFilterPanalIconPath('element', element)"/>
+									</label>
+								</span>
+							</template>
+						</div>
+						<div class="py-1">
+							<div>CD</div>
+							<template v-for="coolDown in FILTERS.coolDown">
+								<span>
+									<input type="checkbox" class="btn-check" name="tierList-coolDown" autocomplete="off" :id="'tierList-'+coolDown" :value="coolDown" v-model="tierList.coolDown">
+									<label class="btn btn-outline-primary col-1 mx-2 my-1 w-auto" :for="'tierList-'+coolDown">{{coolDown}}</label>
+								</span>
+							</template>
+						</div>
+						<div class="py-1 cardFilter-char" class="image">
+							<div>角色</div>
+							<template v-for="char in CHARACTERS">
+								<span v-if="char != ''" :class="'filter-'+getFilterPanelCode('char', char)" >
+									<input type="checkbox" class="btn-check" name="tierList-character" :id="'tierList-'+char" :value="char" v-model="tierList.char">
+									<label class="col-1 mx-2 my-1 w-auto" :for="'tierList-'+char">
+										<!-- <img :src="getFilterPanalIconPath('char', char)"/> -->
+										<span class="filter-icon-char-image" :class="'icon-'+getFilterPanelCode('char', char)"></span>
+									</label>
+								</span>
+							</template>
+						</div>
+					</div>
+					<button class="add-tier-btn" @click="setTierListUnRankedCards">更新卡片</button>
+					<button class="add-tier-btn" @click="addNewTier">Add New Tier</button>
+					<button type="button" class="btn btn-primary" @click="copyTableImage('CardTierTable')">
+						表格截圖
+					</button>
+					<div id="CardTierTable">
+						<input type="text" style="font-size: 2rem; border: 0px;" value="標題" />
+						<div v-for="(tier, index) in tierList.tiers" :key="tier.id" class="tier" :data-tier="'tier-' + index" draggable="true"
+							@dragstart="handleTierDragStart($event, index)" @dragend="handleTierDragEnd"
+							@dragover="handleTierDragOver" @drop="handleTierDrop($event, index)"
+							@dragenter="handleTierDragEnter($event, index)" @dragleave="handleTierDragLeave">
+						<div class="tier-header" :style="{ backgroundColor: tier.color }">
+							<!-- <input type="text" v-model="tier.name" @input="handleTierNameChange(index, $event)"> -->
+							<textarea type="text" v-model="tier.name" @input="handleTierNameChange(index, $event)"></textarea>
+							<input type="color" v-model="tier.color" @input="handleTierColorChange(index, $event)">
+						</div>
+						<div class="tier-content" :data-tier="'tier-' + index"
+							@dragover="handleCardDragOver" @drop="handleCardDrop($event, index)"
+							@dragenter="handleCardDragEnter" @dragleave="handleCardDragLeave">
+							<div v-for="card in tier.cards" :key="card.name" class="card-container" :data-card-id="card.name" draggable="true"
+								@dragstart="handleCardDragStart($event, card.name)" @dragend="handleCardDragEnd">
+								<span class="card-block small" :data-cardname="card.name">
+									<div class="card-image-div">
+										<img :src="getCardImagePath(card)" @error="loadNoCardImage" class="card-image">
+										<img :src="getCardIconPath(card, 'element')" class="card-icon-element" />
+										<img :src="getCardIconPath(card, 'class')" class="card-icon-class" />
+										<img :src="getCardIconPath(card, 'rarity')" class="card-icon-rarity" />
+									</div>
+									<!-- <div class="card-name">{{card.name}}</div> -->
+								</span>
+							</div>
+						</div>
+						<div class="tier-footer">
+							<span @click="removeTier(index)" style="background-color: #000; color: white;">x</span>
+							</div>
+						</div>
+					</div>
+					<div class="unranked">
+					  <div class="tier-header">
+						<input type="text" value="Unranked" readonly>
+					  </div>
+					  <div class="tier-content" data-tier="unranked"
+						   @dragover="handleCardDragOver" @drop="handleCardDrop($event, -1)"
+						   @dragenter="handleCardDragEnter" @dragleave="handleCardDragLeave">
+						<div v-for="card in tierList.unrankedCards" :key="card.name" class="card-container" :data-card-id="card.name" draggable="true"
+							 @dragstart="handleCardDragStart($event, card.name)" @dragend="handleCardDragEnd">
+							 <span class="card-block small" :data-cardname="card.name">
+								<div class="card-image-div">
+									<img :src="getCardImagePath(card)" @error="loadNoCardImage" class="card-image">
+									<img :src="getCardIconPath(card, 'element')" class="card-icon-element" />
+									<img :src="getCardIconPath(card, 'class')" class="card-icon-class" />
+									<img :src="getCardIconPath(card, 'rarity')" class="card-icon-rarity" />
+								</div>
+								<!-- <div class="card-name">{{card.name}}</div> -->
+							</span>
+						</div>
+					  </div>
+					</div>
+				  </div>
 				</div>
 			</div>
 			<div v-if="tab == 'CAL'" class="row justify-content-center mb-2">

@@ -33,6 +33,7 @@ export default async function created() {
 	.then(json => {
 		CardCenter.setMainCardData(json);
 		this.loadCards();
+		this.setTierListUnRankedCards();
 	});
 
 	await fetch("./res/json/enemyData.json")

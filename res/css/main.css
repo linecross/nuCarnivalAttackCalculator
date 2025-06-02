@@ -1150,3 +1150,165 @@ td.hpLockTurn{
 .theme-dark .customOrder { 
     background-color: rgb(141, 118, 26)
 }
+
+/* Tier List */
+.tier-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .tier {
+    margin-bottom: 1px;
+    /* background-color: #000000; */
+    /* border: 1px solid #ccc; */
+    /* border-radius: 5px; */
+    display: flex;
+    align-items: stretch;
+  }
+  .tier.dragging {
+    opacity: 0.5;
+  }
+  .tier.drag-over {
+    background-color: #fd8f34;
+  }
+  .tier-header {
+    background-color: #000000;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: move;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  .tier-header input[type="text"], .tier-header textarea {
+    background: transparent;
+    border: none;
+    color: #000;
+    font-size: 1.3rem;
+    /* max-height: 2rem; */
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    outline: none;
+    resize: none;
+  }
+  .tier-header input[type="color"] {
+    width: 30px;
+    height: 20px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+  }
+  .tier-header select {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+  .tier-header button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .tier-header button:hover {
+    background: #e60000;
+  }
+  .tier-header input[type='color']{
+    opacity: 0;
+  }
+  .tier-content {
+    flex: 1;
+    min-height: 100px;
+    background-color: #000;
+    /* padding: 10px; */
+    display: flex;
+    flex-wrap: wrap;
+    /* gap: 10px; */
+    /* border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; */
+  }
+  .tier-footer {
+    background-color: #000;
+    min-width: 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  .card-container {
+    padding: 5px;
+    /* background-color: #fff; */
+    /* border: 1px solid #ddd; */
+    border-radius: 5px;
+    cursor: move;
+    user-select: none;
+  }
+  .card-container.dragging {
+    opacity: 0.5;
+  }
+  .tier-content.drag-over {
+    background-color: #ffba79c0;
+  }
+  .unranked {
+    margin-top: 20px;
+    display: flex;
+    align-items: stretch;
+    /* background-color: #fff; */
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+  }
+  .unranked .tier-header {
+    width: 150px;
+    background-color: #333;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  .add-tier-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  .add-tier-btn:hover {
+    background: #45a049;
+  }
+
+.tier-list-container .card-image-div {
+    width: 100px;
+    height: 100px;
+}
+.tier-list-container img.card-image, .tier-list-container img.card-icon-rarity{
+    width: 100%;
+    height: 100%;
+}
+.tier-list-container img{
+    width: 30%;
+    height: 30%;
+}
+.tier-list-container .card-icon-element {
+    top: 5%;
+    left: 3%;
+}
+
+.tier-list-container .card-block .card-icon-star-container {
+    width: 100%;
+    height: 10%;
+    filter: drop-shadow(1px 1px 1px #000000e4) drop-shadow(-1px -1px 1px #000000e4);
+}
+.tier-list-container .card-block .card-icon-star-container img {
+    width: auto;
+    height: 100%;
+}
+.tier-list-container .card-container{
+    padding: 0;
+    background-color: none;
+    border-radius: 0px;
+}
