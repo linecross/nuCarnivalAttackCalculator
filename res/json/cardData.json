@@ -4969,13 +4969,11 @@
         },
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到普攻傷害增加", "value": "12%", "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"] } },
-          "turn": 3
+          "value": { "type": "敵方受到普攻傷害增加", "value": "12%", "turn": 3, "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"]} }
         },
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到必殺技傷害增加", "value": "12%", "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"]} },
-          "turn": 3
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "12%", "turn": 3, "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"]} }
         }
       ],
       "skillLv3Rule": [
@@ -4995,13 +4993,11 @@
         },
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到普攻傷害增加", "value": "12%", "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"] } },
-          "turn": 3
+          "value": { "type": "敵方受到普攻傷害增加", "value": "12%", "turn": 3, "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"]} }
         },
         {
           "type": "敵方獲得技能",
-          "value": { "type": "敵方受到必殺技傷害增加", "value": "12%", "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"]} },
-          "turn": 3
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "12%", "turn": 3, "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"]} }
         }
       ],
       "star3Rule": [
