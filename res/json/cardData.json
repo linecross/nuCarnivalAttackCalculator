@@ -4922,6 +4922,146 @@
       ],
       "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
       "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "修女．八雲": {
+      "char": "八雲", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "水", "potType": "平均型",
+      "baseHp": 7293, "baseAtk": 2383, "coolDown": 4,
+      "img": "Yakumo_SSR_10.jpg",
+      "attackRule": [
+        { "type": "輔助", "value": "15%", "target": "全體" },
+        {
+          "type": "普攻追擊",
+          "value": "25%",
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { 
+          "type": "普攻傷害增加", 
+          "value": "34%", 
+          "maxCount": 1,
+          "turn": 99,
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { 
+          "type": "輔助", 
+          "value": "42%", 
+          "target": "全體", 
+          "turn": 3 
+        }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { 
+          "type": "普攻傷害增加", 
+          "value": "34%", 
+          "maxCount": 1,
+          "turn": 99,
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { 
+          "type": "輔助", 
+          "value": "50%", 
+          "target": "全體", 
+          "turn": 3 
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到普攻傷害增加", "value": "12%", "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"] } },
+          "turn": 3
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "12%", "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"]} },
+          "turn": 3
+        }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { 
+          "type": "普攻傷害增加", 
+          "value": "34%", 
+          "maxCount": 1,
+          "turn": 99,
+          "target": { "type": "全體", "exceptType": "自己" }
+        },
+        { 
+          "type": "輔助", 
+          "value": "58%", 
+          "target": "全體", 
+          "turn": 3 
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到普攻傷害增加", "value": "12%", "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"] } },
+          "turn": 3
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到必殺技傷害增加", "value": "12%", "condition": {"type": "被定位攻擊", "value": ["攻擊", "妨礙"]} },
+          "turn": 3
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "開場減少冷卻回合",
+          "value": 3,
+          "turn": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊力增加",
+            "value": "15%",
+            "condition": { "type": "血量大於", "value": "50%" },
+            "turn": 99
+          },
+          "target": {"type": "定位", "value": ["攻擊", "妨礙"]}
+        }
+      ],
+      "star5Rule": [
+        { "type": "敵方受到普攻傷害增加", "value": "17%", "condition": { "type": "第n回合", "value": 1 } },
+        { "type": "攻擊力增加", "value": "10%", "target": "全體" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "修女．布儡": {
+      "char": "布儡", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "木", "potType": "HP先行",
+      "baseHp": 7542, "baseAtk": 2277, "coolDown": 6,
+      "img": "Blade_SSR_10.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊力增加", "value": "51%", "turn": 4 },
+        { "type": "攻擊", "value": "125%" },
+        { "type": "普攻追擊", "value": "75%", "turn": 4 }
+      ],
+      "skillLv2Rule": [
+        { "type": "普攻傷害增加", "value": "68%", "maxCount": 1, "turn": 99 },
+        { "type": "攻擊力增加", "value": "51%", "turn": 4 },
+        { "type": "攻擊", "value": "125%" },
+        { "type": "普攻追擊", "value": "102%", "turn": 4 }
+      ],
+      "skillLv3Rule": [
+        { "type": "普攻傷害增加", "value": "68%", "maxCount": 1, "turn": 99 },
+        { "type": "攻擊力增加", "value": "51%", "turn": 4 },
+        { "type": "攻擊", "value": "125%" },
+        { "type": "普攻追擊", "value": "130%", "turn": 4 }
+      ],
+      "star3Rule": [
+        { "type": "普攻追擊被動", "value": "27%" },
+        { "type": "普攻傷害增加", "value": "45%" }
+      ],
+      "star5Rule": [
+        { "type": "普攻追擊", "value": "20%" },
+        { "type": "普攻傷害增加", "value": "34%", "condition": { "type": "隊伍中有定位", "value": "輔助" } }
+      ],
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   
