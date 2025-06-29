@@ -359,7 +359,7 @@ export class Condition{
 	minCount: number;
 
 	// can only check after battle start
-	static CHECK_IN_BATTLE_LIST : ConditionType[] = [ConditionType.isAttackType, ConditionType.isAttack, ConditionType.everyTurn, ConditionType.atTurn];
+	static CHECK_IN_BATTLE_LIST : ConditionType[] = [ConditionType.isAttackType, ConditionType.isAttack, ConditionType.atTurn];
 
 	static HP_STATUS : ConditionHPStatus = ConditionHPStatus.fulfill;
 
@@ -440,6 +440,8 @@ export class Condition{
 			return charAttackType == AttackType.BasicAttack || charAttackType == AttackType.SkillAttack;
 		}
 		else if (this.type == ConditionType.everyTurn){
+			if (currentTurn <= 1) 
+				return false;
 			if (Array.isArray(this.value)){
 				var numValArr = this.value as number[];
 				return ((currentTurn - numValArr[1]) % numValArr[0]) == 0;

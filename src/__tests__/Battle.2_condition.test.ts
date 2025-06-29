@@ -83,10 +83,10 @@ describe('攻擊手＞條件測試：ATK=1000', () => {
             }`;
             setupBattle();
 
-            expect(battle.getTurnValue(cardName, 1)).toBeAround(1050);
-            expect(battle.getTurnValue(cardName, 5)).toBeAround(1250);
-            expect(battle.getTurnValue(cardName, 10)).toBeAround(1500);
+            expect(battle.getTurnValue(cardName, 1)).toBeAround(1000);
+            expect(battle.getTurnValue(cardName, 5)).toBeAround(1200);
             expect(battle.getTurnValue(cardName, 11)).toBeAround(1500);
+            expect(battle.getTurnValue(cardName, 12)).toBeAround(1500);
         });
     });
 

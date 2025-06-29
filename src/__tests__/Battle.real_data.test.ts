@@ -91,7 +91,7 @@ describe('實際測試', () => {
             expect(battle.getTurnValue('偶像．奧利文', 13)).toBeAround(72054);
             
             expect(battle.getTotalValue('常駐．八雲')).toBeAround(282752);
-            expect(battle.getTotalValue('軍服．布儡')).toBeAround(290204);
+            expect(battle.getTotalValue('軍服．布儡')).toBeAround(289342);
             expect(battle.getTotalValue('晶霜．可爾')).toBeAround(398615);
             expect(battle.getTotalValue('偶像．奧利文')).toBeAround(424566);
         });
