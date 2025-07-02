@@ -5053,7 +5053,7 @@
         { "type": "普攻傷害增加", "value": "45%" }
       ],
       "star5Rule": [
-        { "type": "普攻追擊", "value": "20%" },
+        { "type": "普攻追擊被動", "value": "20%" },
         { "type": "普攻傷害增加", "value": "34%", "condition": { "type": "隊伍中有定位", "value": "輔助" } }
       ],
       "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
