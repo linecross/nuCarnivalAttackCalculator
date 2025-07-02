@@ -378,6 +378,8 @@ export class Condition {
             return charAttackType == AttackType.BasicAttack || charAttackType == AttackType.SkillAttack;
         }
         else if (this.type == ConditionType.everyTurn) {
+            if (currentTurn <= 1)
+                return false;
             if (Array.isArray(this.value)) {
                 var numValArr = this.value;
                 return ((currentTurn - numValArr[1]) % numValArr[0]) == 0;
@@ -508,6 +510,6 @@ export class Condition {
     }
 }
 // can only check after battle start
-Condition.CHECK_IN_BATTLE_LIST = [ConditionType.isAttackType, ConditionType.isAttack, ConditionType.everyTurn, ConditionType.atTurn];
+Condition.CHECK_IN_BATTLE_LIST = [ConditionType.isAttackType, ConditionType.isAttack, ConditionType.atTurn];
 Condition.HP_STATUS = ConditionHPStatus.fulfill;
 //# sourceMappingURL=CardRule.js.map

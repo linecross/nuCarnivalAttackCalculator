@@ -138,7 +138,7 @@ export const TurnActionType = {
     afterAction: "afterAction",
     attack: "attack",
     afterAttack: "afterAttack",
-    atTurnEnd: "atTrunEnd",
+    atTurnEnd: "atTurnEnd",
     poison: "poison",
     heal: "heal",
     support: "support",
