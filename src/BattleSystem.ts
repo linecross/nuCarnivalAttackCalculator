@@ -310,6 +310,7 @@ export class Battle{
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this, TurnActionType.guard, attackType);
 				if (applyCount > 0){
+					// console.info('[startRoundPerCard 1]T'+this.currentTurn + ':'+buff);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
@@ -317,6 +318,7 @@ export class Battle{
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this, TurnActionType.guard, attackType);
 				if (applyCount > 0){
+					// console.info('[startRoundPerCard 2]T'+this.currentTurn + ':'+buff);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
@@ -339,12 +341,14 @@ export class Battle{
 
 		// 1. 普攻 / 大招
 		var hasAttackEnemy = false;
+		var hasOutputDone = false;
 		for (var rule of attackRule){
 			if (Battle.OUTPUT_TYPES.has(rule.type)){
 				var hasActionDone = this.attack(attackType, rule, card);
 				if (hasActionDone && rule.type == RuleType.attack){
 					hasAttackEnemy = true;
 				}
+				hasOutputDone = true;
 				// Refresh to get all postAttackRules
 				postAttackRules = this.battleTurns[card.name].rules
 					.filter((e: Rule)=>e.isPostAttackRule() && e.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
@@ -352,7 +356,7 @@ export class Battle{
 			else{
 				this.addRuleToTargets(rule, card, attackType);
 				this.processRule(rule, card, attackType);
-				this.addBuffToTargets(rule, card, attackType);
+				this.addBuffToTargets(rule, card, attackType, hasOutputDone);
 			}
 		}
 
@@ -634,7 +638,7 @@ export class Battle{
 
 	static LOG_EXCLUDE_TURNACTIONTYPE : Set<TurnActionType> = new Set([TurnActionType.beforeAction, TurnActionType.beforeTurn, TurnActionType.atTurnEnd]);
 
-	private addBuffToTargets(rule: Rule, card: Card, attackType: AttackType){
+	private addBuffToTargets(rule: Rule, card: Card, attackType: AttackType, needLogging: boolean = true){
 		if (!(Battle.TEAM_BUFF_TYPES.has(rule.type) || Battle.ENEMY_BUFF_TYPES.has(rule.type) || Battle.LOG_ONLY_RULE_TYPES.has(rule.type))){
 			return;
 		}
@@ -652,15 +656,18 @@ export class Battle{
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				// if (isRuleAdded && targetName == card.name && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
 				// 	&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
-				if (isRuleAdded && targetName == card.name){
+				if (needLogging && isRuleAdded && !rule.isBeforeRoundRule() && targetName == card.name){
+					// console.info('[addBuffToTargets 1]T'+this.currentTurn + ':'+newRule);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
 			// 敵方Debuff （普攻/必殺/造傷）
 			else if (Battle.ENEMY_BUFF_TYPES.has(rule.type)){
 				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
-				if (isRuleAdded && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
-					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
+				// if (needLogging && isRuleAdded && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
+				// 	&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
+				if (needLogging && isRuleAdded && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()){
+						// console.info('[addBuffToTargets 2]T'+this.currentTurn + ':'+newRule);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -682,6 +689,7 @@ export class Battle{
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				if (isRuleAdded && targetName == card.name && Battle.TEAM_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
 					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
+						// console.info('[addRuleToTargets 1]T'+this.currentTurn + ':'+newRule);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -690,6 +698,7 @@ export class Battle{
 				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
 				if (isRuleAdded && Battle.ENEMY_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
 					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
+						// console.info('[addRuleToTargets 2]T'+this.currentTurn + ':'+newRule);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
 			}
@@ -756,6 +765,7 @@ export class Battle{
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
 				if (applyCount > 0){
+					// console.info('[attack 1]T'+this.currentTurn + ':'+buff);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
@@ -763,6 +773,7 @@ export class Battle{
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
 				if (applyCount > 0){
+					// console.info('[attack 2]T'+this.currentTurn + ':'+buff);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
@@ -849,17 +860,20 @@ export class Battle{
 				for (var i = outputStartTurn; i < rule.turn; i++){
 					this.battleTurns[card.name].outputs[rule.type][currentTurn+i] = (this.battleTurns[card.name].outputs[rule.type][currentTurn+i] || 0) + outputVal.getValue();
 					this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] || 0) + outputVal.getValue();
+					// console.info('[attack 3]T'+this.currentTurn + ':'+rule);
 					this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, 1, outputVal.getValue());
 				}
 			}
 		}
 		else if (rule.type == RuleType.poisonAttack){
 			for (var i = 0; i < rule.poisonTurn; i++){
+				// console.info('[attack 4]T'+this.currentTurn + ':'+rule);
 				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, hitCount, outputVal.toString());
 			}
 		}
 		else if (rule.type == RuleType.continueHeal){
 			for (var i = 0; i < rule.turn; i++){
+				// console.info('[attack 5]T'+this.currentTurn + ':'+rule);
 				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, 1);
 			}
 		}
@@ -867,6 +881,7 @@ export class Battle{
 			if (!(card instanceof EnemyCard)){
 				this.battleTurns[card.name].outputs[rule.type][currentTurn] = (this.battleTurns[card.name].outputs[rule.type][currentTurn] || 0) + outputVal.multiply(hitCount).getValue();
 				this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn] || 0) + enemyDamageVal.multiply(hitCount).getValue();
+				// console.info('[attack 6]T'+this.currentTurn + ':'+rule);
 				this.battleTurns[card.name].addRuleLog(currentTurn, rule, hitCount, enemyDamageVal.toString());
 			}
 			
