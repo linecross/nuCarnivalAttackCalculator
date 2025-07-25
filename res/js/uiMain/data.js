@@ -58,11 +58,14 @@ export default function appData() {
 		},
 		tierList: {
 			tiers: [
-				{ id: 'S', name: 'S', color: '#f64e4e', cards: [], order: 1 },
-				{ id: 'A', name: 'A', color: '#ff8f64', cards: [], order: 2 },
-				{ id: 'B', name: 'B', color: '#ffcc7b', cards: [], order: 3 },
-				{ id: 'C', name: 'C', color: '#bbef7b', cards: [], order: 4 },
-				{ id: 'D', name: 'D', color: '#67f6e9', cards: [], order: 5 }
+				{ id: 'SS', name: 'SS', color: '#e084ff', cards: [], order: 1 },
+				{ id: 'S', name: 'S', color: '#f64e4e', cards: [], order: 2 },
+				{ id: 'A', name: 'A', color: '#ff8f64', cards: [], order: 3 },
+				{ id: 'B', name: 'B', color: '#ffcc7b', cards: [], order: 4 },
+				{ id: 'C', name: 'C', color: '#bbef7b', cards: [], order: 5 },
+				{ id: 'D', name: 'D', color: '#67f6e9', cards: [], order: 6 },
+				{ id: 'E', name: 'E', color: '#379bff', cards: [], order: 7 },
+				{ id: 'F', name: 'F', color: '#9d7d7e', cards: [], order: 8 }
 			],
 			// unrankedCards: Array.from({ length: 20 }, (_, index) => ({
 			// 	id: index + 1,

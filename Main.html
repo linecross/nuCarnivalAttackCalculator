@@ -632,7 +632,10 @@
 							@dragenter="handleTierDragEnter($event, index)" @dragleave="handleTierDragLeave">
 						<div class="tier-header" :style="{ backgroundColor: tier.color }">
 							<!-- <input type="text" v-model="tier.name" @input="handleTierNameChange(index, $event)"> -->
-							<textarea type="text" v-model="tier.name" @input="handleTierNameChange(index, $event)"></textarea>
+							<!-- <textarea type="text" v-model="tier.name" @input="handleTierNameChange(index, $event)"></textarea> -->
+							<div class="tier-header-name" contenteditable="true">
+								<div type="text">{{tier.name}}</div>
+							</div>
 							<input type="color" v-model="tier.color" @input="handleTierColorChange(index, $event)">
 						</div>
 						<div class="tier-content" :data-tier="'tier-' + index"

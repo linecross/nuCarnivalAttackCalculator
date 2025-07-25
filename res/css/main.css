@@ -1171,6 +1171,7 @@ td.hpLockTurn{
     background-color: #fd8f34;
   }
   .tier-header {
+    position: relative;
     background-color: #000000;
     color: white;
     padding: 10px;
@@ -1198,11 +1199,19 @@ td.hpLockTurn{
     resize: none;
   }
   .tier-header input[type="color"] {
+    opacity: 0;
     width: 30px;
-    height: 20px;
+    height: 30px;
     padding: 0;
     border: none;
     cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+  .tier-header input[type="color"]:hover {
+    opacity: 1;
+    border: 1px solid #666;
   }
   .tier-header select {
     padding: 5px;
@@ -1219,9 +1228,6 @@ td.hpLockTurn{
   }
   .tier-header button:hover {
     background: #e60000;
-  }
-  .tier-header input[type='color']{
-    opacity: 0;
   }
   .tier-content {
     flex: 1;
@@ -1311,4 +1317,13 @@ td.hpLockTurn{
     padding: 0;
     background-color: none;
     border-radius: 0px;
+}
+.tier-header-name{
+    align-self: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    height: 100%;
+    cursor: text;
+    color: #000;
 }
