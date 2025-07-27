@@ -72,6 +72,7 @@ Vue.createApp({
     data() {
 		return{
 			tab: 'CAL',
+			isEditCustomOrderMode: false,
 			userInput: {
 				cardname: ['', '', '', '', ''],
 				cardActionOrder: [1, 2, 3, 4, 5],
@@ -1309,29 +1310,28 @@ Vue.createApp({
 			this.cardHpAtkSort.element = [];
 			this.cardHpAtkSort.coolDown = [];
 		},
-		openActionOrderDialog(){
-			var selector = document.getElementById('actionOrderDialog');
-			var bsModal = bootstrap.Modal.getOrCreateInstance(selector);
-			bsModal.show();
-		},
 		handleCardTurnActionOrderEvt(evt, turn, cardIdx){
 			const order = Number(evt.target.value);
 			this.setCardCustomTurnActionOrder(turn, cardIdx, order);
 		},
 		setCardCustomTurnActionOrder(turn, cardIdx, order){
 			let defaultOrder = this.userInput.cardActionOrder;
+			// Set Order
 			if (this.userInput.cardCustomTurnActionOrder[turn]){
-				this.userInput.cardCustomTurnActionOrder[turn][cardIdx] = order;
+				// this.userInput.cardCustomTurnActionOrder[turn][cardIdx] = order;
+				this.updateOrderQueue(this.userInput.cardCustomTurnActionOrder[turn], cardIdx, order);
 			}
 			else{
 				let turnOrder = [];
 				for (let i=0; i<defaultOrder.length; i++){
 					turnOrder[i] = defaultOrder[i];
 				}
-				turnOrder[cardIdx] = order;
+				// turnOrder[cardIdx] = order;
+				this.updateOrderQueue(turnOrder, cardIdx, order);
 				this.userInput.cardCustomTurnActionOrder[turn] = turnOrder;
 			}
 
+			// Check if it is same as default
 			let sameAsDefaultOrder = true;
 			for (let i=0; i<defaultOrder.length; i++){
 				if (this.userInput.cardCustomTurnActionOrder[turn][i] != defaultOrder[i]){
@@ -1343,6 +1343,30 @@ Vue.createApp({
 				delete this.userInput.cardCustomTurnActionOrder[turn];
 			}
 			this.updateBattle();
+		},
+		updateOrderQueue(queue, cardIdx, newValue) {
+			// Set queue[cardIdx] to the new value
+			queue[cardIdx] = newValue;
+			
+			// Get indices and values of other positions (excluding index)
+			const otherIndices = [0, 1, 2, 3, 4].filter(i => i !== cardIdx);
+			const current = otherIndices.map(i => ({ val: queue[i], idx: i }));
+			
+			// Determine available priorities (1 to 5 excluding newValue)
+			const allPriorities = [1, 2, 3, 4, 5];
+			const available = allPriorities.filter(val => val !== newValue).sort((a, b) => a - b);
+			
+			// Sort indices of current priorities to maintain relative order
+			const sortedIndices = current
+				.sort((a, b) => a.val - b.val)
+				.map(item => item.idx);
+			
+			// Assign available priorities in order to maintain relative ranking
+			sortedIndices.forEach((idx, i) => {
+				queue[idx] = available[i];
+			});
+			
+			return queue;
 		},
 		resetCardTurnActionOrder(){
 			this.userInput.cardCustomTurnActionOrder = [[]];
