@@ -3885,19 +3885,19 @@
       "skillLv1Rule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "受到傷害減少", "value": "28%" },
-        { "type": "治療", "value": "15%", "valueBy": "HP" }
+        { "type": "治療", "value": "15%", "valueBy": "HP", "skillType": "觸發" }
       ],
       "skillLv2Rule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "受到傷害減少", "value": "28%" },
         { "type": "造成傷害增加", "value": "17%", "target": "全體", "turn": 3 },
-        { "type": "治療", "value": "17%", "valueBy": "HP" }
+        { "type": "治療", "value": "17%", "valueBy": "HP", "skillType": "觸發" }
       ],
       "skillLv3Rule": [
         { "type": "攻擊", "value": "100%" },
         { "type": "受到傷害減少", "value": "28%" },
         { "type": "造成傷害增加", "value": "17%", "target": "全體", "turn": 3 },
-        { "type": "治療", "value": "20%", "valueBy": "HP" }
+        { "type": "治療", "value": "20%", "valueBy": "HP", "skillType": "觸發" }
       ],
       "star3Rule": [
         { "type": "防禦減傷增加", "value": "10%" },
