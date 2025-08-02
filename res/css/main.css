@@ -7,13 +7,13 @@ body{
     font-family: 'Roboto', 'Noto Sans TC', '微軟正黑體', 'Arial', sans-serif;
 }
 
-h5{
+.collapse-header{
     cursor: pointer;
 }
-h5::before {
+.collapse-header::before {
     content: "▷";
 }
-h5:has(+ div.show)::before {
+.collapse-header:has(+ div.collapse.show)::before {
     content: "▼";
 }
 .collapsing {
