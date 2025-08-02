@@ -7,6 +7,20 @@ body{
     font-family: 'Roboto', 'Noto Sans TC', '微軟正黑體', 'Arial', sans-serif;
 }
 
+h5{
+    cursor: pointer;
+}
+h5::before {
+    content: "▷";
+}
+h5:has(+ div.show)::before {
+    content: "▼";
+}
+.collapsing {
+    transition: height .15s ease;
+}
+  
+
 .title-link{
     color: #000;
     text-decoration: none;
