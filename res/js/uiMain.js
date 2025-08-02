@@ -98,6 +98,10 @@ Vue.createApp({
 				isCalcEnemyDebuff: true,
 				printOutputMode: Battle.PRINT_OUTPUT_OPTION.ALL,
 			},
+			userGlobalInput: {
+				cardPot: 12,
+				cardActionPattern: ActionPattern.Immediately,
+			},
 			cardFilter:{
 				currentIdx: -1,
 				selectCardName: '',
@@ -138,7 +142,7 @@ Vue.createApp({
 					recordPanelCardImgSize: 'normal',
 					recordPanelPageMaxCount: 20,
 					theme: 'light',
-					damageChartDisplay: 'cardDamage',
+					damageChartDisplay: 'none',
 				}
 			},
 			cardJsonLastModified: '',
@@ -340,6 +344,10 @@ Vue.createApp({
 						if (card.rarity == 'SSR') card.star = 1;
 						else if (card.rarity == 'SR') card.star = 3;
 						else card.star = 5;
+					}
+					
+					if (this.userGlobalInput.cardPot != null){
+						card.potential = this.userGlobalInput.cardPot;
 					}
 
 					this.cards[i] = card;
@@ -1804,6 +1812,20 @@ Vue.createApp({
 		},
 		"setting.general.damageChartDisplay"(){
 			this.updateChart(true);
-		}
+		},
+		'userGlobalInput.cardPot'(newVal, oldVal){
+			for (var card of this.cards){
+				if (card != null){
+					card.potential = newVal;
+				}
+			}
+			this.updateBattle();
+		},
+		'userGlobalInput.cardActionPattern'(newVal, oldVal){
+			for (var i=0; i<5; i++){
+				this.userInput.cardActionPattern[i] = newVal;
+			}
+			this.updateBattle();
+		},
 	}
 }).mount('#NuCarnivalAttackCalApp');
