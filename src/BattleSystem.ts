@@ -896,7 +896,7 @@ export class Battle{
 			if (this.enemyCard != null && rule.type == RuleType.attack){
 				// var enemyDamage = (card instanceof EnemyCard) ? enemyDamageVal.multiply(hitCount).getValue() : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
 				var enemyDamage = enemyDamageVal.multiply(hitCount);
-				enemyDamage = Util.getFloat32(enemyDamage).multiply(Battle.getElementalBuff(card.element, this.enemyElement)).floor();
+				// enemyDamage = Util.getFloat32(enemyDamage).multiply(Battle.getElementalBuff(card.element, this.enemyElement)).floor();
 				this.damageToEnemy(enemyDamage.getValue());
 			}
 
