@@ -508,7 +508,7 @@ export class Battle{
 					var applyCount = buff.getConditionFulfillTimes(card, this, this.currentTurnAction, attackType);
 					debuffs[buffType] = Util.getFloat32(debuffs[buffType] || 0).add(Util.getFloat32(buff.value as string).multiply(applyCount));
 				}
-				var outputVal : Float32 = Util.getFloat32(poisonVal);
+				var outputVal : Float32 = poisonVal > 0 ? Util.getFloat32(poisonVal) : Util.getFloat32(0);
 				var enemyDamageVal : Float32 = Util.getFloat32(outputVal);
 				for (var key of Object.keys(debuffs)){
 					enemyDamageVal = enemyDamageVal.multiply(debuffs[key].add(1));
@@ -837,6 +837,9 @@ export class Battle{
 			outputVal = outputVal.multiply(Battle.getElementalBuff(card.element, this.enemyElement));
 		}
 		outputVal = outputVal.floor();
+		if (outputVal.getValue() < 0){
+			outputVal = Util.getFloat32(0);
+		}
 		// Poison
 		if (rule.type == RuleType.poisonAttack){
 			var newRule = new Rule({type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.poisonTurn, maxCount: rule.maxCount});
@@ -853,6 +856,9 @@ export class Battle{
 			enemyDamageVal = enemyDamageVal.multiply(Util.getFloat32(debuffs[key]).add(1));
 		}
 		enemyDamageVal = enemyDamageVal.floor();
+		if (enemyDamageVal.getValue() < 0){
+			enemyDamageVal = Util.getFloat32(0);
+		}
 
 		if (rule.type == RuleType.support){
 			// NOTE: fix support first, may still need too add "isAttackSuccess" to attack/heal/poison
@@ -888,7 +894,8 @@ export class Battle{
 
 			// Enemy Damage
 			if (this.enemyCard != null && rule.type == RuleType.attack){
-				var enemyDamage = (card instanceof EnemyCard) ? enemyDamageVal.multiply(hitCount).getValue() : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
+				// var enemyDamage = (card instanceof EnemyCard) ? enemyDamageVal.multiply(hitCount).getValue() : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
+				var enemyDamage = enemyDamageVal.multiply(hitCount);
 				enemyDamage = Util.getFloat32(enemyDamage).multiply(Battle.getElementalBuff(card.element, this.enemyElement)).floor();
 				this.damageToEnemy(enemyDamage.getValue());
 			}

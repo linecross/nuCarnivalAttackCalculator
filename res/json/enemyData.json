@@ -1,4 +1,23 @@
 {
+  "【忘卻S17】SP4．滄鱗八雲": {
+    "name": "BOSS－真摯之心　八雲", "element": "水", "hp": 2334015, "active": "true",
+    "hpLock": ["1%"],
+    "description": "僅支援以下機制\n．1%鎖血\n．敵方被攻擊時，受到傷害減少40%",
+    "attackRule": [
+      { "type": "攻擊", "value": "1000000", "valueBy": "絕對數值", "condition": { "type": "血量機制", "value": "1%" } }
+    ],
+    "star3Rule": [
+      {
+        "type": "敵方獲得技能",
+        "value": {
+          "type": "敵方獲得技能",
+          "turn": 99,
+          "condition": "被攻擊時",
+          "value": { "type": "敵方受到傷害增加", "value": "-40%", "turn": 1 }
+        }
+      }
+    ]
+  },
   "【忘卻S12】SP4．晶霜凱爾": {
     "name": "BOSS－協助練習　凱爾", "element": "水", "hp": 1213720, "active": "false",
     "hpLock": ["75%", "50%", "25%"],
