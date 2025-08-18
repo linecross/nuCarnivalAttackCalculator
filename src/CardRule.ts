@@ -20,6 +20,7 @@ export class Rule{
 	condition: Condition[] | null = null ;
 	isCounterAttack: boolean = false;
 	isFollowUpAttack: boolean = false;
+	isNonOverlay: boolean = false;
 
 	static idCounter: number = 0;
 
@@ -32,7 +33,7 @@ export class Rule{
 	}
 
 	constructor({id = null, parentCardName = "", isPassive=false, type=RuleType.attack as RuleType as string, value, 
-		valueBy = RuleValueByType.atk as RuleValueByType, turn=50, poisonTurn=1, maxCount=null, skillType=SkillType.none as SkillType, 
+		valueBy = RuleValueByType.atk as RuleValueByType, turn=50, poisonTurn=1, maxCount=null, isNonOverlay=false, skillType=SkillType.none as SkillType, 
 		condition=null, target=null, isCounterAttack=false, isFollowUpAttack=false}){
 
 		this.id = id == null ? Rule.createId() : id;
@@ -50,6 +51,7 @@ export class Rule{
 		this.turn = turn;
 		this.poisonTurn = poisonTurn;
 		this.maxCount = maxCount;
+		this.isNonOverlay = isNonOverlay;
 		this.skillType = skillType;
 		if (condition == null || Array.isArray(condition)){
 			this.condition = condition;
@@ -76,7 +78,7 @@ export class Rule{
 	// Exact clone including rule ID
 	public clone(){
 		var cloneRule = new Rule({id: this.id, parentCardName: this.parentCardName, isPassive: this.isPassive, type: this.type, value: this.value, valueBy: this.valueBy,
-			turn: this.turn, poisonTurn: this.poisonTurn, maxCount: this.maxCount, skillType: this.skillType, condition: this.condition, target: this.target, 
+			turn: this.turn, poisonTurn: this.poisonTurn, maxCount: this.maxCount, isNonOverlay: this.isNonOverlay, skillType: this.skillType, condition: this.condition, target: this.target, 
 			isCounterAttack: this.isCounterAttack, isFollowUpAttack: this.isFollowUpAttack});
 		if (this.condition != null){
 			cloneRule.condition = this.condition;
@@ -199,7 +201,8 @@ export class Rule{
 	}
 
 	isNoOverlayRule(){
-		return this.turn != Rule.ALWAYS_EFFECTIVE && this.maxCount != null;
+		// return this.turn != Rule.ALWAYS_EFFECTIVE && this.maxCount != null;
+		return this.isNonOverlay;
 	}
 
 	getRuleApplyTarget(team: Team, card: Card) : string[] {
@@ -213,7 +216,7 @@ export class Rule{
 		return cardNames;
 	}
 
-	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=null, poisonTurn=1, maxCount=null, skillType=SkillType.none as SkillType, condition=null, target=null}, isPermRule = false) : Rule{
+	static loadRule({isPassive=false, type=RuleType.attack as RuleType as string, value, valueBy=RuleValueByType.atk as RuleValueByType, turn=null, poisonTurn=1, maxCount=null, isNonOverlay=false, skillType=SkillType.none as SkillType, condition=null, target=null}, isPermRule = false) : Rule{
 		// Default values setup
 		if (isPermRule) {
 			isPassive = true;
@@ -255,7 +258,7 @@ export class Rule{
 			targetItem = RuleTarget.loadTarget(target);
 		}
 
-		var rule = new Rule({isPassive: isPassive, type: type, value:value, valueBy: valueBy, turn: turn, poisonTurn: poisonTurn, maxCount: maxCount, skillType: skillType, condition: conditionArr, target: targetItem});
+		var rule = new Rule({isPassive: isPassive, type: type, value:value, valueBy: valueBy, turn: turn, poisonTurn: poisonTurn, maxCount: maxCount, isNonOverlay: isNonOverlay, skillType: skillType, condition: conditionArr, target: targetItem});
 		return rule;
 	}
 }
@@ -497,7 +500,8 @@ export class Condition{
 		}
 		else if (this.type == ConditionType.hasPhase){
 			var targetPhases = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
-			return card.hasPhase(targetPhases);
+			
+			return card.hasPhase(targetPhases) || battle.enemyCard.hasPhase(targetPhases);
 		}
 		return false;
 	}
