@@ -297,14 +297,14 @@ export class Battle {
         postFollowRuleToProcess = postAttackRules.filter((r) => r.type == RuleType.basicAtkFollowupSkill);
         postTriggerRuleToProcess = postAttackRules.filter((r) => r.type !== RuleType.basicAtkFollowupSkill);
         enemyPostRuleToProcess = this.enemyBattleTurn.rules.filter((r) => r.isPostAttackRule());
-        // 2. 執行敵方身上的「被攻擊時」Rules
-        if (hasAttackEnemy && !hasProcessedEnemyPostAttack) {
-            for (var postRule of enemyPostRuleToProcess) {
-                this.addRuleToTargets(postRule, card, attackType);
-                this.addBuffToTargets(postRule, card, attackType);
-            }
-            hasProcessedEnemyPostAttack = true;
-        }
+        // // 2. 執行敵方身上的「被攻擊時」Rules
+        // if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
+        // 	for (var postRule of enemyPostRuleToProcess){
+        // 		this.addRuleToTargets(postRule, card, attackType);
+        // 		this.addBuffToTargets(postRule, card, attackType);
+        // 	}
+        // 	hasProcessedEnemyPostAttack = true;
+        // }
         // 3. 執行追擊Rules + 敵方身上的「被攻擊時」Rules
         for (var postRule of postFollowRuleToProcess) {
             var atkFollowupRule = postRule.cloneSimple();
