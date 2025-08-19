@@ -3698,7 +3698,7 @@
           "value": "34%",
           "target": "全體"
         },
-        { "type": "輔助", "value": "31%", "turn": 4, "maxCount": 1, "target": "全體" },
+        { "type": "輔助", "value": "31%", "turn": 4, "maxCount": 1, "target": "全體", "isNonOverlay": true },
         { "type": "治療", "value": "100%" }
       ],
       "skillLv2Rule": [
@@ -3717,7 +3717,7 @@
           "value": "34%",
           "target": { "type": "位置", "value": 5 }
         },
-        { "type": "輔助", "value": "37%", "turn": 4, "maxCount": 1, "target": "全體" },
+        { "type": "輔助", "value": "37%", "turn": 4, "maxCount": 1, "target": "全體", "isNonOverlay": true },
         { "type": "治療", "value": "100%" }
       ],
       "skillLv3Rule": [
@@ -3736,7 +3736,7 @@
           "value": "34%",
           "target": { "type": "位置", "value": 5 }
         },
-        { "type": "輔助", "value": "44%", "turn": 4, "maxCount": 1, "target": "全體" },
+        { "type": "輔助", "value": "44%", "turn": 4, "maxCount": 1, "target": "全體", "isNonOverlay": true },
         { "type": "治療", "value": "100%" }
       ],
       "star3Rule": [
@@ -5159,7 +5159,8 @@
             "turn": 6,
             "maxCount": 1,
             "condition": { "type": "攻擊方式", "value": "必殺技" },
-            "skillType": "觸發"
+            "skillType": "觸發",
+            "isNonOverlay": true
           }
         }
       ],
@@ -5184,7 +5185,8 @@
             "turn": 6,
             "maxCount": 1,
             "condition": { "type": "攻擊方式", "value": "必殺技" },
-            "skillType": "觸發"
+            "skillType": "觸發",
+            "isNonOverlay": true
           }
         }
       ],
@@ -5209,7 +5211,8 @@
             "turn": 6,
             "maxCount": 1,
             "condition": { "type": "攻擊方式", "value": "必殺技" },
-            "skillType": "觸發"
+            "skillType": "觸發",
+            "isNonOverlay": true
           }
         }
       ],

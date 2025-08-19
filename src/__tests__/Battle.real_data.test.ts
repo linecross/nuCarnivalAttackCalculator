@@ -187,6 +187,70 @@ describe('實際測試', () => {
             expect(battle.getTotalValue(cards[4])).toBeAround(2267346);
         });
 
+        test('獄副+夕啖+咖八+海崑+劍奧', () => {
+            cards = ['監獄．艾德蒙特', '夕暮．啖天', '咖啡．八雲', '海浪．崑西', '劍．奧利文']
+            setupBattle();
+
+            expect(battle.getTurnValue(cards[1], 13)).toBeAround(16742);
+            expect(battle.getTurnValue(cards[2], 13)).toBeAround(26179);
+            expect(battle.getTurnValue(cards[3], 13)).toBeAround(96653);
+            expect(battle.getTurnValue(cards[4], 13)).toBeAround(55471);
+            
+            expect(battle.getTotalValue(cards[1])).toBeAround(142715);
+            expect(battle.getTotalValue(cards[2])).toBeAround(215884);
+            expect(battle.getTotalValue(cards[3])).toBeAround(535329);
+            expect(battle.getTotalValue(cards[4])).toBeAround(828001);
+        });
+
+        test('修八+兔伊+遊奧+潛崑+修布', () => {
+            cards = ['修女．八雲', '兔耳．伊得', '遊樂園．奧利文', '潛影．崑西', '修女．布儡']
+            setupBattle();
+
+            expect(battle.getTurnValue(cards[1], 14)).toBeAround(15075);
+            expect(battle.getTurnValue(cards[2], 14)).toBeAround(120713);
+            expect(battle.getTurnValue(cards[3], 14)).toBeAround(180368);
+            expect(battle.getTurnValue(cards[4], 14)).toBeAround(265784);
+            
+            expect(battle.getTotalValue(cards[1])).toBeAround(140429);
+            expect(battle.getTotalValue(cards[2])).toBeAround(1131903);
+            expect(battle.getTotalValue(cards[3])).toBeAround(1615397);
+            expect(battle.getTotalValue(cards[4])).toBeAround(1844479);
+        });
+
+        test('女僕歛+劍副+遊玖+魔玖+魔可', () => {
+            cards = ['女僕．歛', '劍．艾德蒙特', '魔法．玖夜', '遊樂園．玖夜', '魔法．可爾']
+            setupBattle();
+
+            expect(battle.getTurnValue(cards[1], 13)).toBeAround(93136);
+            expect(battle.getTurnValue(cards[2], 13)).toBeAround(138121);
+            expect(battle.getTurnValue(cards[3], 14)).toBeAround(48195);
+            expect(battle.getTurnValue(cards[4], 14)).toBeAround(78172);
+            
+            expect(battle.getTotalValue(cards[1])).toBeAround(471116);
+            expect(battle.getTotalValue(cards[2])).toBeAround(999829);
+            expect(battle.getTotalValue(cards[3])).toBeAround(524488);
+            expect(battle.getTotalValue(cards[4])).toBeAround(798155);
+        });
+
+        test('護可+華玖+華歛+華啖+獄崑', () => {
+            cards = ['護士．可爾', '華伶．玖夜', '華伶．歛', '華伶．啖天', '監獄．崑西']
+            setupBattle();
+
+            expect(battle.getTurnValue(cards[2], 13)).toBeAround(37212);
+            expect(battle.getTurnValue(cards[3], 13)).toBeAround(178401);
+            expect(battle.getTurnValue(cards[4], 13)).toBeAround(83654);
+
+            expect(battle.getTurnValue(cards[1], 14)).toBeAround(22694);
+            expect(battle.getTurnValue(cards[2], 14)).toBeAround(33570);
+            expect(battle.getTurnValue(cards[3], 14)).toBeAround(137651);
+            expect(battle.getTurnValue(cards[4], 14)).toBeAround(97724);
+            
+            expect(battle.getTotalValue(cards[1])).toBeAround(233572);
+            expect(battle.getTotalValue(cards[2])).toBeAround(422508);
+            expect(battle.getTotalValue(cards[3])).toBeAround(1822629);
+            expect(battle.getTotalValue(cards[4])).toBeAround(1068526);
+        });
+
     });
 
 });
