@@ -5315,6 +5315,122 @@
       ],
       "pot6Rule": [{ "type": "觸發技效果增加", "value": "6%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "諸神．奧利文": {
+      "char": "奧利文", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "治療", "element": "水", "potType": "平均型",
+      "baseHp": 7827, "baseAtk": 2205, "coolDown": 4,
+      "img": "Olivine_SSR_11.jpg",
+      "attackRule": [{ "type": "治療", "value": "75%" }],
+      "skillLv1Rule": [
+        {
+          "type": "普攻傷害增加",
+          "value": "43%",
+          "turn": 4,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "治療", "value": "100%" },
+        { "type": "持續治療", "value": "37%", "turn": 4 }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊力增加", "value": "34%", "turn": 4 },
+        {
+          "type": "普攻傷害增加",
+          "value": "43%",
+          "turn": 4,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "治療", "value": "120%" },
+        { "type": "持續治療", "value": "46%", "turn": 4 }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊力增加", "value": "34%", "turn": 4 },
+        {
+          "type": "普攻傷害增加",
+          "value": "43%",
+          "turn": 4,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "治療", "value": "140%" },
+        { "type": "持續治療", "value": "54%", "turn": 4 }
+      ],
+      "star3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方受到治療增加",
+            "value": "18%",
+            "condition": { "type": "血量少於", "value": "50%" },
+            "turn": 99
+          },
+          "target": { "type": "全體" }
+        },
+        { "type": "攻擊力增加", "value": "12%", "target": "全體" }
+      ],
+      "star5Rule": [{ "type": "最大HP增加", "value": "7.5%", "target": "全體" }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "諸神．崑西": {
+      "char": "崑西", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "HP先行",
+      "baseHp": 7293, "baseAtk": 2383, "coolDown": 4,
+      "img": "Quincy_SSR_12.jpg",
+      "attackRule": [
+        { "type": "解除防禦" },
+        { "type": "攻擊力增加", "value": "6%", "turn": 5 },
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "34%", "maxCount": 5 },
+        { "type": "攻擊", "value": "34%", "maxCount": 5 }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "22%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "闇"} }
+        },
+        { "type": "攻擊", "value": "42%", "maxCount": 5 },
+        { "type": "攻擊", "value": "42%", "maxCount": 5 }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "22%", "turn": 1, "condition": {"type": "被屬性攻擊", "value": "闇"} }
+        },
+        { "type": "攻擊", "value": "50%", "maxCount": 5 },
+        { "type": "攻擊", "value": "50%", "maxCount": 5 }
+      ],
+      "star3Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "23%"
+        },
+        {
+          "type": "反擊被動", "value": "12%", "turn": 1, "maxCount": 99
+        }
+      ],
+      "star5Rule": [{ "type": "必殺技傷害增加", "value": "51%" }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "諸神．艾德蒙特": {
+      "char": "艾德蒙特", "fullname": null, "alias": null,
+      "rarity": "SR", "class": "輔助", "element": "闇", "potType": "平均型",
+      "baseHp": 6475, "baseAtk": 1956, "coolDown": 3,
+      "img": "Edmond_SR_02.jpg",
+      "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
+      "skillLv1Rule": [{"type": "我方受到持續治療增加", "value": "41%", "turn": 3, "target": "全體"}, { "type": "輔助", "value": "107%", "target": "全體" }],
+      "skillLv2Rule": [{"type": "我方受到持續治療增加", "value": "41%", "turn": 3, "target": "全體"}, { "type": "輔助", "value": "126%", "target": "全體" }],
+      "skillLv3Rule": [{"type": "我方受到持續治療增加", "value": "41%", "turn": 3, "target": "全體"}, { "type": "輔助", "value": "145%", "target": "全體" }],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "18%", "target": "全體" }
+      ],
+      "star5Rule": [
+        { "type": "必殺技傷害增加", "value": "20%", "target": "全體" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     }
 }
   
