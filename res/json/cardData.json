@@ -5497,6 +5497,14 @@
       ],
       "star3Rule": [
         {
+          "type": "必殺技傷害增加",
+          "value": "6%",
+          "turn": 99,
+          "maxCount": 4,
+          "target": "全體",
+          "condition": "攻擊時"
+        },
+        {
           "type": "敵方獲得技能",
           "value": {
             "type": "敵方獲得技能",
@@ -5505,14 +5513,6 @@
             "value": { "type": "敵方受到傷害增加", "value": "2.5%", "turn": 4 }
           },
           "condition": { "type": "第n回合", "value": 1 }
-        },
-        {
-          "type": "必殺技傷害增加",
-          "value": "2%",
-          "turn": 99,
-          "maxCount": 6,
-          "target": "全體",
-          "condition": "攻擊時"
         }
       ],
       "star5Rule": [
