@@ -2918,16 +2918,16 @@
       "img": "Rei_SSR_04.jpg",
       "attackRule": [{ "type": "攻擊", "value": "125%" }],
       "skillLv1Rule": [
-        { "type": "敵方受到傷害增加", "value": "20%" },
+        { "type": "敵方受到必殺技傷害增加", "value": "20%" },
         { "type": "攻擊", "value": "247%" }
       ],
       "skillLv2Rule": [
-        { "type": "敵方受到傷害增加", "value": "20%" },
+        { "type": "敵方受到必殺技傷害增加", "value": "20%" },
         { "type": "造成傷害增加", "value": "17%", "target": { "type": "定位", "value": ["攻擊", "妨礙"] } },
         { "type": "攻擊", "value": "296%" }
       ],
       "skillLv3Rule": [
-        { "type": "敵方受到傷害增加", "value": "20%" },
+        { "type": "敵方受到必殺技傷害增加", "value": "20%" },
         { "type": "造成傷害增加", "value": "17%", "target": { "type": "定位", "value": ["攻擊", "妨礙"] } },
         { "type": "攻擊", "value": "345%" }
       ],
