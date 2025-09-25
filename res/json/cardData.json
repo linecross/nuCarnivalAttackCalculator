@@ -5431,6 +5431,96 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
       "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "舞動．可爾": {
+      "char": "可爾", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "木", "potType": "HP先行",
+      "baseHp": 7720, "baseAtk": 2241, "coolDown": 4,
+      "img": "Garu_SSR_11.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "20%", "maxCount": 5 },{ "type": "輔助", "value": "30%", "target": "全體" }
+      ],
+      "skillLv1Rule": [
+        { "type": "輔助", "value": "124%", "target": "全體" },
+        { "type": "攻擊", "value": "20%", "maxCount": 5 }
+      ],
+      "skillLv2Rule": [
+        { "type": "必殺技傷害增加", "value": "25%", "target": { "type": "全體", "exceptType": "自己" } },
+        { "type": "輔助", "value": "148%", "target": "全體" },
+        { "type": "攻擊", "value": "20%", "maxCount": 5 }
+      ],
+      "skillLv3Rule": [
+        { "type": "必殺技傷害增加", "value": "25%", "target": { "type": "全體", "exceptType": "自己" } },
+        { "type": "輔助", "value": "173%", "target": "全體" },
+        { "type": "攻擊", "value": "20%", "maxCount": 5 }
+      ],
+      "star3Rule": [
+        {
+          "type": "造成傷害增加",
+          "value": "60%",
+          "target": "全體",
+          "condition": { "type": "隊伍中有定位", "value": "輔助", "minCount": 2 }
+        },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "免疫冷卻回合變動",
+            "turn": 50
+          },
+          "target": { "type": "定位", "value": "輔助" },
+          "condition": { "type": "第n回合", "value": 2 }
+        }
+      ],
+      "star5Rule": [{ "type": "必殺技傷害增加", "value": "32%", "target": { "type": "定位", "value": ["攻擊", "妨礙"] } }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "舞動．布儡": {
+      "char": "布儡", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "闇", "potType": "HP先行",
+      "baseHp": 7934, "baseAtk": 2170, "coolDown": 4,
+      "img": "Blade_SSR_11.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "敵方受到必殺技傷害增加", "value": "15%", "maxCount": 2, "turn": 99 },
+        { "type": "攻擊", "value": "247%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方受到必殺技傷害增加", "value": "15%", "maxCount": 2, "turn": 99 },
+        { "type": "攻擊力增加", "value": "34%", "turn": 4 },
+        { "type": "攻擊", "value": "296%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方受到必殺技傷害增加", "value": "15%", "maxCount": 2, "turn": 99 },
+        { "type": "攻擊力增加", "value": "34%", "turn": 4 },
+        { "type": "攻擊", "value": "345%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "turn": 99,
+            "condition": "被攻擊時",
+            "value": { "type": "敵方受到傷害增加", "value": "2.5%", "turn": 4 }
+          },
+          "condition": { "type": "第n回合", "value": 1 }
+        },
+        {
+          "type": "必殺技傷害增加",
+          "value": "2%",
+          "turn": 99,
+          "maxCount": 6,
+          "target": "全體",
+          "condition": "攻擊時"
+        }
+      ],
+      "star5Rule": [
+        { "type": "必殺技傷害增加", "value": "25%" },
+        { "type": "攻擊力增加", "value": "17%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     }
 }
   
