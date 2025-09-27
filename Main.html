@@ -19,6 +19,8 @@
 	<script type="module" src="./build/Constants.js"></script>
 	<script type="module" src="./build/BattleSystem.js"></script>
 	<link rel='stylesheet' href='./res/css/main.css' />
+
+	<link rel="preload" href="./res/img/card-icon/image/char_icons.png" as="image" />
 </head>
 
 <body>
@@ -178,7 +180,7 @@
 								<template v-for="card in getFilteredCards">
 									<span class="card-block" data-bs-dismiss="modal" :data-cardname="card[0]" @click="selectCard(card[0])">
 										<div class="card-image-div">
-											<img :src="getCardImagePath(card[1])" @error="loadNoCardImage" class="card-image">
+											<img :src="getCardImagePath(card[1])" loading="lazy" @error="loadNoCardImage" class="card-image">
 											<img :src="getCardIconPath(card[1], 'element')" class="card-icon-element" />
 											<img :src="getCardIconPath(card[1], 'class')" class="card-icon-class" />
 											<img :src="getCardIconPath(card[1], 'rarity')" class="card-icon-rarity" />
