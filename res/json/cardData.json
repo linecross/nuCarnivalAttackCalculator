@@ -5521,6 +5521,196 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "屍者．艾德蒙特": {
+      "char": "艾德蒙特", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
+      "baseHp": 7720, "baseAtk": 2241, "coolDown": 4,
+      "img": "Edmond_SSR_12.jpg",
+      "attackRule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "9%",
+          "maxCount": 3,
+          "turn": 99
+        },
+        { "type": "攻擊", "value": "30%", "maxCount": 2 },
+        { "type": "持續傷害", "value": "25%", "maxCount": 2, "poisonTurn": 2 }
+      ],
+      "skillLv1Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "34%"
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "condition": "被攻擊時",
+            "value": { "type": "敵方受到傷害增加", "value": "4%", "turn": 1 }
+          }
+        },
+        { "type": "持續傷害", "value": "142%", "maxCount": 2, "poisonTurn": 1 }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "34%"
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "condition": "被攻擊時",
+            "value": { "type": "敵方受到傷害增加", "value": "4%", "turn": 1 }
+          }
+        },
+        { "type": "攻擊", "value": "45%", "maxCount": 2 },
+        { "type": "持續傷害", "value": "152%", "maxCount": 2, "poisonTurn": 1 }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "34%"
+        },
+        {
+          "type": "敵方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "condition": "被攻擊時",
+            "value": { "type": "敵方受到傷害增加", "value": "4%", "turn": 1 }
+          }
+        },
+        { "type": "攻擊", "value": "54%", "maxCount": 2 },
+        { "type": "持續傷害", "value": "180%", "maxCount": 2, "poisonTurn": 1 }
+      ],
+      "star3Rule": [
+        {
+          "type": "持續傷害增加",
+          "value": "50%",
+          "turn": 1,
+          "target": "全體",
+          "condition": { "type": "每n回合", "value": 4 }
+        }
+      ],
+      "star5Rule": [
+        { "type": "持續傷害增加", "value": "34%" },
+        { "type": "攻擊力增加", "value": "17%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "屍者．啖天": {
+      "char": "啖天", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "HP先行",
+      "baseHp": 7649, "baseAtk": 2277, "coolDown": 4,
+      "img": "Dante_SSR_11.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "75%" },
+        { "type": "持續治療", "value": "17%", "turn": 4 },
+        { "type": "普攻追擊", "value": "57%", "turn": 4 }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊", "value": "75%" },
+        { "type": "受到傷害減少", "value": "7%", "target": "全體", "turn": 4 },
+        { "type": "持續治療", "value": "22%", "turn": 4 },
+        { "type": "普攻追擊", "value": "74%", "turn": 4 }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊", "value": "75%" },
+        { "type": "受到傷害減少", "value": "7%", "target": "全體", "turn": 4 },
+        { "type": "持續治療", "value": "27%", "turn": 4 },
+        { "type": "普攻追擊", "value": "90%", "turn": 4 }
+      ],
+      "star3Rule": [
+        {
+          "type": "普攻傷害增加", 
+          "value": "12%",
+          "target": "全體",
+          "maxCount": 2,
+          "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
+        },
+        {
+          "type": "普攻傷害增加", 
+          "value": "34%",
+          "target": "全體",
+          "condition": { "type": "血量大於", "value": "90%" }
+        }
+      ],
+      "star5Rule": [
+        { "type": "攻擊力增加", "value": "21%", "target": { "type": "定位", "value": ["攻擊", "妨礙"] } }
+      ],
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "屍者．歛": {
+      "char": "歛", "fullname": null, "alias": null,
+      "rarity": "SR", "class": "治療", "element": "木", "potType": "平均型",
+      "baseHp": 6866, "baseAtk": 1850, "coolDown": 3,
+      "img": "Rei_SR_02.jpg",
+      "attackRule": [
+        { "type": "治療", "value": "45%" },
+        { "type": "持續治療", "value": "15%", "turn": 2 }
+      ],
+      "skillLv1Rule": [
+        { "type": "治療", "value": "90%" },
+        { "type": "持續治療", "value": "45%", "turn": 2 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "34%",
+            "poisonTurn": 3,
+            "condition": "攻擊時",
+            "turn": 3
+          }
+        }
+      ],
+      "skillLv2Rule": [
+        { "type": "治療", "value": "90%" },
+        { "type": "持續治療", "value": "59%", "turn": 2 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "34%",
+            "poisonTurn": 3,
+            "condition": "攻擊時",
+            "turn": 3
+          }
+        }
+      ],
+      "skillLv3Rule": [
+        { "type": "治療", "value": "90%" },
+        { "type": "持續治療", "value": "75%", "turn": 2 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "34%",
+            "poisonTurn": 3,
+            "condition": "攻擊時",
+            "turn": 3
+          }
+        }
+      ],
+      "star3Rule": [
+        { "type": "受到傷害減少", "value": "12%", "condition": { "type": "血量大於", "value": "90%" } },
+        { 
+          "type": "持續傷害增加", 
+          "value": "12%", 
+          "turn": 3, 
+          "target": "全體",
+          "condition": { "type": "攻擊方式", "value": "必殺技" } 
+        }
+      ],
+      "star5Rule": [
+        { "type": "攻擊力增加", "value": "14%" },
+        { "type": "我方受到治療增加", "value": "14%", "target": "全體" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     }
 }
   
