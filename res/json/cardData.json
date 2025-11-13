@@ -5711,6 +5711,112 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "隕石．八雲": {
+      "char": "八雲", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "光", "potType": "HP先行",
+      "baseHp": 7471, "baseAtk": 2312, "coolDown": 3,
+      "img": "Yakumo_SSR_11.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "125%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "必殺技傷害增加", "value": "52%" },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "14%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "光"} }
+        },
+        { "type": "攻擊", "value": "204%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "必殺技傷害增加", "value": "52%" },
+        { "type": "造成傷害增加", "value": "34%", "turn": 99, "maxCount": 1 },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "14%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "光"} }
+        },
+        { "type": "攻擊", "value": "238%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "必殺技傷害增加", "value": "52%" },
+        { "type": "造成傷害增加", "value": "34%", "turn": 99, "maxCount": 1 },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "14%", "turn": 99, "maxCount": 1, "condition": {"type": "被屬性攻擊", "value": "光"} }
+        },
+        { "type": "攻擊", "value": "273%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "造成傷害增加",
+          "value": "23%",
+          "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 }
+        },
+        { "type": "必殺技傷害增加", "value": "34%" }
+      ],
+      "star5Rule": [
+        {
+          "type": "必殺技傷害增加",
+          "value": "32%",
+          "maxCount": 2,
+          "condition": { "type": "隊伍中每存在屬性", "value": "光" }
+        }
+      ],
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "隕石．奧利文": {
+      "char": "奧利文", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "木", "potType": "ATK先行",
+      "baseHp": 11456, "baseAtk": 1494, "coolDown": 3,
+      "img": "Olivine_SSR_12.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [
+        {"type": "持續傷害", "value": "66%", "poisonTurn": 3 },
+        {"type": "獲得護盾", "value": "10%", "valueBy": "HP"},
+        {"type": "受到傷害減少", "value": "15%" }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "17%",
+          "turn": 3
+        },
+        {"type": "持續傷害", "value": "66%", "poisonTurn": 3 },
+        {"type": "獲得護盾", "value": "15%", "valueBy": "HP"},
+        {"type": "受到傷害減少", "value": "15%" }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "17%",
+          "turn": 3
+        },
+        {"type": "持續傷害", "value": "66%", "poisonTurn": 3 },
+        {"type": "獲得護盾", "value": "20%", "valueBy": "HP"},
+        {"type": "受到傷害減少", "value": "15%" }
+      ],
+      "star3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害增加",
+            "value": "23%",
+            "condition": { "type": "隊伍中有屬性", "value": "木", "minCount": 2 },
+            "turn": 99
+          },
+          "target": { "type": "全體" }
+        },
+        {"type": "防禦減傷增加", "value": "10%" }
+      ],
+      "star5Rule": [
+        {
+          "type": "最大HP增加",
+          "value": "34%"
+        }
+      ],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     }
 }
   
