@@ -5943,7 +5943,7 @@
         }
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
-      "pot12Rule": [{ "type": "免疫麻痺" }]
+      "pot12Rule": [{ "type": "免疫沈默" }]
     },
     "迷宮．歛": {
       "char": "歛", "fullname": "", "alias": null,
