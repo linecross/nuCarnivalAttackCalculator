@@ -6030,6 +6030,80 @@
       ],
       "pot6Rule": [{ "type": "觸發技效果增加", "value": "20%" }],
       "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "萬事屋．伊得": {
+      "char": "伊得", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "治療", "element": "木", "potType": "ATK先行",
+      "baseHp": 7293, "baseAtk": 2383, "coolDown": 4,
+      "img": "Eiden_SSR_04.jpg",
+      "attackRule": [{ "type": "治療", "value": "75%" }],
+      "skillLv1Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "14%",
+          "turn": 4,
+          "target": "全體"
+        },
+        { "type": "治療", "value": "135%" },
+        { "type": "持續治療", "value": "21%", "turn": 4 }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "28%",
+          "turn": 4,
+          "target": "全體"
+        },
+        { "type": "治療", "value": "135%" },
+        { "type": "持續治療", "value": "31%", "turn": 4 },
+        {
+          "type": "必殺技傷害增加",
+          "value": "40%",
+          "turn": 4
+        },
+        {
+          "type": "必殺技傷害增加",
+          "value": "40%",
+          "target": { "type": "全體", "exceptType": "自己" }
+        }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "28%",
+          "turn": 4,
+          "target": "全體"
+        },
+        { "type": "治療", "value": "135%" },
+        { "type": "持續治療", "value": "42%", "turn": 4 },
+        {
+          "type": "必殺技傷害增加",
+          "value": "40%",
+          "turn": 4
+        },
+        {
+          "type": "必殺技傷害增加",
+          "value": "40%",
+          "target": { "type": "全體", "exceptType": "自己" }
+        }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "23%", "target": "全體" }
+      ],
+      "star5Rule": [
+        { "type": "最大HP增加", "value": "7.5%", "target": "全體" },
+        {
+          "type": "必殺技傷害增加",
+          "value": "13%",
+          "target": "全體"
+        }
+      ],
+      "pot6Rule": [
+        { "type": "造成傷害增加", "value": "2%", "target": "全體" }, 
+        { "type": "我方受到治療增加", "value": "5%", "target": "全體" },
+        { "type": "受到傷害減少", "value": "2%", "target": "全體" }
+      ],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     }
 }
   
