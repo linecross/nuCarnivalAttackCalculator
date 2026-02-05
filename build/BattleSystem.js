@@ -1,4 +1,4 @@
-import { Class, Element, RuleType, AttackType, ConditionType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
+import { Class, Element, RuleType, AttackType, ConditionType, SkillType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
 import { EnemyCard } from './Card.js';
 import { Rule, RuleTarget, Condition } from './CardRule.js';
 import { RuleHelper } from './util/RuleHelper.js';
@@ -294,8 +294,8 @@ export class Battle {
         }
         this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
         var hasProcessedEnemyPostAttack = false;
-        postFollowRuleToProcess = postAttackRules.filter((r) => r.type == RuleType.basicAtkFollowupSkill);
-        postTriggerRuleToProcess = postAttackRules.filter((r) => r.type !== RuleType.basicAtkFollowupSkill);
+        postFollowRuleToProcess = postAttackRules.filter((r) => r.type == RuleType.basicAtkFollowupSkill || r.skillType == SkillType.append);
+        postTriggerRuleToProcess = postAttackRules.filter((r) => r.type !== RuleType.basicAtkFollowupSkill && r.skillType !== SkillType.append);
         enemyPostRuleToProcess = this.enemyBattleTurn.rules.filter((r) => r.isPostAttackRule());
         // // 2. 執行敵方身上的「被攻擊時」Rules
         // if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
@@ -307,14 +307,21 @@ export class Battle {
         // }
         // 3. 執行追擊Rules + 敵方身上的「被攻擊時」Rules
         for (var postRule of postFollowRuleToProcess) {
-            var atkFollowupRule = postRule.cloneSimple();
-            atkFollowupRule.type = RuleType.attack;
-            atkFollowupRule.turn = 1;
-            atkFollowupRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
-            atkFollowupRule.isFollowUpAttack = true;
-            var hasActionDone = this.attack(attackType, atkFollowupRule, card);
-            if (hasActionDone) {
-                hasAttackEnemy = true;
+            if (postRule.type == RuleType.basicAtkFollowupSkill) {
+                var atkFollowupRule = postRule.cloneSimple();
+                atkFollowupRule.type = RuleType.attack;
+                atkFollowupRule.turn = 1;
+                atkFollowupRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
+                atkFollowupRule.isFollowUpAttack = true;
+                var hasActionDone = this.attack(attackType, atkFollowupRule, card);
+                if (hasActionDone) {
+                    hasAttackEnemy = true;
+                }
+            }
+            else if (!Battle.OUTPUT_TYPES.has(postRule.type)) {
+                this.addRuleToTargets(postRule, card, attackType);
+                this.processRule(postRule, card, attackType);
+                this.addBuffToTargets(postRule, card, attackType);
             }
         }
         this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
