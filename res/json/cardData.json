@@ -6104,6 +6104,161 @@
         { "type": "受到傷害減少", "value": "2%", "target": "全體" }
       ],
       "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "戲劇．艾德蒙特": {
+      "char": "艾德蒙特", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "木", "potType": "平均型",
+      "baseHp": 7756, "baseAtk": 2241, "coolDown": 4,
+      "img": "Edmond_SSR_13.jpg",
+      "attackRule": [
+        { "type": "輔助", "value": "30%", "target": "全體" }
+      ],
+      "skillLv1Rule": [
+        { "type": "輔助", "value": "30%", "target": "全體" },
+        { "type": "輔助", "value": "24%", "target": "全體", "turn": 4 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "30%",
+            "poisonTurn": 1,
+            "turn": 4,
+            "condition": "攻擊時"
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "持續傷害增加",
+          "value": "34%",
+          "turn": 4,
+          "target": "全體"
+        },
+        { "type": "輔助", "value": "35%", "target": "全體" },
+        { "type": "輔助", "value": "29%", "target": "全體", "turn": 4 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "37%",
+            "poisonTurn": 1,
+            "turn": 4,
+            "condition": "攻擊時"
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "持續傷害增加",
+          "value": "34%",
+          "turn": 4,
+          "target": "全體"
+        },
+        { "type": "輔助", "value": "40%", "target": "全體" },
+        { "type": "輔助", "value": "33%", "target": "全體", "turn": 4 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "持續傷害",
+            "value": "43%",
+            "poisonTurn": 1,
+            "turn": 4,
+            "condition": "攻擊時"
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "持續傷害增加",
+          "value": "23%",
+          "turn": 4,
+          "target": "全體",
+          "condition": { "type": "攻擊方式", "value": "必殺技" }
+        },
+        { "type": "攻擊力增加", "value": "23%", "target": "全體" }
+      ],
+      "star5Rule": [
+        {
+          "type": "敵方受到持續傷害增加",
+          "value": "34%",
+          "turn": 99,
+          "maxCount": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "戲劇．布儡": {
+      "char": "布儡", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
+      "baseHp": 7542, "baseAtk": 2277, "coolDown": 3,
+      "img": "Blade_SSR_12.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊力增加", "value": "34%", "turn": 3 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "普攻追擊", "value": "52%", "turn": 3 }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊力增加", "value": "34%", "turn": 3 },
+        { "type": "攻擊", "value": "100%" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方獲得技能",
+            "turn": 3,
+            "condition": {"type": "攻擊方式", "value": "普攻"},
+            "skillType": "追加",
+            "value": {
+              "type": "普攻傷害增加", 
+              "value": "18%", 
+              "turn": 99,
+              "maxCount": 4
+            }
+          }
+        },
+        { "type": "普攻追擊", "value": "69%", "turn": 3 }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊力增加", "value": "34%", "turn": 3 },
+        { "type": "攻擊", "value": "100%" },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方獲得技能",
+            "turn": 3,
+            "condition": {"type": "攻擊方式", "value": "普攻" },
+            "skillType": "追加",
+            "value": {
+              "type": "普攻傷害增加", 
+              "value": "18%", 
+              "turn": 99,
+              "maxCount": 4
+            }
+          }
+        },
+        { "type": "普攻追擊", "value": "87%", "turn": 3 }
+      ],
+      "star3Rule": [
+        {
+          "type": "開場減少冷卻回合",
+          "value": 3,
+          "turn": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "34%",
+          "condition": { "type": "血量大於", "value": "90%" }
+        }
+      ],
+      "star5Rule": [{ "type": "普攻傷害增加", "value": "68%" }],
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   
