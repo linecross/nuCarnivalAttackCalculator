@@ -41,4 +41,12 @@ export class RuleHelper{
 		}
 		return result.getValue();
 	}
+	static getRuleByUniqueName(rules: Rule[], uniqueName: string) : Rule | null{
+		for (var r of rules){
+			if (r.uniqueName == uniqueName){
+				return r;
+			}
+		}
+		return null;
+	}
 }
