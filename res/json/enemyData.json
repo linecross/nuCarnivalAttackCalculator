@@ -1,4 +1,98 @@
 {
+  "【忘卻S20】SP4．休伊": {
+    "name": "BOSS－休伊的意識", "element": "NA", "hp": 1080793, "active": "true",
+    "hpLock": ["5%", "1%", "1%"],
+    "description": "僅支援以下機制，第二輪最後1%可能有鎖血誤差\n．5%、1%、1%鎖血\n．T7、13……，我方造成傷害減少15%（疊加）\n．第一階段：敵方受到傷害減少150%；被攻擊時，受到傷害增加75%",
+    "attackRule": [
+      { "type": "敵方設定階段", "value": "第一階段", "condition": { "type": "第n回合", "value": 1 } },
+      {
+        "type": "我方獲得技能",
+        "value": {
+          "type": "造成傷害增加",
+          "value": "-15%",
+          "maxCount": 50,
+          "turn": 99
+        },
+        "target":"全體",
+        "condition": { "type": "每n回合", "value": 6 }
+      },
+      {
+        "type": "我方獲得技能",
+        "value": {
+          "type": "攻擊",
+          "value": "10000000"
+        },
+        "target":"全體",
+        "condition": ["攻擊時", { "type": "階段", "value": "第一階段鎖血" }]
+      },
+      { "type": "治療", "value": "100%", "valueBy": "絕對HP", "condition": [{ "type": "階段", "value": "第一階段鎖血" }] },
+      { "type": "敵方設定階段", "value": "第二階段", "condition": [{ "type": "階段", "value": "第一階段鎖血" }] },
+      { "type": "敵方設定階段", "value": "第一階段鎖血", "condition": [{ "type": "血量機制", "value": "5%" }, { "type": "階段", "value": "第一階段" }] }
+    ],
+    "star3Rule": [
+      { "type": "敵方受到傷害增加", "value": "-150%","condition": { "type": "階段", "value": "第二階段", "operator": "不" } },
+      {
+        "type": "敵方獲得技能",
+        "value": {
+          "type": "敵方獲得技能",
+          "condition": [{"type": "被攻擊時"}, { "type": "階段", "value": "第二階段", "operator": "不" }],
+          "value": {
+            "type": "敵方受到傷害增加",
+            "value": "75%", 
+            "turn": 1,
+            "maxCount": 2
+          },
+          "turn": 99
+        }
+      }
+    ]
+  },
+  "【檢定S23】SP3．華歛": {
+    "name": "BOSS－岸邊演奏　歛", "element": "NA", "hp": 3144678, "active": "true",
+    "hpLock": ["1%"],
+    "description": "僅支援以下機制\n．1%鎖血\n．敵方受到傷害減少15%\n．每經過1回合，敵方受到傷害減少4%（PS. 毒傷/反擊傷害有4%偏差）\n．我方1245位攻擊時，攻擊力減少10%\n．第7、12、17回合防禦可清除「攻擊力減少10%」4層",
+    "attackRule": [],
+    "star3Rule": [
+      { "type": "敵方受到傷害增加", "value": "-15%" },
+      {
+        "type": "敵方獲得技能",
+        "value": {
+          "type": "敵方受到傷害增加",
+          "value": "-4%",
+          "maxCount": 20,
+          "turn": 99
+        },
+        "condition": { "type": "第n回合", "value": [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]}
+      },
+      {
+        "type": "我方獲得技能",
+        "value": {
+          "uniqueName": "SP3華歛：攻擊力減少10%",
+          "type": "攻擊力增加",
+          "value": "-10%",
+          "condition": "攻擊時",
+          "maxCount": 50,
+          "turn": 99
+        },
+        "condition": { "type": "第n回合", "value": 1 },
+        "target": { "type": "位置", "value": [1,2,4,5] }
+      },
+      {
+        "type": "我方獲得技能",
+        "value": {
+          "type": "清除規則",
+          "value": "SP3華歛：攻擊力減少10%",
+          "maxCount": 2,
+          "condition": [
+            { "type": "第n回合", "value": [7, 12, 17] },
+            { "type": "攻擊方式", "value": "防禦" }
+          ],
+          "turn": 99
+        },
+        "target": { "type": "位置", "value": [1,2,4,5] }
+      }
+    ]
+  },
   "【檢定S20】SP3．休伊": {
     "name": "BOSS－休伊的意識", "element": "NA", "hp": 1080793, "active": "false",
     "hpLock": ["5%", "1%", "1%"],
@@ -48,7 +142,7 @@
     ]
   },
   "【忘卻S17】SP4．滄鱗八雲": {
-    "name": "BOSS－真摯之心　八雲", "element": "水", "hp": 2334015, "active": "true",
+    "name": "BOSS－真摯之心　八雲", "element": "水", "hp": 2334015, "active": "false",
     "hpLock": ["1%"],
     "description": "僅支援以下機制\n．1%鎖血\n．敵方被攻擊時，受到傷害減少40%",
     "attackRule": [
