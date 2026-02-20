@@ -306,6 +306,15 @@ export class Battle{
 		
 		// ---------------------------正式攻擊------------------------------------
 		if (attackType == AttackType.Guard){
+			// 攻擊方式：防禦
+			var postGuardRules = this.battleTurns[card.name].rules
+				.filter((r: Rule)=>r.isPostGuardRule() && r.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
+			for (var postRule of postGuardRules){
+				this.addRuleToTargets(postRule, card, attackType);
+				this.processRule(postRule, card, attackType);
+				this.addBuffToTargets(postRule, card, attackType);
+			}
+
 			var logRules = this.filterBuffsForLog(this.battleTurns[card.name].rules);
 			for (var buff of logRules){
 				var applyCount = buff.getConditionFulfillTimes(card, this, TurnActionType.guard, attackType);
@@ -682,7 +691,7 @@ export class Battle{
 	}
 
 	private addRuleToTargets(rule: Rule, card: Card, attackType: AttackType){
-		if (!(rule.type == RuleType.appendRule || rule.type == RuleType.enemyAppendRule)){
+		if (!(rule.type == RuleType.appendRule || rule.type == RuleType.enemyAppendRule || rule.type == RuleType.clearRule)){
 			return;
 		}
 		if (!rule.isConditionsFulfilled(card, this, this.currentTurnAction, attackType)){
@@ -690,8 +699,8 @@ export class Battle{
 		}
 		var targetNames = rule.getRuleApplyTarget(this.team, card);
 		for (var targetName of targetNames){
-			var newRule = (rule.value as Rule).cloneSimple();
 			if (rule.type == RuleType.appendRule){
+				var newRule = (rule.value as Rule).cloneSimple();
 				newRule.parentCardName = targetName;
 				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				if (isRuleAdded && targetName == card.name && Battle.TEAM_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
@@ -701,6 +710,7 @@ export class Battle{
 				}
 			}
 			else if (rule.type == RuleType.enemyAppendRule){
+				var newRule = (rule.value as Rule).cloneSimple();
 				newRule.parentCardName = card.name;
 				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
 				if (isRuleAdded && Battle.ENEMY_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
@@ -708,6 +718,21 @@ export class Battle{
 						// console.info('[addRuleToTargets 2]T'+this.currentTurn + ':'+newRule);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
 				}
+			}
+			else if (rule.type == RuleType.clearRule){
+				let ruleName = (rule.value as string);
+				let clearCount = rule.maxCount ?? 99;
+				if (targetName == TargetType.enemy){
+					this.enemyBattleTurn.clearRuleByName(ruleName, clearCount);
+				}
+				else{
+					this.battleTurns[card.name].clearRuleByName(ruleName, clearCount);
+				}
+				
+				// if (isRuleAdded && Battle.ENEMY_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
+				// 	&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
+				// 	this.battleTurns[card.name].addRuleLog(this.currentTurn, newRule);
+				// }
 			}
 		}
 	}
@@ -1279,6 +1304,22 @@ export class BattleTurn{
 		}
 		
 		this.rules = this.rules.filter(rule=>rule.turn > 0);
+	}
+
+	clearRuleByName(uniqueName: string, toClearCount : number = 99){
+		let rule = RuleHelper.getRuleByUniqueName(this.rules, uniqueName);
+		let removedCount = 0;
+		if (rule != null){
+			for (let i = this.rules.length - 1; i >= 0; i--) {
+				if (this.rules[i].uniqueName == uniqueName && removedCount < toClearCount) {
+					this.rules.splice(i, 1);
+					removedCount++;
+					if (removedCount == toClearCount){
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	addRuleLog(turn: number, rule : Rule, applyCount = 1, extraInfo : string = null){
