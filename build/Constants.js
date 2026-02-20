@@ -63,6 +63,7 @@ export const RuleType = {
     getShield: '獲得護盾',
     shieldState: '護盾',
     guardMode: '防禦狀態',
+    clearRule: '清除規則', // Clear specified rule by Rule.uniqueName
     // 不會在計算機生效的被動（純記錄）
     takeLessDamage: '受到傷害減少',
     takeLessBasicDamage: '受到普攻傷害減少',
@@ -104,6 +105,7 @@ export const ConditionType = {
 export const TargetType = {
     self: '自己',
     all: '全體',
+    enemy: '敵人',
     isClass: '定位',
     isChar: '角色',
     isPosition: '位置',

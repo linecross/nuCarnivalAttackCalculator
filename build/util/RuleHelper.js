@@ -40,5 +40,13 @@ export class RuleHelper {
         }
         return result.getValue();
     }
+    static getRuleByUniqueName(rules, uniqueName) {
+        for (var r of rules) {
+            if (r.uniqueName == uniqueName) {
+                return r;
+            }
+        }
+        return null;
+    }
 }
 //# sourceMappingURL=RuleHelper.js.map
