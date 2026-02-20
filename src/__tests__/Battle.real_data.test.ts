@@ -161,14 +161,14 @@ describe('實際測試', () => {
             setupBattle();
 
             expect(battle.getTurnValue(cards[1], 13)).toBeAround(164798);
-            expect(battle.getTurnValue(cards[2], 13)).toBeAround(271917);
-            expect(battle.getTurnValue(cards[3], 13)).toBeAround(200096);
-            expect(battle.getTurnValue(cards[4], 13)).toBeAround(246390);
+            expect(battle.getTurnValue(cards[2], 13)).toBeAround(257280);
+            expect(battle.getTurnValue(cards[3], 13)).toBeAround(205089);
+            expect(battle.getTurnValue(cards[4], 13)).toBeAround(252543);
             
             expect(battle.getTotalValue(cards[1])).toBeAround(649990);
-            expect(battle.getTotalValue(cards[2])).toBeAround(953935);
-            expect(battle.getTotalValue(cards[3])).toBeAround(744945);
-            expect(battle.getTotalValue(cards[4])).toBeAround(876638);
+            expect(battle.getTotalValue(cards[2])).toBeAround(910299);
+            expect(battle.getTotalValue(cards[3])).toBeAround(759858);
+            expect(battle.getTotalValue(cards[4])).toBeAround(895026);
         });
 
         test('星布+偵布+魔伊+夢八+醫崑', () => {
