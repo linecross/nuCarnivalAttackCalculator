@@ -1,6 +1,7 @@
 import { RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType, ConditionHPStatus } from './Constants.js';
 import { EnemyCard } from './Card.js';
 import { Util } from './util/Util.js';
+import { RuleHelper } from './util/RuleHelper.js';
 export class Rule {
     static createId() {
         return Rule.idCounter++;
@@ -454,6 +455,10 @@ export class Condition {
                 return true;
             }
             return false;
+        }
+        else if (this.type == ConditionType.hasRule) {
+            var uniqueRuleNames = Array.isArray(this.value) ? this.value : [this.value];
+            return RuleHelper.isRulesHaveAllUniqueNames(battle.battleTurns[card.name].rules, uniqueRuleNames);
         }
         else if (this.type == ConditionType.hasPhase) {
             var targetPhases = Array.isArray(this.value) ? this.value : [this.value];
