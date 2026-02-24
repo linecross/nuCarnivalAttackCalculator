@@ -119,6 +119,7 @@ export const ConditionType = {
 	isAttack : '攻擊時',
 	everyTurn: '每n回合',
 	atTurn: '第n回合',
+	hasRule: '已獲得規則',
 	hasPhase: '階段',
 	// 敵方專用
 	enemyIsAttacked: '被攻擊時',

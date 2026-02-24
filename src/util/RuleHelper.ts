@@ -49,4 +49,13 @@ export class RuleHelper{
 		}
 		return null;
 	}
+
+	static isRulesHaveAllUniqueNames(rules: Rule[], uniqueNames: string[]) : boolean{
+		for (var uniqueName of uniqueNames){
+			if (!rules.some(r=>r.uniqueName == uniqueName)){
+				return false;
+			}
+		}
+		return true;
+	}
 }
