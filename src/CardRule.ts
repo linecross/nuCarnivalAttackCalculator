@@ -2,6 +2,7 @@ import { Class, RuleType, AttackType, ConditionType, TargetType, SkillType, Rule
 import { Card, EnemyCard, Team } from './Card.js';
 import { Util } from './util/Util.js';
 import { Battle } from './BattleSystem.js';
+import { RuleHelper } from './util/RuleHelper.js';
 
 
 export class Rule{
@@ -516,6 +517,10 @@ export class Condition{
 				return true;
 			}
 			return false;
+		}
+		else if (this.type == ConditionType.hasRule){
+			var uniqueRuleNames = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
+			return RuleHelper.isRulesHaveAllUniqueNames(battle.battleTurns[card.name].rules, uniqueRuleNames);
 		}
 		else if (this.type == ConditionType.hasPhase){
 			var targetPhases = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
