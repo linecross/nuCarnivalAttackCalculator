@@ -1,4 +1,24 @@
 {
+    "N伊得": {
+      "char": "伊得", "fullname": null, "alias": null,
+      "rarity": "N", "class": "攻擊", "element": "光", "potType": "NR卡",
+      "baseHp": 4447, "baseAtk": 1174, "coolDown": 3,
+      "img": "Eiden_N_01.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "79%" }],
+      "skillLv1Rule": [{ "type": "造成傷害增加", "value": "25%", "turn": 99, "maxCount": 1 }, { "type": "攻擊", "value": "224%" }],
+      "skillLv2Rule": [{ "type": "造成傷害增加", "value": "25%", "turn": 99, "maxCount": 1 }, { "type": "攻擊", "value": "266%" }],
+      "skillLv3Rule": [{ "type": "造成傷害增加", "value": "25%", "turn": 99, "maxCount": 1 }, { "type": "攻擊", "value": "307%" }],
+      "star3Rule": [
+        {
+          "type": "造成傷害增加",
+          "value": "32%",
+          "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 3 }
+        }
+      ],
+      "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
+    },
     "N艾斯特": {
       "char": "艾斯特", "fullname": null, "alias": null,
       "rarity": "N", "class": "攻擊", "element": "火", "potType": "NR卡",
