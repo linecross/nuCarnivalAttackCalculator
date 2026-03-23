@@ -1,4 +1,4 @@
-import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, SkillType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode } from './Constants.js';
+import { Class, Element, Rarity, PotentialType, RuleType, AttackType, ConditionType, TargetType, SkillType, ActionPattern, RuleValueByType, TurnActionType, CounterAttackMode, ConditionHPStatus } from './Constants.js';
 import { Card, Team, EnemyCard } from './Card.js';
 import { Rule, RuleTarget, Condition } from './CardRule.js';
 import { RuleHelper } from './util/RuleHelper.js';
@@ -12,8 +12,8 @@ export class Battle{
 	currentTurn: number = 0;
 	currentTurnAction: TurnActionType;
 	team: Team;
-	battleTurns : BattleTurn[] = [];
-	cardHpUp: number[] = [];
+	battleTurns : Record<string, BattleTurn> = {};
+	cardHpUp: Record<string, number> = {};
 
 	enemyCard: EnemyCard;
 	enemyElement : Element = Element.NA;
@@ -21,6 +21,7 @@ export class Battle{
 	enemyKilledTurn: number;
 	enemylockHpTurn: number[] = [];
 
+	hpStatus: ConditionHPStatus = ConditionHPStatus.fulfill;
 	isRuleLogAddedPerTurn: boolean = false;
 
 	counterAttackCount: number = 0;
@@ -65,27 +66,27 @@ export class Battle{
 		this.enemyBattleTurn = new BattleTurn('Boss');
 		this.enemylockHpTurn = [];
 
-		for (var card of this.team.cards){
+		for (const card of this.team.cards){
 			card.initSkill();
 			card.phase = [];
 			this.battleTurns[card.name] = new BattleTurn(card.name);
 			this.battleTurns[card.name].skillCD = card.coolDown;
-			for (var key of Battle.OUTPUT_TYPES){
+			for (const key of Battle.OUTPUT_TYPES){
 				this.battleTurns[card.name].outputs[key] = [];
 				this.battleTurns[card.name].enemyDamage[key] = [];
 			}
-			for (var i=0; i<=this.turns; i++){
+			for (let i=0; i<=this.turns; i++){
 				this.battleTurns[card.name].ruleLog[i] = [];
 			}
 		}
 		
-		for (var card of this.team.cards){
+		for (const card of this.team.cards){
 			this.initBattleRules(this.team, card);
 			// this.battleTurns[card.name].setActionPattern(this.turns, card);
 		}
 
-		for (var card of this.team.cards){
-			var hpUp = this.battleTurns[card.name].rules.filter((r:Rule) =>r.type == RuleType.hpUp)
+		for (const card of this.team.cards){
+			const hpUp = this.battleTurns[card.name].rules.filter((r:Rule) =>r.type == RuleType.hpUp)
 				.filter((r:Rule) =>r.isConditionsFulfilled(card, this, TurnActionType.none, AttackType.None))
 				.map((r:Rule) => Util.getPercentNumber(r.value))
 				.reduce((sum, e) => sum + e, 0);
@@ -118,8 +119,8 @@ export class Battle{
 	}
 
 	getCardActualHp(cardname : string){
-		var hpUp = this.cardHpUp[cardname];
-		var card = this.team.cards.filter(e=>e.name == cardname)[0];
+		const hpUp = this.cardHpUp[cardname];
+		const card = this.team.cards.filter(e=>e.name == cardname)[0];
 		return Math.floor(card.getHp() * (1+hpUp/100));
 	}
 	
@@ -128,7 +129,7 @@ export class Battle{
 	}
 
 	setManualActionPattern(cardName: string, skillTurns : number[], guardTurns : number[] =[]){
-		for (var i=1; i<=this.turns; i++){
+		for (let i=1; i<=this.turns; i++){
 			if (guardTurns.includes(i)){
 				this.battleTurns[cardName].action[i] = AttackType.Guard;
 			}
@@ -139,7 +140,7 @@ export class Battle{
 	}
 
 	initBattleRules(team: Team, card: Card){
-		var toAddRules : Rule[] = [];
+		let toAddRules : Rule[] = [];
 		if (card.star >= 3) toAddRules = toAddRules.concat(card.star3Rule);
 		if (card.star >= 5) toAddRules = toAddRules.concat(card.star5Rule);
 		if (card.rarity == 'SSR' || card.rarity == 'SR'){
@@ -152,16 +153,16 @@ export class Battle{
 		}
 
 		toAddRules = toAddRules.filter(e => !Battle.UNUSED_RULE_TYPES.has(e.type));
-		for (var rule of toAddRules){
+		for (const rule of toAddRules){
 			// If rule only check in battle, only add to card but not targets
 			if (rule.isRuleCheckInBattle()){
 				this.battleTurns[card.name].addRule(rule.clone());
 			}
 			// Apply rule to all targets
 			else{
-				var targetNames = rule.getRuleApplyTarget(team, card);
-				for (var targetName of targetNames){
-					var newRule = rule.clone();
+				const targetNames = rule.getRuleApplyTarget(team, card);
+				for (const targetName of targetNames){
+					const newRule = rule.clone();
 					if (newRule.target != null){
 						newRule.target = new RuleTarget();
 					}
@@ -172,11 +173,11 @@ export class Battle{
 	}
 
 	startBattle(){
-		for (var turn=1; turn <= this.turns; turn++){
+		for (let turn=1; turn <= this.turns; turn++){
 			this.currentTurn = turn;
 
 			// Clear rules
-			for (var card of this.team.getCardByActionOrder(turn)){
+			for (const card of this.team.getCardByActionOrder(turn)){
 				this.battleTurns[card.name].clearRulePerRound();
 			}
 			this.enemyBattleTurn.clearRulePerRound();
@@ -185,8 +186,8 @@ export class Battle{
 			this.beforeRound(AttackType.None, this.team.getCardByActionOrder(turn));
 
 			// Attack
-			for (var card of this.team.getCardByActionOrder(turn)){
-				var attackType : AttackType = AttackType.BasicAttack;
+			for (const card of this.team.getCardByActionOrder(turn)){
+				let attackType : AttackType = AttackType.BasicAttack;
 				if (this.battleTurns[card.name].isReleaseSkill(turn, card.coolDown)){
 					attackType = AttackType.SkillAttack;
 				}
@@ -201,7 +202,7 @@ export class Battle{
 			this.endRound(AttackType.None, this.team.getCardByActionOrder(turn));
 
 			// Count down Skill CD
-			for (var card of this.team.getCardByActionOrder(turn)){
+			for (const card of this.team.getCardByActionOrder(turn)){
 				this.battleTurns[card.name].countDownCDPerRound();
 			}
 
@@ -212,12 +213,12 @@ export class Battle{
 	}
 
 	getPostAttackRules(rules : Rule[]) : Rule[]{
-		var attackRules = rules.filter(r=>r.isPostAttackRule());
+		const attackRules = rules.filter(r=>r.isPostAttackRule());
 		return attackRules;
 	}
 
 	getPreAttackRules(rules : Rule[]) : Rule[]{
-		var attackRules = rules.filter(r=>!r.isPostAttackRule());
+		const attackRules = rules.filter(r=>!r.isPostAttackRule());
 		return attackRules;
 	}
 
@@ -233,9 +234,9 @@ export class Battle{
 
 		// 護盾
 		if (RuleHelper.hasShield(this.enemyBattleTurn.rules)){
-			var shields = RuleHelper.getBuffRules(this.enemyBattleTurn.rules, RuleType.shieldState);
-			for (var shield of shields){
-				var shieldVal = Util.getNumber(shield.value);
+			const shields = RuleHelper.getBuffRules(this.enemyBattleTurn.rules, RuleType.shieldState);
+			for (const shield of shields){
+				const shieldVal = Util.getNumber(shield.value);
 				if (shieldVal > damage){
 					shield.value = '' + (shieldVal - damage);
 					damage = 0;
@@ -257,49 +258,49 @@ export class Battle{
 		this.currentTurnAction = TurnActionType.beforeTurn;
 		// ---------------------------每回合剛開始------------------------------------
 		// 處理每個人各種回合開始被動，例：每n回合、第n回合
-		for (var card of cards){
-			var preAttackRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.isBeforeRoundRule());
-			for (var rule of preAttackRules){
+		for (const card of cards){
+			let preAttackRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.isBeforeRoundRule());
+			for (const rule of preAttackRules){
 				this.addRuleToTargets(rule, card, attackType);
 			}
 
 			preAttackRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.isBeforeRoundRule());
-			for (var rule of preAttackRules){
+			for (const rule of preAttackRules){
 				this.processRule(rule, card, attackType);
 				this.addBuffToTargets(rule, card, attackType);
 			}
 		}
 
 		// 敵方
-		preAttackRules = this.enemyBattleTurn.rules.filter((e: Rule)=>e.isBeforeRoundRule());
-		for (var rule of preAttackRules){
-			this.addRuleToTargets(rule, card, attackType);
-			this.addBuffToTargets(rule, card, attackType);
+		const enemyPreAttackRules = this.enemyBattleTurn.rules.filter((e: Rule)=>e.isBeforeRoundRule());
+		for (const rule of enemyPreAttackRules){
+			this.addRuleToTargets(rule, this.enemyCard, attackType);
+			this.addBuffToTargets(rule, this.enemyCard, attackType);
 		}
 	}
 
 	startRoundPerCard(attackType: AttackType, card: Card) : AttackType{
 		this.currentTurnAction = TurnActionType.beforeTurn;
 		this.isRuleLogAddedPerTurn = false;
-		var postFollowRuleToProcess = [];
-		var postTriggerRuleToProcess = [];
-		var enemyPostRuleToProcess = [];
+		let postFollowRuleToProcess = [];
+		let postTriggerRuleToProcess = [];
+		let enemyPostRuleToProcess = [];
 
 		// ---------------------------每個人攻擊前------------------------------------
-		var preAttackRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.isPreAttackRule());
-		for (var rule of preAttackRules){
+		let preAttackRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.isPreAttackRule());
+		for (const rule of preAttackRules){
 			this.addRuleToTargets(rule, card, attackType);
 		}
 
 		preAttackRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.isPreAttackRule());
-		for (var rule of preAttackRules){
+		for (const rule of preAttackRules){
 			this.processRule(rule, card, attackType);
 			this.addBuffToTargets(rule, card, attackType);
 		}
 
 		// 敵方
 		preAttackRules = this.enemyBattleTurn.rules.filter((e: Rule)=>e.isPreAttackRule());
-		for (var rule of preAttackRules){
+		for (const rule of preAttackRules){
 			this.addRuleToTargets(rule, card, attackType);
 			this.addBuffToTargets(rule, card, attackType);
 		}
@@ -307,25 +308,25 @@ export class Battle{
 		// ---------------------------正式攻擊------------------------------------
 		if (attackType == AttackType.Guard){
 			// 攻擊方式：防禦
-			var postGuardRules = this.battleTurns[card.name].rules
+			const postGuardRules = this.battleTurns[card.name].rules
 				.filter((r: Rule)=>r.isPostGuardRule() && r.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
-			for (var postRule of postGuardRules){
+			for (const postRule of postGuardRules){
 				this.addRuleToTargets(postRule, card, attackType);
 				this.processRule(postRule, card, attackType);
 				this.addBuffToTargets(postRule, card, attackType);
 			}
 
-			var logRules = this.filterBuffsForLog(this.battleTurns[card.name].rules);
-			for (var buff of logRules){
-				var applyCount = buff.getConditionFulfillTimes(card, this, TurnActionType.guard, attackType);
+			let logRules = this.filterBuffsForLog(this.battleTurns[card.name].rules);
+			for (const buff of logRules){
+				const applyCount = buff.getConditionFulfillTimes(card, this, TurnActionType.guard, attackType);
 				if (applyCount > 0){
 					// console.info('[startRoundPerCard 1]T'+this.currentTurn + ':'+buff);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
 			logRules = this.filterBuffsForLog(this.enemyBattleTurn.rules, true);
-			for (var buff of logRules){
-				var applyCount = buff.getConditionFulfillTimes(card, this, TurnActionType.guard, attackType);
+			for (const buff of logRules){
+				const applyCount = buff.getConditionFulfillTimes(card, this, TurnActionType.guard, attackType);
 				if (applyCount > 0){
 					// console.info('[startRoundPerCard 2]T'+this.currentTurn + ':'+buff);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
@@ -338,22 +339,22 @@ export class Battle{
 		}
 
 		this.currentTurnAction = TurnActionType.beforeAction;
-		var attackRule : Rule[] = [].concat(card.attackRule);
+		let attackRule : Rule[] = [].concat(card.attackRule);
 		if (attackType == AttackType.SkillAttack){
 			attackRule = [].concat(card.skillRule);
 			this.battleTurns[card.name].skillCD = card.coolDown;
 		}
 
 		// Get all postAttackRules
-		var postAttackRules = this.battleTurns[card.name].rules
+		let postAttackRules = this.battleTurns[card.name].rules
 			.filter((e: Rule)=>e.isPostAttackRule() && e.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
 
 		// 1. 普攻 / 大招
-		var hasAttackEnemy = false;
-		var hasOutputDone = false;
-		for (var rule of attackRule){
+		let hasAttackEnemy = false;
+		let hasOutputDone = false;
+		for (const rule of attackRule){
 			if (Battle.OUTPUT_TYPES.has(rule.type)){
-				var hasActionDone = this.attack(attackType, rule, card);
+				const hasActionDone = this.attack(attackType, rule, card);
 				if (hasActionDone && rule.type == RuleType.attack){
 					hasAttackEnemy = true;
 				}
@@ -370,7 +371,7 @@ export class Battle{
 		}
 
 		this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
-		var hasProcessedEnemyPostAttack = false;
+		let hasProcessedEnemyPostAttack = false;
 		
 		postFollowRuleToProcess = postAttackRules.filter((r: Rule)=>r.type == RuleType.basicAtkFollowupSkill || r.skillType == SkillType.append);
 		postTriggerRuleToProcess = postAttackRules.filter((r: Rule)=>r.type !== RuleType.basicAtkFollowupSkill && r.skillType !== SkillType.append);
@@ -386,14 +387,14 @@ export class Battle{
 		// }
 
 		// 3. 執行追擊Rules + 敵方身上的「被攻擊時」Rules
-		for (var postRule of postFollowRuleToProcess){
+		for (const postRule of postFollowRuleToProcess){
 			if (postRule.type == RuleType.basicAtkFollowupSkill){
-				var atkFollowupRule = postRule.cloneSimple();
+				const atkFollowupRule = postRule.cloneSimple();
 				atkFollowupRule.type = RuleType.attack;
 				atkFollowupRule.turn = 1;
 				atkFollowupRule.condition = [new Condition(ConditionType.isAttackType, AttackType.BasicAttack)];
 				atkFollowupRule.isFollowUpAttack = true;
-				var hasActionDone = this.attack(attackType, atkFollowupRule, card);
+				const hasActionDone = this.attack(attackType, atkFollowupRule, card);
 				if (hasActionDone){
 					hasAttackEnemy = true;
 				}
@@ -406,7 +407,7 @@ export class Battle{
 		}
 		this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
 		if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
-			for (var postRule of enemyPostRuleToProcess){
+			for (const postRule of enemyPostRuleToProcess){
 				this.addRuleToTargets(postRule, card, attackType);
 				this.addBuffToTargets(postRule, card, attackType);
 			}
@@ -414,9 +415,9 @@ export class Battle{
 		}
 
 		// 4. 執行觸發Rules + 敵方身上的「被攻擊時」Rules
-		for (var postRule of postTriggerRuleToProcess){
+		for (const postRule of postTriggerRuleToProcess){
 			if (Battle.OUTPUT_TYPES.has(postRule.type)){
-				var hasActionDone = this.attack(attackType, postRule, card);
+				const hasActionDone = this.attack(attackType, postRule, card);
 				if (hasActionDone && postRule.type == RuleType.attack){
 					hasAttackEnemy = true;
 				}
@@ -429,7 +430,7 @@ export class Battle{
 		}
 		this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
 		if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
-			for (var postRule of enemyPostRuleToProcess){
+			for (const postRule of enemyPostRuleToProcess){
 				this.addRuleToTargets(postRule, card, attackType);
 				this.addBuffToTargets(postRule, card, attackType);
 			}
@@ -448,11 +449,11 @@ export class Battle{
 		if (this.enemyCard != null){
 			// Enemy action
 			if (this.enemyCard.remainHp > 0){
-				var enemy = this.enemyCard;
+				const enemy = this.enemyCard;
 
 				// Remove Enemy HP lock
 				if (this.enemyCard.battleHpLock.length > 0){
-					var nextLockHpPercent = Util.getNumber(this.enemyCard.battleHpLock[0]);
+					const nextLockHpPercent = Util.getNumber(this.enemyCard.battleHpLock[0]);
 					if (this.enemyCard.currentHp <= nextLockHpPercent){
 						this.enemyCard.battleHpLock.shift();
 						this.enemylockHpTurn.push(this.currentTurn);
@@ -460,20 +461,20 @@ export class Battle{
 				}
 
 				// Pre-attack
-				var preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this, TurnActionType.attack, AttackType.BasicAttack));
-				for (var rule of preAttackRules){
+				let preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this, TurnActionType.attack, AttackType.BasicAttack));
+				for (const rule of preAttackRules){
 					this.addRuleToTargets(rule, enemy, AttackType.BasicAttack);
 				}
 				preAttackRules = this.enemyBattleTurn.rules.filter((r: Rule)=>r.isPreAttackRule() && r.isConditionsFulfilled(enemy, this, TurnActionType.attack, AttackType.BasicAttack) );
-				for (var rule of preAttackRules){
+				for (const rule of preAttackRules){
 					this.processRule(rule, enemy, AttackType.BasicAttack);
 					this.addBuffToTargets(rule, enemy, AttackType.BasicAttack);
 				}
 
 				// attack
-				var attackRule : Rule[] = [].concat(enemy.attackRule);
+				let attackRule : Rule[] = [].concat(enemy.attackRule);
 				attackRule = attackRule.filter((r:Rule)=>r.isConditionsFulfilled(enemy, this, TurnActionType.attack, AttackType.BasicAttack));
-				for (var rule of attackRule){
+				for (const rule of attackRule){
 					if (Battle.OUTPUT_TYPES.has(rule.type)){
 						this.attack(AttackType.BasicAttack, rule, enemy);
 					}
@@ -487,13 +488,13 @@ export class Battle{
 			}
 		}
 
-		for (var card of cards){
+		for (const card of cards){
 			// ---------------------------敵方攻擊------------------------------------
 			// 反擊
 			if (this.counterAttackCount > 0){
-				var counterAttackRules = this.battleTurns[card.name].rules.filter(e=>e.type == RuleType.counterAttackSkill);
-				for (var rule of counterAttackRules){
-					var newRule = rule.cloneSimple();
+				const counterAttackRules = this.battleTurns[card.name].rules.filter(e=>e.type == RuleType.counterAttackSkill);
+				for (const rule of counterAttackRules){
+					const newRule = rule.cloneSimple();
 					newRule.type = RuleType.attack;
 					newRule.turn = 1;
 					newRule.maxCount = Math.min(this.counterAttackCount, rule.getMaxCount());
@@ -508,25 +509,25 @@ export class Battle{
 
 			// ---------------------------回合結束------------------------------------
 			// 持續傷害
-			var poisonRules = this.enemyBattleTurn.rules.filter((e: Rule)=>e.type == RuleType.poisonAttackState && e.parentCardName == card.name);
-			var poisonVal = poisonRules.reduce((sum, r)=> sum + Util.getNumber(r.value as string)*r.getMaxCount(), 0);
+			const poisonRules = this.enemyBattleTurn.rules.filter((e: Rule)=>e.type == RuleType.poisonAttackState && e.parentCardName == card.name);
+			const poisonVal = poisonRules.reduce((sum, r)=> sum + Util.getNumber(r.value as string)*r.getMaxCount(), 0);
 			if (poisonVal != null && poisonVal > 0){
-				var enemyRules = this.enemyBattleTurn.rules
+				const enemyRules = this.enemyBattleTurn.rules
 							.filter((r:Rule)=>r.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
-				var enemyBuffs = this.filterBuffs(enemyRules, poisonRules[0], RuleType.poisonAttack, attackType, true);
-				var debuffs : Float32[] = [];
-				for (var buff of enemyBuffs){
-					var buffType = buff.type;
+				const enemyBuffs = this.filterBuffs(enemyRules, poisonRules[0], RuleType.poisonAttack, attackType, true);
+				const debuffs : Record<string, Float32> = {};
+				for (const buff of enemyBuffs){
+					let buffType = buff.type;
 					// 持續傷害：「敵方持續傷害增加」跟「敵方受到傷害增加」屬於同一乘區
 					if (buffType == RuleType.enemyPoisonAtkUp){
 						buffType = RuleType.enemyAllAtkUp;
 					}
-					var applyCount = buff.getConditionFulfillTimes(card, this, this.currentTurnAction, attackType);
+					const applyCount = buff.getConditionFulfillTimes(card, this, this.currentTurnAction, attackType);
 					debuffs[buffType] = Util.getFloat32(debuffs[buffType] || 0).add(Util.getFloat32(buff.value as string).multiply(applyCount));
 				}
-				var outputVal : Float32 = poisonVal > 0 ? Util.getFloat32(poisonVal) : Util.getFloat32(0);
-				var enemyDamageVal : Float32 = Util.getFloat32(outputVal);
-				for (var key of Object.keys(debuffs)){
+				let outputVal : Float32 = poisonVal > 0 ? Util.getFloat32(poisonVal) : Util.getFloat32(0);
+				let enemyDamageVal : Float32 = Util.getFloat32(outputVal);
+				for (const key of Object.keys(debuffs)){
 					enemyDamageVal = enemyDamageVal.multiply(debuffs[key].add(1));
 				}
 				enemyDamageVal = enemyDamageVal.floor();
@@ -540,24 +541,24 @@ export class Battle{
 			}
 
 			// 持續治療
-			var contHealRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.type == RuleType.continueHealState && e.parentCardName == card.name);
-			var contHealVal = contHealRules.reduce((sum, e)=> sum + Util.getNumber(e.value as string), 0);
+			const contHealRules = this.battleTurns[card.name].rules.filter((e: Rule)=>e.type == RuleType.continueHealState && e.parentCardName == card.name);
+			const contHealVal = contHealRules.reduce((sum, e)=> sum + Util.getNumber(e.value as string), 0);
 			if (contHealVal != null && contHealVal > 0){
-				var cardRules = this.battleTurns[card.name].rules
+				const cardRules = this.battleTurns[card.name].rules
 							.filter((r:Rule)=>r.isConditionsFulfilled(card, this, this.currentTurnAction, attackType));
-				var ourBuffs = cardRules.filter((r:Rule)=>r.type == RuleType.partyContinueHealUp || r.type == RuleType.partyAllHealUp);
-				var buffs : Float32[] = [];
-				for (var buff of ourBuffs){
-					var buffType = buff.type;
+				const ourBuffs = cardRules.filter((r:Rule)=>r.type == RuleType.partyContinueHealUp || r.type == RuleType.partyAllHealUp);
+				const buffs : Record<string, Float32> = {};
+				for (const buff of ourBuffs){
+					let buffType = buff.type;
 					// 持續傷害：「我方受到持續治療增加」跟「我方受到治療增加」屬於同一乘區
 					if (buffType == RuleType.partyContinueHealUp){
 						buffType = RuleType.partyAllHealUp;
 					}
-					var applyCount = buff.getConditionFulfillTimes(card, this, this.currentTurnAction, attackType);
+					const applyCount = buff.getConditionFulfillTimes(card, this, this.currentTurnAction, attackType);
 					buffs[buffType] = Util.getFloat32(buffs[buffType] || 0).add(Util.getFloat32(buff.value as string).multiply(applyCount));
 				}
-				var outputVal : Float32 = Util.getFloat32(contHealVal);
-				for (var key of Object.keys(buffs)){
+				let outputVal : Float32 = Util.getFloat32(contHealVal);
+				for (const key of Object.keys(buffs)){
 					outputVal = outputVal.multiply(Util.getFloat32(buffs[key]).add(1));
 				}
 				outputVal = outputVal.floor();
@@ -575,7 +576,7 @@ export class Battle{
 	}
 
 	private filterBuffs(rules: Rule[], atkRule: Rule, ruleType: RuleType, attackType: AttackType, isEnemy:boolean = false) : Rule[]{
-		var filtered = rules.filter(r=> isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
+		let filtered = rules.filter(r=> isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
 		filtered = filtered.filter(r=>Battle.ACTION_ACCEPT_BUFFS[ruleType].includes(r.type));
 		filtered = filtered.filter(r=>!(r.isBeforeRoundRule() || r.isPreAttackRule() || r.isPostAttackRule()));
 		if (attackType == AttackType.BasicAttack && !atkRule.isTriggerSkill(attackType) ){
@@ -593,7 +594,7 @@ export class Battle{
 	}
 
 	private filterBuffsForLog(rules: Rule[], isEnemy:boolean = false) : Rule[]{
-		var filtered = rules.filter(r=> Battle.OUTPUT_TYPES.has(r.type) || Battle.TEAM_BUFF_TYPES.has(r.type) || Battle.ENEMY_BUFF_TYPES.has(r.type) 
+		let filtered = rules.filter(r=> Battle.OUTPUT_TYPES.has(r.type) || Battle.TEAM_BUFF_TYPES.has(r.type) || Battle.ENEMY_BUFF_TYPES.has(r.type) 
 						|| Battle.LOG_ONLY_RULE_TYPES);
 		filtered = filtered.filter(r=> isEnemy ? Battle.ENEMY_BUFF_TYPES.has(r.type) : !Battle.ENEMY_BUFF_TYPES.has(r.type));
 		filtered = filtered.filter(r=>!(r.isBeforeRoundRule() || r.isPreAttackRule() || r.isPostAttackRule()));
@@ -605,27 +606,27 @@ export class Battle{
 			return;
 		}
 
-		var targetNames = rule.getRuleApplyTarget(this.team, card);
-		for (var targetName of targetNames){
+		const targetNames = rule.getRuleApplyTarget(this.team, card);
+		for (const targetName of targetNames){
 			// 減CD
 			if (rule.type == RuleType.cdMinus || rule.type == RuleType.startCdMinus){
-				var hasImmuneCDChange = this.battleTurns[targetName].rules.filter(r=> r.type == RuleType.immuneCDChange).length;
+				const hasImmuneCDChange = this.battleTurns[targetName].rules.filter(r=> r.type == RuleType.immuneCDChange).length;
 				if (rule.type == RuleType.startCdMinus || !hasImmuneCDChange){
-					var cooldownCount = Util.getNumber(rule.value);
-					var targetSkillCD = this.battleTurns[targetName].skillCD - cooldownCount;
+					const cooldownCount = Util.getNumber(rule.value);
+					const targetSkillCD = this.battleTurns[targetName].skillCD - cooldownCount;
 					this.battleTurns[targetName].skillCD = targetSkillCD > 0 ? targetSkillCD : 0;
 				}
 			}
 			// 普攻追擊
 			else if (rule.type == RuleType.basicAtkFollowup){
-				var newRule = rule.cloneSimple();
+				const newRule = rule.cloneSimple();
 				newRule.type = RuleType.basicAtkFollowupSkill;
 				newRule.condition = null;
 				this.battleTurns[targetName].addRule(newRule);
 			}
 			// 反擊
 			else if (rule.type == RuleType.counterAttack){
-				var newRule = rule.cloneSimpleChild();
+				const newRule = rule.cloneSimpleChild();
 				newRule.type = RuleType.counterAttackSkill;
 				newRule.condition = null;
 				newRule.target = null;
@@ -633,17 +634,17 @@ export class Battle{
 			}
 			// 設定階段
 			else if (rule.type == RuleType.setPhase){
-				var phases = rule.value as unknown as string[] || rule.value as unknown as string;
+				const phases = rule.value as unknown as string[] || rule.value as unknown as string;
 				card.setPhase(phases);
 			}
 			else if (rule.type == RuleType.setEnemyPhase){
-				var phases = rule.value as unknown as string[] || rule.value as unknown as string;
+				const phases = rule.value as unknown as string[] || rule.value as unknown as string;
 				this.enemyCard.setPhase(phases);
 			}
 			// 獲得護盾
 			else if (rule.type == RuleType.getShield){
 				// var shieldVal = Util.getNumber(rule.value);
-				var newRule = rule.cloneSimple();
+				const newRule = rule.cloneSimple();
 				newRule.type = RuleType.shieldState;
 				newRule.condition = null;
 				newRule.target = null;
@@ -661,15 +662,15 @@ export class Battle{
 		if (!rule.isConditionsFulfilled(card, this, this.currentTurnAction, attackType)){
 			return;
 		}
-		var targetNames = rule.getRuleApplyTarget(this.team, card);
-		for (var targetName of targetNames){
-			var newRule = rule.cloneSimpleChild();
+		const targetNames = rule.getRuleApplyTarget(this.team, card);
+		for (const targetName of targetNames){
+			const newRule = rule.cloneSimpleChild();
 			newRule.isPassive = false;
 			newRule.target = null;
 			newRule.condition = null;
 			// 各種buff （普攻/必殺/造傷/下毒/治療/持續治療增加）
 			if (Battle.TEAM_BUFF_TYPES.has(rule.type) || Battle.LOG_ONLY_RULE_TYPES.has(rule.type)){
-				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
+				const isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				// if (isRuleAdded && targetName == card.name && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
 				// 	&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 				if (needLogging && isRuleAdded && !rule.isBeforeRoundRule() && targetName == card.name){
@@ -679,7 +680,7 @@ export class Battle{
 			}
 			// 敵方Debuff （普攻/必殺/造傷）
 			else if (Battle.ENEMY_BUFF_TYPES.has(rule.type)){
-				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
+				const isRuleAdded = this.enemyBattleTurn.addRule(newRule);
 				// if (needLogging && isRuleAdded && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
 				// 	&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 				if (needLogging && isRuleAdded && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()){
@@ -697,12 +698,12 @@ export class Battle{
 		if (!rule.isConditionsFulfilled(card, this, this.currentTurnAction, attackType)){
 			return;
 		}
-		var targetNames = rule.getRuleApplyTarget(this.team, card);
-		for (var targetName of targetNames){
+		const targetNames = rule.getRuleApplyTarget(this.team, card);
+		for (const targetName of targetNames){
 			if (rule.type == RuleType.appendRule){
-				var newRule = (rule.value as Rule).cloneSimple();
+				const newRule = (rule.value as Rule).cloneSimple();
 				newRule.parentCardName = targetName;
-				var isRuleAdded = this.battleTurns[targetName].addRule(newRule);
+				const isRuleAdded = this.battleTurns[targetName].addRule(newRule);
 				if (isRuleAdded && targetName == card.name && Battle.TEAM_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
 					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 						// console.info('[addRuleToTargets 1]T'+this.currentTurn + ':'+newRule);
@@ -710,9 +711,9 @@ export class Battle{
 				}
 			}
 			else if (rule.type == RuleType.enemyAppendRule){
-				var newRule = (rule.value as Rule).cloneSimple();
+				const newRule = (rule.value as Rule).cloneSimple();
 				newRule.parentCardName = card.name;
-				var isRuleAdded = this.enemyBattleTurn.addRule(newRule);
+				const isRuleAdded = this.enemyBattleTurn.addRule(newRule);
 				if (isRuleAdded && Battle.ENEMY_BUFF_TYPES.has(newRule.type) && newRule.condition == null && !newRule.isBeforeRoundRule() && !newRule.isPreAttackRule()
 					&& !Battle.LOG_EXCLUDE_TURNACTIONTYPE.has(this.currentTurnAction)){
 						// console.info('[addRuleToTargets 2]T'+this.currentTurn + ':'+newRule);
@@ -738,7 +739,7 @@ export class Battle{
 	}
 
 	private attack(attackType: AttackType, rule: Rule, card: Card){
-		var currentTurn = this.currentTurn;
+		const currentTurn = this.currentTurn;
 		if (!rule.isConditionsFulfilled(card, this, this.currentTurnAction, attackType)){
 			return false;
 		}
@@ -746,29 +747,29 @@ export class Battle{
 		// var isAddRuleLog = this.currentTurnAction == TurnActionType.beforeAction;
 
 		// Calculate
-		var isAttackSuccess = true;
-		var atk : number = card.getAtk();
-		var hp : number = card.getHp();
-		var action = null;
+		let isAttackSuccess = true;
+		const atk : number = card.getAtk();
+		const hp : number = card.getHp();
+		let action = null;
 		if (rule.type == RuleType.attack) action = TurnActionType.attack;
 		else if (rule.type == RuleType.poisonAttack) action = TurnActionType.poison;
 		else if (rule.type == RuleType.heal || RuleType.continueHeal) action = TurnActionType.heal;
 		else if (rule.type == RuleType.support) action = TurnActionType.support;
 
-		var cardRules = this.battleTurns[card.name].rules
+		const cardRules = this.battleTurns[card.name].rules
 						.filter((r:Rule)=>r.isConditionsFulfilled(card, this, action, attackType));
-		var ourBuffs = this.filterBuffs(cardRules, rule, rule.type, attackType);
-		var enemyRules = this.enemyBattleTurn.rules
+		const ourBuffs = this.filterBuffs(cardRules, rule, rule.type, attackType);
+		const enemyRules = this.enemyBattleTurn.rules
 						.filter((r:Rule)=>r.isConditionsFulfilled(card, this, action, attackType));
-		var enemyBuffs = this.filterBuffs(enemyRules, rule, rule.type, attackType, true);
-		var buffs : Rule[] = [];
-		var debuffs : Rule[] = [];
-		var supportBuff = 0;
-		for (var buff of ourBuffs){
-			var applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
+		const enemyBuffs = this.filterBuffs(enemyRules, rule, rule.type, attackType, true);
+		const buffs : Record<string, number> = {};
+		const debuffs : Record<string, number> = {};
+		let supportBuff = 0;
+		for (const buff of ourBuffs){
+			const applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
 
 			// 觸發技：跟必殺技屬於同一乘區
-			var buffType = buff.type;
+			let buffType = buff.type;
 			if (buffType == RuleType.triggerAtkUp){
 				buffType = RuleType.skillAtkUp;
 			}
@@ -780,11 +781,11 @@ export class Battle{
 				supportBuff += (Util.getNumber(buff.value as string) * applyCount);
 			}
 		}
-		for (var buff of enemyBuffs){
-			var applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
+		for (const buff of enemyBuffs){
+			const applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
 
 			// 觸發技：跟必殺技屬於同一乘區
-			var buffType = buff.type;
+			let buffType = buff.type;
 			if (buffType == RuleType.enemyTriggerAtkUp){
 				buffType = RuleType.enemySkillAtkUp;
 			}
@@ -793,17 +794,17 @@ export class Battle{
 		}
 
 		if (!this.isRuleLogAddedPerTurn){
-			var logRules = this.filterBuffsForLog(cardRules);
-			for (var buff of logRules){
-				var applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
+			let logRules = this.filterBuffsForLog(cardRules);
+			for (const buff of logRules){
+				const applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
 				if (applyCount > 0){
 					// console.info('[attack 1]T'+this.currentTurn + ':'+buff);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
 				}
 			}
 			logRules = this.filterBuffsForLog(this.enemyBattleTurn.rules, true);
-			for (var buff of logRules){
-				var applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
+			for (const buff of logRules){
+				const applyCount = buff.getConditionFulfillTimes(card, this, action, attackType);
 				if (applyCount > 0){
 					// console.info('[attack 2]T'+this.currentTurn + ':'+buff);
 					this.battleTurns[card.name].addRuleLog(this.currentTurn, buff, applyCount);
@@ -812,8 +813,8 @@ export class Battle{
 			this.isRuleLogAddedPerTurn = true;
 		}
 
-		var hitCount = rule.getMaxCount();
-		var outputVal : Float32 = new Float32(0);
+		const hitCount = rule.getMaxCount();
+		let outputVal : Float32 = new Float32(0);
 		// 計算攻擊力 x 輸出倍率
 		if (rule.valueBy == RuleValueByType.exactVal){
 			outputVal = Util.getFloat32(rule.value).floor();
@@ -822,7 +823,7 @@ export class Battle{
 			outputVal = Util.getFloat32(hp).multiply(Util.getFloat32(buffs[RuleType.hpUp]).add(1)).floor().multiply(Util.getFloat32(rule.value)).floor();
 		}
 		else{
-			var atkVal : Float32 = Util.getFloat32(atk).multiply(Util.getFloat32(buffs[RuleType.atkUp]).add(1)).floor();
+			let atkVal : Float32 = Util.getFloat32(atk).multiply(Util.getFloat32(buffs[RuleType.atkUp]).add(1)).floor();
 			atkVal = atkVal.add(supportBuff);
 			// 只用基礎攻擊力計算
 			// 註：如果是輔助rule，filterBuffs會過濾掉所有ATK加成，所以輔助無須特別指定是「基礎攻擊力」
@@ -832,23 +833,23 @@ export class Battle{
 			outputVal = atkVal.multiply(Util.getFloat32(rule.value));
 		}
 
-		var outputStartTurn = 0;
+		let outputStartTurn = 0;
 		// 輔助rule - 幫全隊加攻擊力增加buff
 		if (rule.type == RuleType.support){
 			outputVal = outputVal.floor();
-			var targetNames = rule.getRuleApplyTarget(this.team, card);
+			const targetNames = rule.getRuleApplyTarget(this.team, card);
 
 			// ugly hardcode for 不可疊加
 			if (rule.isNoOverlayRule() && targetNames.length > 0){
-				var newRule = rule.cloneSimpleChild();
-				var existRule = this.battleTurns[targetNames[0]].rules.find(r => r.id == newRule.id);
+				const newRule = rule.cloneSimpleChild();
+				const existRule = this.battleTurns[targetNames[0]].rules.find(r => r.id == newRule.id);
 				if (existRule != null){
 					outputStartTurn = existRule.turn;
 				}
 			}
 
-			for (var targetName of targetNames){
-				var newRule = rule.cloneSimpleChild();
+			for (const targetName of targetNames){
+				const newRule = rule.cloneSimpleChild();
 				newRule.type = RuleType.atkUp;
 				newRule.value = outputVal.toString();
 				newRule.condition = null;
@@ -859,7 +860,7 @@ export class Battle{
 		
 		// Buffs
 		if (rule.valueBy != RuleValueByType.exactVal && rule.valueBy != RuleValueByType.exactHp && rule.valueBy != RuleValueByType.exactAtk){
-			for (var key of Object.keys(buffs)){
+			for (const key of Object.keys(buffs)){
 				if (key != RuleType.atkUp){
 					outputVal = outputVal.multiply(Util.getFloat32(buffs[key]).add(1));
 				}
@@ -874,17 +875,17 @@ export class Battle{
 		}
 		// Poison
 		if (rule.type == RuleType.poisonAttack){
-			var newRule = new Rule({type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.poisonTurn, maxCount: rule.maxCount});
+			const newRule = new Rule({type: RuleType.poisonAttackState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.poisonTurn, maxCount: rule.maxCount});
 			isAttackSuccess = this.enemyBattleTurn.addRule(newRule);
 		}
 		// Cont. Heal
 		else if (rule.type == RuleType.continueHeal){
-			var newRule = new Rule({type: RuleType.continueHealState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.turn});
+			const newRule = new Rule({type: RuleType.continueHealState, parentCardName: card.name, value: outputVal.getValue(), turn: rule.turn});
 			isAttackSuccess = this.battleTurns[card.name].addRule(newRule);
 		}
 
-		var enemyDamageVal : Float32 = new Float32(outputVal.getValue());
-		for (var key of Object.keys(debuffs)){
+		let enemyDamageVal : Float32 = new Float32(outputVal.getValue());
+		for (const key of Object.keys(debuffs)){
 			enemyDamageVal = enemyDamageVal.multiply(Util.getFloat32(debuffs[key]).add(1));
 		}
 		enemyDamageVal = enemyDamageVal.floor();
@@ -895,22 +896,22 @@ export class Battle{
 		if (rule.type == RuleType.support){
 			// NOTE: fix support first, may still need too add "isAttackSuccess" to attack/heal/poison
 			if (isAttackSuccess){
-				for (var i = outputStartTurn; i < rule.turn; i++){
+				for (let i = outputStartTurn; i < rule.turn; i++){
 					this.battleTurns[card.name].outputs[rule.type][currentTurn+i] = (this.battleTurns[card.name].outputs[rule.type][currentTurn+i] || 0) + outputVal.getValue();
 					this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] = (this.battleTurns[card.name].enemyDamage[rule.type][currentTurn+i] || 0) + outputVal.getValue();
 					// console.info('[attack 3]T'+this.currentTurn + ':'+rule);
-					this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, 1, outputVal.getValue());
+					this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, 1, outputVal.toString());
 				}
 			}
 		}
 		else if (rule.type == RuleType.poisonAttack){
-			for (var i = 0; i < rule.poisonTurn; i++){
+			for (let i = 0; i < rule.poisonTurn; i++){
 				// console.info('[attack 4]T'+this.currentTurn + ':'+rule);
 				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, hitCount, outputVal.toString());
 			}
 		}
 		else if (rule.type == RuleType.continueHeal){
-			for (var i = 0; i < rule.turn; i++){
+			for (let i = 0; i < rule.turn; i++){
 				// console.info('[attack 5]T'+this.currentTurn + ':'+rule);
 				this.battleTurns[card.name].addRuleLog(currentTurn+i, rule, 1);
 			}
@@ -927,13 +928,13 @@ export class Battle{
 			// Enemy Damage
 			if (this.enemyCard != null && rule.type == RuleType.attack){
 				// var enemyDamage = (card instanceof EnemyCard) ? enemyDamageVal.multiply(hitCount).getValue() : this.battleTurns[card.name].enemyDamage[rule.type][currentTurn];
-				var enemyDamage = enemyDamageVal.multiply(hitCount);
+				const enemyDamage = enemyDamageVal.multiply(hitCount);
 				// enemyDamage = Util.getFloat32(enemyDamage).multiply(Battle.getElementalBuff(card.element, this.enemyElement)).floor();
 				this.damageToEnemy(enemyDamage.getValue());
 			}
 
 			if ((card instanceof EnemyCard) && rule.type == RuleType.heal){
-				var healUp = Util.getFloat32(1);
+				let healUp = Util.getFloat32(1);
 				if (rule.valueBy != RuleValueByType.exactVal && rule.valueBy != RuleValueByType.exactHp && rule.valueBy != RuleValueByType.exactAtk){
 					healUp = Util.getFloat32(RuleHelper.getBuffTotalValue(cardRules, RuleType.enemyHealUp)).add(1);
 				}
@@ -962,19 +963,12 @@ export class Battle{
 		if (this.enemyCard == null || this.enemyCard.hp == null){
 			return null;
 		}
-		var remainHp = this.enemyBattleTurn.hp[turn];
+		const remainHp = this.enemyBattleTurn.hp[turn];
 		return Math.round(remainHp / this.enemyCard.hp * 10000) / 100;
 	}
 
-	getTurnValue(cardname: string, turn: number, outputOption? : string) : number{
-		var card: Card = this.team.getCard(cardname);
-		var battleTurn = this.battleTurns[cardname];
-		var output = 0;
-		if (outputOption == null){
-			outputOption = this.printOutputOption;
-		}
-
-		var ruleType : RuleType[] = [];
+	private getRuleTypesForOutput(card: Card, outputOption: string): RuleType[] {
+		const ruleType : RuleType[] = [];
 		if (outputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
 			if (card.class == Class.Striker || card.class == Class.Guardian || card.class == Class.Saboteur){
 				ruleType.push(RuleType.attack);
@@ -1005,10 +999,22 @@ export class Battle{
 			ruleType.push(RuleType.attack);
 			ruleType.push(RuleType.poisonAttack);
 		}
+		return ruleType;
+	}
 
-		for (var type of ruleType){
+	getTurnValue(cardname: string, turn: number, outputOption? : string) : number{
+		const card: Card = this.team.getCard(cardname);
+		const battleTurn = this.battleTurns[cardname];
+		let output = 0;
+		if (outputOption == null){
+			outputOption = this.printOutputOption;
+		}
+
+		const ruleType = this.getRuleTypesForOutput(card, outputOption);
+
+		for (const type of ruleType){
 			if (this.printEnemeyOption && (type == RuleType.attack || type == RuleType.poisonAttack)){
-				var enemyDamage = battleTurn.enemyDamage[type][turn] | 0;
+				const enemyDamage = battleTurn.enemyDamage[type][turn] | 0;
 				output += enemyDamage;
 			}
 			else{
@@ -1019,62 +1025,32 @@ export class Battle{
 	}
 
 	getTeamTurnValue(turn: number) : number{
-		var output = 0;
-		var printOutputOption = this.printOutputOption;
+		let output = 0;
+		let printOutputOption = this.printOutputOption;
 		if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
 			printOutputOption = Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE;
 		}
-		for (var card of this.team.cards){
+		for (const card of this.team.cards){
 			output += this.getTurnValue(card.name, turn, printOutputOption);
 		}
 		return output;
 	}
 
 	getTotalValue(cardname: string, outputOption? : string) : number{
-		var card: Card = this.team.getCard(cardname);
-		var battleTurn = this.battleTurns[cardname];
-		var output = 0;
+		const card: Card = this.team.getCard(cardname);
+		const battleTurn = this.battleTurns[cardname];
+		let output = 0;
 
 		if (outputOption == null){
 			outputOption = this.printOutputOption;
 		}
 
-		var ruleType : RuleType[] = [];
-		if (outputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
-			if (card.class == Class.Striker || card.class == Class.Guardian || card.class == Class.Saboteur){
-				ruleType.push(RuleType.attack);
-				ruleType.push(RuleType.poisonAttack);
-			}
-			else if (card.class == Class.Healer){
-				ruleType.push(RuleType.heal);
-				ruleType.push(RuleType.continueHeal);
-			}
-			else if (card.class == Class.Support){
-				ruleType.push(RuleType.support);
-			}
-		}
-		else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_ATTACK){
-			ruleType.push(RuleType.attack);
-		}
-		else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_POISON){
-			ruleType.push(RuleType.poisonAttack);
-		}
-		else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_HEAL){
-			ruleType.push(RuleType.heal);
-			ruleType.push(RuleType.continueHeal);
-		}
-		else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_SUPPORT){
-			ruleType.push(RuleType.support);
-		}
-		else if (outputOption == Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE){
-			ruleType.push(RuleType.attack);
-			ruleType.push(RuleType.poisonAttack);
-		}
+		const ruleType = this.getRuleTypesForOutput(card, outputOption);
 
-		for (var turn=1; turn <= this.turns; turn++){
-			for (var type of ruleType){
+		for (let turn=1; turn <= this.turns; turn++){
+			for (const type of ruleType){
 				if (this.printEnemeyOption && (type == RuleType.attack || type == RuleType.poisonAttack)){
-					var enemyDamage = battleTurn.enemyDamage[type][turn] | 0;
+					const enemyDamage = battleTurn.enemyDamage[type][turn] | 0;
 					// if (this.enemyElement != Element.NA && type == RuleType.attack){
 					// 	enemyDamage = Math.floor(enemyDamage * Battle.getElementalBuff(card.element, this.enemyElement));
 					// }
@@ -1089,20 +1065,20 @@ export class Battle{
 	}
 
 	getTeamTotalValue() : number{
-		var output = 0;
-		var printOutputOption = this.printOutputOption;
+		let output = 0;
+		let printOutputOption = this.printOutputOption;
 		if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
 			printOutputOption = Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE;
 		}
-		for (var card of this.team.cards){
+		for (const card of this.team.cards){
 			output += this.getTotalValue(card.name, printOutputOption);
 		}
 		return output;
 	}
 
 	getTeamTotalDamage() : number{
-		var output = 0;
-		for (var card of this.team.cards){
+		let output = 0;
+		for (const card of this.team.cards){
 			output += this.getTotalValue(card.name, Battle.PRINT_OUTPUT_OPTION.ONLY_DAMAGE);
 		}
 		return output;
@@ -1113,12 +1089,12 @@ export class Battle{
 	}
 
 	getTurnRuleLog(cardname: string, turn: number) : Rule[]{
-		var attackType : AttackType = this.battleTurns[cardname].action[turn];
-		var rules : Rule[] = this.battleTurns[cardname].ruleLog[turn];
-		var ruleTypes : Set<RuleType> = new Set(rules.map(e=>e.type));
-		var acceptTypes : Set<RuleType> = new Set(Battle.OUTPUT_TYPES);
+		const attackType : AttackType = this.battleTurns[cardname].action[turn];
+		let rules : Rule[] = this.battleTurns[cardname].ruleLog[turn];
+		const ruleTypes : Set<RuleType> = new Set(rules.map(e=>e.type));
+		const acceptTypes : Set<RuleType> = new Set(Battle.OUTPUT_TYPES);
 
-		for (var actionType of Battle.OUTPUT_TYPES){
+		for (const actionType of Battle.OUTPUT_TYPES){
 			if (ruleTypes.has(actionType)){
 				Battle.ACTION_ACCEPT_BUFFS[actionType].forEach(e => acceptTypes.add(e));
 			}
@@ -1140,7 +1116,7 @@ export class Battle{
 		}
 
 		// Always add log only types
-		for (var logType of Battle.LOG_ONLY_RULE_TYPES){
+		for (const logType of Battle.LOG_ONLY_RULE_TYPES){
 			acceptTypes.add(logType);
 		}
 
@@ -1150,8 +1126,8 @@ export class Battle{
 		rules = this.filterRulesByPrintOption(rules);
 
 		// Sort rules - move poison / cont. heal to end
-		for (var index = rules.length-1; index>=0; index--){
-			var rule = rules[index];
+		for (let index = rules.length-1; index>=0; index--){
+			const rule = rules[index];
 			if ((rule.type == RuleType.continueHeal || rule.type == RuleType.poisonAttack) && (index != rules.length-1)){
 				rules.splice(index, 1);
 				rules.push(rule);
@@ -1163,8 +1139,8 @@ export class Battle{
 
 	private filterRulesByPrintOption(rules : Rule[]){
 		// var acceptTypes = [];
-		var ruleTypes : Set<RuleType> = new Set(rules.map(e=>e.type));
-		var acceptTypes : Set<RuleType> = new Set();
+		const ruleTypes : Set<RuleType> = new Set(rules.map(e=>e.type));
+		const acceptTypes : Set<RuleType> = new Set();
 
 		if (this.printOutputOption == Battle.PRINT_OUTPUT_OPTION.ALL){
 			return rules;
@@ -1204,7 +1180,7 @@ export class Battle{
 	}
 
 	getTurnRuleLogStr(cardname: string, turn: number) : string{
-		var rules = this.getTurnRuleLog(cardname, turn);
+		const rules = this.getTurnRuleLog(cardname, turn);
 		return rules.map(r=>r.toString()).join('\n');
 	}
 
@@ -1232,23 +1208,23 @@ export class Battle{
 		console.info('潛12\t' + this.team.cards.map(e=>e.pot12Rule).join('\t'));
 		console.info();
 		
-		var totalOutput = [];
-		var totalEnemyDamage = [];
-		for (var card of this.team.cards){
+		const totalOutput = [];
+		const totalEnemyDamage = [];
+		for (const card of this.team.cards){
 			totalOutput[card.name] = 0;
 			totalEnemyDamage[card.name] = 0;
 		}
 
-		for (var turn=1; turn <= this.turns; turn++){
-			var s = turn + '\t';
-			for (var card of this.team.cards){
+		for (let turn=1; turn <= this.turns; turn++){
+			let s = turn + '\t';
+			for (const card of this.team.cards){
 				s += this.getTurnValue(card.name, turn) + '\t';
 			}
 			console.info(s);
 		}
 
-		var summary = '總計\t';
-		for (var card of this.team.cards){
+		let summary = '總計\t';
+		for (const card of this.team.cards){
 			summary += this.getTotalValue(card.name) + '\t';
 		}
 
@@ -1297,7 +1273,7 @@ export class BattleTurn{
 	}
 
 	clearRulePerRound(){
-		for (var rule of this.rules){
+		for (const rule of this.rules){
 			if (!rule.isPassive && rule.turn != Rule.ALWAYS_EFFECTIVE){
 				rule.turn = rule.turn - 1;
 			}
@@ -1327,18 +1303,18 @@ export class BattleTurn{
 			return;
 		}
 
-		var existingRules = this.ruleLog[turn].filter(e=>e.id == rule.id);
-		var attackTypes:RuleType[] = [RuleType.attack, RuleType.heal];
-		var attackRules = this.ruleLog[turn].filter(e=>attackTypes.includes(e.type));
+		const existingRules = this.ruleLog[turn].filter(e=>e.id == rule.id);
+		const attackTypes:RuleType[] = [RuleType.attack, RuleType.heal];
+		const attackRules = this.ruleLog[turn].filter(e=>attackTypes.includes(e.type));
 		// console.debug(turn+":["+rule.id+"]"+rule.type+rule.value+":"+rule.maxCount+"||"+existingRules.length);
 		// Don't combine buffs log before and after attack action
 		if (attackRules.length == 0 && existingRules.length > 0){
-			for (var i=0; i<applyCount; i++){
+			for (let i=0; i<applyCount; i++){
 				(existingRules[0] as LogRule).addCount();
 			}
 		}
 		else{
-			var logRule = new LogRule(rule.clone());
+			const logRule = new LogRule(rule.clone());
 			logRule.condition = null;
 			logRule.target = null;
 			logRule.applyCount = applyCount;
@@ -1364,9 +1340,9 @@ export class BattleTurn{
 		if (!this.isSkillAvailable()){
 			return -1;
 		}
-		var lastTurn = 0;
+		let lastTurn = 0;
 		
-		for (var i=this.action.length-1; i>=0; i--){
+		for (let i=this.action.length-1; i>=0; i--){
 			if (this.action[i] == AttackType.SkillAttack){
 				lastTurn = i;
 				break;
@@ -1377,7 +1353,7 @@ export class BattleTurn{
 	}
 
 	getSkillDelayedTurn(currentTurn: number, cooldown: number) : number{
-		var lastTurn = this.getLastSkillTurn();
+		let lastTurn = this.getLastSkillTurn();
 		if (lastTurn == 0){ 
 			lastTurn = 1;
 		}

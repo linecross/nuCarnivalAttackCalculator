@@ -427,6 +427,7 @@ Vue.createApp({
 			this.battle.enemyElement = this.userInput.enemyElement;
 			this.battle.printEnemeyOption = this.userInput.isCalcEnemyDebuff;
 			this.battle.printOutputOption = this.userInput.printOutputMode;
+			this.battle.hpStatus = this.userInput.isAllowHpCond;
 			this.battle.init();
 			
 			for (var i=0; i<this.cards.length; i++){
@@ -1764,7 +1765,6 @@ Vue.createApp({
 			this.updateBattle();
 		},
 		'userInput.isAllowHpCond'(newVal, oldVal){
-			Condition.HP_STATUS = newVal;
 			this.updateBattle();
 		},
 		'userInput.isModifyCardVal'(isModify, oldVal){

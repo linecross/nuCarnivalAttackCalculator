@@ -12,7 +12,7 @@ export class RuleHelper{
 	}
 	static isRuleExceedMaxCount(rule, rules: Rule[]){
 		if (rule.turn == Rule.ALWAYS_EFFECTIVE || rule.maxCount != null){
-			var currentCount = rules.filter(r=>r.id == rule.id).length;
+			const currentCount = rules.filter(r=>r.id == rule.id).length;
 			if (currentCount < rule.getMaxCount()){
 				return false;
 			}
@@ -33,16 +33,16 @@ export class RuleHelper{
 		return rules.filter(e=>e.type == ruleType).length > 0;
 	}
 	static getBuffTotalValue(rules: Rule[], ruleType: RuleType) : number{
-		var targetRules = rules.filter(e=>e.type == ruleType);
+		const targetRules = rules.filter(e=>e.type == ruleType);
 		if (targetRules.length == 0) return 0;
-		var result : Float32 = new Float32(0);
-		for (var r of targetRules){
+		let result : Float32 = new Float32(0);
+		for (const r of targetRules){
 			result.add(Util.getFloat32(r.value));
 		}
 		return result.getValue();
 	}
 	static getRuleByUniqueName(rules: Rule[], uniqueName: string) : Rule | null{
-		for (var r of rules){
+		for (const r of rules){
 			if (r.uniqueName == uniqueName){
 				return r;
 			}
@@ -51,7 +51,7 @@ export class RuleHelper{
 	}
 
 	static isRulesHaveAllUniqueNames(rules: Rule[], uniqueNames: string[]) : boolean{
-		for (var uniqueName of uniqueNames){
+		for (const uniqueName of uniqueNames){
 			if (!rules.some(r=>r.uniqueName == uniqueName)){
 				return false;
 			}
