@@ -474,7 +474,7 @@
 							<a :class="'nav-link ' + (tab == 'SORT' ? 'active' : '')" href="#" @click="switchTab('SORT')">排行表</a>
 						</li>
 						<li class="nav-item">
-							<a :class="'nav-link ' + (tab == 'TIER' ? 'active' : '')" href="#" @click="switchTab('TIER')">階層表</a>
+							<a :class="'nav-link ' + (tab == 'TIER' ? 'active' : '')" href="#" @click="switchTab('TIER')">Tier List</a>
 						</li>
 						<li class="nav-item">
 							<a :class="'nav-link ' + (tab == 'JSON' ? 'active' : '')" href="#" @click="switchTab('JSON')">匯入Json</a>
@@ -1136,8 +1136,32 @@
 				<div class="col-xs-12 col-md-12 col-lg-11">
 
 					<!-- Tier List Title -->
-					<div class="d-flex align-items-center mb-3 gap-2">
-						<input type="text" class="tierlist-title" v-model="tierList.title" placeholder="階層表標題">
+					<div class="tierlist-title-row d-flex align-items-center mb-3 gap-2 flex-wrap">
+						<input type="text" class="tierlist-title" v-model="tierList.title" placeholder="Tier List標題">
+						<button type="button" class="btn btn-outline-success btn-sm text-nowrap" @click="tierListSave()" title="儲存">
+							<i class="fa-solid fa-floppy-disk"></i> 儲存
+						</button>
+						<div class="tierlist-load-wrapper position-relative">
+							<button type="button" class="btn btn-outline-primary btn-sm text-nowrap" @click.stop="tierListToggleLoadDropdown()" title="載入">
+								<i class="fa-solid fa-folder-open"></i> 載入
+							</button>
+							<div v-if="tierList.loadDropdownOpen" class="tierlist-load-dropdown" @click.stop>
+								<input type="text" class="tierlist-load-search" v-model="tierList.loadSearchText" placeholder="搜尋...">
+								<div class="tierlist-load-list">
+									<div v-for="item in tierListFilteredSavedKeys"
+										:key="item.title" class="tierlist-load-item">
+										<div class="tierlist-load-item-info" @click="tierListLoad(item.title)">
+											<span class="tierlist-load-item-title">{{ item.title }}</span>
+											<span class="tierlist-load-item-date">{{ new Date(item.lastModified).toLocaleDateString() }}</span>
+										</div>
+										<button type="button" class="tierlist-load-item-delete" @click.stop="tierListDeleteSaved(item.title)" title="刪除">
+											<i class="fa-solid fa-trash-can"></i>
+										</button>
+									</div>
+									<div v-if="tierListFilteredSavedKeys.length === 0" class="tierlist-load-empty">無儲存紀錄</div>
+								</div>
+							</div>
+						</div>
 						<button type="button" class="btn btn-outline-secondary btn-sm text-nowrap" @click="tierListCapture()" title="截圖">
 							<i class="fa-solid fa-camera"></i> 截圖
 						</button>
@@ -1153,7 +1177,7 @@
 							<button type="button" class="tier-remove-btn" @click="tierListRemoveTier(tIdx)" title="Delete Tier">✕</button>
 							<!-- Label Cell -->
 							<div class="tier-label-cell d-flex flex-column align-items-center justify-content-center p-2" :style="{ backgroundColor: tier.color }">
-								<textarea class="tier-label-input text-center fw-bold" v-model="tier.label" rows="1"></textarea>
+								<textarea class="tier-label-input text-center fw-bold" v-model="tier.label" rows="1" @input="tierListAutoResizeLabel($event)"></textarea>
 								<div class="tier-label-actions">
 									<span class="tier-color-picker-btn" @click.stop="tierListToggleColorPopup(tier.id)" title="選擇顏色">
 										<span class="tier-color-swatch" :style="{ backgroundColor: tier.color }"></span> 🎨
@@ -1194,7 +1218,7 @@
 					</div>
 					<div class="mt-2 mb-3">
 						<button type="button" class="btn btn-outline-primary" @click="tierListAddTier()">
-							<i class="fa-solid fa-plus"></i> Add Tier
+							<i class="fa-solid fa-plus"></i> 新增Tier
 						</button>
 					</div>
 
@@ -1503,6 +1527,10 @@
 						<h5>功能更新</h5>
 
 						<textarea rows="8">
+[20260323]
+Tier List：自製Tier List，可截圖，可儲存於本機瀏覽器
+
+
 [20250802]
 全員快速設定功能：可以快速設定隊伍全員的潛力和行動模式
 UI更新：基本設定、隊伍設定、全員快速設定改成折疊型

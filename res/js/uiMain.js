@@ -171,13 +171,15 @@ Vue.createApp({
 			db: null,
 			tierColorPresets: ['#ff7f7e','#ffbf7f','#ffdf80','#ffff7f','#bfff7f','#7fbfff','#bf7fff','#d4d4d4'],
 			tierList: {
-				title: '我的階層表',
+				title: '我的Tier List',
 				tiers: [
 					{ id: 1, label: 'S', color: '#ff7f7e', cards: [] },
 					{ id: 2, label: 'A', color: '#ffbf7f', cards: [] },
 					{ id: 3, label: 'B', color: '#ffdf80', cards: [] },
 					{ id: 4, label: 'C', color: '#ffff7f', cards: [] },
 					{ id: 5, label: 'D', color: '#bfff7f', cards: [] },
+					{ id: 6, label: 'E', color: '#7fbfff', cards: [] },
+					{ id: 7, label: 'F', color: '#bf7fff', cards: [] },
 				],
 				poolFilter: {
 					rarity: [], char: [], clazz: [], element: [], coolDown: [],
@@ -185,6 +187,9 @@ Vue.createApp({
 				},
 				nextTierId: 6,
 				openColorPopupId: null,
+				savedKeys: [],
+				loadDropdownOpen: false,
+				loadSearchText: '',
 			},
 		}
 	},
@@ -253,10 +258,11 @@ Vue.createApp({
 
 		this.createSortable();
 
-		// Close tier list color popup on outside click
+		// Close tier list color popup and load dropdown on outside click
 		var vueObj = this;
 		document.addEventListener('click', function(){
 			vueObj.tierList.openColorPopupId = null;
+			vueObj.tierList.loadDropdownOpen = false;
 		});
 	},
 	updated()
@@ -1352,6 +1358,75 @@ Vue.createApp({
 			this.cardHpAtkSort.coolDown = [];
 		},
 		// --- Tier List methods ---
+		tierListSave(){
+			var title = this.tierList.title.trim();
+			if (!title){
+				this.showToast('請先輸入Tier List標題', 'text-bg-danger');
+				return;
+			}
+			var storageKey = 'tierList_' + title;
+			var existing = localStorage.getItem(storageKey);
+			if (existing){
+				if (!confirm('「' + title + '」已存在，確定要覆蓋嗎？')) return;
+			}
+			var data = {
+				title: title,
+				tiers: this.tierList.tiers.map(t => ({
+					label: t.label,
+					color: t.color,
+					cards: [...t.cards],
+				})),
+				lastModified: Date.now(),
+			};
+			localStorage.setItem(storageKey, JSON.stringify(data));
+			this.tierListRefreshSavedKeys();
+			this.showToast('已儲存「' + title + '」');
+		},
+		tierListRefreshSavedKeys(){
+			var keys = [];
+			for (var i = 0; i < localStorage.length; i++){
+				var k = localStorage.key(i);
+				if (k.startsWith('tierList_')){
+					try {
+						var item = JSON.parse(localStorage.getItem(k));
+						keys.push({ title: item.title, lastModified: item.lastModified || 0 });
+					} catch(e){}
+				}
+			}
+			keys.sort((a, b) => b.lastModified - a.lastModified);
+			this.tierList.savedKeys = keys;
+		},
+		tierListLoad(title){
+			var storageKey = 'tierList_' + title;
+			var raw = localStorage.getItem(storageKey);
+			if (!raw) return;
+			var data = JSON.parse(raw);
+			this.tierList.title = data.title;
+			this.tierList.tiers = data.tiers.map((t, idx) => ({
+				id: idx + 1,
+				label: t.label,
+				color: t.color,
+				cards: [...t.cards],
+			}));
+			this.tierList.nextTierId = data.tiers.length + 1;
+			this.tierList.openColorPopupId = null;
+			this.tierList.loadDropdownOpen = false;
+			this.tierList.loadSearchText = '';
+			this.tierListResetPoolFilter();
+			this.$nextTick(() => this.initTierListSortable());
+			this.showToast('已載入「' + title + '」');
+		},
+		tierListToggleLoadDropdown(){
+			this.tierListRefreshSavedKeys();
+			this.tierList.loadDropdownOpen = !this.tierList.loadDropdownOpen;
+			this.tierList.loadSearchText = '';
+		},
+		tierListDeleteSaved(title){
+			if (!confirm('確定要刪除「' + title + '」嗎？')) return;
+			localStorage.removeItem('tierList_' + title);
+			this.tierListRefreshSavedKeys();
+			this.showToast('已刪除「' + title + '」');
+		},
 		tierListAddTier(){
 			this.tierList.tiers.push({
 				id: this.tierList.nextTierId++,
@@ -1402,8 +1477,8 @@ Vue.createApp({
 			});
 		},
 		tierListReset(){
-			if (!confirm('確定要重設整個階層表嗎？所有卡片將會回到卡池。')) return;
-			this.tierList.title = '我的階層表';
+			if (!confirm('確定要重設整個Tier List嗎？所有卡片將會回到卡池。')) return;
+			this.tierList.title = '我的Tier List';
 			this.tierList.tiers = [
 				{ id: 1, label: 'S', color: '#ff7f7e', cards: [] },
 				{ id: 2, label: 'A', color: '#ffbf7f', cards: [] },
@@ -1421,6 +1496,11 @@ Vue.createApp({
 			this.tierList.poolFilter.clazz = [];
 			this.tierList.poolFilter.element = [];
 			this.tierList.poolFilter.coolDown = [];
+		},
+		tierListAutoResizeLabel(event){
+			var el = event.target;
+			el.style.height = 'auto';
+			el.style.height = el.scrollHeight + 'px';
 		},
 		tierListGetCardObj(cardname){
 			return CardCenter.loadCardBasic(cardname);
@@ -1815,6 +1895,12 @@ Vue.createApp({
 				cardArr = cardArr.reverse();
 			}
 			return cardArr;
+		},
+		tierListFilteredSavedKeys(){
+			var search = this.tierList.loadSearchText;
+			if (!search) return this.tierList.savedKeys;
+			var s = search.toLowerCase();
+			return this.tierList.savedKeys.filter(k => k.title.toLowerCase().includes(s));
 		},
 		getTierListPoolCards(){
 			// All cards not placed in any tier
