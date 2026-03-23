@@ -474,6 +474,9 @@
 							<a :class="'nav-link ' + (tab == 'SORT' ? 'active' : '')" href="#" @click="switchTab('SORT')">排行表</a>
 						</li>
 						<li class="nav-item">
+							<a :class="'nav-link ' + (tab == 'TIER' ? 'active' : '')" href="#" @click="switchTab('TIER')">階層表</a>
+						</li>
+						<li class="nav-item">
 							<a :class="'nav-link ' + (tab == 'JSON' ? 'active' : '')" href="#" @click="switchTab('JSON')">匯入Json</a>
 						</li>
 						<li class="nav-item">
@@ -1124,6 +1127,183 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- ===== Tier List Tab ===== -->
+			<div v-if="tab == 'TIER'" class="row justify-content-center mb-2">
+				<div class="col-xs-12 col-md-12 col-lg-11">
+
+					<!-- Tier List Title -->
+					<div class="d-flex align-items-center mb-3 gap-2">
+						<input type="text" class="tierlist-title" v-model="tierList.title" placeholder="階層表標題">
+						<button type="button" class="btn btn-outline-secondary btn-sm text-nowrap" @click="tierListCapture()" title="截圖">
+							<i class="fa-solid fa-camera"></i> 截圖
+						</button>
+						<button type="button" class="btn btn-outline-danger btn-sm text-nowrap" @click="tierListReset()">
+							<i class="fa-solid fa-rotate-left"></i> 全部重設
+						</button>
+					</div>
+
+					<!-- Tier Rows -->
+					<div id="tierListRows">
+						<div v-for="(tier, tIdx) in tierList.tiers" :key="tier.id" class="tier-row d-flex mb-1 position-relative" :data-tier-id="tier.id">
+							<!-- Delete Button (top-right) -->
+							<button type="button" class="tier-remove-btn" @click="tierListRemoveTier(tIdx)" title="Delete Tier">✕</button>
+							<!-- Label Cell -->
+							<div class="tier-label-cell d-flex flex-column align-items-center justify-content-center p-2" :style="{ backgroundColor: tier.color }">
+								<textarea class="tier-label-input text-center fw-bold" v-model="tier.label" rows="1"></textarea>
+								<div class="tier-label-actions">
+									<span class="tier-color-picker-btn" @click.stop="tierListToggleColorPopup(tier.id)" title="選擇顏色">
+										<span class="tier-color-swatch" :style="{ backgroundColor: tier.color }"></span> 🎨
+									</span>
+								</div>
+								<!-- Color Picker Popup -->
+								<div v-if="tierList.openColorPopupId === tier.id" class="tier-color-popup" @click.stop>
+									<div class="tier-color-grid">
+										<span v-for="c in tierColorPresets" :key="c"
+											class="tier-color-preset" :class="{ active: tier.color === c }"
+											:style="{ backgroundColor: c }" :title="c"
+											@click="tier.color = c; tierList.openColorPopupId = null"></span>
+									</div>
+									<div class="tier-color-custom-row">
+										<label>自訂</label>
+										<input type="color" :value="tier.color" @input="tier.color = $event.target.value" />
+									</div>
+								</div>
+							</div>
+							<!-- Card Drop Zone -->
+							<div class="tier-drop-zone d-flex flex-wrap align-items-start align-content-start flex-grow-1" :data-tier-id="tier.id" :style="{ backgroundColor: tier.color + '33' }">
+								<template v-for="(cardname, cIdx) in tier.cards">
+									<div class="tierlist-card" :data-cardname="cardname" :key="'tier-'+tier.id+'-'+cardname">
+										<div class="card-block normal">
+											<div class="card-image-div">
+												<img :src="getCardImagePath(tierListGetCardObj(cardname))" @error="loadNoCardImage" class="card-image" />
+												<img :src="getCardIconPath(tierListGetCardObj(cardname), 'element')" class="card-icon-element" />
+												<img :src="getCardIconPath(tierListGetCardObj(cardname), 'class')" class="card-icon-class" />
+												<img :src="getCardIconPath(tierListGetCardObj(cardname), 'rarity')" class="card-icon-rarity" />
+											</div>
+											<div class="card-name">{{ cardname }}</div>
+										</div>
+										<button type="button" class="btn btn-sm tierlist-card-remove" @click="tierListRemoveCard(tier, cIdx)" title="移回卡池">✕</button>
+									</div>
+								</template>
+							</div>
+						</div>
+					</div>
+					<div class="mt-2 mb-3">
+						<button type="button" class="btn btn-outline-primary" @click="tierListAddTier()">
+							<i class="fa-solid fa-plus"></i> Add Tier
+						</button>
+					</div>
+
+					<hr />
+
+					<!-- Card Pool Section -->
+					<div class="d-flex align-items-center mb-2 gap-2">
+						<h5 class="mb-0">卡池</h5>
+						<button type="button" class="btn btn-outline-secondary btn-sm" @click="tierListOpenFilter()">
+							<i class="fa-solid fa-filter"></i> 篩選
+						</button>
+					</div>
+
+					<!-- Card Pool Grid -->
+					<div id="tierListPool" class="tierlist-pool d-flex flex-wrap">
+						<template v-for="cardname in getTierListPoolCards">
+							<div class="tierlist-card" :data-cardname="cardname" :key="'pool-'+cardname">
+								<div class="card-block normal">
+									<div class="card-image-div">
+										<img :src="getCardImagePath(tierListGetCardObj(cardname))" @error="loadNoCardImage" class="card-image" />
+										<img :src="getCardIconPath(tierListGetCardObj(cardname), 'element')" class="card-icon-element" />
+										<img :src="getCardIconPath(tierListGetCardObj(cardname), 'class')" class="card-icon-class" />
+										<img :src="getCardIconPath(tierListGetCardObj(cardname), 'rarity')" class="card-icon-rarity" />
+									</div>
+									<div class="card-name">{{ cardname }}</div>
+								</div>
+							</div>
+						</template>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Tier List Filter Offcanvas Sidebar -->
+			<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="tierListFilterPanel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title">卡池篩選</h5>
+					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div class="py-1">
+						<div>稀有度</div>
+						<template v-for="rarity in FILTERS.rarity">
+							<span>
+								<input type="checkbox" class="btn-check" name="tierFilter-rarity" autocomplete="off" :id="'tierFilter-'+rarity" :value="rarity" v-model="tierList.poolFilter.rarity">
+								<label class="btn btn-outline-primary col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+rarity">{{rarity}}</label>
+							</span>
+						</template>
+					</div>
+					<div class="py-1 cardFilter-clazz">
+						<div>定位</div>
+						<template v-for="clazz in FILTERS.clazz">
+							<span>
+								<input type="checkbox" class="btn-check" name="tierFilter-clazz" :id="'tierFilter-'+clazz" :value="clazz" v-model="tierList.poolFilter.clazz">
+								<label class="col-1 mx-1 w-auto" :for="'tierFilter-'+clazz">
+									<img :src="tierListGetFilterIconPath('class', clazz)" />
+								</label>
+							</span>
+						</template>
+					</div>
+					<div class="py-1 cardFilter-element">
+						<div>屬性</div>
+						<template v-for="element in FILTERS.element">
+							<span>
+								<input type="checkbox" class="btn-check" name="tierFilter-element" :id="'tierFilter-'+element" :value="element" v-model="tierList.poolFilter.element">
+								<label class="col-1 mx-1 w-auto" :for="'tierFilter-'+element">
+									<img :src="tierListGetFilterIconPath('element', element)" />
+								</label>
+							</span>
+						</template>
+					</div>
+					<div class="py-1">
+						<div>CD</div>
+						<template v-for="coolDown in FILTERS.coolDown">
+							<span>
+								<input type="checkbox" class="btn-check" name="tierFilter-coolDown" autocomplete="off" :id="'tierFilter-'+coolDown" :value="coolDown" v-model="tierList.poolFilter.coolDown">
+								<label class="btn btn-outline-primary col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+coolDown">{{coolDown}}</label>
+							</span>
+						</template>
+					</div>
+					<div class="py-1 cardFilter-char" :class="tierList.poolFilter.charDisplayStyle">
+						<div>角色</div>
+						<template v-for="char in CHARACTERS">
+							<span v-if="char != ''" :class="'filter-'+getFilterPanelCode('char', char)">
+								<template v-if="tierList.poolFilter.charDisplayStyle == 'pixel'">
+									<input type="checkbox" class="btn-check" name="tierFilter-character" :id="'tierFilter-'+char" :value="char" v-model="tierList.poolFilter.char">
+									<label class="col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+char">
+										<img :src="tierListGetFilterIconPath('char', char)" />
+										{{char}}
+									</label>
+								</template>
+								<template v-if="tierList.poolFilter.charDisplayStyle == 'image'">
+									<input type="checkbox" class="btn-check" name="tierFilter-character" :id="'tierFilter-'+char" :value="char" v-model="tierList.poolFilter.char">
+									<label class="col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+char">
+										<span class="filter-icon-char-image" :class="'icon-'+getFilterPanelCode('char', char)"></span>
+									</label>
+								</template>
+								<template v-if="tierList.poolFilter.charDisplayStyle == 'text'">
+									<input type="checkbox" class="btn-check" name="tierFilter-character" :id="'tierFilter-'+char" :value="char" v-model="tierList.poolFilter.char">
+									<label class="btn mx-1 my-1 w-auto" :for="'tierFilter-'+char">
+										{{char}}
+									</label>
+								</template>
+							</span>
+						</template>
+					</div>
+					<hr />
+					<div class="py-1">
+						<button type="button" class="btn btn-primary" @click="tierListResetPoolFilter()">重設篩選</button>
 					</div>
 				</div>
 			</div>

@@ -169,6 +169,23 @@ Vue.createApp({
 			toastMessage: '',
 			toastStatus: '',
 			db: null,
+			tierColorPresets: ['#ff7f7e','#ffbf7f','#ffdf80','#ffff7f','#bfff7f','#7fbfff','#bf7fff','#d4d4d4'],
+			tierList: {
+				title: '我的階層表',
+				tiers: [
+					{ id: 1, label: 'S', color: '#ff7f7e', cards: [] },
+					{ id: 2, label: 'A', color: '#ffbf7f', cards: [] },
+					{ id: 3, label: 'B', color: '#ffdf80', cards: [] },
+					{ id: 4, label: 'C', color: '#ffff7f', cards: [] },
+					{ id: 5, label: 'D', color: '#bfff7f', cards: [] },
+				],
+				poolFilter: {
+					rarity: [], char: [], clazz: [], element: [], coolDown: [],
+					charDisplayStyle: 'image',
+				},
+				nextTierId: 6,
+				openColorPopupId: null,
+			},
 		}
 	},
 	async created()
@@ -235,6 +252,12 @@ Vue.createApp({
 		});
 
 		this.createSortable();
+
+		// Close tier list color popup on outside click
+		var vueObj = this;
+		document.addEventListener('click', function(){
+			vueObj.tierList.openColorPopupId = null;
+		});
 	},
 	updated()
 	{
@@ -256,6 +279,11 @@ Vue.createApp({
 		const charInputList = document.querySelector('#charInputList');
 		if (charInputList != null && !charInputList.classList.contains('isDraggable')){
 			this.createSortable();
+		}
+
+		// Re-init tier list sortable when tier tab is active
+		if (this.tab === 'TIER'){
+			this.initTierListSortable();
 		}
 	},
 	methods: {
@@ -304,6 +332,9 @@ Vue.createApp({
 		},
 		switchTab(tab){
 			this.tab = tab;
+			if (tab === 'TIER'){
+				this.$nextTick(() => this.initTierListSortable());
+			}
 		},
 		getCardnameByChar(char){
 			return CardCenter.getCardNameByChar(char);
@@ -978,6 +1009,7 @@ Vue.createApp({
 			var charFilterDisplayStyle = this.setting['general']['charFilterDisplayStyle'];
 			if (['image','text','pixel'].includes(charFilterDisplayStyle)) {
 				this.cardFilter.charDisplayStyle = charFilterDisplayStyle;
+				this.tierList.poolFilter.charDisplayStyle = charFilterDisplayStyle;
 			}
 			var recordPanelCardImgSize = this.setting['general']['recordPanelCardImgSize'];
 			if (['normal','big','small', 'none'].includes(recordPanelCardImgSize)) {
@@ -1319,6 +1351,198 @@ Vue.createApp({
 			this.cardHpAtkSort.element = [];
 			this.cardHpAtkSort.coolDown = [];
 		},
+		// --- Tier List methods ---
+		tierListAddTier(){
+			this.tierList.tiers.push({
+				id: this.tierList.nextTierId++,
+				label: '',
+				color: '#d4d4d4',
+				cards: [],
+			});
+			this.$nextTick(() => this.initTierListSortable());
+		},
+		tierListRemoveTier(tierIdx){
+			this.tierList.tiers.splice(tierIdx, 1);
+		},
+		tierListRemoveCard(tier, cardIdx){
+			tier.cards.splice(cardIdx, 1);
+		},
+		tierListToggleColorPopup(tierId){
+			this.tierList.openColorPopupId = this.tierList.openColorPopupId === tierId ? null : tierId;
+		},
+		tierListCapture(){
+			var titleEl = document.querySelector('.tierlist-title');
+			var rowsEl = document.getElementById('tierListRows');
+			if (!titleEl || !rowsEl) return;
+			// Create a temporary wrapper to capture both elements together
+			var wrapper = document.createElement('div');
+			wrapper.style.display = 'inline-block';
+			wrapper.style.background = getComputedStyle(document.body).backgroundColor || '#fff';
+			wrapper.style.padding = '12px';
+			wrapper.appendChild(titleEl.cloneNode(true));
+			var titleClone = wrapper.querySelector('.tierlist-title');
+			titleClone.style.display = 'block';
+			titleClone.style.marginBottom = '8px';
+			wrapper.appendChild(rowsEl.cloneNode(true));
+			document.body.appendChild(wrapper);
+			var vueObj = this;
+			vueObj.showToast('截圖中...');
+			htmlToImage.toBlob(wrapper).then(function(blob){
+				document.body.removeChild(wrapper);
+				navigator.clipboard.write([
+					new ClipboardItem({ 'image/png': blob })
+				]).then(()=>{
+					vueObj.showToast('已複製至剪貼簿！');
+				}).catch(()=>{
+					vueObj.showToast('截圖失敗，請再試一次！');
+				});
+			}).catch(function(){
+				document.body.removeChild(wrapper);
+				vueObj.showToast('截圖失敗，請再試一次！');
+			});
+		},
+		tierListReset(){
+			if (!confirm('確定要重設整個階層表嗎？所有卡片將會回到卡池。')) return;
+			this.tierList.title = '我的階層表';
+			this.tierList.tiers = [
+				{ id: 1, label: 'S', color: '#ff7f7e', cards: [] },
+				{ id: 2, label: 'A', color: '#ffbf7f', cards: [] },
+				{ id: 3, label: 'B', color: '#ffdf80', cards: [] },
+				{ id: 4, label: 'C', color: '#ffff7f', cards: [] },
+				{ id: 5, label: 'D', color: '#bfff7f', cards: [] },
+			];
+			this.tierList.nextTierId = 6;
+			this.tierListResetPoolFilter();
+			this.$nextTick(() => this.initTierListSortable());
+		},
+		tierListResetPoolFilter(){
+			this.tierList.poolFilter.rarity = [];
+			this.tierList.poolFilter.char = [];
+			this.tierList.poolFilter.clazz = [];
+			this.tierList.poolFilter.element = [];
+			this.tierList.poolFilter.coolDown = [];
+		},
+		tierListGetCardObj(cardname){
+			return CardCenter.loadCardBasic(cardname);
+		},
+		tierListGetFilterIconPath(type, value){
+			if (type == 'char'){
+				var folder = this.tierList.poolFilter.charDisplayStyle == 'pixel' ? 'pixel' : 'image';
+				return './res/img/card-icon/' + folder + '/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
+			}
+			return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
+		},
+		tierListOpenFilter(){
+			var el = document.getElementById('tierListFilterPanel');
+			var bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(el);
+			bsOffcanvas.show();
+		},
+		initTierListSortable(){
+			var vueObj = this;
+
+			// Pool sortable
+			var poolEl = document.getElementById('tierListPool');
+			if (poolEl && !poolEl.classList.contains('isDraggable')){
+				Sortable.create(poolEl, {
+					group: { name: 'tierlist', pull: 'clone', put: false },
+					draggable: '.tierlist-card',
+					sort: false,
+					animation: 150,
+					onEnd: function(evt){
+						// Remove the clone left behind in pool by SortableJS
+						if (evt.pullMode === 'clone' && evt.clone && evt.clone.parentNode){
+							evt.clone.parentNode.removeChild(evt.clone);
+						}
+					},
+				});
+				poolEl.classList.add('isDraggable');
+			}
+
+			// Tier row sortables
+			document.querySelectorAll('.tier-drop-zone').forEach(function(el){
+				if (!el.classList.contains('isDraggable')){
+					var tierId = parseInt(el.getAttribute('data-tier-id'));
+					Sortable.create(el, {
+						group: { name: 'tierlist', pull: true, put: true },
+						draggable: '.tierlist-card',
+						animation: 150,
+						onAdd: function(evt){
+							var cardname = evt.item.getAttribute('data-cardname');
+							var tier = vueObj.tierList.tiers.find(t => t.id === tierId);
+							if (!tier) return;
+
+							// Prevent duplicate: if already in this tier, just remove the cloned DOM
+							if (tier.cards.includes(cardname)){
+								evt.item.parentNode.removeChild(evt.item);
+								return;
+							}
+
+							// Read the intended order from DOM (includes the newly added card)
+							var newOrder = [];
+							el.querySelectorAll(':scope > .tierlist-card[data-cardname]').forEach(function(c){
+								newOrder.push(c.getAttribute('data-cardname'));
+							});
+
+							// Remove from source tier (if moving between tiers)
+							for (var t of vueObj.tierList.tiers){
+								if (t.id === tierId) continue;
+								var idx = t.cards.indexOf(cardname);
+								if (idx > -1){
+									t.cards.splice(idx, 1);
+									break;
+								}
+							}
+
+							// Remove the moved DOM element — Vue will re-render
+							evt.item.parentNode.removeChild(evt.item);
+
+							// Set the tier data to the intended order
+							tier.cards.splice(0, tier.cards.length, ...newOrder);
+						},
+						onUpdate: function(evt){
+							var tier = vueObj.tierList.tiers.find(t => t.id === tierId);
+							if (!tier) return;
+
+							// Read the intended order from DOM BEFORE reverting
+							var newOrder = [];
+							el.querySelectorAll(':scope > .tierlist-card[data-cardname]').forEach(function(c){
+								newOrder.push(c.getAttribute('data-cardname'));
+							});
+
+							// Revert DOM: remove item and put it back at original position
+							// so Vue can apply its own rendering from the updated data
+							evt.from.removeChild(evt.item);
+							if (evt.oldIndex >= evt.from.children.length){
+								evt.from.appendChild(evt.item);
+							} else {
+								evt.from.insertBefore(evt.item, evt.from.children[evt.oldIndex]);
+							}
+
+							// Update Vue data to the intended order
+							tier.cards.splice(0, tier.cards.length, ...newOrder);
+						},
+					});
+					el.classList.add('isDraggable');
+				}
+			});
+
+			// Tier rows reorder
+			var tierContainer = document.getElementById('tierListRows');
+			if (tierContainer && !tierContainer.classList.contains('isDraggable')){
+				Sortable.create(tierContainer, {
+					draggable: '.tier-row',
+					handle: '.tier-label-cell',
+					animation: 150,
+					onEnd: function(evt){
+						if (evt.oldIndex !== evt.newIndex){
+							var moved = vueObj.tierList.tiers.splice(evt.oldIndex, 1)[0];
+							vueObj.tierList.tiers.splice(evt.newIndex, 0, moved);
+						}
+					},
+				});
+				tierContainer.classList.add('isDraggable');
+			}
+		},
 		handleCardTurnActionOrderEvt(evt, turn, cardIdx){
 			const order = Number(evt.target.value);
 			this.setCardCustomTurnActionOrder(turn, cardIdx, order);
@@ -1590,6 +1814,41 @@ Vue.createApp({
 			if (this.cardHpAtkSort.sortMode == 'desc'){
 				cardArr = cardArr.reverse();
 			}
+			return cardArr;
+		},
+		getTierListPoolCards(){
+			// All cards not placed in any tier
+			var placedCards = new Set();
+			for (var tier of this.tierList.tiers){
+				for (var c of tier.cards){
+					placedCards.add(c);
+				}
+			}
+			var cardDataJson = CardCenter.getCardData();
+			var cardArr = [];
+			for (var cardname of Object.keys(cardDataJson)){
+				if (!placedCards.has(cardname)){
+					cardArr.push(cardname);
+				}
+			}
+			// Apply pool filters
+			var filter = this.tierList.poolFilter;
+			if (filter.rarity.length > 0){
+				cardArr = cardArr.filter(n => filter.rarity.includes(cardDataJson[n].rarity));
+			}
+			if (filter.clazz.length > 0){
+				cardArr = cardArr.filter(n => filter.clazz.includes(cardDataJson[n].class));
+			}
+			if (filter.element.length > 0){
+				cardArr = cardArr.filter(n => filter.element.includes(cardDataJson[n].element));
+			}
+			if (filter.coolDown.length > 0){
+				cardArr = cardArr.filter(n => filter.coolDown.includes(cardDataJson[n].coolDown));
+			}
+			if (filter.char.length > 0){
+				cardArr = cardArr.filter(n => filter.char.includes(cardDataJson[n].char));
+			}
+			cardArr = cardArr.reverse();
 			return cardArr;
 		},
 		getFilteredCards(){
