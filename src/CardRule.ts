@@ -43,7 +43,7 @@ export class Rule{
 		this.uniqueName = uniqueName;
 		this.isPassive = isPassive;
 		if (typeof type == 'string'){
-			var idx = Object.values(RuleType).indexOf(type as RuleType);
+			const idx = Object.values(RuleType).indexOf(type as RuleType);
 			this.type = RuleType[Object.keys(RuleType)[idx]];
 		}
 		else{
@@ -68,7 +68,7 @@ export class Rule{
 	}
 
 	public toString() : string{
-		var s = this.type + ' ' + this.value;
+		let s = this.type + ' ' + this.value;
 		if (this.turn < 50 && this.turn > 1){
 			s += '（'+this.turn+'回合）'
 		}
@@ -80,7 +80,7 @@ export class Rule{
 
 	// Exact clone including rule ID
 	public clone(){
-		var cloneRule = new Rule({id: this.id, parentCardName: this.parentCardName, uniqueName: this.uniqueName, isPassive: this.isPassive, 
+		const cloneRule = new Rule({id: this.id, parentCardName: this.parentCardName, uniqueName: this.uniqueName, isPassive: this.isPassive, 
 			type: this.type, value: this.value, valueBy: this.valueBy,
 			turn: this.turn, poisonTurn: this.poisonTurn, maxCount: this.maxCount,
 			isNonOverlay: this.isNonOverlay, skillType: this.skillType, target: this.target,
@@ -93,14 +93,14 @@ export class Rule{
 
 	// rule ID increment
 	public cloneSimpleChild(){
-		var cloneRule = this.clone();
+		const cloneRule = this.clone();
 		cloneRule.id += Rule.CHILD_RULE_ID_INCREMENT;
 		return cloneRule;
 	}
 
 	// Not passive
 	public cloneSimple(){
-		var cloneRule = this.clone();
+		const cloneRule = this.clone();
 		cloneRule.isPassive = false;
 		return cloneRule;
 	}
@@ -114,8 +114,8 @@ export class Rule{
 		if (this.condition == null || this.condition.length == 0){
 			return true;
 		}
-		var isFulfilled = true;
-		for (var condition of this.condition){
+		let isFulfilled = true;
+		for (const condition of this.condition){
 			isFulfilled = isFulfilled && condition.isFulfilled(card, battle, turnAction, charAttackType);
 		}
 		return isFulfilled;
@@ -125,8 +125,8 @@ export class Rule{
 		if (this.condition == null || this.condition.length == 0 || this.maxCount == null){
 			return 1;
 		}
-		var count = this.maxCount;
-		for (var condition of this.condition){
+		let count = this.maxCount;
+		for (const condition of this.condition){
 			count = Math.min(count, condition.getFulfillTimes(card, battle, turnAction, attackType));
 		}
 		return count;
@@ -136,7 +136,7 @@ export class Rule{
 		if (this.condition == null || this.condition.length == 0){
 			return false;
 		}
-		for (var condition of this.condition){
+		for (const condition of this.condition){
 			if (Condition.CHECK_IN_BATTLE_LIST.includes(condition.type)){
 				return true;
 			}
@@ -151,9 +151,9 @@ export class Rule{
 		if (this.condition == null || this.condition.length == 0){
 			return false;
 		}
-		var types : ConditionType[] = [ConditionType.isAttack, ConditionType.isAttackType, 
+		const types : ConditionType[] = [ConditionType.isAttack, ConditionType.isAttackType, 
 			ConditionType.enemyIsAttacked];
-		for (var condition of this.condition){
+		for (const condition of this.condition){
 			if (types.includes(condition.type)){
 				return true;
 			}
@@ -165,7 +165,7 @@ export class Rule{
 		if (this.condition == null || this.condition.length == 0){
 			return false;
 		}
-		for (var condition of this.condition){
+		for (const condition of this.condition){
 			if (condition.type == ConditionType.isAttackType && condition.value == AttackType.Guard){
 				return true;
 			}
@@ -175,7 +175,7 @@ export class Rule{
 
 	isBeforeRoundRule(){
 		if (this.condition != null){
-			for (var condition of this.condition){
+			for (const condition of this.condition){
 				if (condition.type == ConditionType.atTurn || condition.type == ConditionType.everyTurn){
 					return true;
 				}
@@ -191,7 +191,7 @@ export class Rule{
 			}
 		}
 		else{
-			for (var condition of this.condition){
+			for (const condition of this.condition){
 				if (condition.type == ConditionType.enemyHpTrigger){
 					return true;
 				}
@@ -207,7 +207,7 @@ export class Rule{
 		// FIXME: 現時假設 「必殺技」+「攻擊時/被攻擊時」+「攻擊/治療」 = 觸發技，日後可能要移除
 		if (attackType == AttackType.SkillAttack && (this.type == RuleType.attack || this.type == RuleType.heal)){
 			if (this.condition != null){
-				for (var condition of this.condition){
+				for (const condition of this.condition){
 					if (condition.type == ConditionType.isAttack || condition.type == ConditionType.isAttackType){
 						return true;
 					}
@@ -223,7 +223,7 @@ export class Rule{
 	}
 
 	getRuleApplyTarget(team: Team, card: Card) : string[] {
-		var cardNames = [];
+		let cardNames = [];
 		if (this.target == null){
 			cardNames.push(card.name); //self
 		}
@@ -253,11 +253,11 @@ export class Rule{
 		}
 
 		// Load condition
-		var conditionArr = null;
+		let conditionArr = null;
 		if (condition != null){
 			conditionArr = [];
 			if (Array.isArray(condition)){
-				for (var item of condition){
+				for (const item of condition){
 					conditionArr.push(new Condition(item.type, item.value, item.operator, item.minCount));
 				}
 			}
@@ -270,7 +270,7 @@ export class Rule{
 		}
 
 		// Load Target
-		var targetItem = null;
+		let targetItem = null;
 		if (target != null){
 			if (typeof target == 'string'){
 				target = {type: target};
@@ -278,7 +278,7 @@ export class Rule{
 			targetItem = RuleTarget.loadTarget(target);
 		}
 
-		var rule = new Rule({isPassive: isPassive, uniqueName: uniqueName, type: type, value:value, valueBy: valueBy, turn: turn, poisonTurn: poisonTurn, maxCount: maxCount, isNonOverlay: isNonOverlay, skillType: skillType, condition: conditionArr, target: targetItem});
+		const rule = new Rule({isPassive: isPassive, uniqueName: uniqueName, type: type, value:value, valueBy: valueBy, turn: turn, poisonTurn: poisonTurn, maxCount: maxCount, isNonOverlay: isNonOverlay, skillType: skillType, condition: conditionArr, target: targetItem});
 		return rule;
 	}
 }
@@ -309,12 +309,12 @@ export class RuleTarget{
 	}
 
 	static loadTarget({type = TargetType.self, value = null, exceptType = null, exceptValue = null}){
-		var target = new RuleTarget(type, value, exceptType, exceptValue);
+		const target = new RuleTarget(type, value, exceptType, exceptValue);
 		return target;
 	}
 
 	private getTarget(type : TargetType, value : string[] | Class[] | number[] | null, team: Team, card: Card){
-		var cardNames = [];
+		let cardNames = [];
 		if (type == null){
 			// do nothing
 		}
@@ -325,16 +325,16 @@ export class RuleTarget{
 			cardNames = Object.values(team.cards).map(e=>e.name);
 		}
 		else if (type == TargetType.isClass){
-			var targetClasses = value as Class[];
+			const targetClasses = value as Class[];
 			cardNames = Object.values(team.cards).filter(e=>targetClasses.includes(e.class)).map(e=>e.name);
 		}
 		else if (type == TargetType.isChar){
-			var targetChars = value as string[];
+			const targetChars = value as string[];
 			cardNames = Object.values(team.cards).filter(e=>targetChars.includes(e.char)).map(e=>e.name);
 		}
 		else if (type == TargetType.isPosition){
-			var targetPos = value as number[];
-			var targetCards = team.getCardByPos(targetPos);
+			const targetPos = value as number[];
+			const targetCards = team.getCardByPos(targetPos);
 			cardNames = targetCards.map(e=>e.name);
 		}
 		return cardNames;
@@ -349,21 +349,21 @@ export class RuleTarget{
 	}
 
 	getTargetCard(team: Team, card: Card) : string[] {
-		var includeNames = this.getIncludeTarget(team, card);
-		var excludeNames = this.getExcludeTarget(team, card);
+		const includeNames = this.getIncludeTarget(team, card);
+		const excludeNames = this.getExcludeTarget(team, card);
 		return includeNames.filter(e=>!excludeNames.includes(e));
 	}
 
 	public toString() : string{
-		var type = this.type;
-		var value = '';
+		const type = this.type;
+		let value = '';
 		if (this.value != null){
 			value = this.value.toString();
 		}
 		if (type == TargetType.isPosition){
 			value = '第' + value + '位';
 		}
-		var exceptStr = this.exceptType != null ? this.exceptValue != null ? this.exceptValue : this.exceptType : '';
+		let exceptStr = this.exceptType != null ? this.exceptValue != null ? this.exceptValue : this.exceptType : '';
 		if (this.exceptType == TargetType.isPosition){
 			exceptStr = '第' + exceptStr + '位';
 		}
@@ -396,7 +396,7 @@ export class Condition{
 	}
 
 	isFulfilled(card: Card, battle: Battle, turnAction: TurnActionType, charAttackType : AttackType) : boolean{
-		var result = this.isCondFulfilled(card, battle, turnAction, charAttackType);
+		let result = this.isCondFulfilled(card, battle, turnAction, charAttackType);
 		if (this.operator == OperatorType.not){
 			result = !result;
 		}
@@ -404,8 +404,8 @@ export class Condition{
 	}
 	
 	isCondFulfilled(card: Card, battle: Battle, turnAction: TurnActionType, charAttackType : AttackType) : boolean{
-		var team = battle.team;
-		var currentTurn = battle.currentTurn;
+		const team = battle.team;
+		const currentTurn = battle.currentTurn;
 		if (this.type == ConditionType.hasChar){
 			return team.getCharCount(this.value.toString()) >= this.minCount;
 		}
@@ -440,13 +440,13 @@ export class Condition{
 			}
 		}
 		else if (this.type == ConditionType.hpHigher || this.type == ConditionType.hpLower){
-			if (Condition.HP_STATUS == ConditionHPStatus.fulfill){
+			if (battle.hpStatus == ConditionHPStatus.fulfill){
 				return true;
 			}
-			if (Condition.HP_STATUS == ConditionHPStatus.notFulfill){
+			if (battle.hpStatus == ConditionHPStatus.notFulfill){
 				return false;
 			}
-			var condHpPercent = Util.getPercentNumber(this.value.toString());
+			const condHpPercent = Util.getPercentNumber(this.value.toString());
 			if (this.type == ConditionType.hpHigher && card.currentHp > condHpPercent){
 				return true;
 			}
@@ -466,7 +466,7 @@ export class Condition{
 			if (currentTurn <= 1) 
 				return false;
 			if (Array.isArray(this.value)){
-				var numValArr = this.value as number[];
+				const numValArr = this.value as number[];
 				return ((currentTurn - numValArr[1]) % numValArr[0]) == 0;
 			}
 			else{
@@ -506,32 +506,32 @@ export class Condition{
 		}
 		else if (this.type == ConditionType.enemyHpTrigger){  // Boss專用：血量機制
 			if (!(card instanceof EnemyCard)) return false;
-			var condHpPercentArr = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
+			let condHpPercentArr = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
 			if (condHpPercentArr.length == 1){
 				condHpPercentArr.unshift("0%");
 			}
-			var condLowerHp = Util.getPercentNumber(condHpPercentArr[0]);
-			var condUpperHp = Util.getPercentNumber(condHpPercentArr[1]);
-			var cardLowestHpPercent = (card.lowestHp / card.hp) * 100;
+			const condLowerHp = Util.getPercentNumber(condHpPercentArr[0]);
+			const condUpperHp = Util.getPercentNumber(condHpPercentArr[1]);
+			const cardLowestHpPercent = (card.lowestHp / card.hp) * 100;
 			if (condLowerHp < cardLowestHpPercent && cardLowestHpPercent <= condUpperHp){
 				return true;
 			}
 			return false;
 		}
 		else if (this.type == ConditionType.hasRule){
-			var uniqueRuleNames = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
+			const uniqueRuleNames = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
 			return RuleHelper.isRulesHaveAllUniqueNames(battle.battleTurns[card.name].rules, uniqueRuleNames);
 		}
 		else if (this.type == ConditionType.hasPhase){
-			var targetPhases = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
+			const targetPhases = Array.isArray(this.value) ? (this.value as unknown as string[]) : [this.value as unknown as string];
 			
-			return card.hasPhase(targetPhases) || battle.enemyCard.hasPhase(targetPhases);
+			return card.hasPhase(targetPhases) || (battle.enemyCard != null && battle.enemyCard.hasPhase(targetPhases));
 		}
 		return false;
 	}
 
 	getFulfillTimes(card: Card, battle: Battle, turnAction: TurnActionType, charAttackType : AttackType): number{
-		var team = battle.team;
+		const team = battle.team;
 		if (this.type == ConditionType.charCount && (this.operator == null || this.operator == OperatorType.moreOrEq || this.operator == OperatorType.more)){
 			return team.getCharCount(this.value.toString());
 		}
@@ -548,10 +548,10 @@ export class Condition{
 	}
 
 	public toString() : string{
-		var type = this.type;
-		var value = this.value;
-		var operator = this.operator == null ? '' : this.operator;
-		var minCount = this.minCount > 1 ? this.minCount + '名' : '';
+		const type = this.type;
+		const value = this.value;
+		const operator = this.operator == null ? '' : this.operator;
+		const minCount = this.minCount > 1 ? this.minCount + '名' : '';
 		if (type == ConditionType.charCount){
 			return type.replace('角色', operator + '1名「'+value.toString() + '」');
 		}

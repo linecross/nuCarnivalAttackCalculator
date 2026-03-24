@@ -49,11 +49,11 @@ export class Card{
 	}
 
 	hasPhase(phase: string | string[]) : boolean{
-		var phaseArr = Array.isArray(phase) ? phase : [phase];
+		const phaseArr = Array.isArray(phase) ? phase : [phase];
 		return phaseArr.findIndex( p => this.phase.includes(p)) != -1;
 	}
 	setPhase(phase: string | string[]){
-		var phaseArr = Array.isArray(phase) ? phase : [phase];
+		const phaseArr = Array.isArray(phase) ? phase : [phase];
 		this.phase = [];
 		phaseArr.forEach( p => this.phase.push(p));
 	}
@@ -71,7 +71,7 @@ export class Card{
 	}
 
 	getPassiveRuleSummary(){
-		var ruleArr : Rule[] = [];
+		let ruleArr : Rule[] = [];
 		if (this.star >= 3) ruleArr = ruleArr.concat(this.star3Rule);
 		if (this.star == 5)	ruleArr = ruleArr.concat(this.star5Rule);
 
@@ -96,18 +96,18 @@ export class Card{
 
 	getAttackRuleSummary(){
 		this.initSkill();
-		var ruleArr : Rule[] = [];
+		let ruleArr : Rule[] = [];
 		ruleArr = ruleArr.concat(this.attackRule);
 		ruleArr = ruleArr.concat(this.skillRule);
 		return ruleArr;
 	}
 
 	private getCardVal(baseVal : number, potential : number) : number{
-		var val : number = 0;
+		let val : number = 0;
 		val = Math.ceil(baseVal / Math.pow(Math.fround(1.05), 59)) * (0.5 + (0.1 * this.star));
-		var bondVal = 0;
+		let bondVal = 0;
 		if (this.bond > 0 && this.rarity != Rarity.N) {
-			var bondVals = GAME_CONFIG.ROOM.DEFAULT;
+			let bondVals = GAME_CONFIG.ROOM.DEFAULT;
 			if (this.rarity == Rarity.SSR){
 				bondVals = GAME_CONFIG.ROOM.SSR;
 			}
@@ -146,8 +146,8 @@ export class Card{
 	}
 
 	getSelfHpUp() : number{
-		var passiveRuleArr = this.getPassiveRuleSummary();
-		var selfHpUp = passiveRuleArr.filter((r:Rule) =>r.type == RuleType.hpUp)
+		const passiveRuleArr = this.getPassiveRuleSummary();
+		const selfHpUp = passiveRuleArr.filter((r:Rule) =>r.type == RuleType.hpUp)
 			.filter((r:Rule) => r.target == null || r.target.type.includes(TargetType.self))
 			.map((r:Rule) => Util.getPercentNumber(r.value))
 			.reduce((sum, e) => sum + e, 0);
@@ -171,7 +171,7 @@ export class Card{
 	}
 
 	getPotentialPercent(hpOrAtk: string, tier: number) : number{
-		var potType = 'D';
+		let potType = 'D';
 		if (this.potType == PotentialType.A) potType = 'A';
 		else if (this.potType == PotentialType.B) potType = 'B';
 		else if (this.potType == PotentialType.C) potType = 'C';
@@ -183,7 +183,7 @@ export class Card{
 
 		tier = tier+1;
 		let potArr = GAME_CONFIG.POTTYPE[potType][hpOrAtk];
-		var sum = 0;
+		let sum = 0;
 		for (let i = 0; i < tier-1; i++){
 			sum += potArr[i].reduce((a, b) => a + b);
 		}
@@ -191,8 +191,8 @@ export class Card{
 	}
 
 	static loadCard(data:Object) : Card {
-		var card = new Card();
-		for (var key of Object.keys(data)) {
+		const card = new Card();
+		for (const key of Object.keys(data)) {
 			card[key] = data[key];
 		}
 		
@@ -200,7 +200,7 @@ export class Card{
 	}
 
 	static loadCardFromJson(name: string, data:Object, isLoadFulldata: boolean = true) : Card {
-		var card = new Card();
+		let card = new Card();
 		card.name = name;
 		card = Card.updateCard(card, data, isLoadFulldata);
 		return card;
@@ -211,14 +211,14 @@ export class Card{
 	}
 
 	static updateCard(card: Card, data:Object, isLoadFulldata: boolean = true) : Card {
-		var simpleRules = isLoadFulldata ? ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'] : [];
-		var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
-		for (var key of Object.keys(data)) {
+		const simpleRules = isLoadFulldata ? ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'] : [];
+		const permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
+		for (const key of Object.keys(data)) {
 			if (simpleRules.includes(key) || permRules.includes(key)) {
-				var isPermRule = permRules.includes(key);
+				const isPermRule = permRules.includes(key);
 				card[key] = [];
-				for (var ruleItem of data[key]){
-					var rule = Rule.loadRule(ruleItem, isPermRule);
+				for (const ruleItem of data[key]){
+					const rule = Rule.loadRule(ruleItem, isPermRule);
 					rule.parentCardName = card.name;
 					card[key].push(rule);
 				}
@@ -270,13 +270,13 @@ export class Team{
 	}
 
 	getCard(name: string) : Card | null {
-		var result = this.cards.filter(e=> e.name == name);
+		const result = this.cards.filter(e=> e.name == name);
 		return result.length > 0 ? result[0] : null;
 	}
 
 	getCardByPos(posArr: number[]) : Card[]{
-		var cards : Card[] = [];
-		for (var pos of posArr){
+		const cards : Card[] = [];
+		for (const pos of posArr){
 			if (this.position.length >= pos){
 				cards.push(this.getCard(this.position[pos]));
 			}
@@ -285,9 +285,9 @@ export class Team{
 	}
 
 	getCardByActionOrder(turn: number) : Card[]{
-		var cards : Card[] = [];
+		const cards : Card[] = [];
 		let turnOrder = this.actionOrderByTurn[turn] ? this.actionOrderByTurn[turn] : this.actionOrder;
-		for (var name of turnOrder){
+		for (const name of turnOrder){
 			cards.push(this.getCard(name));
 		}
 		return cards;
@@ -345,12 +345,12 @@ export class CardCenter{
 		if (Object.keys(CardCenter.userEnemyCardData).length === 0){
 			return CardCenter.enemyCardData;
 		}
-		var fullCardData = JSON.parse(JSON.stringify(CardCenter.enemyCardData));
+		let fullCardData = JSON.parse(JSON.stringify(CardCenter.enemyCardData));
 		fullCardData = CardCenter.concatData(fullCardData, CardCenter.userEnemyCardData);
 		return fullCardData;
 	}
 	static getEnemyList(){
-		var activeEnemyNames = [];
+		const activeEnemyNames = [];
 		for (const [name, data] of Object.entries(CardCenter.getEnemyData())){
 			if (data['active'] === 'true'){
 				activeEnemyNames.push(name);
@@ -359,7 +359,7 @@ export class CardCenter{
 		return activeEnemyNames;
 	}
 	static getEnemyCard(key: string){
-		var fullEnemyData = CardCenter.getEnemyData();
+		const fullEnemyData = CardCenter.getEnemyData();
 		if (fullEnemyData[key] != null){
 			return EnemyCard.loadCardFromJson(key, fullEnemyData[key]);
 		}
@@ -367,7 +367,7 @@ export class CardCenter{
 	}
 
 	private static concatData(o1:{}, o2:{}) : {}{
-		for (var key of Object.keys(o2)){
+		for (const key of Object.keys(o2)){
 			o1[key] = o2[key];
 		}
 		return o1;
@@ -377,13 +377,13 @@ export class CardCenter{
 		if (Object.keys(CardCenter.userCardData).length === 0){
 			return CardCenter.cardData;
 		}
-		var fullCardData = JSON.parse(JSON.stringify(CardCenter.cardData));
+		let fullCardData = JSON.parse(JSON.stringify(CardCenter.cardData));
 		fullCardData = CardCenter.concatData(fullCardData, CardCenter.userCardData);
 		return fullCardData;
 	}
 
 	static setupDefaultTeamStar(team: Team, ssrStar: number, srStar: number){
-		for (var card of team.cards){
+		for (const card of team.cards){
 			if (card.rarity == Rarity.SSR){
 				card.star = ssrStar;
 			}
@@ -409,9 +409,9 @@ export class CardCenter{
 	}
 
 	static getCardNameByChar(char: string) : string[]{
-		var arr : string[] = [];
-		var cardData = CardCenter.getCardData();
-		for (var name of Object.keys(cardData)){
+		let arr : string[] = [];
+		const cardData = CardCenter.getCardData();
+		for (const name of Object.keys(cardData)){
 			if (cardData[name].char == char){
 				arr.push(name);
 			}
@@ -434,7 +434,7 @@ export class EnemyCard extends Card{
 	guardPercent: 50;
 
 	static loadCardFromJson(name: string, data:Object) : EnemyCard {
-		var card = new EnemyCard();
+		let card = new EnemyCard();
 		card.name = name;
 		card = EnemyCard.updateCard(card, data);
 		return card;
@@ -445,14 +445,14 @@ export class EnemyCard extends Card{
 	}
 
 	static updateCard(card: EnemyCard, data:Object) : EnemyCard {
-		var simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
-		var permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
-		for (var key of Object.keys(data)) {
+		const simpleRules = ['attackRule', 'skillLv1Rule', 'skillLv2Rule', 'skillLv3Rule'];
+		const permRules = ['star3Rule', 'star5Rule', 'pot6Rule', 'pot12Rule'];
+		for (const key of Object.keys(data)) {
 			if (simpleRules.includes(key) || permRules.includes(key)){
-				var isPermRule = permRules.includes(key);
+				const isPermRule = permRules.includes(key);
 				card[key] = [];
-				for (var ruleItem of data[key]){
-					var rule = Rule.loadRule(ruleItem, isPermRule);
+				for (const ruleItem of data[key]){
+					const rule = Rule.loadRule(ruleItem, isPermRule);
 					rule.parentCardName = card.name;
 					card[key].push(rule);
 				}
@@ -475,8 +475,8 @@ export class EnemyCard extends Card{
 		}
 	}
 	minusRemainHp(val: number){
-		var nextLockHpVal = 0;
-		var nextLockHpPercent = 0;
+		let nextLockHpVal = 0;
+		let nextLockHpPercent = 0;
 
 		if (this.battleHpLock.length > 0){
 			nextLockHpPercent = Util.getNumber(this.battleHpLock[0]);

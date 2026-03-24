@@ -474,6 +474,9 @@
 							<a :class="'nav-link ' + (tab == 'SORT' ? 'active' : '')" href="#" @click="switchTab('SORT')">排行表</a>
 						</li>
 						<li class="nav-item">
+							<a :class="'nav-link ' + (tab == 'TIER' ? 'active' : '')" href="#" @click="switchTab('TIER')">Tier List</a>
+						</li>
+						<li class="nav-item">
 							<a :class="'nav-link ' + (tab == 'JSON' ? 'active' : '')" href="#" @click="switchTab('JSON')">匯入Json</a>
 						</li>
 						<li class="nav-item">
@@ -1128,6 +1131,210 @@
 				</div>
 			</div>
 
+			<!-- ===== Tier List Tab ===== -->
+			<div v-if="tab == 'TIER'" class="row justify-content-center mb-2">
+				<div class="col-xs-12 col-md-12 col-lg-11">
+
+					<!-- Tier List Title -->
+					<div class="tierlist-title-row d-flex align-items-center mb-3 gap-2 flex-wrap">
+						<input type="text" class="tierlist-title" v-model="tierList.title" placeholder="Tier List標題">
+						<button type="button" class="btn btn-outline-success btn-sm text-nowrap" @click="tierListSave()" title="儲存">
+							<i class="fa-solid fa-floppy-disk"></i> 儲存
+						</button>
+						<div class="tierlist-load-wrapper position-relative">
+							<button type="button" class="btn btn-outline-primary btn-sm text-nowrap" @click.stop="tierListToggleLoadDropdown()" title="載入">
+								<i class="fa-solid fa-folder-open"></i> 載入
+							</button>
+							<div v-if="tierList.loadDropdownOpen" class="tierlist-load-dropdown" @click.stop>
+								<input type="text" class="tierlist-load-search" v-model="tierList.loadSearchText" placeholder="搜尋...">
+								<div class="tierlist-load-list">
+									<div v-for="item in tierListFilteredSavedKeys"
+										:key="item.title" class="tierlist-load-item">
+										<div class="tierlist-load-item-info" @click="tierListLoad(item.title)">
+											<span class="tierlist-load-item-title">{{ item.title }}</span>
+											<span class="tierlist-load-item-date">{{ new Date(item.lastModified).toLocaleDateString() }}</span>
+										</div>
+										<button type="button" class="tierlist-load-item-delete" @click.stop="tierListDeleteSaved(item.title)" title="刪除">
+											<i class="fa-solid fa-trash-can"></i>
+										</button>
+									</div>
+									<div v-if="tierListFilteredSavedKeys.length === 0" class="tierlist-load-empty">無儲存紀錄</div>
+								</div>
+							</div>
+						</div>
+						<button type="button" class="btn btn-outline-secondary btn-sm text-nowrap" @click="tierListCapture()" title="截圖">
+							<i class="fa-solid fa-camera"></i> 截圖
+						</button>
+						<button type="button" class="btn btn-outline-danger btn-sm text-nowrap" @click="tierListReset()">
+							<i class="fa-solid fa-rotate-left"></i> 全部重設
+						</button>
+					</div>
+
+					<!-- Tier Rows -->
+					<div id="tierListRows">
+						<div v-for="(tier, tIdx) in tierList.tiers" :key="tier.id" class="tier-row d-flex mb-1 position-relative" :data-tier-id="tier.id">
+							<!-- Row Action Buttons (top-right, hover visible) -->
+							<div class="tier-row-actions">
+								<button type="button" class="tier-add-btn" @click="tierListAddTierAfter(tIdx)" title="新增Tier">＋</button>
+								<button type="button" class="tier-remove-btn" @click="tierListRemoveTier(tIdx)" title="移除Tier">✕</button>
+							</div>
+							<!-- Label Cell -->
+							<div class="tier-label-cell d-flex flex-column align-items-center justify-content-center p-2" :style="{ backgroundColor: tier.color }">
+								<textarea class="tier-label-input text-center fw-bold" v-model="tier.label" rows="1" @input="tierListAutoResizeLabel($event)"></textarea>
+								<div class="tier-label-actions">
+									<span class="tier-color-picker-btn" @click.stop="tierListToggleColorPopup(tier.id)" title="選擇顏色">
+										<span class="tier-color-swatch" :style="{ backgroundColor: tier.color }"></span> 🎨
+									</span>
+								</div>
+								<!-- Color Picker Popup -->
+								<div v-if="tierList.openColorPopupId === tier.id" class="tier-color-popup" @click.stop>
+									<div class="tier-color-grid">
+										<span v-for="c in tierColorPresets" :key="c"
+											class="tier-color-preset" :class="{ active: tier.color === c }"
+											:style="{ backgroundColor: c }" :title="c"
+											@click="tier.color = c; tierList.openColorPopupId = null"></span>
+									</div>
+									<div class="tier-color-custom-row">
+										<label>自訂</label>
+										<input type="color" :value="tier.color" @input="tier.color = $event.target.value" />
+									</div>
+								</div>
+							</div>
+							<!-- Card Drop Zone -->
+							<div class="tier-drop-zone d-flex flex-wrap align-items-start align-content-start flex-grow-1" :data-tier-id="tier.id" :style="{ backgroundColor: tier.color + '33' }">
+								<template v-for="(cardname, cIdx) in tier.cards">
+									<div class="tierlist-card" :data-cardname="cardname" :key="'tier-'+tier.id+'-'+cardname">
+										<div class="card-block normal">
+											<div class="card-image-div">
+												<img :src="getCardImagePath(tierListGetCardObj(cardname))" @error="loadNoCardImage" class="card-image" />
+												<img :src="getCardIconPath(tierListGetCardObj(cardname), 'element')" class="card-icon-element" />
+												<img :src="getCardIconPath(tierListGetCardObj(cardname), 'class')" class="card-icon-class" />
+												<img :src="getCardIconPath(tierListGetCardObj(cardname), 'rarity')" class="card-icon-rarity" />
+											</div>
+											<div class="card-name">{{ cardname }}</div>
+										</div>
+										<button type="button" class="btn btn-sm tierlist-card-remove" @click="tierListRemoveCard(tier, cIdx)" title="移回卡池">✕</button>
+									</div>
+								</template>
+							</div>
+						</div>
+					</div>
+					<div v-if="tierList.tiers.length === 0" class="mt-2 mb-3">
+						<button type="button" class="btn btn-outline-primary" @click="tierListAddTier()">
+							<i class="fa-solid fa-plus"></i> 新增Tier
+						</button>
+					</div>
+
+					<hr />
+
+					<!-- Card Pool Section -->
+					<div class="d-flex align-items-center mb-2 gap-2">
+						<h5 class="mb-0">卡池</h5>
+						<button type="button" class="btn btn-outline-secondary btn-sm" @click="tierListOpenFilter()">
+							<i class="fa-solid fa-filter"></i> 篩選
+						</button>
+					</div>
+
+					<!-- Card Pool Grid -->
+					<div id="tierListPool" :key="'pool-' + tierList.poolKey" class="tierlist-pool d-flex flex-wrap">
+						<template v-for="cardname in getTierListPoolCards">
+							<div class="tierlist-card" :data-cardname="cardname" :key="'pool-'+cardname">
+								<div class="card-block normal">
+									<div class="card-image-div">
+										<img :src="getCardImagePath(tierListGetCardObj(cardname))" @error="loadNoCardImage" class="card-image" />
+										<img :src="getCardIconPath(tierListGetCardObj(cardname), 'element')" class="card-icon-element" />
+										<img :src="getCardIconPath(tierListGetCardObj(cardname), 'class')" class="card-icon-class" />
+										<img :src="getCardIconPath(tierListGetCardObj(cardname), 'rarity')" class="card-icon-rarity" />
+									</div>
+									<div class="card-name">{{ cardname }}</div>
+								</div>
+							</div>
+						</template>
+					</div>
+
+				</div>
+			</div>
+
+			<!-- Tier List Filter Offcanvas Sidebar -->
+			<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="tierListFilterPanel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title">卡池篩選</h5>
+					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<div class="py-1">
+						<div>稀有度</div>
+						<template v-for="rarity in FILTERS.rarity">
+							<span>
+								<input type="checkbox" class="btn-check" name="tierFilter-rarity" autocomplete="off" :id="'tierFilter-'+rarity" :value="rarity" v-model="tierList.poolFilter.rarity">
+								<label class="btn btn-outline-primary col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+rarity">{{rarity}}</label>
+							</span>
+						</template>
+					</div>
+					<div class="py-1 cardFilter-clazz">
+						<div>定位</div>
+						<template v-for="clazz in FILTERS.clazz">
+							<span>
+								<input type="checkbox" class="btn-check" name="tierFilter-clazz" :id="'tierFilter-'+clazz" :value="clazz" v-model="tierList.poolFilter.clazz">
+								<label class="col-1 mx-1 w-auto" :for="'tierFilter-'+clazz">
+									<img :src="tierListGetFilterIconPath('class', clazz)" />
+								</label>
+							</span>
+						</template>
+					</div>
+					<div class="py-1 cardFilter-element">
+						<div>屬性</div>
+						<template v-for="element in FILTERS.element">
+							<span>
+								<input type="checkbox" class="btn-check" name="tierFilter-element" :id="'tierFilter-'+element" :value="element" v-model="tierList.poolFilter.element">
+								<label class="col-1 mx-1 w-auto" :for="'tierFilter-'+element">
+									<img :src="tierListGetFilterIconPath('element', element)" />
+								</label>
+							</span>
+						</template>
+					</div>
+					<div class="py-1">
+						<div>CD</div>
+						<template v-for="coolDown in FILTERS.coolDown">
+							<span>
+								<input type="checkbox" class="btn-check" name="tierFilter-coolDown" autocomplete="off" :id="'tierFilter-'+coolDown" :value="coolDown" v-model="tierList.poolFilter.coolDown">
+								<label class="btn btn-outline-primary col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+coolDown">{{coolDown}}</label>
+							</span>
+						</template>
+					</div>
+					<div class="py-1 cardFilter-char" :class="tierList.poolFilter.charDisplayStyle">
+						<div>角色</div>
+						<template v-for="char in CHARACTERS">
+							<span v-if="char != ''" :class="'filter-'+getFilterPanelCode('char', char)">
+								<template v-if="tierList.poolFilter.charDisplayStyle == 'pixel'">
+									<input type="checkbox" class="btn-check" name="tierFilter-character" :id="'tierFilter-'+char" :value="char" v-model="tierList.poolFilter.char">
+									<label class="col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+char">
+										<img :src="tierListGetFilterIconPath('char', char)" />
+										{{char}}
+									</label>
+								</template>
+								<template v-if="tierList.poolFilter.charDisplayStyle == 'image'">
+									<input type="checkbox" class="btn-check" name="tierFilter-character" :id="'tierFilter-'+char" :value="char" v-model="tierList.poolFilter.char">
+									<label class="col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+char">
+										<span class="filter-icon-char-image" :class="'icon-'+getFilterPanelCode('char', char)"></span>
+									</label>
+								</template>
+								<template v-if="tierList.poolFilter.charDisplayStyle == 'text'">
+									<input type="checkbox" class="btn-check" name="tierFilter-character" :id="'tierFilter-'+char" :value="char" v-model="tierList.poolFilter.char">
+									<label class="btn mx-1 my-1 w-auto" :for="'tierFilter-'+char">
+										{{char}}
+									</label>
+								</template>
+							</span>
+						</template>
+					</div>
+					<hr />
+					<div class="py-1">
+						<button type="button" class="btn btn-primary" @click="tierListResetPoolFilter()">重設篩選</button>
+					</div>
+				</div>
+			</div>
+
 			<div v-if="tab == 'JSON'" class="row justify-content-center mb-2">
 				<div class="col-xs-12 col-md-12 col-lg-11">
 					<div class="row">
@@ -1323,6 +1530,10 @@
 						<h5>功能更新</h5>
 
 						<textarea rows="8">
+[20260323]
+Tier List：自製Tier List，可截圖，可儲存於本機瀏覽器
+
+
 [20250802]
 全員快速設定功能：可以快速設定隊伍全員的潛力和行動模式
 UI更新：基本設定、隊伍設定、全員快速設定改成折疊型
