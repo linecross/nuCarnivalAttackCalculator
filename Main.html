@@ -1173,8 +1173,11 @@
 					<!-- Tier Rows -->
 					<div id="tierListRows">
 						<div v-for="(tier, tIdx) in tierList.tiers" :key="tier.id" class="tier-row d-flex mb-1 position-relative" :data-tier-id="tier.id">
-							<!-- Delete Button (top-right) -->
-							<button type="button" class="tier-remove-btn" @click="tierListRemoveTier(tIdx)" title="Delete Tier">✕</button>
+							<!-- Row Action Buttons (top-right, hover visible) -->
+							<div class="tier-row-actions">
+								<button type="button" class="tier-add-btn" @click="tierListAddTierAfter(tIdx)" title="新增Tier">＋</button>
+								<button type="button" class="tier-remove-btn" @click="tierListRemoveTier(tIdx)" title="移除Tier">✕</button>
+							</div>
 							<!-- Label Cell -->
 							<div class="tier-label-cell d-flex flex-column align-items-center justify-content-center p-2" :style="{ backgroundColor: tier.color }">
 								<textarea class="tier-label-input text-center fw-bold" v-model="tier.label" rows="1" @input="tierListAutoResizeLabel($event)"></textarea>
@@ -1216,7 +1219,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="mt-2 mb-3">
+					<div v-if="tierList.tiers.length === 0" class="mt-2 mb-3">
 						<button type="button" class="btn btn-outline-primary" @click="tierListAddTier()">
 							<i class="fa-solid fa-plus"></i> 新增Tier
 						</button>
@@ -1233,7 +1236,7 @@
 					</div>
 
 					<!-- Card Pool Grid -->
-					<div id="tierListPool" class="tierlist-pool d-flex flex-wrap">
+					<div id="tierListPool" :key="'pool-' + tierList.poolKey" class="tierlist-pool d-flex flex-wrap">
 						<template v-for="cardname in getTierListPoolCards">
 							<div class="tierlist-card" :data-cardname="cardname" :key="'pool-'+cardname">
 								<div class="card-block normal">

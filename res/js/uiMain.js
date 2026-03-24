@@ -178,8 +178,6 @@ Vue.createApp({
 					{ id: 3, label: 'B', color: '#ffdf80', cards: [] },
 					{ id: 4, label: 'C', color: '#ffff7f', cards: [] },
 					{ id: 5, label: 'D', color: '#bfff7f', cards: [] },
-					{ id: 6, label: 'E', color: '#7fbfff', cards: [] },
-					{ id: 7, label: 'F', color: '#bf7fff', cards: [] },
 				],
 				poolFilter: {
 					rarity: [], char: [], clazz: [], element: [], coolDown: [],
@@ -190,6 +188,7 @@ Vue.createApp({
 				savedKeys: [],
 				loadDropdownOpen: false,
 				loadSearchText: '',
+				poolKey: 0,
 			},
 		}
 	},
@@ -210,6 +209,8 @@ Vue.createApp({
 		this.db.version(2).stores({
 			damageRecords: '++id, teamName, [turns+cardname]'
 		});
+
+		this.loadSettingFromStorage();
 
 		await fetch("./res/json/cardData.json")
 		.then(resp => {
@@ -245,8 +246,6 @@ Vue.createApp({
 				this.loadDamageRecord(damageRecord);
 			}
 		});
-
-		this.loadSettingFromStorage();
 	},
 	mounted: function(){
 		this.$watch(vm => [vm.setting], val => {
@@ -1413,7 +1412,8 @@ Vue.createApp({
 			this.tierList.loadDropdownOpen = false;
 			this.tierList.loadSearchText = '';
 			this.tierListResetPoolFilter();
-			this.$nextTick(() => this.initTierListSortable());
+			this.tierList.poolKey++;
+			this.$nextTick(() => this.initTierListSortable(true));
 			this.showToast('已載入「' + title + '」');
 		},
 		tierListToggleLoadDropdown(){
@@ -1436,11 +1436,22 @@ Vue.createApp({
 			});
 			this.$nextTick(() => this.initTierListSortable());
 		},
+		tierListAddTierAfter(tierIdx){
+			this.tierList.tiers.splice(tierIdx + 1, 0, {
+				id: this.tierList.nextTierId++,
+				label: '',
+				color: '#d4d4d4',
+				cards: [],
+			});
+			this.$nextTick(() => this.initTierListSortable());
+		},
 		tierListRemoveTier(tierIdx){
 			this.tierList.tiers.splice(tierIdx, 1);
 		},
 		tierListRemoveCard(tier, cardIdx){
 			tier.cards.splice(cardIdx, 1);
+			this.tierList.poolKey++;
+			this.$nextTick(() => this.initTierListSortable(true));
 		},
 		tierListToggleColorPopup(tierId){
 			this.tierList.openColorPopupId = this.tierList.openColorPopupId === tierId ? null : tierId;
@@ -1488,7 +1499,8 @@ Vue.createApp({
 			];
 			this.tierList.nextTierId = 6;
 			this.tierListResetPoolFilter();
-			this.$nextTick(() => this.initTierListSortable());
+			this.tierList.poolKey++;
+			this.$nextTick(() => this.initTierListSortable(true));
 		},
 		tierListResetPoolFilter(){
 			this.tierList.poolFilter.rarity = [];
@@ -1517,32 +1529,44 @@ Vue.createApp({
 			var bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(el);
 			bsOffcanvas.show();
 		},
-		initTierListSortable(){
+		initTierListSortable(forceReinit){
 			var vueObj = this;
 
 			// Pool sortable
 			var poolEl = document.getElementById('tierListPool');
-			if (poolEl && !poolEl.classList.contains('isDraggable')){
-				Sortable.create(poolEl, {
-					group: { name: 'tierlist', pull: 'clone', put: false },
-					draggable: '.tierlist-card',
-					sort: false,
-					animation: 150,
-					onEnd: function(evt){
-						// Remove the clone left behind in pool by SortableJS
-						if (evt.pullMode === 'clone' && evt.clone && evt.clone.parentNode){
-							evt.clone.parentNode.removeChild(evt.clone);
-						}
-					},
-				});
-				poolEl.classList.add('isDraggable');
+			if (poolEl) {
+				if (forceReinit && poolEl._sortable) {
+					poolEl._sortable.destroy();
+					poolEl._sortable = null;
+					poolEl.classList.remove('isDraggable');
+				}
+				if (!poolEl.classList.contains('isDraggable')){
+					poolEl._sortable = Sortable.create(poolEl, {
+						group: { name: 'tierlist', pull: 'clone', put: false },
+						draggable: '.tierlist-card',
+						sort: false,
+						animation: 150,
+						onEnd: function(evt){
+							// Remove the clone left behind in pool by SortableJS
+							if (evt.pullMode === 'clone' && evt.clone && evt.clone.parentNode){
+								evt.clone.parentNode.removeChild(evt.clone);
+							}
+						},
+					});
+					poolEl.classList.add('isDraggable');
+				}
 			}
 
 			// Tier row sortables
 			document.querySelectorAll('.tier-drop-zone').forEach(function(el){
+				if (forceReinit && el._sortable) {
+					el._sortable.destroy();
+					el._sortable = null;
+					el.classList.remove('isDraggable');
+				}
 				if (!el.classList.contains('isDraggable')){
 					var tierId = parseInt(el.getAttribute('data-tier-id'));
-					Sortable.create(el, {
+					el._sortable = Sortable.create(el, {
 						group: { name: 'tierlist', pull: true, put: true },
 						draggable: '.tierlist-card',
 						animation: 150,
@@ -1557,11 +1581,20 @@ Vue.createApp({
 								return;
 							}
 
-							// Read the intended order from DOM (includes the newly added card)
-							var newOrder = [];
-							el.querySelectorAll(':scope > .tierlist-card[data-cardname]').forEach(function(c){
-								newOrder.push(c.getAttribute('data-cardname'));
-							});
+							var newIndex = evt.newIndex;
+
+							// Revert DOM: remove the item SortableJS placed here
+							evt.item.parentNode.removeChild(evt.item);
+
+							// If from another tier (not cloned from pool), put it back in source
+							// so Vue can cleanly patch the source tier's DOM
+							if (evt.from.id !== 'tierListPool') {
+								if (evt.oldIndex >= evt.from.children.length) {
+									evt.from.appendChild(evt.item);
+								} else {
+									evt.from.insertBefore(evt.item, evt.from.children[evt.oldIndex]);
+								}
+							}
 
 							// Remove from source tier (if moving between tiers)
 							for (var t of vueObj.tierList.tiers){
@@ -1573,11 +1606,12 @@ Vue.createApp({
 								}
 							}
 
-							// Remove the moved DOM element — Vue will re-render
-							evt.item.parentNode.removeChild(evt.item);
+							// Add to target tier at the intended drop position
+							tier.cards.splice(newIndex, 0, cardname);
 
-							// Set the tier data to the intended order
-							tier.cards.splice(0, tier.cards.length, ...newOrder);
+							// Force pool re-render and reinit all sortables after Vue patches
+							vueObj.tierList.poolKey++;
+							vueObj.$nextTick(() => vueObj.initTierListSortable(true));
 						},
 						onUpdate: function(evt){
 							var tier = vueObj.tierList.tiers.find(t => t.id === tierId);
@@ -1600,6 +1634,9 @@ Vue.createApp({
 
 							// Update Vue data to the intended order
 							tier.cards.splice(0, tier.cards.length, ...newOrder);
+
+							// Reinit sortables after Vue patches to keep state fresh
+							vueObj.$nextTick(() => vueObj.initTierListSortable(true));
 						},
 					});
 					el.classList.add('isDraggable');
@@ -1608,19 +1645,26 @@ Vue.createApp({
 
 			// Tier rows reorder
 			var tierContainer = document.getElementById('tierListRows');
-			if (tierContainer && !tierContainer.classList.contains('isDraggable')){
-				Sortable.create(tierContainer, {
-					draggable: '.tier-row',
-					handle: '.tier-label-cell',
-					animation: 150,
-					onEnd: function(evt){
-						if (evt.oldIndex !== evt.newIndex){
-							var moved = vueObj.tierList.tiers.splice(evt.oldIndex, 1)[0];
-							vueObj.tierList.tiers.splice(evt.newIndex, 0, moved);
-						}
-					},
-				});
-				tierContainer.classList.add('isDraggable');
+			if (tierContainer) {
+				if (forceReinit && tierContainer._sortable) {
+					tierContainer._sortable.destroy();
+					tierContainer._sortable = null;
+					tierContainer.classList.remove('isDraggable');
+				}
+				if (!tierContainer.classList.contains('isDraggable')){
+					tierContainer._sortable = Sortable.create(tierContainer, {
+						draggable: '.tier-row',
+						handle: '.tier-label-cell',
+						animation: 150,
+						onEnd: function(evt){
+							if (evt.oldIndex !== evt.newIndex){
+								var moved = vueObj.tierList.tiers.splice(evt.oldIndex, 1)[0];
+								vueObj.tierList.tiers.splice(evt.newIndex, 0, moved);
+							}
+						},
+					});
+					tierContainer.classList.add('isDraggable');
+				}
 			}
 		},
 		handleCardTurnActionOrderEvt(evt, turn, cardIdx){

@@ -1342,11 +1342,24 @@ td.hpLockTurn{
     cursor: pointer;
     border-radius: 4px;
 }
-.tier-remove-btn {
+.tier-row-actions {
     position: absolute;
     top: 4px;
     right: 4px;
     z-index: 10;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+}
+.tier-row:hover .tier-row-actions {
+    opacity: 1;
+    pointer-events: auto;
+}
+.tier-add-btn,
+.tier-remove-btn {
     width: 28px;
     height: 28px;
     font-size: 1rem;
@@ -1358,13 +1371,10 @@ td.hpLockTurn{
     background: rgba(0,0,0,0.12);
     cursor: pointer;
     color: #666;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s;
 }
-.tier-row:hover .tier-remove-btn {
-    opacity: 1;
-    pointer-events: auto;
+.tier-add-btn:hover {
+    background: rgba(28, 80, 157,0.8);
+    color: #fff;
 }
 .tier-remove-btn:hover {
     background: rgba(220,53,69,0.8);
@@ -1374,6 +1384,7 @@ td.hpLockTurn{
 .tier-drop-zone {
     min-height: 100px;
     padding: 4px;
+    padding-right: 40px;
     flex: 1;
     gap: 2px;
 }
@@ -1512,12 +1523,17 @@ td.hpLockTurn{
 .theme-dark .tier-color-popup .tier-color-custom-row {
     border-top-color: #555;
 }
+.theme-dark .tier-add-btn,
 .theme-dark .tier-remove-btn {
     color: #aaa;
     background: rgba(255,255,255,0.1);
 }
 .theme-dark .tier-remove-btn:hover {
     background: rgba(220,53,69,0.8);
+    color: #fff;
+}
+.theme-dark .tier-add-btn:hover {
+    background: rgba(28, 80, 157, 0.8);
     color: #fff;
 }
 
