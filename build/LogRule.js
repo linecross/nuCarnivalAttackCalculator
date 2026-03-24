@@ -13,8 +13,8 @@ export class LogRule extends Rule {
         this.applyCount++;
     }
     toString() {
-        var s = '【' + this.parentCardName + '】';
-        var type = this.type;
+        let s = '【' + this.parentCardName + '】';
+        let type = this.type;
         if (type == RuleType.attack && this.isCounterAttack) {
             type = RuleType.counterAttack;
         }
@@ -39,7 +39,7 @@ export class LogRule extends Rule {
         return s;
     }
     getFullSkillInfo() {
-        var s = this.type + this.value;
+        let s = this.type + this.value;
         if (this.value == null) {
             s = this.type;
         }
