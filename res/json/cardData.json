@@ -6533,6 +6533,184 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫沈默" }]
+    },
+    "熒海．奧利文": {
+      "char": "奧利文", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "火", "potType": "HP先行",
+      "baseHp": 7685, "baseAtk": 2241, "coolDown": 3,
+      "img": "Olivine_SSR_13.jpg",
+      "attackRule": [
+        { "type": "輔助", "value": "30%", "target": "全體" }
+      ],
+      "skillLv1Rule": [
+        {
+          "type": "普攻傷害增加",
+          "value": "40%",
+          "turn": 2,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "輔助", "value": "36%", "turn": 3, "target": "全體" }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "普攻傷害增加",
+          "value": "40%",
+          "turn": 2,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        {
+          "type": "造成傷害增加",
+          "value": "26%",
+          "turn": 2,
+          "target": "全體"
+        },
+        { "type": "輔助", "value": "42%", "turn": 3, "target": "全體" }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "普攻傷害增加",
+          "value": "40%",
+          "turn": 2,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        {
+          "type": "造成傷害增加",
+          "value": "26%",
+          "turn": 2,
+          "target": "全體"
+        },
+        { "type": "輔助", "value": "49%", "turn": 3, "target": "全體" }
+      ],
+      "star3Rule":[
+        {
+          "type": "開場減少冷卻回合",
+          "value": 2,
+          "turn": 1,
+          "condition": { "type": "第n回合", "value": 1 }
+        },
+        {
+          "type": "攻擊力增加",
+          "value": "12%",
+          "target": "全體"
+        }
+      ],
+      "star5Rule": [
+        { "type": "攻擊力增加", "value": "13%", "turn": 2, "condition": { "type": "攻擊方式", "value": "必殺技" } },
+        {
+          "type": "我方獲得技能",  
+          "value": {
+            "type": "普攻傷害增加", 
+            "value": "26%", 
+            "turn": 99,
+            "condition": { "type": "血量大於", "value": "90%" }
+          },
+          "target": { "type": "全體", "exceptType": "自己" }
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "3%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "熒海．玖夜": {
+      "char": "玖夜", "fullname": "", "alias": null,
+      "rarity": "SSR", "class": "妨礙", "element": "光", "potType": "HP先行",
+      "baseHp": 7080, "baseAtk": 2454, "coolDown": 4,
+      "img": "Kuya_SSR_13.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "46%", "maxCount": 3 }
+      ],
+      "skillLv1Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "turn": 4,
+            "condition": "攻擊時",
+            "value": { "type": "敵方受到觸發技傷害增加", "value": "18%" }
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "攻擊", "value": "15%", "maxCount": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "31%",
+            "maxCount": 3,
+            "turn": 4,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "turn": 4,
+            "condition": "攻擊時",
+            "value": { "type": "敵方受到觸發技傷害增加", "value": "25%" }
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "攻擊", "value": "15%", "maxCount": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "39%",
+            "maxCount": 3,
+            "turn": 4,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "敵方獲得技能",
+            "turn": 4,
+            "condition": "攻擊時",
+            "value": { "type": "敵方受到觸發技傷害增加", "value": "25%" }
+          },
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "攻擊", "value": "15%", "maxCount": 3 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "攻擊",
+            "value": "47%",
+            "maxCount": 3,
+            "turn": 4,
+            "condition": { "type": "攻擊時" },
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "觸發技效果增加",
+          "value": "15%",
+          "target": "全體",
+          "maxCount": 3,
+          "condition": { "type": "隊伍中每存在定位", "value": "攻擊" }
+        },
+        {
+          "type": "觸發技效果增加",
+          "value": "15%",
+          "target": "全體",
+          "maxCount": 3,
+          "condition": { "type": "隊伍中每存在定位", "value": "妨礙" }
+        }
+      ],
+      "star5Rule": [
+        { "type": "造成傷害增加", "value": "34%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沈默" }]
     }
 }
   
