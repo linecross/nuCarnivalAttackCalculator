@@ -96,7 +96,7 @@ export const RuleType = {
 
 	immuneParalysis: '免疫麻痺',
 	immuneSleep: '免疫睡眠',
-	immuneSilence: '免疫沈默'
+	immuneSilence: '免疫沉默'
 } as const;
 export type RuleType = typeof RuleType[keyof typeof RuleType];
 
