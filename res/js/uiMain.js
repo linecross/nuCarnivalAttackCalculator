@@ -23,7 +23,7 @@ var config = {
 		clazz: Object.values(Class),
 		element: Object.values(ELEMENT_MAP),
 		coolDown: [3, 4, 5, 6],
-		immuneSkill: ['免疫麻痺','免疫沈默','免疫睡眠'],
+		immuneSkill: ['免疫麻痺','免疫沉默','免疫睡眠'],
 		buffSkill: ['攻擊力增加','普攻傷害增加','必殺技傷害增加','持續傷害增加','觸發技效果增加','造成傷害增加',
 		'敵方受到普攻傷害增加','敵方受到必殺技傷害增加','敵方受到持續傷害增加','敵方受到觸發技傷害增加','敵方受到屬性傷害增加','敵方受到傷害增加'],
 		healBuffSkill: ['治療量增加','持續治療量增加',
