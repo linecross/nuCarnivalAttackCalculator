@@ -6619,6 +6619,7 @@
         { "type": "攻擊", "value": "46%", "maxCount": 3 }
       ],
       "skillLv1Rule": [
+        { "type": "攻擊", "value": "15%", "maxCount": 3 },
         {
           "type": "我方獲得技能",
           "value": {
@@ -6629,7 +6630,6 @@
           },
           "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
         },
-        { "type": "攻擊", "value": "15%", "maxCount": 3 },
         {
           "type": "我方獲得技能",
           "value": {
@@ -6643,6 +6643,7 @@
         }
       ],
       "skillLv2Rule": [
+        { "type": "攻擊", "value": "15%", "maxCount": 3 },
         {
           "type": "我方獲得技能",
           "value": {
@@ -6653,7 +6654,6 @@
           },
           "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
         },
-        { "type": "攻擊", "value": "15%", "maxCount": 3 },
         {
           "type": "我方獲得技能",
           "value": {
@@ -6667,6 +6667,7 @@
         }
       ],
       "skillLv3Rule": [
+        { "type": "攻擊", "value": "15%", "maxCount": 3 },
         {
           "type": "我方獲得技能",
           "value": {
@@ -6677,7 +6678,6 @@
           },
           "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
         },
-        { "type": "攻擊", "value": "15%", "maxCount": 3 },
         {
           "type": "我方獲得技能",
           "value": {
