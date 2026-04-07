@@ -434,6 +434,7 @@ body{
     flex: 1 1 auto;
     min-height: 0;  /* critical: allows flex children to shrink & scroll */
     overflow: hidden;
+    position: relative;  /* containing block for mobile filter panel overlay */
 }
 
 /* Filter panel — mobile/tablet: full height when expanded */
@@ -469,6 +470,10 @@ body{
     width: min(150px, 22vw);
     height: min(150px, 22vw);
 }
+#cardSelector .card-block img{
+    width: 30%;
+    height: 30%;
+}
 #cardSelector .card-block .card-image{
     width: 100%;
     height: 100%;
@@ -479,8 +484,7 @@ body{
     height: 100%;
 }
 #cardSelector .card-block .card-icon-element{
-    width: 20%;
-    top: 4%;
+    top: 5%;
     left: 3%;
 }
 #cardSelector .card-block .card-icon-class{
@@ -529,11 +533,13 @@ body{
     }
     #cardSelector .card-block .card-icon-element{
         width: auto;
+        height: auto;
         top: 6px;
         left: 5px;
     }
     #cardSelector .card-block .card-icon-class{
         width: 45px;
+        height: auto;
         top: 5px;
         right: 1px;
     }
@@ -546,6 +552,23 @@ body{
         font-size: 1.25rem;
     }
 }
+
+/* Mobile/tablet only (< 1024px) */
+@media (max-width: 1023px) {
+    /* Issue 2: Hide AND/OR button and search input when filter panel is showing */
+    #cardSelector .filter-showing .cardFilter-searchForm > :not(:last-child) {
+        display: none;
+    }
+    /* Issue 3: Filter panel uses absolute positioning to guarantee full height */
+    #cardSelector .filter-panel:not(.filter-collapsed) {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        background-color: var(--bs-modal-bg, #fff);
+        overscroll-behavior: contain;
+    }
+}
+
 .cardFilter-element span, .cardFilter-clazz span{
     margin-right: 1rem;
 }
