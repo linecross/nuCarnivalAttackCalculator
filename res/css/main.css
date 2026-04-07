@@ -258,10 +258,7 @@ body{
     transition: all .25s ease-in-out;
 }
 
-#cardSelector .card-block{
-    width: 200px; 
-    height: 200px; 
-}
+/* card-block sizing is now in responsive rules below */
 
 .card-block:hover{
     background-color: #71b6ff75;
@@ -400,32 +397,154 @@ body{
 }
 
 #cardSelector .modal-dialog{
-    max-width: 90%;
+    max-width: 95%;
+    max-height: 95%;
+    margin: auto;
 }
+
+/* Modal body: always column — searchRow on top, panels below */
 #cardSelector .modal-body{
-    display: flex; 
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0.75rem;
 }
+
+/* Search row: always visible, full width */
+#cardSelector .cardFilter-searchRow{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    flex-shrink: 0;
+}
+#cardSelector .cardFilter-searchForm{
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+#cardSelector .filter-toggle-btn{
+    flex-shrink: 0;
+}
+
+/* Panels container: column on mobile/tablet, row on desktop */
+#cardSelector .cardSelector-panels{
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;  /* critical: allows flex children to shrink & scroll */
+    overflow: hidden;
+}
+
+/* Filter panel — mobile/tablet: full height when expanded */
 #cardSelector .filter-panel{
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
-    flex: 1 1 30%;
-    min-height: 100px;
-    transition: all .25s ease-in-out;
-    position: sticky;
-    top: 0;
+    flex: 1 1 auto;
 }
-#cardSelector .cardFilter-searchForm{
-    width: 70%;
+#cardSelector .filter-panel.filter-collapsed{
+    display: none;
 }
+/* Mobile/tablet: hide card panel when filter is expanded */
+#cardSelector .filter-panel:not(.filter-collapsed) ~ .card-panel{
+    display: none;
+}
+
+/* Card panel */
 #cardSelector .card-panel{
     flex: 1 1 auto;
     overflow-y: auto;
-    min-height: 100px;
-    position: sticky;
-    top: 0;
+    min-height: 0;  /* allows shrinking to enable scroll */
+}
+
+/* Card block: fluid on mobile/tablet */
+#cardSelector .card-block{
+    width: min(200px, 28vw);
+    height: auto;
+    aspect-ratio: 4 / 5;
+}
+#cardSelector .card-block .card-image-div{
+    width: min(150px, 22vw);
+    height: min(150px, 22vw);
+}
+#cardSelector .card-block .card-image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+#cardSelector .card-block .card-icon-rarity{
+    width: 100%;
+    height: 100%;
+}
+#cardSelector .card-block .card-icon-element{
+    width: 20%;
+    top: 4%;
+    left: 3%;
+}
+#cardSelector .card-block .card-icon-class{
+    width: 30%;
+    top: 3%;
+    right: 1%;
+}
+#cardSelector .card-block .card-name{
+    width: min(150px, 22vw);
+    font-size: clamp(0.7rem, 2.5vw, 1.25rem);
+}
+
+/* Desktop: side-by-side layout (≥1024px so portrait tablets use mobile layout) */
+@media (min-width: 1024px) {
+    #cardSelector .modal-dialog{
+        max-width: 90%;
+    }
+    #cardSelector .filter-toggle-btn{
+        display: none;
+    }
+    #cardSelector .cardSelector-panels{
+        flex-direction: row;
+    }
+    #cardSelector .filter-panel{
+        flex: 0 0 22%;
+        max-height: none;
+        overflow-y: auto;
+    }
+    #cardSelector .filter-panel.filter-collapsed{
+        display: flex;  /* always visible on desktop regardless of toggle */
+    }
+    #cardSelector .filter-panel:not(.filter-collapsed) ~ .card-panel{
+        display: block;  /* always show card panel on desktop */
+    }
+    #cardSelector .card-panel{
+        flex: 1 1 auto;
+    }
+    #cardSelector .card-block{
+        width: 200px;
+        height: 200px;
+        aspect-ratio: auto;
+    }
+    #cardSelector .card-block .card-image-div{
+        width: 150px;
+        height: 150px;
+    }
+    #cardSelector .card-block .card-icon-element{
+        width: auto;
+        top: 6px;
+        left: 5px;
+    }
+    #cardSelector .card-block .card-icon-class{
+        width: 45px;
+        top: 5px;
+        right: 1px;
+    }
+    #cardSelector .card-block .card-icon-rarity{
+        width: auto;
+        height: auto;
+    }
+    #cardSelector .card-block .card-name{
+        width: 150px;
+        font-size: 1.25rem;
+    }
 }
 .cardFilter-element span, .cardFilter-clazz span{
     margin-right: 1rem;

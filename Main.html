@@ -49,19 +49,28 @@
 					<div class="modal-content w-100 h-100">
 						<div class="modal-header">
 							<h5 class="modal-title">選擇角色</h5>
-							<span class="verticalLine"></span>
-								<div class="py-1 d-flex cardFilter-searchForm">
+							<button type="button" class="btn-close text-reset" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<!-- Search bar row: always visible, full width -->
+							<div class="cardFilter-searchRow">
+								<button type="button" class="btn btn-outline-secondary filter-toggle-btn"
+									@click="cardFilter.showFilter = !cardFilter.showFilter">
+									<i class="fa-solid fa-filter"></i>
+								</button>
+								<div class="cardFilter-searchForm">
 									<button type="button" class="btn" :class="cardFilter.searchStrOp == 'AND' ? 'btn-primary' : 'btn-dark'" 
 									@click="cardFilter.searchStrOp = (cardFilter.searchStrOp == 'AND' ? 'OR' : 'AND')">
 										{{cardFilter.searchStrOp}}
 									</button>
-									<input class="form-control mx-3" type="text" id="cardFilter-searchStr" v-model="cardFilter.searchStr" placeholder="搜尋...">
+									<input class="form-control mx-2" type="text" id="cardFilter-searchStr" v-model="cardFilter.searchStr" placeholder="搜尋...">
 									<button type="button" class="btn btn-primary" @click="cardFilterSelectNone()">重設</button>
-								</div>	
-							<button type="button" class="btn-close text-reset" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body overflow-hidden">
-							<div class="filter-panel col w-100">
+								</div>
+							</div>
+							<!-- Panels container: row on desktop, column on mobile -->
+							<div class="cardSelector-panels">
+							<!-- Filter panel: collapsible on mobile, always visible on desktop -->
+							<div class="filter-panel" :class="{ 'filter-collapsed': !cardFilter.showFilter }">
 								<div class="py-1">
 									<h5>稀有度</h5>
 									<template v-for="rarity in FILTERS.rarity">
@@ -176,7 +185,7 @@
 								</div>
 							</div>
 						
-							<div class="card-panel col overflow-auto w-100" >
+							<div class="card-panel">
 								<template v-for="card in getFilteredCards">
 									<span class="card-block" data-bs-dismiss="modal" :data-cardname="card[0]" @click="selectCard(card[0])">
 										<div class="card-image-div">
@@ -189,6 +198,7 @@
 									</span>
 								</template>
 							</div>
+							</div><!-- /cardSelector-panels -->
 						</div>
 					</div>
 				</div>
