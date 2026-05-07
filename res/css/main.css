@@ -509,7 +509,7 @@ body{
         flex-direction: row;
     }
     #cardSelector .filter-panel{
-        flex: 0 0 22%;
+        flex: 0 0 24%;
         max-height: none;
         overflow-y: auto;
     }
