@@ -113,6 +113,7 @@ Vue.createApp({
 				element: [],
 				coolDown: [],
 				charDisplayStyle: 'image',
+				showFilter: false,
 			},
 			cardHpAtkSort:{
 				sortBy: 'actualHp', // actualHp or hp or atk
@@ -842,6 +843,7 @@ Vue.createApp({
 			this.cardFilterSelectNone('char');
 			this.cardFilter.searchStr = '';
 			this.cardFilter.searchStrOp = 'AND';
+			this.cardFilter.showFilter = false;
 			if (this.userInput.cardname[idx] != null && this.userInput.cardname[idx].length > 0){
 				this.cardFilter.selectCardName = this.userInput.cardname[idx];
 			}

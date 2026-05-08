@@ -6733,6 +6733,104 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫沉默" }]
+    },
+    "海軍．八雲": {
+      "char": "八雲", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "闇", "potType": "HP先行",
+      "baseHp": 7791, "baseAtk": 2205, "coolDown": 3,
+      "img": "Yakumo_SSR_12.jpg",
+      "attackRule": [
+        { "type": "解除防禦" },
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "解除防禦" },
+        { "type": "攻擊", "value": "58%", "maxCount": 4 },
+        { "type": "持續治療", "value": "23%", "turn": 2 }
+      ],
+      "skillLv2Rule": [
+        { "type": "解除防禦" },
+        { "type": "攻擊", "value": "104%", "maxCount": 4 },
+        { "type": "持續治療", "value": "52%", "turn": 2 }
+      ],
+      "skillLv3Rule": [
+        { "type": "解除防禦" },
+        { "type": "攻擊", "value": "119%", "maxCount": 4 },
+        { "type": "持續治療", "value": "60%", "turn": 2 }
+      ],
+      "star3Rule": [
+        {
+          "type": "必殺技傷害增加",
+          "value": "68%",
+          "condition": { "type": "血量大於", "value": "50%" },
+          "turn": 99
+        },
+        {
+          "type": "持續治療量增加",
+          "value": "45%",
+          "condition": { "type": "血量少於", "value": "50%" },
+          "turn": 99
+        }
+      ],
+      "star5Rule": [
+        {
+          "type": "治療",
+          "value": "20%",
+          "condition": { "type": "攻擊方式", "value": "必殺技" },
+          "skillType": "觸發"
+        },
+        {
+          "type": "攻擊",
+          "value": "24%",
+          "maxCount": 4,
+          "condition": { "type": "攻擊方式", "value": "必殺技" },
+          "skillType": "觸發"
+        }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
+    },
+    "海軍．歛": {
+      "char": "歛", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "光", "potType": "HP先行",
+      "baseHp": 7649, "baseAtk": 2277, "coolDown": 3,
+      "img": "Rei_SSR_10.jpg",
+      "attackRule": [{ "type": "輔助", "value": "30%", "target": "全體" }],
+      "skillLv1Rule": [
+        { "type": "受到傷害減少", "value": "7%", "turn": 3, "target": "全體" },
+        { "type": "輔助", "value": "102%", "target": "全體" }
+      ],
+      "skillLv2Rule": [
+        { "type": "受到傷害減少", "value": "7%", "turn": 3, "target": "全體" },
+        { "type": "敵方受到傷害增加", "value": "26%" },
+        { "type": "輔助", "value": "119%", "target": "全體" }
+      ],
+      "skillLv3Rule": [
+        { "type": "受到傷害減少", "value": "7%", "turn": 3, "target": "全體" },
+        { "type": "敵方受到傷害增加", "value": "26%" },
+        { "type": "輔助", "value": "137%", "target": "全體" }
+      ],
+      "star3Rule": [
+        { "type": "攻擊力增加", "value": "12%", "target": "全體" },
+        { "type": "我方受到治療增加", "value": "6%", "maxCount": 2, "target": "全體", "condition": "攻擊時" }
+      ],
+      "star5Rule": [
+         {
+          "type": "必殺技傷害增加",
+          "value": "39%",
+          "turn": 1,
+          "target": "全體",
+          "condition": { "type": "攻擊方式", "value": "必殺技" },
+          "skillType": "觸發"
+        },
+        { 
+          "type": "攻擊力增加", 
+          "value": "21%", 
+          "target": { "type": "定位", "value": "治療" },
+          "condition": {"type": "隊伍中每存在定位", "value": "治療", "minCount": 1, "operator": "少於或等於"} }
+      ],
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "5%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   
