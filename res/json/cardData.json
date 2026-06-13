@@ -6922,7 +6922,7 @@
         { "type": "持續傷害", "value": "136%", "poisonTurn": 3 }
       ],
       "skillLv2Rule": [
-        { "type": "攻擊力增加", "value": "34%", "maxCount": 1 },
+        { "type": "攻擊力增加", "value": "34%", "maxCount": 1, "turn": 99 },
         {
           "type": "持續傷害增加",
           "value": "34%",
