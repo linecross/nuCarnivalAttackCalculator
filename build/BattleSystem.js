@@ -1094,7 +1094,7 @@ Battle.ENEMY_BUFF_TYPES = new Set([RuleType.enemyBasicAtkUp, RuleType.enemySkill
 Battle.UNUSED_RULE_TYPES = new Set([RuleType.immuneParalysis, RuleType.immuneSilence, RuleType.immuneSleep,
     RuleType.takeLessDamage, RuleType.takeLessBasicDamage, RuleType.takeLessSkillDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery,
     RuleType.enemyLessAtk, RuleType.enemyLessDamage, RuleType.enemyLessBasicDamage, RuleType.enemyLessSkillDamage,
-    RuleType.enemyRemoveGuard
+    RuleType.enemyRemoveGuard, RuleType.attackToSelf, RuleType.poisonToSelf
 ]);
 // static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set([RuleType.getShield]);
 Battle.LOG_ONLY_RULE_TYPES = new Set();
