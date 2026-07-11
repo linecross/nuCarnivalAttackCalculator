@@ -5459,6 +5459,7 @@
       "baseHp": 7293, "baseAtk": 2383, "coolDown": 4,
       "img": "Quincy_SSR_12.jpg",
       "attackRule": [
+        { "type": "自身傷害", "value": "5%", "valueBy": "HP" },
         { "type": "解除防禦" },
         { "type": "攻擊力增加", "value": "6%", "turn": 5 },
         { "type": "攻擊", "value": "100%" }
