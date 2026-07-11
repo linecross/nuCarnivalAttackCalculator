@@ -37,7 +37,7 @@ export class Battle{
 	static UNUSED_RULE_TYPES : Set<RuleType> = new Set([RuleType.immuneParalysis, RuleType.immuneSilence, RuleType.immuneSleep, 
 		RuleType.takeLessDamage, RuleType.takeLessBasicDamage, RuleType.takeLessSkillDamage, RuleType.takeLessDamageByGuard, RuleType.moreRecovery, 
 		RuleType.enemyLessAtk, RuleType.enemyLessDamage, RuleType.enemyLessBasicDamage, RuleType.enemyLessSkillDamage, 
-		RuleType.enemyRemoveGuard
+		RuleType.enemyRemoveGuard, RuleType.attackToSelf, RuleType.poisonToSelf
 	]);
 	// static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set([RuleType.getShield]);
 	static LOG_ONLY_RULE_TYPES : Set<RuleType> = new Set();
