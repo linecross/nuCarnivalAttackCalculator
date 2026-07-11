@@ -93,6 +93,9 @@ export const RuleType = {
 	enemyLessBasicDamage: '敵方普攻傷害減少',
 	enemyLessSkillDamage: '敵方必殺技傷害減少',
 	enemyRemoveGuard: '解除防禦',
+	
+	attackToSelf: '自身傷害',
+	poisonToSelf: '自身毒傷',
 
 	immuneParalysis: '免疫麻痺',
 	immuneSleep: '免疫睡眠',
