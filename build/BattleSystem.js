@@ -333,14 +333,14 @@ export class Battle {
                 this.addBuffToTargets(postRule, card, attackType);
             }
         }
-        this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
-        if (hasAttackEnemy && !hasProcessedEnemyPostAttack) {
-            for (const postRule of enemyPostRuleToProcess) {
-                this.addRuleToTargets(postRule, card, attackType);
-                this.addBuffToTargets(postRule, card, attackType);
-            }
-            hasProcessedEnemyPostAttack = true;
-        }
+        // this.currentTurnAction = hasAttackEnemy ? TurnActionType.afterAttack : TurnActionType.afterAction;
+        // if (hasAttackEnemy && !hasProcessedEnemyPostAttack){
+        // 	for (const postRule of enemyPostRuleToProcess){
+        // 		this.addRuleToTargets(postRule, card, attackType);
+        // 		this.addBuffToTargets(postRule, card, attackType);
+        // 	}
+        // 	hasProcessedEnemyPostAttack = true;
+        // }
         // 4. 執行觸發Rules + 敵方身上的「被攻擊時」Rules
         for (const postRule of postTriggerRuleToProcess) {
             if (Battle.OUTPUT_TYPES.has(postRule.type)) {
