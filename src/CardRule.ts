@@ -1,4 +1,4 @@
-import { Class, RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType, ConditionHPStatus } from './Constants.js';
+import { Class, RuleType, AttackType, ConditionType, TargetType, SkillType, RuleValueByType, TurnActionType, OperatorType, ConditionHPStatus, Element } from './Constants.js';
 import { Card, EnemyCard, Team } from './Card.js';
 import { Util } from './util/Util.js';
 import { Battle } from './BattleSystem.js';
@@ -331,6 +331,10 @@ export class RuleTarget{
 		else if (type == TargetType.isChar){
 			const targetChars = value as string[];
 			cardNames = Object.values(team.cards).filter(e=>targetChars.includes(e.char)).map(e=>e.name);
+		}
+		else if (type == TargetType.isElement){
+			const targetElements = value as Element[];
+			cardNames = Object.values(team.cards).filter(e=>targetElements.includes(e.element)).map(e=>e.name);
 		}
 		else if (type == TargetType.isPosition){
 			const targetPos = value as number[];

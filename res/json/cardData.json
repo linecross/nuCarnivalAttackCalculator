@@ -7043,6 +7043,165 @@
       "star5Rule": [{ "type": "受到傷害減少", "value": "10%" }],
       "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "比武．奧利文": {
+      "char": "奧利文", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "火", "potType": "HP先行",
+      "baseHp": 7258, "baseAtk": 2383, "coolDown": 4,
+      "img": "Olivine_SSR_14.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "125%" }
+      ],
+      "skillLv1Rule": [
+        { "type": "造成傷害增加", "value": "8.5%", "turn": 2, "target": "全體" },
+        { "type": "攻擊", "value": "284%" },
+        { "type": "清除規則", "value": "武奧/3星被動：必殺技傷害增加" }
+      ],
+      "skillLv2Rule": [
+        { "type": "造成傷害增加", "value": "17%", "turn": 2, "target": "全體" },
+        { "type": "攻擊", "value": "345%" },
+        { "type": "清除規則", "value": "武奧/3星被動：必殺技傷害增加" }
+      ],
+      "skillLv3Rule": [
+        { "type": "造成傷害增加", "value": "17%", "turn": 2, "target": "全體" },
+        { "type": "攻擊", "value": "406%" },
+        { "type": "清除規則", "value": "武奧/3星被動：必殺技傷害增加" }
+      ],
+      "star3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方獲得技能",
+            "value": {
+              "uniqueName": "武奧/3星被動：必殺技傷害增加",
+              "type": "必殺技傷害增加", 
+              "value": "24%",
+              "maxCount": 3, 
+              "turn": 99
+            },
+            "turn": 99,
+            "condition": { "type": "攻擊方式", "value": "普攻" } 
+          }
+        }
+      ],
+      "star5Rule": [
+        { "type": "造成傷害增加", "value": "34%" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沉默" }]
+    },
+    "比武．玖夜": {
+      "char": "玖夜", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "守護", "element": "水", "potType": "平均型",
+      "baseHp": 11847, "baseAtk": 1458, "coolDown": 4,
+      "img": "Kuya_SSR_14.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "100%" }],
+      "skillLv1Rule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "我方受到治療增加", "value": "34%", "turn": 4 },
+        { "type": "治療", "value": "26%", "valueBy": "HP" }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方攻擊力減少", "value": "15%", "turn": 2 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "我方受到治療增加", "value": "34%", "turn": 4 },
+        { "type": "治療", "value": "35%", "valueBy": "HP" }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方攻擊力減少", "value": "15%", "turn": 2 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "我方受到治療增加", "value": "34%", "turn": 4 },
+        { "type": "治療", "value": "45%", "valueBy": "HP" }
+      ],
+      "star3Rule": [
+        { "type": "受到傷害減少", "value": "15%", "target": {"type": "屬性", "value": "水"} },
+        { "type": "防禦減傷增加", "value": "10%", "condition": { "type": "隊伍中有屬性", "value": "水", "minCount": 2 } }
+      ],
+      "star5Rule": [
+        { "type": "最大HP增加", "value": "11%", "target": {"type": "屬性", "value": "水"}},
+        { "type": "受到傷害減少", "value": "4%", "target": {"type": "屬性", "value": "水"}}
+      ],
+      "pot6Rule": [{ "type": "受到回復量增加", "value": "20%"}],
+      "pot12Rule": [{ "type": "免疫沉默" }]
+    },
+    "比武．布儡": {
+      "char": "布儡", "fullname": null, "alias": null,
+      "rarity": "SSR", "class": "治療", "element": "水", "potType": "HP先行",
+      "baseHp": 7258, "baseAtk": 2383, "coolDown": 4,
+      "img": "Blade_SSR_13.jpg",
+      "attackRule": [{ "type": "治療", "value": "75%" }],
+      "skillLv1Rule": [
+        { "type": "治療", "value": "80%" },
+        { "type": "持續治療", "value": "20%", "turn": 4 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "治療",
+            "value": "28%",
+            "turn": 4,
+            "condition": "攻擊時",
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "skillLv2Rule": [
+        {
+          "type": "我方受到治療增加",
+          "value": "17%",
+          "turn": 4,
+          "target": { "type": "全體" }
+        },
+        { "type": "治療", "value": "80%" },
+        { "type": "持續治療", "value": "20%", "turn": 4 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "治療",
+            "value": "45%",
+            "turn": 4,
+            "condition": "攻擊時",
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "skillLv3Rule": [
+        {
+          "type": "我方受到治療增加",
+          "value": "17%",
+          "turn": 4,
+          "target": { "type": "全體" }
+        },
+        { "type": "治療", "value": "80%" },
+        { "type": "持續治療", "value": "20%", "turn": 4 },
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "治療",
+            "value": "61%",
+            "turn": 4,
+            "condition": "攻擊時",
+            "skillType": "觸發"
+          }
+        }
+      ],
+      "star3Rule": [
+        {
+          "type": "我方獲得技能",
+          "value": {
+            "type": "我方受到治療增加",
+            "value": "12%",
+            "turn": 99
+          },
+          "target": { "type": "全體" }
+        },
+        { "type": "攻擊力增加", "value": "23%" }
+      ],
+      "star5Rule": [
+        { "type": "最大HP增加", "value": "7.5%", "target": "全體" },
+        { "type": "觸發技效果增加", "value": "17%", "target": "全體" }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫麻痺" }]
     }
 }
   
