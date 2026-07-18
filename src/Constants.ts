@@ -140,6 +140,7 @@ export const TargetType = {
 	isClass: '定位',
 	isChar: '角色',
 	isPosition: '位置',
+	isElement: '屬性',
 };
 export type TargetType = typeof TargetType[keyof typeof TargetType];
 
