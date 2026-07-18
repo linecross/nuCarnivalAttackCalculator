@@ -286,6 +286,10 @@ export class RuleTarget {
             const targetChars = value;
             cardNames = Object.values(team.cards).filter(e => targetChars.includes(e.char)).map(e => e.name);
         }
+        else if (type == TargetType.isElement) {
+            const targetElements = value;
+            cardNames = Object.values(team.cards).filter(e => targetElements.includes(e.element)).map(e => e.name);
+        }
         else if (type == TargetType.isPosition) {
             const targetPos = value;
             const targetCards = team.getCardByPos(targetPos);
