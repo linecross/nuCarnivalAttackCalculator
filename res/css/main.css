@@ -616,6 +616,7 @@ body{
     --aster-bg-color: #f283b2;
     --morvay-bg-color: #940161;
     --eiden-bg-color: #63a5df;
+    --other-bg-color: #98a38b;
 }
 
 
@@ -634,6 +635,11 @@ body{
     opacity: 1;
     filter: brightness(1);
     font-weight: 600;
+}
+
+.cardFilter-char.image input:focus-visible + label {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
 }
 
 .cardFilter-char.image input:checked + label {
@@ -679,78 +685,8 @@ body{
 .cardFilter-char.image .filter-eiden input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--eiden-bg-color)) brightness(1)
 }
-
-.cardFilter-char.pixel span{
-    margin-right: 0.2rem;
-}
-.cardFilter-char.pixel label{
-    cursor: pointer;
-    font-size: 1.3rem;
-    min-width: 60px;
-    border-radius: 1rem;
-    border: 3px solid transparent;
-    padding: 3px;
-    transition: all .25s ease-in-out;
-}
-.cardFilter-char.pixel label {
-    opacity: 0.7;
-}
-.cardFilter-char.pixel input:checked + label {
-    opacity: 1;
-    font-weight: 600;
-    border: 3px double #000;
-}
-.cardFilter-char.pixel input:checked + label {
-    filter: drop-shadow(0 0 0.15rem #ffca86) brightness(1)
-}
-
-.cardFilter-char.text .btn {
-    color: white;
-    border: 0px;
-    opacity: 0.5;
-    transition: all .25s ease-in-out;
-}
-.cardFilter-char.text input:checked + .btn {
-    opacity: 1;
-    filter: drop-shadow(0 0 0.2rem #646464) brightness(1);
-    font-weight: 900;
-}
-
-.cardFilter-char.text .filter-yakumo .btn {
-    background-color: var(--yakumo-bg-color);
-}
-.cardFilter-char.text .filter-edmond .btn {
-    background-color: var(--edmond-bg-color);
-}
-.cardFilter-char.text .filter-olivine .btn {
-    background-color: var(--olivine-bg-color);
-}
-.cardFilter-char.text .filter-quincy .btn {
-    background-color: var(--quincy-bg-color);
-}
-.cardFilter-char.text .filter-kuya .btn {
-    background-color: var(--kuya-bg-color);
-}
-.cardFilter-char.text .filter-garu .btn {
-    background-color: var(--garu-bg-color);
-}
-.cardFilter-char.text .filter-blade .btn {
-    background-color: var(--blade-bg-color);
-}
-.cardFilter-char.text .filter-dante .btn {
-    background-color: var(--dante-bg-color);
-}
-.cardFilter-char.text .filter-rei .btn {
-    background-color: var(--rei-bg-color);
-}
-.cardFilter-char.text .filter-aster .btn {
-    background-color: var(--aster-bg-color);
-}
-.cardFilter-char.text .filter-morvay .btn {
-    background-color: var(--morvay-bg-color);
-}
-.cardFilter-char.text .filter-eiden .btn {
-    background-color: var(--eiden-bg-color);
+.cardFilter-char.image .filter-other input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--other-bg-color)) brightness(1)
 }
 
 #cardDetailPanel.offcanvas{
@@ -1182,6 +1118,10 @@ td.hpLockTurn{
 }
 .icon-eiden {
     background-position: -36px -2px;
+}
+.icon-other {
+    background-image: url('../img/card-icon/image/char_icons_other.png');
+    background-position: 0 0;
 }
 
 #sortTable {

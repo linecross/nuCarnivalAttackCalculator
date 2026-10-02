@@ -7350,6 +7350,100 @@
       ],
       "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
       "pot12Rule": [{ "type": "免疫麻痺" }]
+    },
+    "悖論．伊得": {
+      "char": "伊得", "fullname": "霓輝匯聚之鑰", "alias": null,
+      "rarity": "SSR", "class": "輔助", "element": "木", "potType": "HP先行",
+      "baseHp": 7044, "baseAtk": 2454, "coolDown": 3,
+      "img": "Eiden_SSR_05.jpg",
+      "attackRule": [
+        { "type": "攻擊", "value": "100%" },
+        { "type": "輔助", "value": "16%", "turn": 2, "target": "全體" }
+      ],
+      "skillLv1Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 2, "condition": { "type": "被屬性攻擊", "value": ["光", "闇", "火", "水", "木"] } }
+        },
+        { "type": "輔助", "value": "58%", "turn": 2, "target": "全體" },
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方受到傷害增加", "value": "17%", "turn": 2 },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 2, "condition": { "type": "被屬性攻擊", "value": ["光", "闇", "火", "水", "木"] } }
+        },
+        { "type": "輔助", "value": "68%", "turn": 2, "target": "全體" },
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方受到傷害增加", "value": "17%", "turn": 2 },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 2, "condition": { "type": "被屬性攻擊", "value": ["光", "闇", "火", "水", "木"] } }
+        },
+        { "type": "輔助", "value": "79%", "turn": 2, "target": "全體" },
+        { "type": "攻擊", "value": "100%" }
+      ],
+      "star3Rule": [
+        { "type": "開場減少冷卻回合", "value": 3, "turn": 1, "condition": { "type": "第n回合", "value": 1 } },
+        { "type": "攻擊力增加", "value": "15%", "target": "全體", "condition": { "type": "隊伍中有屬性", "value": "木", "minCount": 2 } }
+      ],
+      "star5Rule": [
+        {
+          "type": "攻擊力增加",
+          "value": "28%",
+          "turn": 2,
+          "target": "全體",
+          "condition": [
+            { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 },
+            { "type": "攻擊方式", "value": "必殺技" }
+          ]
+        }
+      ],
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "5%", "target": "全體" }],
+      "pot12Rule": [{ "type": "免疫沉默" }]
+    },
+    "悖論．蒼葉": {
+      "char": "蒼葉", "fullname": "解譯虛實之聲", "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "木", "potType": "HP先行",
+      "baseHp": 6866, "baseAtk": 2526, "coolDown": 3,
+      "img": "Aoba_SSR_01.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": { "type": "被屬性攻擊", "value": "木" } }
+        },
+        { "type": "造成傷害增加", "value": "25%", "turn": 99, "maxCount": 1 },
+        { "type": "攻擊", "value": "229%" }
+      ],
+      "skillLv2Rule": [
+        { "type": "必殺技傷害增加", "value": "30%", "turn": 99, "maxCount": 2 },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": { "type": "被屬性攻擊", "value": "木" } }
+        },
+        { "type": "造成傷害增加", "value": "25%", "turn": 99, "maxCount": 1 },
+        { "type": "攻擊", "value": "320%" }
+      ],
+      "skillLv3Rule": [
+        { "type": "必殺技傷害增加", "value": "30%", "turn": 99, "maxCount": 2 },
+        {
+          "type": "敵方獲得技能",
+          "value": { "type": "敵方受到屬性傷害增加", "value": "15%", "turn": 99, "maxCount": 1, "condition": { "type": "被屬性攻擊", "value": "木" } }
+        },
+        { "type": "造成傷害增加", "value": "25%", "turn": 99, "maxCount": 1 },
+        { "type": "攻擊", "value": "360%" }
+      ],
+      "star3Rule": [
+        { "type": "必殺技傷害增加", "value": "42%", "condition": { "type": "隊伍中有定位", "value": "攻擊", "minCount": 2 } },
+        { "type": "攻擊力增加", "value": "17%" }
+      ],
+      "star5Rule": [{ "type": "造成傷害增加", "value": "34%" }],
+      "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
+      "pot12Rule": [{ "type": "免疫沉默" }]
     }
 }
   

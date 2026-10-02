@@ -78,6 +78,7 @@
 						<label for="inputCharName">角色名稱</label>
 						<select id="inputCharName" class="form-select" v-model="input.charName">
 							<option v-for="name in CHAR_NAMES" :value="name">{{ name }}</option>
+							<option v-if="Object.keys(charData['其他'] || {}).length" value="其他">其他</option>
 						</select>
 					</div>
 					<div class="form-check-inline">
