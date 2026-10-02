@@ -21,6 +21,7 @@
 	<link rel='stylesheet' href='./res/css/main.css' />
 
 	<link rel="preload" href="./res/img/card-icon/image/char_icons.png" as="image" />
+	<link rel="preload" href="./res/img/card-icon/image/char_icons_other.png" as="image" />
 </head>
 
 <body>
@@ -115,8 +116,8 @@
 									<h5>角色</h5>
 									<template v-for="char in CHARACTERS">
 										<span v-if="char != ''" :class="'filter-'+getFilterPanelCode('char', char)" >
-												<input type="checkbox" class="btn-check" name="cardFilter-character" :id="'cardFilter-'+char" :value="char" v-model="cardFilter.char">
-												<label class="col-1 mx-2 my-1 w-auto" :for="'cardFilter-'+char">
+												<input type="checkbox" class="btn-check" name="cardFilter-character" :id="'cardFilter-'+char" :value="char" v-model="cardFilter.char" :aria-label="char">
+												<label class="col-1 mx-2 my-1 w-auto" :for="'cardFilter-'+char" :title="char">
 													<!-- <img :src="getFilterPanalIconPath('char', char)"/> -->
 													<span class="filter-icon-char-image" :class="'icon-'+getFilterPanelCode('char', char)"></span>
 												</label>
@@ -1002,8 +1003,8 @@
 							<div>角色</div>
 							<template v-for="char in CHARACTERS">
 								<span v-if="char != ''" :class="'filter-'+getFilterPanelCode('char', char)" >
-										<input type="checkbox" class="btn-check" name="cardHpAtkSort-character" :id="'cardHpAtkSort-'+char" :value="char" v-model="cardHpAtkSort.char">
-										<label class="col-1 mx-2 my-1 w-auto" :for="'cardHpAtkSort-'+char">
+										<input type="checkbox" class="btn-check" name="cardHpAtkSort-character" :id="'cardHpAtkSort-'+char" :value="char" v-model="cardHpAtkSort.char" :aria-label="char">
+										<label class="col-1 mx-2 my-1 w-auto" :for="'cardHpAtkSort-'+char" :title="char">
 											<!-- <img :src="getFilterPanalIconPath('char', char)"/> -->
 											<span class="filter-icon-char-image" :class="'icon-'+getFilterPanelCode('char', char)"></span>
 										</label>
@@ -1286,8 +1287,8 @@
 						<div>角色</div>
 						<template v-for="char in CHARACTERS">
 							<span v-if="char != ''" :class="'filter-'+getFilterPanelCode('char', char)">
-									<input type="checkbox" class="btn-check" name="tierFilter-character" :id="'tierFilter-'+char" :value="char" v-model="tierList.poolFilter.char">
-									<label class="col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+char">
+									<input type="checkbox" class="btn-check" name="tierFilter-character" :id="'tierFilter-'+char" :value="char" v-model="tierList.poolFilter.char" :aria-label="char">
+									<label class="col-1 mx-1 my-1 w-auto" :for="'tierFilter-'+char" :title="char">
 										<span class="filter-icon-char-image" :class="'icon-'+getFilterPanelCode('char', char)"></span>
 									</label>
 							</span>

@@ -616,6 +616,7 @@ body{
     --aster-bg-color: #f283b2;
     --morvay-bg-color: #940161;
     --eiden-bg-color: #63a5df;
+    --other-bg-color: #98a38b;
 }
 
 
@@ -634,6 +635,11 @@ body{
     opacity: 1;
     filter: brightness(1);
     font-weight: 600;
+}
+
+.cardFilter-char.image input:focus-visible + label {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
 }
 
 .cardFilter-char.image input:checked + label {
@@ -678,6 +684,9 @@ body{
 }
 .cardFilter-char.image .filter-eiden input:checked + label {
     filter: drop-shadow(0 0 0.25rem var(--eiden-bg-color)) brightness(1)
+}
+.cardFilter-char.image .filter-other input:checked + label {
+    filter: drop-shadow(0 0 0.25rem var(--other-bg-color)) brightness(1)
 }
 
 #cardDetailPanel.offcanvas{
@@ -1109,6 +1118,10 @@ td.hpLockTurn{
 }
 .icon-eiden {
     background-position: -36px -2px;
+}
+.icon-other {
+    background-image: url('../img/card-icon/image/char_icons_other.png');
+    background-position: 0 0;
 }
 
 #sortTable {

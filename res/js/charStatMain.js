@@ -1,5 +1,6 @@
 var chartConfig = {
 	CHAR_NAMES: ['八雲','艾德蒙特','奧利文','崑西','玖夜','可爾','布儡','啖天','歛','艾斯特','墨菲','伊得'],
+	OTHER_NAME: '其他',
 	MAX_LEVEL: 60,
 	levels: [1,15,20,25,30,35,40,45,50,55,60],
 	rooms:['無','1房','2房','3房','4房','5房'],
@@ -180,11 +181,14 @@ var NuCarnivalCharChartApp = Vue.createApp({
 		})
 		.then(json => {
 			var charData = {};
-			for (var charName of chartConfig.CHAR_NAMES){
+			for (var charName of [...chartConfig.CHAR_NAMES, chartConfig.OTHER_NAME]){
 				var list=Object.entries(json).filter(e=>{
 					var value = e[1];
-					return value['char'] == charName;
+					return charName == chartConfig.OTHER_NAME
+						? typeof value['char'] == 'string' && value['char'].length > 0 && !chartConfig.CHAR_NAMES.includes(value['char'])
+						: value['char'] == charName;
 				})
+				if (charName == chartConfig.OTHER_NAME && list.length == 0) continue;
 				var data = {};
 				for (var ele of list.reverse()){
 					var cardName = ele[0];
@@ -196,16 +200,23 @@ var NuCarnivalCharChartApp = Vue.createApp({
 				charData[charName] = data;
 			}
 			vueObj.charData = charData;
+			vueObj.reconcileCharId();
 			vueObj.isRefreshed++;
 		});
 	},
 	methods: {
+		reconcileCharId(){
+			var group = this.charData[this.input.charName] || {};
+			if (!Object.prototype.hasOwnProperty.call(group, this.input.charId)){
+				this.input.charId = Object.keys(group)[0] || '';
+			}
+		},
 		calculateCharValue(charName, charId, star, level, roomPercent, potentialPercent, hpOrAtk){
 			if (!['both', 'hp', 'atk'].includes(hpOrAtk)){
 				return;
 			}
 			if (Object.keys(this.charData).length > 0){
-				let data = this.charData[charName][charId];
+				let data = this.charData[charName] && this.charData[charName][charId];
 				if (data == null) {return ''}
 				var val = this.calculateValue(star, level, roomPercent, potentialPercent, data[hpOrAtk], this.input.extra[hpOrAtk]);
 				return val;
@@ -228,6 +239,7 @@ var NuCarnivalCharChartApp = Vue.createApp({
 			if (Object.keys(this.charData).length > 0){
 				var hp = this.calculateCharValue(charName, charId, star, level, roomPercent, hpPotentialPercent, 'hp');
 				var atk = this.calculateCharValue(charName, charId, star, level, roomPercent, atkPotentialPercent, 'atk');
+				if (hp === '' || atk === '') return '';
 				return this.getBattlePower(hp, atk);
 			}
 		},
@@ -355,7 +367,7 @@ var NuCarnivalCharChartApp = Vue.createApp({
 		currentChar(){
 			console.info(this.isRefreshed);
 			if (Object.keys(this.charData).length > 0){
-				return this.charData[this.input.charName][this.input.charId];
+				return this.charData[this.input.charName] && this.charData[this.input.charName][this.input.charId];
 			}
 		},
 		displayHP(){
@@ -397,6 +409,9 @@ var NuCarnivalCharChartApp = Vue.createApp({
 		},
 	},
 	watch:{
+		'input.charName'(){
+			this.reconcileCharId();
+		},
 		'input.charId'(){
 			if (this.currentChar != null){
 				if (this.currentChar.rarity == 'N'){

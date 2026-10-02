@@ -19,7 +19,7 @@ var config = {
 	},
 	FILTERS:{
 		rarity: Object.values(Rarity),
-		char: Object.values(Character),
+		char: [...Object.values(Character), '其他'],
 		clazz: Object.values(Class),
 		element: Object.values(ELEMENT_MAP),
 		coolDown: [3, 4, 5, 6],
@@ -49,7 +49,8 @@ var config = {
 			'八雲': 'yakumo', '艾德蒙特': 'edmond', '奧利文': 'olivine',
 			'崑西': 'quincy', '玖夜': 'kuya', '可爾': 'garu',
 			'布儡': 'blade', '啖天': 'dante', '歛': 'rei',
-			'艾斯特': 'aster', '墨菲': 'morvay', '伊得': 'eiden'
+			'艾斯特': 'aster', '墨菲': 'morvay', '伊得': 'eiden',
+			'其他': 'other'
 		}
 	},
 	CHART:{
@@ -191,7 +192,7 @@ Vue.createApp({
 	},
 	async created()
 	{
-		this.CHARACTERS = Object.assign({EMPTY: ''}, Character);
+		this.CHARACTERS = Object.assign({EMPTY: ''}, Character, {OTHER: '其他'});
 		this.STARS = config.STARS;
 		this.LEVEL_SELECT = config.LEVEL_SELECT;
 		this.POT_SELECT = config.POT_SELECT;
@@ -289,6 +290,10 @@ Vue.createApp({
 		}
 	},
 	methods: {
+		matchesCharacterFilter(chars, char){
+			return chars.length === 0 || chars.includes(char) ||
+				(chars.includes('其他') && typeof char === 'string' && char.length > 0 && !Object.values(Character).includes(char));
+		},
 		switchTheme(){
 			var theme = this.setting.general.theme == 'light' ? 'dark' : 'light';
 			this.setting.general.theme = theme;
@@ -857,7 +862,7 @@ Vue.createApp({
 			if (cardData == null || cardData.img == null){
 				return './res/img/card/no_image.png';
 			}
-			return './res/img/card/' + config.IMAGE_PATH.char[cardData.char] + '/' + cardData.img;
+			return './res/img/card/' + (config.IMAGE_PATH.char[cardData.char] || 'other') + '/' + cardData.img;
 		},
 		getCardIconPath(cardData, type){
 			if (cardData == null){
@@ -1905,7 +1910,7 @@ Vue.createApp({
 			var hpPercent = this.cardHpAtkSort.hpPercent;
 			
 			if (chars.length > 0){
-				cardArr = cardArr.filter(e=>chars.includes(e.char));
+				cardArr = cardArr.filter(e=>this.matchesCharacterFilter(chars, e.char));
 			}
 			if (rarity.length > 0){
 				cardArr = cardArr.filter(e=>rarity.includes(e.rarity));
@@ -1977,7 +1982,7 @@ Vue.createApp({
 				cardArr = cardArr.filter(n => filter.coolDown.includes(cardDataJson[n].coolDown));
 			}
 			if (filter.char.length > 0){
-				cardArr = cardArr.filter(n => filter.char.includes(cardDataJson[n].char));
+				cardArr = cardArr.filter(n => this.matchesCharacterFilter(filter.char, cardDataJson[n].char));
 			}
 			cardArr = cardArr.reverse();
 			return cardArr;
@@ -1998,7 +2003,7 @@ Vue.createApp({
 			var coolDown = this.cardFilter.coolDown;
 			
 			if (chars.length > 0){
-				arr = arr.filter(e=>chars.includes(e[1].char));
+				arr = arr.filter(e=>this.matchesCharacterFilter(chars, e[1].char));
 			}
 			if (rarity.length > 0){
 				arr = arr.filter(e=>rarity.includes(e[1].rarity));
