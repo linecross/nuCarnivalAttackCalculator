@@ -112,7 +112,6 @@ Vue.createApp({
 				clazz: [],
 				element: [],
 				coolDown: [],
-				charDisplayStyle: 'image',
 				showFilter: false,
 			},
 			cardHpAtkSort:{
@@ -127,7 +126,6 @@ Vue.createApp({
 				clazz: [],
 				element: [],
 				coolDown: [],
-				charDisplayStyle: 'image',
 			},
 			setting: {
 				userInput: {
@@ -139,7 +137,6 @@ Vue.createApp({
 					maxCounterAttack: 1,
 				},
 				general: {
-					charFilterDisplayStyle: 'image',
 					recordPanelCardImgSize: 'normal',
 					recordPanelPageMaxCount: 20,
 					theme: 'light',
@@ -182,7 +179,6 @@ Vue.createApp({
 				],
 				poolFilter: {
 					rarity: [], char: [], clazz: [], element: [], coolDown: [],
-					charDisplayStyle: 'image',
 				},
 				nextTierId: 6,
 				openColorPopupId: null,
@@ -874,8 +870,7 @@ Vue.createApp({
 		},
 		getFilterPanalIconPath(type, value){
 			if (type == 'char'){
-				var folder = this.cardFilter.charDisplayStyle == 'pixel' ? 'pixel' : 'image';
-				return './res/img/card-icon/' + folder + '/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
+				return './res/img/card-icon/image/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
 			}
 			else{
 				return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
@@ -996,10 +991,20 @@ Vue.createApp({
 				return;
 			}
 			for (var key of Object.keys(map.setting)){
-				this.setting[key] = map.setting[key];
+				if (key == 'charDisplayStyle' || key == 'charFilterDisplayStyle') continue;
+				if (key == 'general' && map.setting.general != null){
+					var { charDisplayStyle, charFilterDisplayStyle, ...general } = map.setting.general;
+					this.setting.general = { ...this.setting.general, ...general };
+				}
+				else this.setting[key] = map.setting[key];
 			}
 
 			this.loadSetting();
+			if ('charDisplayStyle' in map.setting || 'charFilterDisplayStyle' in map.setting ||
+				'charDisplayStyle' in (map.setting.general || {}) || 'charFilterDisplayStyle' in (map.setting.general || {})){
+				map.setting = this.setting;
+				localStorage.setItem("nuAttackCalculator", JSON.stringify(map));
+			}
 		},
 		loadRecordsFromDB(){
 			this.db.damageRecords.toArray().then(records=>{
@@ -1012,11 +1017,6 @@ Vue.createApp({
 			if (this.setting['userInput'] != null){
 				Object.assign(this.userInput, this.setting['userInput']);
 				this.userInput.turns = parseInt(this.setting['userInput'].turns);
-			}
-			var charFilterDisplayStyle = this.setting['general']['charFilterDisplayStyle'];
-			if (['image','text','pixel'].includes(charFilterDisplayStyle)) {
-				this.cardFilter.charDisplayStyle = charFilterDisplayStyle;
-				this.tierList.poolFilter.charDisplayStyle = charFilterDisplayStyle;
 			}
 			var recordPanelCardImgSize = this.setting['general']['recordPanelCardImgSize'];
 			if (['normal','big','small', 'none'].includes(recordPanelCardImgSize)) {
@@ -1521,8 +1521,7 @@ Vue.createApp({
 		},
 		tierListGetFilterIconPath(type, value){
 			if (type == 'char'){
-				var folder = this.tierList.poolFilter.charDisplayStyle == 'pixel' ? 'pixel' : 'image';
-				return './res/img/card-icon/' + folder + '/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
+				return './res/img/card-icon/image/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
 			}
 			return './res/img/card-icon/' + type + '-' + config.IMAGE_PATH[type][value] + '.png';
 		},
