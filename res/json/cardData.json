@@ -7444,6 +7444,121 @@
       "star5Rule": [{ "type": "造成傷害增加", "value": "34%" }],
       "pot6Rule": [{ "type": "必殺技傷害增加", "value": "15%" }],
       "pot12Rule": [{ "type": "免疫沉默" }]
+    },
+    "搖滾．艾德蒙特": {
+      "char": "艾德蒙特", "fullname": "沉淪喜悅之劍", "alias": null,
+      "rarity": "SSR", "class": "治療", "element": "水", "potType": "ATK先行",
+      "baseHp": 7613, "baseAtk": 2277, "coolDown": 3,
+      "img": "Edmond_SSR_15.jpg",
+      "attackRule": [{ "type": "持續治療", "value": "25%", "turn": 3, "target": "全體" }],
+      "skillLv1Rule": [
+        { "type": "攻擊力增加", "value": "34%", "turn": 3 },
+        { "type": "治療", "value": "50%", "target": "全體" },
+        { "type": "持續治療", "value": "43%", "turn": 3, "target": "全體" }
+      ],
+      "skillLv2Rule": [
+        { "type": "攻擊力增加", "value": "23%", "turn": 3, "target": "全體" },
+        { "type": "攻擊力增加", "value": "34%", "turn": 3 },
+        { "type": "治療", "value": "50%", "target": "全體" },
+        { "type": "持續治療", "value": "53%", "turn": 3, "target": "全體" }
+      ],
+      "skillLv3Rule": [
+        { "type": "攻擊力增加", "value": "23%", "turn": 3, "target": "全體" },
+        { "type": "攻擊力增加", "value": "34%", "turn": 3 },
+        { "type": "治療", "value": "50%", "target": "全體" },
+        { "type": "持續治療", "value": "64%", "turn": 3, "target": "全體" }
+      ],
+      "star3Rule": [
+        { "type": "普攻傷害增加", "value": "23%", "target": "全體" },
+        { "type": "我方受到治療增加", "value": "12%", "target": "全體" }
+      ],
+      "star5Rule": [
+        { "type": "最大HP增加", "value": "7.5%", "target": "全體" },
+        { "type": "敵方受到普攻傷害增加", "value": "17%", "turn": 3, "condition": { "type": "攻擊方式", "value": "必殺技" } }
+      ],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫沉默" }]
+    },
+    "搖滾．歛": {
+      "char": "歛", "fullname": "潛心鑽研之冠", "alias": null,
+      "rarity": "SSR", "class": "攻擊", "element": "水", "potType": "HP先行",
+      "baseHp": 7293, "baseAtk": 2383, "coolDown": 3,
+      "img": "Rei_SSR_11.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "敵方受到普攻傷害增加", "value": "34%", "turn": 99, "maxCount": 1 },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "普攻追擊", "value": "52%", "turn": 3 }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方受到普攻傷害增加", "value": "34%", "turn": 99, "maxCount": 1 },
+        {
+          "type": "普攻追擊",
+          "value": "15%",
+          "turn": 3,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "普攻追擊", "value": "69%", "turn": 3 }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方受到普攻傷害增加", "value": "34%", "turn": 99, "maxCount": 1 },
+        {
+          "type": "普攻追擊",
+          "value": "15%",
+          "turn": 3,
+          "target": { "type": "定位", "value": ["攻擊", "妨礙"] }
+        },
+        { "type": "攻擊", "value": "100%" },
+        { "type": "普攻追擊", "value": "87%", "turn": 3 }
+      ],
+      "star3Rule": [
+        { "type": "普攻傷害增加", "value": "45%" },
+        {
+          "type": "敵方獲得技能",
+          "condition": { "type": "攻擊時" },
+          "value": {
+            "type": "敵方獲得技能",
+            "turn": 1,
+            "condition": { "type": "被攻擊時" },
+            "value": { "type": "敵方受到傷害增加", "value": "4.5%", "turn": 3 }
+          }
+        }
+      ],
+      "star5Rule": [
+        { "type": "普攻追擊被動", "value": "46%" },
+        { "type": "攻擊力增加", "value": "17%" }
+      ],
+      "pot6Rule": [{ "type": "普攻傷害增加", "value": "20%" }],
+      "pot12Rule": [{ "type": "免疫沉默" }]
+    },
+    "搖滾．布儡": {
+      "char": "布儡", "fullname": "奏響心聲之鞭", "alias": null,
+      "rarity": "SR", "class": "妨礙", "element": "木", "potType": "平均型",
+      "baseHp": 6582, "baseAtk": 1921, "coolDown": 3,
+      "img": "Blade_SR_02.jpg",
+      "attackRule": [{ "type": "攻擊", "value": "125%" }],
+      "skillLv1Rule": [
+        { "type": "敵方受到傷害增加", "value": "16%", "turn": 2 },
+        { "type": "攻擊", "value": "198%" },
+        { "type": "敵方回復量增加", "value": "-100%", "turn": 3 }
+      ],
+      "skillLv2Rule": [
+        { "type": "敵方受到傷害增加", "value": "16%", "turn": 2 },
+        { "type": "攻擊", "value": "231%" },
+        { "type": "敵方回復量增加", "value": "-100%", "turn": 3 }
+      ],
+      "skillLv3Rule": [
+        { "type": "敵方受到傷害增加", "value": "16%", "turn": 2 },
+        { "type": "攻擊", "value": "264%" },
+        { "type": "敵方回復量增加", "value": "-100%", "turn": 3 }
+      ],
+      "star3Rule": [
+        { "type": "敵方受到傷害增加", "value": "18%", "turn": 99, "maxCount": 1, "condition": { "type": "第n回合", "value": 1 } }
+      ],
+      "star5Rule": [{ "type": "攻擊力增加", "value": "25%" }],
+      "pot6Rule": [{ "type": "攻擊力增加", "value": "10%" }],
+      "pot12Rule": [{ "type": "免疫睡眠" }]
     }
 }
   
